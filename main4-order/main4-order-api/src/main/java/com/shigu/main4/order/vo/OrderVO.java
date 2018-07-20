@@ -28,6 +28,16 @@ public class OrderVO implements Serializable{
 
     private String outerId;
 
+    /**
+     * 实际优惠金额
+     */
+    private Long realVoucherAmount;
+
+    /**
+     * 未减免总金额
+     */
+    private Long totalFeeWithoutVoucher;
+
     public String getOuterId() {
         return outerId;
     }
@@ -98,5 +108,21 @@ public class OrderVO implements Serializable{
 
     public void setPayedFee(Long payedFee) {
         this.payedFee = payedFee;
+    }
+
+    public Long getRealVoucherAmount() {
+        return realVoucherAmount;
+    }
+
+    public void setRealVoucherAmount(Long realVoucherAmount) {
+        this.realVoucherAmount = realVoucherAmount;
+    }
+
+    public Long getTotalFeeWithoutVoucher() {
+        return totalFeeWithoutVoucher;
+    }
+
+    public void setTotalFeeWithoutVoucher(Long totalFeeWithoutVoucher) {
+        this.totalFeeWithoutVoucher = totalFeeWithoutVoucher;
     }
 }

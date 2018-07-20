@@ -13,6 +13,7 @@ public class ItemVoucherExample extends SgExample<ItemVoucherExample.Criteria> {
     public static EntityColumn voucherState;
     public static EntityColumn usedTime;
     public static EntityColumn expireTime;
+    public static EntityColumn voucherInfo;
     public static EntityColumn createTime;
     public static EntityColumn voucherId;
     public static EntityColumn voucherAmount;
@@ -27,6 +28,7 @@ public class ItemVoucherExample extends SgExample<ItemVoucherExample.Criteria> {
         voucherState = listMap.get("voucherState");
         usedTime = listMap.get("usedTime");
         expireTime = listMap.get("expireTime");
+        voucherInfo = listMap.get("voucherInfo");
         createTime = listMap.get("createTime");
         voucherId = listMap.get("voucherId");
         voucherAmount = listMap.get("voucherAmount");
@@ -193,6 +195,61 @@ public class ItemVoucherExample extends SgExample<ItemVoucherExample.Criteria> {
 
         public ItemVoucherExample.Criteria andExpireTimeNotBetween(Date value1, Date value2) {
             return notBetween(expireTime, value1, value2);
+        }
+        public ItemVoucherExample.Criteria andVoucherInfoIsNull() {
+            return isNull(voucherInfo);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoIsNotNull() {
+            return isNotNull(voucherInfo);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoEqualTo(String value) {
+            return equalTo(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoNotEqualTo(String value) {
+            return notEqualTo(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoGreaterThan(String value) {
+            return greaterThan(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoLessThan(String value) {
+            return lessThan(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoLike(String value) {
+            return like(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoNotLike(String value) {
+            return notLike(voucherInfo, value);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoIn(List<String> values) {
+            return in(voucherInfo, values);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoNotIn(List<String> values) {
+            return notIn(voucherInfo, values);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoBetween(String value1, String value2) {
+            return between(voucherInfo, value1, value2);
+        }
+
+        public ItemVoucherExample.Criteria andVoucherInfoNotBetween(String value1, String value2) {
+            return notBetween(voucherInfo, value1, value2);
         }
         public ItemVoucherExample.Criteria andCreateTimeIsNull() {
             return isNull(createTime);

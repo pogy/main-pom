@@ -2,10 +2,7 @@ package com.shigu.order.services;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -17,8 +14,6 @@ import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
-import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.model.Order;
 import com.shigu.main4.order.process.ItemCartProcess;
 import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -26,13 +21,13 @@ import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.order.bo.*;
+import com.shigu.order.bo.ConfirmBO;
+import com.shigu.order.bo.ConfirmMoreTbBO;
+import com.shigu.order.bo.ConfirmOrderBO;
+import com.shigu.order.bo.ConfirmSubOrderBO;
 import com.shigu.order.vo.*;
-import com.shigu.order.vo.ServiceInfoVO;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -602,6 +597,16 @@ public class ConfirmOrderService {
         String date = JSONArray.fromObject(provVoList).toString();
         redisIO.put(ORDER_EXPRESS_ADDRESS, date);
         return date;
+    }
+
+
+    /**
+     * 获取可用优惠信息 代金券方式
+     * @param userId
+     * @return
+     */
+    public List<VoucherVO> findAvailableFavourableInfo(Long userId) {
+        return itemOrderService.findAvailableFavourableInfo(userId);
     }
 
 }

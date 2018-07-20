@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.BuyerAddressExample;
-import com.opentae.data.mall.examples.ItemOrderSubExample;
-import com.opentae.data.mall.examples.LogisticsTemplateExample;
-import com.opentae.data.mall.examples.OrderStatusRecordExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -42,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 商品订单服务
@@ -264,6 +262,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         logistic.setAddress(buyerAddress.getAddress());
         logistic.setMoney(calculateLogisticsFee(orderBO.getUserId(),order.getOid(),orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic, true);//最后一步才重怎么价格
+
+        Long inviteVoucher = getInviteVoucher(getInviteVoucher(orderBO.getUserId()));
+        if (inviteVoucher != null) {
+            itemOrder.addVoucher(inviteVoucher);
+        }
         return order.getOid();
     }
 
@@ -555,6 +558,56 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         itemVoucher.setExpireTime(calendar.getTime());
         itemVoucher.setVoucherState(1);
         itemVoucherMapper.insertSelective(itemVoucher);
+        return itemVoucher.getVoucherId();
+    }
+
+
+    /**
+     * 获取可用优惠信息 代金券方式
+     * @param userId
+     * @return
+     */
+    public List<VoucherVO> findAvailableFavourableInfo(Long userId) {
+        ItemVoucherExample example = new ItemVoucherExample();
+        example.createCriteria().andUserIdEqualTo(userId).andVoucherStateEqualTo(1).andExpireTimeGreaterThan(new Date());
+        return itemVoucherMapper.selectByExample(example).stream().map(o -> {
+            VoucherVO vo = new VoucherVO();
+            vo.setVoucherId(o.getVoucherId());
+            vo.setVoucherInfo(o.getVoucherInfo());
+            vo.setVoucherAmount(o.getVoucherAmount());
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
+
+    @Autowired
+    private MemberInviteMapper memberInviteMapper;
+
+
+    /**
+     * 邀请注册首单减免 可用代金券获取
+     * @param userId
+     * @return
+     */
+    public Long getInviteVoucher(Long userId) {
+        MemberInvite memberInvite = new MemberInvite();
+        memberInvite.setUserId(userId);
+        memberInvite = memberInviteMapper.selectOne(memberInvite);
+        if (memberInvite == null) {
+            return null;
+        }
+        // 邀请注册代金券
+        ItemVoucher itemVoucher = new ItemVoucher();
+        itemVoucher.setUserId(userId);
+        itemVoucher.setVoucherState(0);
+        itemVoucher.setVoucherTag("INVITE_VOUCHER_TAG");
+        itemVoucher = itemVoucherMapper.selectOne(itemVoucher);
+        if (itemVoucher == null) {
+            return null;
+        }
+        if (itemVoucher.getExpireTime().before(new Date())) {
+            return null;
+        }
         return itemVoucher.getVoucherId();
     }
 }

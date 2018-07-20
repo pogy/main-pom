@@ -14,6 +14,7 @@ import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.RefundItemOrder;
+import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundProcessVO;
 import com.shigu.main4.order.vo.RefundVO;
@@ -396,9 +397,15 @@ public class RefundItemOrderImpl implements RefundItemOrder {
                 throw new RefundException(String.format("订单中支付金额不足以支持希望的退款数目[%d]，退单号[%d]",money,refundId));
             }
             ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
+            ItemOrderVO orderInfo = itemOrder.orderInfo();
+            // 退款退到使用了代金券金额部分，减去代金券金额
+            if (orderInfo.getTotalFee() - orderInfo.getRefundFee() < money) {
+                money = money - orderInfo.getRealVoucherAmount();
+            }
             List<PayedVO> payedVOS = itemOrder.payedInfo();
             for (PayedVO payedVO : payedVOS) {
                 if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
+
                     SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
                             .refund(payedVO.getPayId(),"RF_"+refundId, money);
                     refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);

@@ -48,6 +48,11 @@ public class ItemVoucher implements Serializable {
      */
 	private String voucherTag;
 
+    /**
+     * 优惠券信息 在前端显示给用户优惠信息 如填写邀请码注册首单减免
+     */
+	private String voucherInfo;
+
 	public void setVoucherId(Long voucherId) {
 		this.voucherId = voucherId;
 	}
@@ -110,6 +115,14 @@ public class ItemVoucher implements Serializable {
 
 	public String getVoucherTag() {
 		return this.voucherTag;
+	}
+
+	public void setVoucherInfo(String voucherInfo) {
+		this.voucherInfo = voucherInfo;
+	}
+
+	public String getVoucherInfo() {
+		return this.voucherInfo;
 	}
 
 }

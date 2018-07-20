@@ -13,24 +13,29 @@ import java.io.Serializable;
 public class VoucherBO implements Serializable {
 
     /**
-     * 获得优惠券的用户
+     * 获得优惠券的用户 必须
      */
     private Long userId;
 
     /**
-     * 优惠券识别标识，代表代金券来源并防止重复生成优惠券，可以为赠送优惠券的活动标记或代金券号码等
+     * 优惠券识别标识，代表代金券来源并防止重复生成优惠券，可以为赠送优惠券的活动标记或代金券号码等 必须
      */
     private String voucherTag;
 
     /**
-     * 优惠券金额，分为单位
+     * 优惠券金额，分为单位 必须
      */
     private Long voucherAmount;
 
     /**
-     * 有效期，天为单位
+     * 有效期，天为单位 默认为30天
      */
     private Integer guaranteePeriod;
+
+    /**
+     * 惠券信息 在前端显示给用户优惠信息 如填写邀请码注册首单减免 必须
+     */
+    private String voucherInfo;
 
     public Long getUserId() {
         return userId;
@@ -49,8 +54,8 @@ public class VoucherBO implements Serializable {
     }
 
     public Long getVoucherAmount() {
-        if (voucherAmount == null) {
-            voucherAmount = null;
+        if (voucherAmount == null || voucherAmount < 0L) {
+            voucherAmount = 0L;
         }
         return voucherAmount;
     }
@@ -60,7 +65,7 @@ public class VoucherBO implements Serializable {
     }
 
     public Integer getGuaranteePeriod() {
-        if (guaranteePeriod == null) {
+        if (guaranteePeriod == null || guaranteePeriod < 0) {
             guaranteePeriod = 30;
         }
         return guaranteePeriod;
@@ -68,5 +73,13 @@ public class VoucherBO implements Serializable {
 
     public void setGuaranteePeriod(Integer guaranteePeriod) {
         this.guaranteePeriod = guaranteePeriod;
+    }
+
+    public String getVoucherInfo() {
+        return voucherInfo;
+    }
+
+    public void setVoucherInfo(String voucherInfo) {
+        this.voucherInfo = voucherInfo;
     }
 }

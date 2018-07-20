@@ -54,7 +54,7 @@ public class InviteService {
     }
 
     /**
-     * 受到邀请注册优惠券发送
+     * 推广活动受到邀请注册优惠券发送
      * @param userId
      */
     public void giveVoucher(Long userId) {
@@ -65,6 +65,7 @@ public class InviteService {
         bo.setVoucherAmount(1000L);
         bo.setVoucherTag(INVITE_VOUCHER_TAG);
         bo.setGuaranteePeriod(30);
+        bo.setVoucherInfo("填写邀请码注册首单减免");
         itemOrderService.giveVoucher(bo);
     }
 }

@@ -146,6 +146,9 @@ public class RegistAction {
                 return JsonResponseUtil.error("用户已经存在");
                 //throw new JsonErrException("用户已经存在");
             }
+            if (registerUser.getInviteUserId() != null) {
+                inviteService.giveVoucher(userId);
+            }
         } catch (Main4Exception e) {
             return JsonResponseUtil.error(e.getMessage()).element("ele","telephone");
             //throw new JsonErrException(e.getMessage()).addErrMap("ele","telephone");

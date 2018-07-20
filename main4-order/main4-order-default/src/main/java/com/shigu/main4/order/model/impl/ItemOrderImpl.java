@@ -4,9 +4,7 @@ import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
 import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ItemOrderSubExample;
-import com.opentae.data.mall.examples.OrderPayExample;
-import com.opentae.data.mall.examples.OrderPayRelationshipExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
@@ -86,6 +84,12 @@ public class ItemOrderImpl implements ItemOrder {
     @Autowired
     private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
 
+    @Autowired
+    private ItemVoucherMapper itemVoucherMapper;
+
+    @Autowired
+    private ItemOrderVoucherRelationMapper itemOrderVoucherRelationMapper;
+
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
 
@@ -142,6 +146,8 @@ public class ItemOrderImpl implements ItemOrder {
         orderVO.setTbSend(order.getTbSend());
         orderVO.setSendTime(order.getSendTime());
         orderVO.setPayTime(order.getPayTime());
+        orderVO.setRealVoucherAmount(order.getRealVoucherAmount());
+        orderVO.setTotalFeeWithoutVoucher(order.getTotalFeeWithoutVoucher());
         return orderVO;
     }
 
@@ -257,19 +263,25 @@ public class ItemOrderImpl implements ItemOrder {
 
         // 子单总额
         total += subOrdersInfo().stream().mapToLong(vo -> vo.getProduct().getPrice() * vo.getNum()).sum();
-
-        // 其他费用
-        total += orderOtherAmount();
+       
         // TODO: 包材总额
         /*ItemOrderPackage orderPackage = new ItemOrderPackage();
         orderPackage.setOid(oid);
         for (ItemOrderPackage itemOrderPackage : itemOrderPackageMapper.select(orderPackage)) {
             total += itemOrderPackage.getMoney();
         }*/
-
+        // 优惠/代金券计算
+        // 优惠券总金额
+        long voucherAmount = voucherInfo().stream().mapToLong(VoucherVO::getVoucherAmount).sum();
+        // 实际优惠总金额不高于商品总金额
+        long realVoucherAmount = voucherAmount < total? voucherAmount: (total - 1L);
+        // 其他费用
+        total += orderOtherAmount();
         com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
         order.setOid(oid);
-        order.setTotalFee(total);
+        order.setTotalFeeWithoutVoucher(total);
+        order.setTotalFee(total - realVoucherAmount);
+        order.setRealVoucherAmount(realVoucherAmount);
         itemOrderMapper.updateByPrimaryKeySelective(order);
     }
 
@@ -428,6 +440,8 @@ public class ItemOrderImpl implements ItemOrder {
         order.setPayedFee(payMoney);
         order.setPayTime(new Date());
         itemOrderMapper.updateByPrimaryKeySelective(order);
+        // 实际使用代金券
+        realUseVoucher();
         changeStatus(OrderStatus.BUYER_PAYED);
     }
 
@@ -472,8 +486,10 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void closed() {
-        if(selOrderStatus().equals(OrderStatus.WAIT_BUYER_PAY))
-        changeStatus(OrderStatus.TRADE_CLOSED);
+        if(selOrderStatus().equals(OrderStatus.WAIT_BUYER_PAY)) {
+            changeStatus(OrderStatus.TRADE_CLOSED);
+            calcelVoucherUse();
+        }
     }
 
     @Override
@@ -531,4 +547,140 @@ public class ItemOrderImpl implements ItemOrder {
         }
     }
 
+    @Override
+    public void addVoucher(Long voucherId) {
+        if (voucherId == null) {
+            return;
+        }
+        ItemVoucher itemVoucher = itemVoucherMapper.selectByPrimaryKey(voucherId);
+        // 非该用户的代金券
+        if (!orderInfo().getUserId().equals(itemVoucher.getUserId())) {
+            return;
+        }
+        // 代金券状态不为可用
+        if (!itemVoucher.getVoucherState().equals(1)) {
+            return;
+        }
+        // 代金券已经过期
+        if (itemVoucher.getExpireTime().before(new Date())) {
+            itemVoucher.setVoucherState(0);
+            itemVoucherMapper.updateByPrimaryKeySelective(itemVoucher);
+            return;
+        }
+        ItemOrderVoucherRelation itemOrderVoucherRelation = new ItemOrderVoucherRelation();
+        itemOrderVoucherRelation.setVoucherId(voucherId);
+        List<ItemOrderVoucherRelation> voucherInfo = itemOrderVoucherRelationMapper.select(itemOrderVoucherRelation);
+        for (ItemOrderVoucherRelation orderVoucherRelation : voucherInfo) {
+            Integer voucherStatus = orderVoucherRelation.getVoucherStatus();
+            // 代金券已被订单选中或已被使用
+            if (0 == voucherStatus || 1 == voucherStatus) {
+                return;
+            }
+        }
+        // 订单关联选定代金券
+        ItemOrderVoucherRelation usedVoucher = new ItemOrderVoucherRelation();
+        usedVoucher.setVoucherId(voucherId);
+        usedVoucher.setOrderId(oid);
+        usedVoucher.setVoucherStatus(0);
+        itemOrderVoucherRelationMapper.insertSelective(usedVoucher);
+        // 代金券改为被选定状态
+        itemVoucher = new ItemVoucher();
+        itemVoucher.setVoucherId(voucherId);
+        itemVoucher.setVoucherState(2);
+        itemVoucherMapper.updateByPrimaryKeySelective(itemVoucher);
+        // 重新计算订单金额
+        recountTotalOrderAmount();
+    }
+
+
+    /**
+     * 订单优惠信息
+     * @return
+     */
+    public List<VoucherVO> voucherInfo() {
+        // 订单使用的代金券
+        List<VoucherVO> voucherVOS = new ArrayList<>();
+        ItemOrderVoucherRelation query = new ItemOrderVoucherRelation();
+        query.setOrderId(oid);
+        List<Long> voucherIds = itemOrderVoucherRelationMapper.select(query).stream().filter(voucherRelation -> voucherRelation.getVoucherStatus() != 2).map(ItemOrderVoucherRelation::getVoucherId).collect(Collectors.toList());
+        if (voucherIds.size()>0) {
+            ItemVoucherExample example = new ItemVoucherExample();
+            example.createCriteria().andVoucherIdIn(voucherIds);
+            List<ItemVoucher> itemVouchers = itemVoucherMapper.selectByExample(example);
+            for (ItemVoucher itemVoucher : itemVouchers) {
+                if (itemVoucher.getVoucherState() == 2 || itemVoucher.getVoucherState() == 3) {
+                    VoucherVO vo = new VoucherVO();
+                    vo.setVoucherId(itemVoucher.getVoucherId());
+                    vo.setVoucherInfo(itemVoucher.getVoucherInfo());
+                    vo.setVoucherAmount(itemVoucher.getVoucherAmount());
+                    voucherVOS.add(vo);
+                }
+            }
+        }
+        return voucherVOS;
+    }
+
+    /**
+     * 支付完成，代金券实际使用
+     */
+    public void realUseVoucher() {
+        ItemOrderVoucherRelation relation = new ItemOrderVoucherRelation();
+        relation.setOrderId(oid);
+        List<ItemOrderVoucherRelation> relations = itemOrderVoucherRelationMapper.select(relation);
+        List<Long> relationIds = relations.stream().filter(r -> r.getVoucherStatus() == 0).map(ItemOrderVoucherRelation::getVoucherOrderRelationId).collect(Collectors.toList());
+        if (relationIds.size()>0) {
+            ItemOrderVoucherRelation used = new ItemOrderVoucherRelation();
+            used.setVoucherStatus(1);
+            ItemOrderVoucherRelationExample relationExample = new ItemOrderVoucherRelationExample();
+            relationExample.createCriteria().andVoucherOrderRelationIdIn(relationIds);
+            itemOrderVoucherRelationMapper.updateByExampleSelective(used,relationExample);
+            List<Long> voucherIds = relations.stream().filter(r -> r.getVoucherStatus() == 0).map(ItemOrderVoucherRelation::getVoucherId).collect(Collectors.toList());
+            if (voucherIds.size()>0) {
+                ItemVoucher voucher = new ItemVoucher();
+                voucher.setVoucherState(3);
+                voucher.setUsedTime(new Date());
+                ItemVoucherExample itemVoucherExample = new ItemVoucherExample();
+                itemVoucherExample.createCriteria().andVoucherIdIn(voucherIds);
+                itemVoucherMapper.updateByExampleSelective(voucher, itemVoucherExample);
+            }
+        }
+    }
+
+    /**
+     * 没有进行支付，直接取消订单，返还优惠券
+     */
+    public void calcelVoucherUse() {
+        // 已经进行过支付，订单实际进行过交易，不返还优惠券
+        if (orderInfo().getPayTime() != null) {
+            return;
+        }
+        ItemOrderVoucherRelation relation = new ItemOrderVoucherRelation();
+        relation.setOrderId(oid);
+        List<ItemOrderVoucherRelation> relations = itemOrderVoucherRelationMapper.select(relation);
+        List<Long> relationIds = relations.stream().filter(r -> r.getVoucherStatus() == 0).map(ItemOrderVoucherRelation::getVoucherOrderRelationId).collect(Collectors.toList());
+        if (relationIds.size()>0) {
+            // 没有实际下单，订单和代金券关系取消
+            ItemOrderVoucherRelation calcelRelation = new ItemOrderVoucherRelation();
+            calcelRelation.setVoucherStatus(2);
+            ItemOrderVoucherRelationExample relationExample = new ItemOrderVoucherRelationExample();
+            relationExample.createCriteria().andVoucherOrderRelationIdIn(relationIds);
+            itemOrderVoucherRelationMapper.updateByExampleSelective(calcelRelation,relationExample);
+            List<Long> voucherIds = relations.stream().filter(r -> r.getVoucherStatus() == 0).map(ItemOrderVoucherRelation::getVoucherId).collect(Collectors.toList());
+            if (voucherIds.size()>0) {
+                Date now = new Date();
+                // 没过期的代金券返还后可用
+                ItemVoucher voucher = new ItemVoucher();
+                voucher.setVoucherState(1);
+                ItemVoucherExample itemVoucherExample = new ItemVoucherExample();
+                itemVoucherExample.createCriteria().andVoucherIdIn(voucherIds).andExpireTimeGreaterThanOrEqualTo(now);
+                itemVoucherMapper.updateByExampleSelective(voucher, itemVoucherExample);
+                // 清理过期的代金券
+                voucher.setVoucherState(0);
+                itemVoucherExample = new ItemVoucherExample();
+                itemVoucherExample.createCriteria().andVoucherIdIn(voucherIds).andExpireTimeLessThan(now);
+                itemVoucherMapper.updateByExampleSelective(voucher, itemVoucherExample);
+            }
+
+        }
+    }
 }

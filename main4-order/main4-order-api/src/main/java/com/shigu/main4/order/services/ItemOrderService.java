@@ -12,6 +12,7 @@ import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.OrderLogVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.ItemOrderVO;
+import com.shigu.main4.order.vo.VoucherVO;
 
 import java.text.ParseException;
 import java.util.List;
@@ -125,7 +126,15 @@ public interface ItemOrderService {
 
     /**
      * 为用户生成优惠券
+     * @param bo
      * @return
      */
     Long giveVoucher(VoucherBO bo);
+
+    /**
+     * 获取可用优惠信息 代金券方式
+     * @param userId
+     * @return
+     */
+    List<VoucherVO> findAvailableFavourableInfo(Long userId);
 }
