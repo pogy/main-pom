@@ -141,10 +141,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
         // 销售属性组合
         StringBufferAgent skuProps = new StringBufferAgent();//sku组合属性
         List<TaobaoSku> list_ts=new ArrayList<>();
-        NewCdnItem newCdnItem = newShowForCdnService.selItemById(itemId);
-
-
-        for(SingleSkuVO singleSkuVO:newCdnItem.getSingleSkus()){
+        for(SingleSkuVO singleSkuVO:newShowForCdnService.selSingleSkus(itemId)){
             if(singleSkuVO.getColorPid()==null&&singleSkuVO.getSizePid()==null){
                 continue;
             }

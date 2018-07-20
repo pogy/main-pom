@@ -344,9 +344,10 @@ public class PropsService {
     }
     private void addSingleSkuInfo(SkuRankVO srv, Long itemId){
         NewCdnItem newCdnItem = newShowForCdnService.selItemById(itemId);
+        String price= StringUtils.isNotBlank(newCdnItem.getPrice()) ? newCdnItem.getPrice() : newCdnItem
+                .getPiPrice();
         Long cprice = MoneyUtil
-                .StringToLong(StringUtils.isNotBlank(newCdnItem.getPrice()) ? newCdnItem.getPrice() : newCdnItem
-                        .getPiPrice()) - MoneyUtil.StringToLong(newCdnItem.getPiPrice());
+                .StringToLong(price) - MoneyUtil.StringToLong(newCdnItem.getPiPrice());
         Map<String,SingleSkuVO> skuMap=new HashMap<>();
         for(SingleSkuVO vo:newCdnItem.getSingleSkus()){
             String color= vo.getThisColor();
@@ -363,6 +364,9 @@ public class PropsService {
                     String skuPrice=MoneyUtil.dealPrice(MoneyUtil.StringToLong(singleSkuVO.getPriceString())+cprice);
                     std.getSkuRankVO().add(0,new TdVO(std.getPid(),std.getVid(),std.getIds(),skuPrice,true,false));
                     std.getSkuRankVO().add(1,new TdVO(std.getPid(),std.getVid(),std.getIds(),singleSkuVO.getStockNum()>0?"100":"0",false,true));
+                }else{
+                    std.getSkuRankVO().add(0,new TdVO(std.getPid(),std.getVid(),std.getIds(),price,true,false));
+                    std.getSkuRankVO().add(1,new TdVO(std.getPid(),std.getVid(),std.getIds(),"100",false,true));
                 }
             }
         }

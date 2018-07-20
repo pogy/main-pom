@@ -140,6 +140,9 @@ public class CartService {
                     NewCdnItem cdnItem = longNewCdnItemMap.get(productVO.getGoodsId());
                     if(cdnItem==null){
                         cdnItem=newShowForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
+                        if(cdnItem!=null) {
+                            cdnItem.setSingleSkus(newShowForCdnService.selSingleSkus(productVO.getGoodsId()));
+                        }
                         longNewCdnItemMap.put(productVO.getGoodsId(),cdnItem);
                     }
                     if (cdnItem == null) {
@@ -291,8 +294,7 @@ public class CartService {
     }
 
     public List<CartSingleSkuVO> getGoodsSkuList(Long goodsId) {
-        NewCdnItem cdnItem=newShowForCdnService.selItemById(goodsId);
-        return cdnItem.getSingleSkus().stream().map(singleSkuVO -> {
+        return newShowForCdnService.selSingleSkus(goodsId).stream().map(singleSkuVO -> {
             CartSingleSkuVO vo=new CartSingleSkuVO();
             vo.setColor(singleSkuVO.getThisColor());
             vo.setSize(singleSkuVO.getThisSize());

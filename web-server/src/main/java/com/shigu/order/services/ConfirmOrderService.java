@@ -224,6 +224,9 @@ public class ConfirmOrderService {
                 NewCdnItem cdnItem = longNewCdnItemMap.get(productVO.getGoodsId());
                 if(cdnItem==null){
                     cdnItem=newShowForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
+                    if(cdnItem!=null) {
+                        cdnItem.setSingleSkus(newShowForCdnService.selSingleSkus(productVO.getGoodsId()));
+                    }
                     longNewCdnItemMap.put(productVO.getGoodsId(),cdnItem);
                 }
                 if(cdnItem==null){
