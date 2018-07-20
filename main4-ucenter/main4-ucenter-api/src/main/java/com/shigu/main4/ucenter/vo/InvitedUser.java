@@ -15,7 +15,7 @@ public class InvitedUser implements Serializable {
     /**
      * 用户id
      */
-    private Long UserId;
+    private Long userId;
     /**
      * 用户头像
      */
@@ -34,11 +34,11 @@ public class InvitedUser implements Serializable {
     private Integer userState;
 
     public Long getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Long userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getHeadImg() {
