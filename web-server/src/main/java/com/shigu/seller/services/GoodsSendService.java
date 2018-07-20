@@ -6,14 +6,20 @@ import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.vo.*;
+import com.shigu.tb.finder.exceptions.TbPropException;
+import com.shigu.tb.finder.services.TbPropsService;
 import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
+import com.shigu.tb.finder.vo.PropsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品发布服务
@@ -27,6 +33,10 @@ public class GoodsSendService {
 
     @Autowired
     TaobaoPropValueMapper taobaoPropValueMapper;
+    @Autowired
+    RedisIO redisIO;
+    @Autowired
+    TbPropsService tbPropsService;
 
     /**
      * id串变成propNames
@@ -34,29 +44,58 @@ public class GoodsSendService {
      * @return
      */
     public String parsePropName(Long cid,String props,String inputStr,String inputPids,String alias){
-        String pname="";
+        StringBuilder pname= new StringBuilder();
         if(props!=null){
             String[] propsarr=props.split(";");
-            for(String prop:propsarr){
-                TaobaoPropValueExample ex=new TaobaoPropValueExample();
-                String[] parr=prop.split(":");
-                ex.createCriteria().andCidEqualTo(cid).andPidEqualTo(Long.valueOf(parr[0]))
-                        .andVidEqualTo(Long.valueOf(parr[1]));
-                ex.setStartIndex(0);
-                ex.setEndIndex(1);
-                List<TaobaoPropValue> tpvs=taobaoPropValueMapper.selectByConditionList(ex);
-                if(tpvs.size()>0){
-                    pname+=";"+tpvs.get(0).getPid()+":"+tpvs.get(0).getVid()+":"+tpvs.get(0).getPropName()+":"+
-                            tpvs.get(0).getName();
+
+            try {
+                PropsVO propsVO = tbPropsService.selProps(cid);
+                Map<String,TaobaoPropValue> tbPropMap=new HashMap<>();
+                propsVO.getProperties().forEach(propertyItemVO -> {
+                    propertyItemVO.getValues().forEach(propertyValueVO -> {
+                        TaobaoPropValue v=new TaobaoPropValue();
+                        v.setPid(propertyItemVO.getPid());
+                        v.setVid(propertyValueVO.getVid());
+                        v.setPropName(propertyItemVO.getName());
+                        v.setName(propertyValueVO.getName());
+                        tbPropMap.put(propertyItemVO.getPid()+"_"+propertyValueVO.getVid(),v);
+                    });
+                });
+                propsVO.getSaleProps().forEach(propertyItemVO -> {
+                    propertyItemVO.getValues().forEach(propertyValueVO -> {
+                        TaobaoPropValue v=new TaobaoPropValue();
+                        v.setPid(propertyItemVO.getPid());
+                        v.setVid(propertyValueVO.getVid());
+                        v.setPropName(propertyItemVO.getName());
+                        v.setName(propertyValueVO.getName());
+                        tbPropMap.put(propertyItemVO.getPid()+"_"+propertyValueVO.getVid(),v);
+                    });
+                });
+                for(String prop:propsarr){
+                    TaobaoPropValueExample ex=new TaobaoPropValueExample();
+                    String[] parr=prop.split(":");
+                    ex.createCriteria().andCidEqualTo(cid).andPidEqualTo(Long.valueOf(parr[0]))
+                            .andVidEqualTo(Long.valueOf(parr[1]));
+                    TaobaoPropValue propertyValueVO = tbPropMap.get(parr[0] + "_" + parr[1]);
+                    if(propertyValueVO!=null){
+                        pname.append(";").append(propertyValueVO.getPid()).append(":").append(propertyValueVO.getVid()).append(":")
+                                .append(propertyValueVO.getPropName()).append(":").append(propertyValueVO.getName());
+                    }
                 }
+
+
+            } catch (TbPropException e) {
+                e.printStackTrace();
             }
+
+
         }
 //        if (inputPids!=null&&!"".equals(inputPids)) {
 //            String[] pids=inputPids.split(",");
 //
 //        }
         // TODO: 17/3/18 暂时不做inputStr与inputPid与alias的情况
-        return pname.startsWith(";")?pname.substring(1):pname;
+        return pname.toString().startsWith(";")?pname.substring(1): pname.toString();
     }
     /**
      * 查询类目路径
