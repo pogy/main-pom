@@ -145,7 +145,7 @@ public class CartService {
                         }
                         longNewCdnItemMap.put(productVO.getGoodsId(),cdnItem);
                     }
-                    if (cdnItem == null) {
+                    if (cdnItem == null||!cdnItem.getOnsale()) {
                         childOrderVO.setDisabled(true);
                         orderVO.setWebSite(productVO.getWebSite());
                     } else {
