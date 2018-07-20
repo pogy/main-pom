@@ -195,15 +195,38 @@ public class ItemProductImpl implements ItemProduct {
 
     @Override
     public ItemSkuVO selSelectiveSku() {
-        return BeanMapper.map(itemProductSkuMapper.selectByPrimaryKey(skuId), ItemSkuVO.class);
+        ItemSkuVO productInfo = BeanMapper.map(itemProductSkuMapper.selectByPrimaryKey(skuId), ItemSkuVO.class);
+        callPrice(productInfo);
+        return productInfo;
     }
 
     @Override
     public List<ItemSkuVO> selSkus() {
         ItemProductSkuExample skuExample = new ItemProductSkuExample();
         skuExample.createCriteria().andPidEqualTo(pid);
-        return BeanMapper.mapList(itemProductSkuMapper.selectByExample(skuExample), ItemSkuVO.class);
+        List<ItemSkuVO> itemSkuVOS = BeanMapper
+                .mapList(itemProductSkuMapper.selectByExample(skuExample), ItemSkuVO.class);
+        itemSkuVOS.forEach(itemSkuVO -> callPrice(itemSkuVO));
+        return itemSkuVOS;
     }
+
+    private void callPrice(ItemSkuVO productInfo){
+        if (productInfo != null) {
+            Long price=selSkuPrice(goodsId,color,size);
+            if(price==null){
+                price=productInfo.getPrice();
+            }
+            if(!Objects.equals(price,productInfo.getPrice())){
+                ItemProductSku sku = new ItemProductSku();
+                sku.setSkuId(productInfo.getSkuId());
+                sku.setPrice(price);
+                itemProductSkuMapper.updateByPrimaryKeySelective(sku);
+                productInfo.setPrice(sku.getPrice());
+            }
+        }
+    }
+
+
 
     @Override
     public void modifyWeight(Long meter) {
