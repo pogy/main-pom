@@ -59,7 +59,31 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CdnService {
-
+    private final static Map<String,Integer> SIZE_SORT;
+    static{
+        SIZE_SORT =new HashMap<>();
+        SIZE_SORT.put("XXS",-1);
+        SIZE_SORT.put("2XS",-1);
+        SIZE_SORT.put("XS",0);
+        SIZE_SORT.put("S",1);
+        SIZE_SORT.put("M",2);
+        SIZE_SORT.put("L",3);
+        SIZE_SORT.put("XL",4);
+        SIZE_SORT.put("XXL",5);
+        SIZE_SORT.put("2XL",5);
+        SIZE_SORT.put("XXXL",6);
+        SIZE_SORT.put("3XL",6);
+        SIZE_SORT.put("XXXL",7);
+        SIZE_SORT.put("4XL",7);
+        SIZE_SORT.put("XXXXL",8);
+        SIZE_SORT.put("5XL",8);
+        SIZE_SORT.put("XXXXXL",9);
+        SIZE_SORT.put("6XL",9);
+        SIZE_SORT.put("XXXXXXL",10);
+        SIZE_SORT.put("7XL",10);
+        SIZE_SORT.put("XXXXXXXL",11);
+        SIZE_SORT.put("8XL",11);
+    }
     @Autowired
     UserCollectService userCollectService;
 
@@ -393,15 +417,19 @@ public class CdnService {
 
         List<String> colorMetas=new ArrayList<>(skus.keySet());
         colorMetas.sort(Comparator.comparing(o -> o));
-
-
         List<String> priceSort=new ArrayList<>();
         List<SkuMetaVO> skuMetaVOS = colorMetas.stream().map(s -> {
             SkuMetaVO skuMetaVO = new SkuMetaVO();
             skuMetaVO.setText(s);
             skuMetaVO.setImgSrc(propImgMap.get(s));
             List<SingleSkuVO> sizes=skus.get(s);
-            sizes.sort(Comparator.comparing(SingleSkuVO::getThisSize));
+            List<SingleSkuVO> hasSizes=sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase())!=null).collect(Collectors.toList());
+            hasSizes.sort(Comparator.comparingInt(o -> SIZE_SORT.get(o.getThisSize().toUpperCase())));
+            List<SingleSkuVO> notSizes=sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase())==null).collect(Collectors.toList());
+            notSizes.sort(Comparator.comparing(SingleSkuVO::getThisSize));
+            sizes.clear();
+            sizes.addAll(hasSizes);
+            sizes.addAll(notSizes);
             skuMetaVO.setSizes(sizes.stream().map(singleSkuVO -> {
                 SkuSizeMetaVO skuSizeMetaVO = new SkuSizeMetaVO();
                 skuSizeMetaVO.setNum(singleSkuVO.getStockNum());
