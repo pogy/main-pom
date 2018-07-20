@@ -52,24 +52,28 @@ public class GoodsSendService {
                 PropsVO propsVO = tbPropsService.selProps(cid);
                 Map<String,TaobaoPropValue> tbPropMap=new HashMap<>();
                 propsVO.getProperties().forEach(propertyItemVO -> {
-                    propertyItemVO.getValues().forEach(propertyValueVO -> {
-                        TaobaoPropValue v=new TaobaoPropValue();
-                        v.setPid(propertyItemVO.getPid());
-                        v.setVid(propertyValueVO.getVid());
-                        v.setPropName(propertyItemVO.getName());
-                        v.setName(propertyValueVO.getName());
-                        tbPropMap.put(propertyItemVO.getPid()+"_"+propertyValueVO.getVid(),v);
-                    });
+                    if(propertyItemVO.getValues()!=null) {
+                        propertyItemVO.getValues().forEach(propertyValueVO -> {
+                            TaobaoPropValue v = new TaobaoPropValue();
+                            v.setPid(propertyItemVO.getPid());
+                            v.setVid(propertyValueVO.getVid());
+                            v.setPropName(propertyItemVO.getName());
+                            v.setName(propertyValueVO.getName());
+                            tbPropMap.put(propertyItemVO.getPid() + "_" + propertyValueVO.getVid(), v);
+                        });
+                    }
                 });
                 propsVO.getSaleProps().forEach(propertyItemVO -> {
-                    propertyItemVO.getValues().forEach(propertyValueVO -> {
-                        TaobaoPropValue v=new TaobaoPropValue();
-                        v.setPid(propertyItemVO.getPid());
-                        v.setVid(propertyValueVO.getVid());
-                        v.setPropName(propertyItemVO.getName());
-                        v.setName(propertyValueVO.getName());
-                        tbPropMap.put(propertyItemVO.getPid()+"_"+propertyValueVO.getVid(),v);
-                    });
+                    if(propertyItemVO.getValues()!=null) {
+                        propertyItemVO.getValues().forEach(propertyValueVO -> {
+                            TaobaoPropValue v = new TaobaoPropValue();
+                            v.setPid(propertyItemVO.getPid());
+                            v.setVid(propertyValueVO.getVid());
+                            v.setPropName(propertyItemVO.getName());
+                            v.setName(propertyValueVO.getName());
+                            tbPropMap.put(propertyItemVO.getPid() + "_" + propertyValueVO.getVid(), v);
+                        });
+                    }
                 });
                 for(String prop:propsarr){
                     TaobaoPropValueExample ex=new TaobaoPropValueExample();
