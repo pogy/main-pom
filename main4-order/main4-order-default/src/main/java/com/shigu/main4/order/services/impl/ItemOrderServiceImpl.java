@@ -11,6 +11,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.enums.ItemVoucherTypeEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
@@ -263,7 +264,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         logistic.setMoney(calculateLogisticsFee(orderBO.getUserId(),order.getOid(),orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic, true);//最后一步才重怎么价格
 
-        Long inviteVoucher = getInviteVoucher(getInviteVoucher(orderBO.getUserId()));
+        Long inviteVoucher = getInviteVoucher(orderBO.getUserId());
         if (inviteVoucher != null) {
             itemOrder.addVoucher(inviteVoucher);
         }
@@ -600,8 +601,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         // 邀请注册代金券
         ItemVoucher itemVoucher = new ItemVoucher();
         itemVoucher.setUserId(userId);
-        itemVoucher.setVoucherState(0);
-        itemVoucher.setVoucherTag("INVITE_VOUCHER_TAG");
+        itemVoucher.setVoucherState(1);
+        itemVoucher.setVoucherTag(ItemVoucherTypeEnum.INVITE.voucherTag(String.valueOf(userId)));
         itemVoucher = itemVoucherMapper.selectOne(itemVoucher);
         if (itemVoucher == null) {
             return null;
