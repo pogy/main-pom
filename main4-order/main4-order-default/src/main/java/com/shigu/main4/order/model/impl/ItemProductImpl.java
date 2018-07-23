@@ -159,6 +159,9 @@ public class ItemProductImpl implements ItemProduct {
             return null;
         }
         ShiguGoodsIdGenerator idGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        if(idGenerator==null){
+            return null;
+        }
         ShiguGoodsSingleSkuExample shiguGoodsSingleSkuExample=new ShiguGoodsSingleSkuExample();
         shiguGoodsSingleSkuExample.setWebSite(idGenerator.getWebSite());
         shiguGoodsSingleSkuExample.createCriteria().andGoodsIdEqualTo(goodsId);
