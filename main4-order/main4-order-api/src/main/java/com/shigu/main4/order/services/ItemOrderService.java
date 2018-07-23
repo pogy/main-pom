@@ -137,4 +137,8 @@ public interface ItemOrderService {
      * @return
      */
     List<VoucherVO> findAvailableFavourableInfo(Long userId);
+
+
+
+    void inviteRebateSuccessNotify(Long oid);
 }

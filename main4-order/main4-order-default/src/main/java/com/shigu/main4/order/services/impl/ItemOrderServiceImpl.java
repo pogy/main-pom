@@ -96,6 +96,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Autowired
     private ItemVoucherMapper itemVoucherMapper;
 
+    @Autowired
+    private InviteOrderRebateRecordMapper inviteOrderRebateRecordMapper;
+
     private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
 
     /**
@@ -611,5 +614,15 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             return null;
         }
         return itemVoucher.getVoucherId();
+    }
+
+
+    @Override
+    public void inviteRebateSuccessNotify(Long oid) {
+        InviteOrderRebateRecord inviteOrderRebateRecord = new InviteOrderRebateRecord();
+        inviteOrderRebateRecord.setRebateState(2);
+        InviteOrderRebateRecordExample example = new InviteOrderRebateRecordExample();
+        example.createCriteria().andOrderIdEqualTo(oid);
+        inviteOrderRebateRecordMapper.updateByExampleSelective(inviteOrderRebateRecord, example);
     }
 }
