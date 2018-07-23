@@ -1,6 +1,8 @@
 package com.shigu.main4.order.model.impl;
 
+import com.openJar.requests.sgpay.InviteRebateRechargeRequest;
 import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
+import com.openJar.responses.sgpay.InviteRebateRechargeResponse;
 import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
@@ -99,6 +101,9 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private MemberInviteMapper memberInviteMapper;
+
+    @Autowired
+    private InviteOrderRebateRecordMapper inviteOrderRebateRecordMapper;
 
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
@@ -493,7 +498,7 @@ public class ItemOrderImpl implements ItemOrder {
             }
         }
         // 邀请新人返点是否可用
-        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK, String.class));
+        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("shigu_rebate_type", String.class));
         if (inviteRebateActive) {
             Long userId = orderInfo().getUserId();
             MemberInvite memberInvite = new MemberInvite();
@@ -552,7 +557,26 @@ public class ItemOrderImpl implements ItemOrder {
                     // 邀请人用户id
                     Long inviteUserId = memberInvite.getUserId();
                     if (rebateAmount > 0) {
-                        // TODO: 7/20/18 支付站返点要做一点修改
+                        InviteOrderRebateRecord inviteOrderRebateRecord = new InviteOrderRebateRecord();
+                        inviteOrderRebateRecord.setOrderId(oid);
+                        if (inviteOrderRebateRecordMapper.selectCount(inviteOrderRebateRecord) == 0) {
+                            inviteOrderRebateRecord.setInviteUserId(inviteUserId);
+                            inviteOrderRebateRecord.setRebateAmount(rebateAmount);
+                            inviteOrderRebateRecord.setRebateState(1);
+                            inviteOrderRebateRecordMapper.insertSelective(inviteOrderRebateRecord);
+                        }
+                        InviteRebateRechargeRequest inviteRebateRechargeRequest = new InviteRebateRechargeRequest();
+                        inviteRebateRechargeRequest.setXzUserId(inviteUserId);
+                        inviteRebateRechargeRequest.setRebateOrderNo(oid);
+                        inviteRebateRechargeRequest.setRebateAmount(rebateAmount);
+                        InviteRebateRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(inviteRebateRechargeRequest);
+                        if (resp == null || !resp.isSuccess()) {
+                            try {
+                                throw new RefundException("邀请注册订单返点失败：oid=" + oid);
+                            } catch (RefundException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
             }
