@@ -557,6 +557,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         calendar.add(Calendar.DATE,bo.getGuaranteePeriod());
         itemVoucher.setExpireTime(calendar.getTime());
         itemVoucher.setVoucherState(1);
+        itemVoucher.setVoucherInfo("邀请码注册首单减免");
         itemVoucherMapper.insertSelective(itemVoucher);
         return itemVoucher.getVoucherId();
     }
