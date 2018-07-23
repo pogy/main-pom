@@ -182,7 +182,7 @@ var deschtml = '${goodsInfo.deschtml}';
                     <th><em class="fcF40">*</em>数量(件)</th>
                 </thead>
                 <#list goodsInfo.skuSpecs as sku>
-                <tbody>
+                <tbody data-cpvid="${sku.colorId!}" data-cptext="${sku.colorText!}">
                     <#list sku.sizes as size>
                     <tr>
                         <#if size_index == 0>
