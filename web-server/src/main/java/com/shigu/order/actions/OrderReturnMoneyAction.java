@@ -2,6 +2,7 @@ package com.shigu.order.actions;
 
 import com.opentae.data.mall.beans.ShiguOrderCashback;
 import com.opentae.data.mall.interfaces.ShiguOrderCashbackMapper;
+import com.shigu.order.services.InviteRebateService;
 import com.shigu.order.services.OrderReturnMoneyService;
 import com.shigu.tools.JsonResponseUtil;
 import com.utils.publics.Opt3Des;
@@ -25,6 +26,9 @@ public class OrderReturnMoneyAction {
 
     @Autowired
     private OrderReturnMoneyService orderReturnMoneyService;
+
+    @Autowired
+    private InviteRebateService inviteRebateService;
 
     @RequestMapping("orderCashbackSuccessNotify")
     @ResponseBody
@@ -59,6 +63,25 @@ public class OrderReturnMoneyAction {
             json.put("result",true);
         }
         return JsonResponseUtil.success().element("data",json.toJSONString());
+    }
+
+
+    /**
+     * 邀请注册返点支付站校验用信息
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("inviteRebateInfo")
+    @ResponseBody
+    public JSONObject inviteRebateInfo(Long orderId) {
+        return JsonResponseUtil.success().element("data",inviteRebateService.inviteRebateInfo(orderId));
+    }
+
+    @RequestMapping("inviteRebateSuccessNotify")
+    @ResponseBody
+    public JSONObject inviteRebateSuccessNotify(String data) {
+        inviteRebateService.inviteRebateSuccessNotify(data);
+        return JsonResponseUtil.success();
     }
 
 }

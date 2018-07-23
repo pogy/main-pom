@@ -2,6 +2,7 @@ package com.shigu.buyer.services;
 
 import com.shigu.main4.order.bo.VoucherBO;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.MemberInviteService;
 import com.shigu.main4.ucenter.vo.InvitedUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class InviteService {
 
     @Autowired
     private ItemOrderService itemOrderService;
+
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * 根据邀请码获取邀请人id，没有邀请码或邀请码错误返回null
@@ -58,14 +62,17 @@ public class InviteService {
      * @param userId
      */
     public void giveVoucher(Long userId) {
-        // 邀请新人活动
-        String INVITE_VOUCHER_TAG = "INVITE_VOUCHER_TAG";
-        VoucherBO bo = new VoucherBO();
-        bo.setUserId(userId);
-        bo.setVoucherAmount(1000L);
-        bo.setVoucherTag(INVITE_VOUCHER_TAG);
-        bo.setGuaranteePeriod(30);
-        bo.setVoucherInfo("填写邀请码注册首单减免");
-        itemOrderService.giveVoucher(bo);
+        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("shigu_rebate_type", String.class));
+        if (inviteRebateActive) {
+            // 邀请新人活动
+            String INVITE_VOUCHER_TAG = "INVITE_VOUCHER_TAG";
+            VoucherBO bo = new VoucherBO();
+            bo.setUserId(userId);
+            bo.setVoucherAmount(1000L);
+            bo.setVoucherTag(INVITE_VOUCHER_TAG);
+            bo.setGuaranteePeriod(30);
+            bo.setVoucherInfo("填写邀请码注册首单减免");
+            itemOrderService.giveVoucher(bo);
+        }
     }
 }
