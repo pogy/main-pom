@@ -397,11 +397,6 @@ public class RefundItemOrderImpl implements RefundItemOrder {
                 throw new RefundException(String.format("订单中支付金额不足以支持希望的退款数目[%d]，退单号[%d]",money,refundId));
             }
             ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
-            ItemOrderVO orderInfo = itemOrder.orderInfo();
-            // 退款退到使用了代金券金额部分，减去代金券金额
-            if (orderInfo.getTotalFee() - orderInfo.getRefundFee() < money) {
-                money = money - orderInfo.getRealVoucherAmount();
-            }
             List<PayedVO> payedVOS = itemOrder.payedInfo();
             for (PayedVO payedVO : payedVOS) {
                 if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {

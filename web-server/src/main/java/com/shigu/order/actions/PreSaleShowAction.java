@@ -95,6 +95,11 @@ public class PreSaleShowAction {
             return JsonResponseUtil.error("没有足够的退款商品数");
         }
         Long price=refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
+        // 不能退超过实际支付的商品金额
+        Long maxItemCanRefund = afterSaleService.maxItemCanRefundBySubOrderId(childOrderId);
+        if (price > maxItemCanRefund) {
+            price = maxItemCanRefund;
+        }
         if(sub.getOtherRefundPrice()!=null&&refundCount.equals(sub.getChildOrderNum())){
             price+=PriceConvertUtils.StringToLong(sub.getOtherRefundPrice());
         }

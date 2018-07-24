@@ -139,6 +139,9 @@ public interface ItemOrderService {
     List<VoucherVO> findAvailableFavourableInfo(Long userId);
 
 
-
+    /**
+     * 邀请注册返现成功回调通知
+     * @param oid
+     */
     void inviteRebateSuccessNotify(Long oid);
 }

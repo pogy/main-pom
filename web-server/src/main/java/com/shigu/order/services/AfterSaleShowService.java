@@ -59,13 +59,18 @@ public class AfterSaleShowService {
 //        if(ordersub != null && orderManageProcess.tryRefund(bo.getChildOrderId()).size() == ordersub.getNum()){
 //            throw new OrderException("订单已经被分配，暂时无法退款");
 //        }
-        SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
+        Long soid = Long.parseLong(bo.getChildOrderId());
+        SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(soid);
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;
         if (20<bo.getRefundReason().length()+(bo.getRefundDesc()==null?4:bo.getRefundDesc().length())) {
             throw new JsonErrException("申请理由过长");
         }
-        return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount()
+        Long maxItemCanRefund = afterSaleService.maxItemCanRefundBySubOrderId(soid);
+        if (refundMoney > maxItemCanRefund) {
+            refundMoney = maxItemCanRefund;
+        }
+        return afterSaleService.returnGoodsApply(soid, bo.getRefundCount()
                 ,refundMoney
                 , bo.getRefundReason(), bo.getRefundDesc());
     }
