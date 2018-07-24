@@ -1,5 +1,8 @@
 package com.shigu.buyer.services;
 
+import com.opentae.data.mall.beans.ItemVoucher;
+import com.opentae.data.mall.interfaces.ItemVoucherMapper;
+import com.shigu.buyer.vo.BonusRecordVo;
 import com.shigu.main4.order.bo.VoucherBO;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.tools.RedisIO;
@@ -8,6 +11,8 @@ import com.shigu.main4.ucenter.vo.InvitedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +31,9 @@ public class InviteService {
 
     @Autowired
     private ItemOrderService itemOrderService;
+
+    @Autowired
+    private ItemVoucherMapper itemVoucherMapper;
 
     @Autowired
     private RedisIO redisIO;
@@ -74,5 +82,27 @@ public class InviteService {
             bo.setVoucherInfo("填写邀请码注册首单减免");
             itemOrderService.giveVoucher(bo);
         }
+    }
+
+    public BonusRecordVo userInviteVoucherShow(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        ItemVoucher inviteVoucher = new ItemVoucher();
+        inviteVoucher.setUserId(userId);
+        inviteVoucher.setVoucherTag("INVITE_VOUCHER_TAG");
+        inviteVoucher = itemVoucherMapper.selectOne(inviteVoucher);
+        if (inviteVoucher == null) {
+            return null;
+        }
+        if (inviteVoucher.getUsedTime() == null && new Date().after(inviteVoucher.getExpireTime())) {
+            return null;
+        }
+        BonusRecordVo vo = new BonusRecordVo();
+        vo.setMoney(String.format("%.2f",inviteVoucher.getVoucherAmount() * 0.01));
+        vo.setPayText(inviteVoucher.getVoucherInfo());
+        vo.setTime(new SimpleDateFormat("yyyy-MM-dd").format(inviteVoucher.getCreateTime()));
+        vo.setPayState(inviteVoucher.getVoucherState().equals(1)?1:2);
+        return vo;
     }
 }
