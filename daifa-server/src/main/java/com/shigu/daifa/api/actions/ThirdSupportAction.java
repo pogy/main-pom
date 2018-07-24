@@ -44,6 +44,12 @@ public class ThirdSupportAction {
         return obj;
     }
 
+    /**
+     * 获取当前用户档口
+     * @param request
+     * @return
+     * @throws OpenException
+     */
     @RequestMapping("selWorkUserGgoodsTasksStores")
     @ResponseBody
     public JSONObject selWorkUserGgoodsTasksStores(SelWorkUserGgoodsTasksStoresRequest request) throws OpenException {
@@ -52,6 +58,12 @@ public class ThirdSupportAction {
         return JSONObject.fromObject(res);
     }
 
+    /**
+     * 根据档口Id分配用户商品
+     * @param request
+     * @return
+     * @throws OpenException
+     */
     @RequestMapping("selWorkUserGgoodsTasksGoods")
     @ResponseBody
     public JSONObject selWorkUserGgoodsTasksGoods(SelWorkUserGgoodsTasksGoodsRequest request) throws OpenException {
@@ -65,7 +77,12 @@ public class ThirdSupportAction {
         return JSONObject.fromObject(res);
     }
 
-
+    /**
+     * 扫码 根据条码集合获得以拿到的信息（以拿、未拿）
+     * @param request
+     * @return
+     * @throws OpenException
+     */
     @RequestMapping("shortCompleteChecked")
     @ResponseBody
     public JSONObject shortCompleteChecked(ShortCompleteCheckedRequest request) throws OpenException {
@@ -97,7 +114,13 @@ public class ThirdSupportAction {
         return obj;
     }
 
-
+    /**
+     * 根据条码标记成以拿到（）
+     * @param request
+     * @param result
+     * @return
+     * @throws OpenException
+     */
     @RequestMapping("shortComplete")
     @ResponseBody
     public JSONObject shortComplete(ShortCompleteRequest request, BindingResult result) throws OpenException {
@@ -116,6 +139,7 @@ public class ThirdSupportAction {
         orderIds.addAll(setO);
 
         List<NotCodeSets> bos = new ArrayList<>();
+        //条码数字集合根据后面的数字标记未拿到原因
         if (request.getNotCodeSets() != null && request.getNotCodeSets().size() > 0) {
             for (String nc : request.getNotCodeSets()) {
                 String[] ns = nc.split(":");
