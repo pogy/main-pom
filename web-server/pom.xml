@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.4-SNAPSHOT</version>
+        <version>4.2.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -53,6 +53,12 @@
 
         <dependency>
             <groupId>sites.main</groupId>
+            <artifactId>sn-sdk</artifactId>
+            <version>${sn-sdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
             <artifactId>jdimg-sdk</artifactId>
             <version>${jdimg-sdk.version}</version>
             <exclusions>
@@ -95,6 +101,11 @@
             <groupId>sites.main</groupId>
             <artifactId>main4-ucenter-api</artifactId>
             <version>${main4-ucenter-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-package-api</artifactId>
+            <version>${main4-package-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
@@ -269,6 +280,7 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.22</version>
         </dependency>
+
         <!--对象拷贝-->
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
@@ -425,7 +437,7 @@
         <dependency>
             <groupId>com.alipay.api</groupId>
             <artifactId>alipay-sdk-java</artifactId>
-            <version>20170615110434</version>
+            <version>3.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

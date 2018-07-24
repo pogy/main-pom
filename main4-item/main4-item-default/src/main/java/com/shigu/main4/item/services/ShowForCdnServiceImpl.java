@@ -6,9 +6,13 @@ import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.item.enums.ItemFrom;
+import com.shigu.main4.item.model.ItemSkuModel;
+import com.shigu.main4.item.services.utils.SkuCheckUtil;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -239,12 +243,12 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
          */
         protected abstract E getItemSource(Long id, String webSite);
 
-        CdnItem selectItemById(Long id) {
+        NewCdnItem selectItemById(Long id) {
             if (id == null)
                 return null;
 
             Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
-            CdnItem cdnItem = cdnItemCache.get(id, CdnItem.class);
+            NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
             if (cdnItem == null) {
                 ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(id);
                 if (shiguGoodsIdGenerator != null) {
@@ -266,8 +270,8 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
          * @param e
          * @return
          */
-        private CdnItem newCdnItem(E e) {
-            CdnItem cdnItem = new CdnItem();
+        private NewCdnItem newCdnItem(E e) {
+            NewCdnItem cdnItem = new NewCdnItem();
             Class<?> clazz = e.getClass();
             for (Field field : CdnItem.class.getDeclaredFields()) {
                 if (field.getModifiers() != Modifier.PRIVATE) {
@@ -319,12 +323,12 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
             return cdnItem;
         }
 
-        CdnItem selectItemById(Long id, String webSite) {
+        NewCdnItem selectItemById(Long id, String webSite) {
             if (id == null || StringUtils.isEmpty(webSite))
                 return null;
 
             Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
-            CdnItem cdnItem = cdnItemCache.get(id, CdnItem.class);
+            NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
             if (cdnItem == null) {
                 E e = getItemSource(id, webSite);
 
@@ -435,13 +439,13 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                                 }
 
                                 // color & size or normal prop dispatcher
-                                if (isSale&&(isColorProp(pid, pname) || isSizeProp(pid, pname))) {
+                                if (isSale&&(SkuCheckUtil.isColorProp(pid, pname) || SkuCheckUtil.isSizeProp(pid, pname))) {
                                     SaleProp saleProp = new SaleProp();
                                     saleProp.setPid(Long.valueOf(pid));
                                     saleProp.setVid(Long.valueOf(vid));
                                     saleProp.setPname(pname);
                                     saleProp.setValue(value);
-                                    if (isColorProp(pid, pname)) {
+                                    if (SkuCheckUtil.isColorProp(pid, pname)) {
                                         // 只有颜色属性可能带图
                                         saleProp.setImgUrl(propImgMap.get(pvid));
                                         cdnItem.getColors().add(saleProp);
@@ -466,30 +470,12 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     cdnItem.setInFabric(goodsCountForsearch.getInfabric());
                     cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
                 }
+                //补充独立sku
+                cdnItem.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, id).pull());
                 // cache this item
                 cdnItemCache.put(id, cdnItem);
             } // 缓存未命中处理 end
             return cdnItem;
-        }
-
-        /**
-         * 判断属性是否是颜色
-         * @param colorPid pid
-         * @param name pname
-         * @return is or not
-         */
-        public boolean isColorProp(String colorPid, String name) {
-            return "1627207,".contains(colorPid) || "颜色,颜色分类".contains(name);
-        }
-
-        /**
-         * 判断属性是否是尺码
-         * @param sizePid pid
-         * @param name pname
-         * @return is or not
-         */
-        public boolean isSizeProp(String sizePid, String name) {
-            return "20509,20518,20549,122216343".contains(sizePid) || "尺寸,尺码,鞋码,参考身高".contains(name);
         }
     }
 }

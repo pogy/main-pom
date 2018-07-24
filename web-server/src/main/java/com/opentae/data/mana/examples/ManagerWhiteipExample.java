@@ -1,7 +1,6 @@
 package com.opentae.data.mana.examples;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ManagerWhiteipExample {

@@ -1,4 +1,5 @@
 package com.shigu.main4.daifa.model.impl;
+
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
@@ -30,8 +31,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -85,8 +84,10 @@ public class OrderModelImpl implements OrderModel {
     RedisIO redisIO;
     @Autowired
     private MQUtil mqUtil;
-    @Value("${MQ_topic}")
-    private String mqTopic;
+    @Value("${DAIFA_IS_TEST}")
+    private String daifaIsTest;
+    @Value("${DAIFA_IS_PAY_TEST}")
+    private String daifaIsPayTest;
     public OrderModelImpl(Long tid) {
         this.tid = tid;
     }
@@ -94,7 +95,8 @@ public class OrderModelImpl implements OrderModel {
     public OrderModelImpl(OrderBO bo) {
         this.orderBO = bo;
     }
-
+    public OrderModelImpl() {
+    }
 
     /**
      * 创建订单
@@ -104,7 +106,7 @@ public class OrderModelImpl implements OrderModel {
     public void init() {
         if (orderBO.getBuyer ().getBuyerId ().intValue () == 9968) {
             //测试账号的单子不写进来,如果是正式队列
-            if("SHIGU_DAIFA".equals(mqTopic)){
+            if("false".equals(daifaIsTest)){
                 return;
             }
         }
@@ -300,7 +302,7 @@ public class OrderModelImpl implements OrderModel {
         Date createTime = trade.getCreateTime();
         TypeConvert.dateAddDay(createTime, 3);
         //判断是否超时
-        if (createTime.getTime() < new Date().getTime()) {
+        if (createTime.getTime() < System.currentTimeMillis()) {
             DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
             daifaGgoodsTasksExample.createCriteria().andDfTradeIdEqualTo(tid)
                     .andReturnStatusEqualTo(0).andUseStatusEqualTo(1).andOperateIsEqualTo(0)
@@ -491,13 +493,28 @@ public class OrderModelImpl implements OrderModel {
         daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
         sendRefundMq(refundId.toString(),null);
     }
+
+    @Override
+    public void sendMessage(Integer refundId) {
+        String refund=refundId.toString();
+        String msg=null;
+        sendRefundMq(refund,msg);
+    }
+
     /**
      * 退款
      * @param refundId
      * @param msg
      */
     private void sendRefundMq(String refundId, String msg){
+        //做正式和测试区分
+        if("true".equals(daifaIsTest)){
+            if("false".equals(daifaIsPayTest)){
+                return;
+            }
+        }
         JSONObject obj=new JSONObject();
+
         if(msg==null){
             JSONObject o1=new JSONObject();
             o1.put("refundId",refundId);

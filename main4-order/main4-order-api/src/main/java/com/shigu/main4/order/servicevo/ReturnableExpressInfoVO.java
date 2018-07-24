@@ -1,8 +1,6 @@
 package com.shigu.main4.order.servicevo;
 
-
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by zf on 2017/7/17.

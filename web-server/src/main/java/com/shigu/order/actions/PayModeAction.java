@@ -1,17 +1,13 @@
 package com.shigu.order.actions;
 
-import com.alibaba.fastjson.JSON;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
-import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.OtherPlatformEnum;
-import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.MorePayModeService;
 import com.shigu.order.services.PayModeService;
 import com.shigu.order.vo.PayModePageVO;
@@ -183,6 +179,33 @@ public class PayModeAction {
         writer.flush();
         writer.close();
     }
+
+    @RequestMapping("qzAlipay")
+    public void qzAlipay(Long id,String orderCode, HttpServletResponse response, HttpSession session) throws PayApplyException, IOException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html");
+        PrintWriter writer = response.getWriter();
+        PayApplyVO v;
+        if(id!=null){
+            v=payModeService.payApply(id,userId,PayType.QZ_ALI);
+        }else{
+            if(StringUtils.isEmpty(orderCode)){
+                throw new PayApplyException("缺少参数");
+            }
+            if(!(Boolean) ps.getOtherPlatform().get(OtherPlatformEnum.MORE_ORDER.getValue())){
+                throw new PayApplyException("没有访问的权限");
+            }
+            List<Long> orderIds= redisIO.getList(orderCode,Long.class);
+            v=morePayModeService.payApply(orderIds,userId,PayType.QZ_ALI);
+        }
+        writer.println(v.getPayLink());
+        writer.flush();
+        writer.close();
+    }
+
+
 
     @RequestMapping("alipayByApplyId")
     public void alipayByApplyId(Long applyId, HttpServletResponse response) throws PayApplyException, IOException {

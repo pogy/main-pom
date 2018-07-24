@@ -5,17 +5,11 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
-import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
-import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.data.mall.beans.ItemOrderRefund;
-import com.opentae.data.mall.beans.ShiguOrderCashback;
 import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.SubOrderSoidpsExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
-import com.opentae.data.mall.interfaces.ShiguOrderCashbackMapper;
 import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
-import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
@@ -24,21 +18,16 @@ import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
-import com.shigu.main4.order.vo.OrderSubMoney;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
-import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
-import com.shigu.tools.XzSdkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * 代发消息队列接收处理

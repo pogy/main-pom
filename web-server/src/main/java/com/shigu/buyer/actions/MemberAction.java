@@ -3,6 +3,7 @@ package com.shigu.buyer.actions;
 import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.enums.BonusRecordTypeEnum;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.enums.OutUserBindTypeEnum;
 import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
@@ -14,6 +15,8 @@ import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
+import com.shigu.main4.packages.bo.DataPackage;
+import com.shigu.main4.packages.process.PackageImportGoodsDataService;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
@@ -71,6 +74,8 @@ import java.util.Objects;
  */
 @Controller
 public class MemberAction {
+    @Autowired
+    PackageImportGoodsDataService packageImportGoodsDataService;
 
     @Autowired
     PaySdkClientService paySdkClientService;
@@ -295,7 +300,7 @@ public class MemberAction {
             return JsonResponseUtil.error("ids参数异常");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        userCollectService.createDataPackageByCoolectIds(ps.getUserId(), packegeIds);
+        packageImportGoodsDataService.createDataPackageByCoolectIds(ps.getUserId(), packegeIds);
         return JsonResponseUtil.success();
     }
 
@@ -308,7 +313,7 @@ public class MemberAction {
     @RequestMapping("member/goodsDataPackageinit")
     public String goodsDataPackageinit(DataPackageBO bo, HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(), bo.getPage(), bo.getRows());
+        ShiguPager<DataPackage> pager = packageImportGoodsDataService.selPackages(ps.getUserId(), bo.getPage(), bo.getRows());
         List<PackageVO> goodslist = new ArrayList<>();
         for (DataPackage dp : pager.getContent()) {
             if (dp.getGoods() != null)
@@ -356,7 +361,7 @@ public class MemberAction {
     @ResponseBody
     public JSONObject rmv_zipdp(String ids, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        userCollectService.delPackagesById(ps.getUserId(), parseIds(ids));
+        packageImportGoodsDataService.delPackagesById(ps.getUserId(), parseIds(ids));
         return JsonResponseUtil.success();
     }
 

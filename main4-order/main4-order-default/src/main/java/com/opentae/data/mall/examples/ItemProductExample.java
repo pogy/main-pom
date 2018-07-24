@@ -6,7 +6,10 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.mall.beans.ItemProduct;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 public class ItemProductExample extends SgExample<ItemProductExample.Criteria> {
     public static final Class<ItemProduct> beanClass = ItemProduct.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
@@ -17,8 +20,8 @@ public class ItemProductExample extends SgExample<ItemProductExample.Criteria> {
     public static EntityColumn pid;
     public static EntityColumn title;
     public static EntityColumn marketId;
-    public static EntityColumn webSite;
     public static EntityColumn floorId;
+    public static EntityColumn webSite;
     public static EntityColumn picUrl;
     public static EntityColumn marketName;
     public static EntityColumn price;
@@ -37,8 +40,8 @@ public class ItemProductExample extends SgExample<ItemProductExample.Criteria> {
         pid = listMap.get("pid");
         title = listMap.get("title");
         marketId = listMap.get("marketId");
-        webSite = listMap.get("webSite");
         floorId = listMap.get("floorId");
+        webSite = listMap.get("webSite");
         picUrl = listMap.get("picUrl");
         marketName = listMap.get("marketName");
         price = listMap.get("price");
@@ -418,6 +421,53 @@ public class ItemProductExample extends SgExample<ItemProductExample.Criteria> {
         public ItemProductExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
             return notBetween(marketId, value1, value2);
         }
+        public ItemProductExample.Criteria andFloorIdIsNull() {
+            return isNull(floorId);
+        }
+
+        public ItemProductExample.Criteria andFloorIdIsNotNull() {
+            return isNotNull(floorId);
+        }
+
+        public ItemProductExample.Criteria andFloorIdEqualTo(Long value) {
+            return equalTo(floorId, value);
+        }
+
+        public ItemProductExample.Criteria andFloorIdNotEqualTo(Long value) {
+            return notEqualTo(floorId, value);
+        }
+
+        public ItemProductExample.Criteria andFloorIdGreaterThan(Long value) {
+            return greaterThan(floorId, value);
+        }
+
+        public ItemProductExample.Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(floorId, value);
+        }
+
+        public ItemProductExample.Criteria andFloorIdLessThan(Long value) {
+            return lessThan(floorId, value);
+        }
+
+        public ItemProductExample.Criteria andFloorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(floorId, value);
+        }
+
+        public ItemProductExample.Criteria andFloorIdIn(List<Long> values) {
+            return in(floorId, values);
+        }
+
+        public ItemProductExample.Criteria andFloorIdNotIn(List<Long> values) {
+            return notIn(floorId, values);
+        }
+
+        public ItemProductExample.Criteria andFloorIdBetween(Long value1, Long value2) {
+            return between(floorId, value1, value2);
+        }
+
+        public ItemProductExample.Criteria andFloorIdNotBetween(Long value1, Long value2) {
+            return notBetween(floorId, value1, value2);
+        }
         public ItemProductExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);
         }
@@ -472,53 +522,6 @@ public class ItemProductExample extends SgExample<ItemProductExample.Criteria> {
 
         public ItemProductExample.Criteria andWebSiteNotBetween(String value1, String value2) {
             return notBetween(webSite, value1, value2);
-        }
-        public ItemProductExample.Criteria andFloorIdIsNull() {
-            return isNull(floorId);
-        }
-
-        public ItemProductExample.Criteria andFloorIdIsNotNull() {
-            return isNotNull(floorId);
-        }
-
-        public ItemProductExample.Criteria andFloorIdEqualTo(Long value) {
-            return equalTo(floorId, value);
-        }
-
-        public ItemProductExample.Criteria andFloorIdNotEqualTo(Long value) {
-            return notEqualTo(floorId, value);
-        }
-
-        public ItemProductExample.Criteria andFloorIdGreaterThan(Long value) {
-            return greaterThan(floorId, value);
-        }
-
-        public ItemProductExample.Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(floorId, value);
-        }
-
-        public ItemProductExample.Criteria andFloorIdLessThan(Long value) {
-            return lessThan(floorId, value);
-        }
-
-        public ItemProductExample.Criteria andFloorIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(floorId, value);
-        }
-
-        public ItemProductExample.Criteria andFloorIdIn(List<Long> values) {
-            return in(floorId, values);
-        }
-
-        public ItemProductExample.Criteria andFloorIdNotIn(List<Long> values) {
-            return notIn(floorId, values);
-        }
-
-        public ItemProductExample.Criteria andFloorIdBetween(Long value1, Long value2) {
-            return between(floorId, value1, value2);
-        }
-
-        public ItemProductExample.Criteria andFloorIdNotBetween(Long value1, Long value2) {
-            return notBetween(floorId, value1, value2);
         }
         public ItemProductExample.Criteria andPicUrlIsNull() {
             return isNull(picUrl);

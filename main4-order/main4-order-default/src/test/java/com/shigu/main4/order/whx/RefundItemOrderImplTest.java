@@ -1,6 +1,5 @@
 package com.shigu.main4.order.whx;
 
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -8,8 +7,6 @@ import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.tools.SpringBeanFactory;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**

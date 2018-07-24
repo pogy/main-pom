@@ -5,14 +5,16 @@ import com.opentae.data.mall.beans.OrderConstant;
 import com.opentae.data.mall.interfaces.OrderConstantMapper;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.vo.CityVO;
+import com.shigu.main4.order.vo.ProvinceVO;
+import com.shigu.main4.order.vo.ServiceVO;
+import com.shigu.main4.order.vo.TownVO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 /**
  * 订单常量服务测试

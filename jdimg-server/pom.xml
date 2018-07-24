@@ -3,7 +3,7 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.4-SNAPSHOT</version>
+        <version>4.2.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,6 +27,16 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.4.8.v20171121</version>
+                <configuration>
+                    <httpConnector>
+                        <port>8080</port>
+                    </httpConnector>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -34,7 +44,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>jdimg-sdk</artifactId>
-            <version>4.2.4-SNAPSHOT</version>
+            <version>4.2.6-SNAPSHOT</version>
         </dependency>
 
         <dependency>

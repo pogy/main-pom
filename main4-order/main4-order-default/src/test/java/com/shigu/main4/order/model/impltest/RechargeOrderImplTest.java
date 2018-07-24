@@ -3,7 +3,6 @@ package com.shigu.main4.order.model.impltest;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.model.RechargeOrder;
-import com.shigu.main4.order.model.impl.RechargeOrderImpl;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 

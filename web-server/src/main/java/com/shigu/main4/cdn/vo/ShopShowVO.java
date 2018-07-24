@@ -1,13 +1,7 @@
 package com.shigu.main4.cdn.vo;
 
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.vo.CatPolymerization;
-import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.main4.vo.ShopBaseForCdn;
-import com.shigu.main4.vo.ShopCat;
-import com.shigu.main4.vo.ShopFitment;
-import com.shigu.main4.vo.ShopLicense;
-import com.shigu.main4.vo.StoreRelation;
+import com.shigu.main4.vo.*;
 
 import java.util.List;
 

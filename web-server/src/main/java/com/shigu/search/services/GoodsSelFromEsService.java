@@ -1,8 +1,5 @@
 package com.shigu.search.services;
 
-import com.opentae.data.mall.beans.ShiguTaobaocat;
-import com.opentae.data.mall.examples.ShiguTaobaocatExample;
-import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
@@ -16,15 +13,7 @@ import com.shigu.search.vo.GoodsInSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 纯商品查询服务

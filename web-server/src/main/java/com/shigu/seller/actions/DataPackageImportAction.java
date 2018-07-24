@@ -3,9 +3,9 @@ package com.shigu.seller.actions;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.item.exceptions.ItemModifyException;
+import com.shigu.main4.packages.process.PackageImportGoodsDataService;
+import com.shigu.main4.packages.vo.ShiguGoodsTinyVO;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.ucenter.services.PackageImportGoodsDataService;
-import com.shigu.main4.ucenter.vo.ShiguGoodsTinyVO;
 import com.shigu.seller.services.DataPackageImportService;
 import com.shigu.seller.vo.PackageVO;
 import com.shigu.session.main4.PersonalSession;
@@ -20,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +139,6 @@ public class DataPackageImportAction {
                 vo.setTitle (KeyWordsUtil.duleKeyWords(goodsVO.getTitle()));
                 voList.add (vo);
             }
-
         }
         model.addAttribute("packageList",voList);
         model.addAttribute ("allGoodsCount",list.size ());

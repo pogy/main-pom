@@ -1,6 +1,5 @@
 package com.shigu.component.shiro.filters;
 
-
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
@@ -8,12 +7,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

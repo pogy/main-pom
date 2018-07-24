@@ -6,13 +6,9 @@ import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
 import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.storeservices.ShopForCdnService;
-import com.shigu.seller.vo.FormAttrVO;
-import com.shigu.seller.vo.FormItemVO;
-import com.shigu.seller.vo.KVO;
-import com.shigu.seller.vo.SKUAttrVO;
-import com.shigu.seller.vo.SKUVO;
-import com.shigu.tb.finder.vo.PropType;
+import com.shigu.main4.tools.RedisIO;
+import com.shigu.seller.vo.*;
+import com.shigu.tb.finder.services.TbPropsService;
 import com.shigu.tb.finder.vo.PropertyItemVO;
 import com.shigu.tb.finder.vo.PropertyValueVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +29,10 @@ public class GoodsSendService {
 
     @Autowired
     TaobaoPropValueMapper taobaoPropValueMapper;
+    @Autowired
+    RedisIO redisIO;
+    @Autowired
+    TbPropsService tbPropsService;
 
     /**
      * id串变成propNames
@@ -62,7 +62,7 @@ public class GoodsSendService {
 //
 //        }
         // TODO: 17/3/18 暂时不做inputStr与inputPid与alias的情况
-        return pname.startsWith(";")?pname.substring(1):pname;
+        return pname.toString().startsWith(";")?pname.substring(1): pname.toString();
     }
     /**
      * 查询类目路径

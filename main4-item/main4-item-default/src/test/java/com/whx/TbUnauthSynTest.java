@@ -1,30 +1,15 @@
 package com.whx;
 
 import com.item.test.BaseSpringTest;
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsSoldout;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsSoldoutMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
-import com.shigu.main4.item.services.utils.JsoupUtil;
 import com.shigu.main4.item.services.utils.OuterSynUtil;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 类名：TbUnauthSynTest

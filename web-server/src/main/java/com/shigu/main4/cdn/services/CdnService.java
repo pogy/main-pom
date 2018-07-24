@@ -9,19 +9,20 @@ import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.exceptions.CdnException;
-import com.shigu.main4.cdn.vo.CatPolyFormatVO;
-import com.shigu.main4.cdn.vo.ShopIconCopyrightVO;
-import com.shigu.main4.cdn.vo.ShopShowVO;
+import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
 import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
-import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.order.process.ItemProductProcess;
@@ -41,11 +42,9 @@ import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.ModuleVO;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.tools.HtmlImgsLazyLoad;
-
 import com.shigu.tools.KeyWordsUtil;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,7 +59,31 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CdnService {
-
+    private final static Map<String,Integer> SIZE_SORT;
+    static{
+        SIZE_SORT =new HashMap<>();
+        SIZE_SORT.put("XXS",-1);
+        SIZE_SORT.put("2XS",-1);
+        SIZE_SORT.put("XS",0);
+        SIZE_SORT.put("S",1);
+        SIZE_SORT.put("M",2);
+        SIZE_SORT.put("L",3);
+        SIZE_SORT.put("XL",4);
+        SIZE_SORT.put("XXL",5);
+        SIZE_SORT.put("2XL",5);
+        SIZE_SORT.put("XXXL",6);
+        SIZE_SORT.put("3XL",6);
+        SIZE_SORT.put("XXXL",7);
+        SIZE_SORT.put("4XL",7);
+        SIZE_SORT.put("XXXXL",8);
+        SIZE_SORT.put("5XL",8);
+        SIZE_SORT.put("XXXXXL",9);
+        SIZE_SORT.put("6XL",9);
+        SIZE_SORT.put("XXXXXXL",10);
+        SIZE_SORT.put("7XL",10);
+        SIZE_SORT.put("XXXXXXXL",11);
+        SIZE_SORT.put("8XL",11);
+    }
     @Autowired
     UserCollectService userCollectService;
 
@@ -104,11 +127,17 @@ public class CdnService {
     ShiguTempMapper shiguTempMapper;
     @Autowired
     ItemCatService itemCatService;
+    @Autowired
+    NewShowForCdnService newShowForCdnService;
+
+
     /**
      * 禁止销售的
      */
     @Autowired
     ItemTradeForbidMapper itemTradeForbidMapper;
+    @Autowired
+    ItemOrderSenderMapper itemOrderSenderMapper;
 
     /**
      * banner部分的html
@@ -315,6 +344,7 @@ public class CdnService {
         return itemTradeForbidMapper.countByExample(example)==0;
     }
 
+
     /**
      * 商品详情页,商品数据
      * @param goodsId
@@ -323,15 +353,17 @@ public class CdnService {
      */
     public CdnGoodsInfoVO cdnGoodsInfo(Long goodsId) throws Main4Exception {
         CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
-        CdnItem cdnItem=showForCdnService.selItemById(goodsId);
+        NewCdnItem cdnItem=newShowForCdnService.selItemById(goodsId);
         vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
         if(cdnItem==null){//已经下架
-            cdnItem=showForCdnService.selItemInstockById(goodsId);
+            cdnItem=newShowForCdnService.selItemInstockById(goodsId);
         }
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
-        vo.setOnlineSale(itemProductProcess.canSale(cdnItem.getMarketId(),cdnItem.getFloorId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
+        vo.setOnlineSale(itemProductProcess
+                .canSale(cdnItem.getMarketId(), cdnItem.getFloorId(), cdnItem.getShopId(), goodsId, cdnItem
+                        .getWebSite()));
         vo.setGoodsId(goodsId);
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setImgUrls(cdnItem.getImgUrl());
@@ -371,33 +403,52 @@ public class CdnService {
         }
         List<String> qys=showForCdnService.selItemLicenses(goodsId,cdnItem.getShopId());
         vo.setServices(qys);
+        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
 
+        List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
+        Map<String,List<SingleSkuVO>> skus=singleSkus.stream().collect(Collectors.groupingBy(SingleSkuVO::getThisColor));
         List<SaleProp> colors=cdnItem.getColors();
         if(colors==null){
             colors=new ArrayList<>();
-            SaleProp c=new SaleProp();
-            c.setValue("图片色");
-            colors.add(c);
         }
-        JSONArray array = new JSONArray();
-        for(SaleProp c:colors){
-            array.add(new JSONObject().element("text", c.getValue()).element("imgSrc", c.getImgUrl()));
-        }
-        vo.setColorsMeta(array.toString());
+        Map<String, String> propImgMap = colors.stream().collect(Collectors
+                .toMap(SaleProp::getValue, saleProp -> StringUtils.isNotBlank(saleProp.getImgUrl()) ? saleProp
+                        .getImgUrl() : ""));
 
-        List<SaleProp> sizes=cdnItem.getSizes();
-        if(sizes==null){
-            sizes=new ArrayList<>();
-            SaleProp s=new SaleProp();
-            s.setValue("均码");
-            sizes.add(s);
+        List<String> colorMetas=new ArrayList<>(skus.keySet());
+        colorMetas.sort(Comparator.comparing(o -> o));
+        List<String> priceSort=new ArrayList<>();
+        List<SkuMetaVO> skuMetaVOS = colorMetas.stream().map(s -> {
+            SkuMetaVO skuMetaVO = new SkuMetaVO();
+            skuMetaVO.setText(s);
+            skuMetaVO.setImgSrc(propImgMap.get(s));
+            List<SingleSkuVO> sizes=skus.get(s);
+            List<SingleSkuVO> hasSizes=sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase())!=null).collect(Collectors.toList());
+            hasSizes.sort(Comparator.comparingInt(o -> SIZE_SORT.get(o.getThisSize().toUpperCase())));
+            List<SingleSkuVO> notSizes=sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase())==null).collect(Collectors.toList());
+            notSizes.sort(Comparator.comparing(SingleSkuVO::getThisSize));
+            sizes.clear();
+            sizes.addAll(hasSizes);
+            sizes.addAll(notSizes);
+            skuMetaVO.setSizes(sizes.stream().map(singleSkuVO -> {
+                SkuSizeMetaVO skuSizeMetaVO = new SkuSizeMetaVO();
+                skuSizeMetaVO.setNum(singleSkuVO.getStockNum());
+                skuSizeMetaVO.setPrice(singleSkuVO.getPriceString());
+                skuSizeMetaVO.setText(singleSkuVO.getThisSize());
+                if(skuSizeMetaVO.getNum()!=0){
+                    priceSort.add(singleSkuVO.getPriceString());
+                }
+                return skuSizeMetaVO;
+            }).collect(Collectors.toList()));
+            return skuMetaVO;
+        }).collect(Collectors.toList());
+        vo.setSkusMeta(JSONArray.fromObject(skuMetaVOS).toString());
+        if(priceSort.size()>0){
+            priceSort.sort(Comparator.comparingLong(MoneyUtil::StringToLong));
+            if(!priceSort.get(0).equals(priceSort.get(priceSort.size()-1))){
+                vo.setPiPrice(priceSort.get(0)+"-"+priceSort.get(priceSort.size()-1));
+            }
         }
-        List<String> ss=new ArrayList<>();
-        for(SaleProp s:sizes){
-            ss.add(s.getValue());
-        }
-        vo.setSizesMeta(JSONArray.fromObject(ss).toString());
-        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
         return vo;
     }
 
@@ -589,5 +640,13 @@ public class CdnService {
         } else {
             return type==1?SpreadEnum.ITEM_GOAT_MAN:SpreadEnum.ITEM_BOTTOM_GOAT_MAN;
         }
+    }
+
+    /**
+     * 查询星帮代发联系电话
+     */
+    public String selDaifaPhoneNo() {
+        ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(999999990L);
+        return itemOrderSender == null ? null : itemOrderSender.getTelephone();
     }
 }

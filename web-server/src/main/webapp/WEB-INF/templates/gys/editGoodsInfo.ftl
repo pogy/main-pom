@@ -55,35 +55,6 @@ var deschtml = '${goodsInfo.deschtml}';
     </div>
     <div class="formData fcF40 errorWarn">不能超过60个字符</div>
 </div>
-<div class="formPriceAndGoodsNo clearfix">
-    <label class="formKey"><i>*</i>批发价与货号：</label>
-    <div class="formPriceAGnInfoCon clearfix fl">
-        <div class="formInput formInprice fl">
-            <label class="formKey"><i>*</i>批发价</label>
-            <div class="formData">
-                <input id="piPrice" type="text" value="${goodsInfo.piPrice!}" maxlength="12" name="_fma.pu._0.m" class="input">
-            </div>
-        </div>
-        <div class="formInput formCount fl">
-            <label class="formKey"><i>*</i>数量</label>
-            <div class="formData">
-                <input id="quantity" type="text" value="${goodsInfo.quantity!}" maxlength="12" name="_fma.pu._0.q" class="input">
-            </div>
-        </div>
-        <div class="formInput formOid fl">
-            <label class="formKey"><i>*</i>商品货号</label>
-            <div class="formData">
-                <input id="goodsNo" type="text" value="${goodsInfo.goodsNo!}" maxlength="12" name="_fma.pu._0.o" class="input">
-            </div>
-        </div>
-        <div class="formInput formOutprice fl">
-            <label class="formKey">电商最低零售价</label>
-            <div class="formData">
-                <input id="buynow" type="text" value="${goodsInfo.lowestLiPrice!}" maxlength="12" name="_fma.pu._0.m" class="input">
-            </div>
-        </div>
-    </div>
-</div>
 <#if webSite != 'qz'>
 <div class="goodsFabric clearfix">
     <label class="formKey"><i>*</i>材料成分：</label>
@@ -107,7 +78,7 @@ var deschtml = '${goodsInfo.deschtml}';
     <label class="formKey">宝贝属性：</label>
     <div class="formData">
         <p class="tips">填错宝贝属性，可能会引起宝贝下架，影响您的正常销售。请认真准确填写</p>
-        <ul>
+        <ul class="clearfix">
             <#list goodsInfo.formAttribute as item>
             <li>
                 <label class="attrKey"><#if item.need??><i>*</i></#if>${item.name!}</label>
@@ -163,6 +134,101 @@ var deschtml = '${goodsInfo.deschtml}';
     </div>
 </div>
 </#list>
+<div class="editGoodsSkuDetail formSkuDetail clearfix">
+    <label class="formKey"></label>
+    <div class="formData">
+        <h5 class="fc3">宝贝销售规格：</h5>
+        <p class="fc9 tip">该类目下：颜色，尺码，请全选或全不选，如果只选一部分则无法保存对应的价格和库存；库存为0的宝贝规格，在商品详情页不能展示</p>
+        <div class="batchSkuBox">
+            <div class="batchEdit">
+                <label class="fc3">批量填充：</label>
+                <input type="text" class="fmInput fmInput-sm pPrice" placeholder="价格">
+                <input type="text" class="fmInput fmInput-sm batchEditNum" placeholder="数量">
+<#list [{}] as $it>
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <button type="button"
+    </#if>
+    class="fmButton
+         fmButton-sm
+         fmButton-blue
+         batchBtn"
+        <#if $it.disabled == true>disabled="disabled"</#if>
+        <#if $it.dataId??>
+            data-id="${$it.dataId!}"
+        </#if>
+        <#if $it.title??>
+            title=""
+        </#if>
+        <#if $it.id??>
+            id=""
+        </#if>
+>
+        确定
+    <#if $it.href??>
+    </a>
+    <#else>
+    </button>
+    </#if>
+</#list>
+            </div>
+            <div class="skuList">
+                <table class="list">
+                <thead>
+                    <th>颜色</th>
+                    <th>尺寸</th>
+                    <th><em class="fcF40">*</em>价格(元)</th>
+                    <th><em class="fcF40">*</em>数量(件)</th>
+                </thead>
+                <#list goodsInfo.skuSpecs as sku>
+                <tbody data-cpvid="${sku.colorId!}" data-cptext="${sku.colorText!}">
+                    <#list sku.sizes as size>
+                    <tr>
+                        <#if size_index == 0>
+                            <td rowspan="${(sku.sizes?size)!}" data-pvid="${sku.colorId!}" data-text="${sku.colorText!}" class="colorSpeces">${sku.colorText!}</td>
+                        </#if>
+                        <td data-pvid="${size.sizeId!}" data-text="${size.sizeText!}" class="sizeSpeces">${size.sizeText!}</td>
+                        <td><input type="text" class="eachSkuPrice" value="${size.price!}"></td>
+                        <td><input type="text" class="inventory" value="${size.num!}"></td>
+                    </tr>
+                    </#list>
+                </tbody>
+                </#list>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="formPriceAndGoodsNo clearfix">
+    <label class="formKey"><i>*</i>批发价与货号：</label>
+    <div class="formPriceAGnInfoCon clearfix fl">
+        <div class="formInput formInprice fl">
+            <label class="formKey"><i>*</i>批发价</label>
+            <div class="formData">
+                <input id="piPrice" type="text" value="${goodsInfo.piPrice!}" maxlength="12" name="_fma.pu._0.m" class="input">
+            </div>
+        </div>
+        <div class="formInput formCount fl">
+            <label class="formKey"><i>*</i>数量</label>
+            <div class="formData">
+                <input id="quantity" type="text" value="${goodsInfo.quantity!}" maxlength="12" name="_fma.pu._0.q" class="input">
+            </div>
+        </div>
+        <div class="formInput formOid fl">
+            <label class="formKey"><i>*</i>商品货号</label>
+            <div class="formData">
+                <input id="goodsNo" type="text" value="${goodsInfo.goodsNo!}" maxlength="12" name="_fma.pu._0.o" class="input">
+            </div>
+        </div>
+        <div class="formInput formOutprice fl">
+            <label class="formKey">电商最低零售价</label>
+            <div class="formData">
+                <input id="buynow" type="text" value="${goodsInfo.lowestLiPrice!}" maxlength="12" name="_fma.pu._0.m" class="input">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="formInput formPic">
     <label class="formKey">宝贝图片：</label>
     <div class="formData">

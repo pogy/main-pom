@@ -1,7 +1,6 @@
 package com.shigu.buyer.vo;
 
 import com.shigu.main4.ucenter.vo.OuterUser;
-import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.DateParseUtil;
 
 import java.io.Serializable;

@@ -19,7 +19,7 @@ public class CartChildOrderVO implements Comparable<CartChildOrderVO> {
 
     private String goodsNo;
 
-    private Double price;
+    private String price;
 
     private String color;
 
@@ -75,14 +75,6 @@ public class CartChildOrderVO implements Comparable<CartChildOrderVO> {
 
     public void setGoodsNo(String goodsNo) {
         this.goodsNo = goodsNo;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public String getColor() {
@@ -152,5 +144,13 @@ public class CartChildOrderVO implements Comparable<CartChildOrderVO> {
     @Override
     public int compareTo(CartChildOrderVO o) {
         return o == null ? 1 : (lastModify == null?0:lastModify.compareTo(o.getLastModify()));
+    }
+
+    public String getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }
