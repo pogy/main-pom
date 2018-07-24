@@ -11,8 +11,11 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,10 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 
 /**
  * Created By pc on 2017-10-24/17:35

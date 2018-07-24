@@ -1,13 +1,11 @@
 package com.shigu.tools;
 
-import javax.servlet.http.HttpServletRequest;
-
-import eu.bitwalker.useragentutils.Version;
-import org.apache.commons.lang3.StringUtils;
-
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class HttpRequestUtil {
 

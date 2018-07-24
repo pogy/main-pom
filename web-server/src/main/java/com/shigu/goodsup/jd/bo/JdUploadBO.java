@@ -1,7 +1,5 @@
 package com.shigu.goodsup.jd.bo;
 
-import java.util.List;
-
 public class JdUploadBO {
     private String stuffStatus;
     private String title;

@@ -1,16 +1,11 @@
 package com.shigu.main4.order.whx;
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ItemCart;
 import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.BaseTest;
-import com.shigu.main4.order.model.Cart;
-import com.shigu.main4.order.model.impl.ItemCartImpl;
-import com.shigu.main4.order.model.impltest.ItemCartTest;
-import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

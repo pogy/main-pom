@@ -1,9 +1,7 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
-import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsShipVo;
-import com.shigu.main4.order.vo.OtherCostVO;
 import com.shigu.main4.order.vo.PostVO;
 
 import java.util.List;

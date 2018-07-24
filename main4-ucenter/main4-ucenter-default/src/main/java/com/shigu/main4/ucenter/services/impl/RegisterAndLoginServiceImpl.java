@@ -1,6 +1,5 @@
 package com.shigu.main4.ucenter.services.impl;
 
-
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.MemberInvite;
 import com.opentae.data.mall.beans.MemberUser;

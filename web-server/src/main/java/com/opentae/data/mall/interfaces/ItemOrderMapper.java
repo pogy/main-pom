@@ -6,7 +6,6 @@ import com.opentae.data.mall.beans.ItemOrder;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.seller.vo.DfGoodsVo;
-import com.shigu.seller.vo.DfOrderVo;
 import com.shigu.seller.vo.OrdersVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
@@ -48,5 +47,5 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
     Integer getDropShippingGoodsCount(@Param("shopId") Long shopId, @Param("goodsNo") String goodsNo);
 
     Long selectUserIdByOid(@Param("oid") Long oid);
-
+    Long getSenderIdByRefundId(@Param("refundId")Long refundId);
 }

@@ -1,12 +1,14 @@
 package com.shigu.phone.waps.service;
 
-import com.openJar.beans.app.*;
+import com.openJar.beans.app.AppMarket;
+import com.openJar.beans.app.AppShopCat;
 import com.openJar.exceptions.OpenException;
 import com.shigu.phone.baseservices.BaseStoreService;
 import com.shigu.phone.basevo.OneShopVO;
 import com.shigu.phone.basevo.ShopCatVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**

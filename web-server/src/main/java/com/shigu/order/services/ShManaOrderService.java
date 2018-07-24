@@ -2,7 +2,6 @@ package com.shigu.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.tools.SpringBeanFactory;
-import com.shigu.order.bo.OrderBO;
 import com.shigu.order.bo.ShManaOrderBo;
 import com.shigu.order.orderQuery.OrderQuery;
 import com.shigu.order.orderQuery.QueryByShManaOrder;

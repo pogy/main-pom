@@ -8,6 +8,7 @@ import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.examples.MemberLicenseExample;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
@@ -18,15 +19,14 @@ import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.OrderServiceVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,17 +36,19 @@ import java.util.stream.Collectors;
  */
 @Service
 public class OrderMessageProducter {
-
     private static final Logger logger = LoggerFactory.getLogger(OrderMessageProducter.class);
-
-    public static String TOPIC;
-
     public enum OrderMQTag {
+        //订单写入
         order_push("oid_"),
+        //未发退款
         order_refund_noitem("refund_"),
+        //售后退货
         order_refund_hasitem("refund_hasitem_"),
+        //填写快递
         refund_courier_number("courier_"),
+        //修改快递
         refund_courier_number_modify("courier_modify_"),
+        //同意议价
         reprice_agree("reprice_"),
         ;
 
@@ -56,14 +58,6 @@ public class OrderMessageProducter {
             this.preKey = preKey;
         }
     }
-
-    @PostConstruct
-    public void init(){
-        TOPIC=producerBean.getProperties().getProperty("topic");
-    }
-
-    @Autowired
-    private ProducerBean producerBean;
 
     @Autowired
     private OrderConstantService orderConstantService;
@@ -76,6 +70,8 @@ public class OrderMessageProducter {
 
     @Autowired
     private SoidsCreater soidsCreater;
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
 
     /**
      * 订单推送
@@ -161,7 +157,7 @@ public class OrderMessageProducter {
         }
         order.setBuyer(buyer);
 
-        sendAsync(OrderMQTag.order_push, BaseMessage.success(order.getOid().toString(), "订单创建", order));
+        sendAsync(OrderMQTag.order_push, BaseMessage.success(order.getOid().toString(), "订单创建", order),itemOrderVO.getSenderId());
     }
 
     public void orderRefundNoItem(Long refundId, Long subOrderId, List<Long> refundSoidps) {
@@ -174,7 +170,9 @@ public class OrderMessageProducter {
         soids.add(subOrder);
         refund.setSuborders(soids);
 
-        sendAsync(OrderMQTag.order_refund_noitem, BaseMessage.success(refund.getRefundId().toString(), "仅退款", refund));
+        Long senderId = itemOrderMapper.getSenderIdByRefundId(refundId);
+
+        sendAsync(OrderMQTag.order_refund_noitem, BaseMessage.success(refund.getRefundId().toString(), "仅退款", refund),senderId);
     }
 
     public void orderRefundHasItem(Long refundId,Long oid, Long subOrderId,Integer num, Long money, String reason,Integer type) {
@@ -186,7 +184,10 @@ public class OrderMessageProducter {
         refund.setReason(reason);
         refund.setNum(num);
         refund.setType(type);
-        sendAsync(OrderMQTag.order_refund_hasitem, BaseMessage.success(refund.getRefundId().toString(), type==1?"退货退款":"换货", refund));
+
+        Long senderId = itemOrderMapper.getSenderIdByRefundId(refundId);
+
+        sendAsync(OrderMQTag.order_refund_hasitem, BaseMessage.success(refund.getRefundId().toString(), type==1?"退货退款":"换货", refund),senderId);
     }
 
     public void refundCourierNumberModify(Long refundId, String company, String courierNumber, boolean modify) {
@@ -203,7 +204,10 @@ public class OrderMessageProducter {
             tag = OrderMQTag.refund_courier_number;
             msg = "填写快递单";
         }
-        sendAsync(tag, BaseMessage.success(courier.getRefundId().toString(), msg, courier));
+
+        Long senderId = itemOrderMapper.getSenderIdByRefundId(refundId);
+
+        sendAsync(tag, BaseMessage.success(courier.getRefundId().toString(), msg, courier),senderId);
     }
 
     public void repriceAgree(Long refundId,boolean agree) {
@@ -212,22 +216,21 @@ public class OrderMessageProducter {
         repriceAgreeMessage.setAgree(agree);
         OrderMQTag tag = OrderMQTag.reprice_agree;
         String msg = "同意/拒绝议价";
-        sendAsync(tag,BaseMessage.success(refundId.toString(),msg,repriceAgreeMessage));
+
+        Long senderId = itemOrderMapper.getSenderIdByRefundId(refundId);
+
+        sendAsync(tag,BaseMessage.success(refundId.toString(),msg,repriceAgreeMessage),senderId);
     }
 
 
-    public void error(OrderMQTag tag, String key, String msg) {
-        sendAsync(tag, BaseMessage.error(key, msg));
-    }
-
-    private void sendAsync(OrderMQTag tag, BaseMessage msg) {
-        producerBean.sendAsync(
-                new Message(TOPIC, tag.name(), tag.preKey + msg.getKey(), msg.toString().getBytes()),
+    private void sendAsync(OrderMessageProducter.OrderMQTag tag, BaseMessage msg,Long senderId) {
+        ProducerBean producerBean= SpringBeanFactory.getBean("orderProduct_"+senderId,ProducerBean.class);
+                producerBean.sendAsync(
+                new Message(producerBean.getProperties().getProperty("topic"), tag.name(), tag.preKey + msg.getKey(), msg.toString().getBytes()),
                 new SendCallback() {
                     @Override
                     public void onSuccess(SendResult sendResult) {
                     }
-
                     @Override
                     public void onException(OnExceptionContext context) {
                         logger.error(String.format(
@@ -242,4 +245,5 @@ public class OrderMessageProducter {
                 }
         );
     }
+
 }

@@ -3,7 +3,9 @@ package com.shigu.main4.order.services.impl;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.services.LogisticsService;
-import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.vo.LogisticsShipDetail;
+import com.shigu.main4.order.vo.LogisticsShipVo;
+import com.shigu.main4.order.vo.PostVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.stereotype.Service;
 

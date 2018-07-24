@@ -1,7 +1,5 @@
 package com.shigu.buyer.vo;
 
-import com.shigu.main4.ucenter.webvo.ItemCollectVO;
-
 /**
  * 显示收藏的宝贝
  * Created by zhaohongbo on 17/3/13.

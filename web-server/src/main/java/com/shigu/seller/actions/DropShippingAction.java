@@ -1,7 +1,5 @@
 package com.shigu.seller.actions;
 
-
-import com.shigu.helpcenter.vo.Query;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.seller.services.DropShippingOrderServices;
 import com.shigu.seller.vo.DfQuery;
@@ -15,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * @ProjectName: main-pom

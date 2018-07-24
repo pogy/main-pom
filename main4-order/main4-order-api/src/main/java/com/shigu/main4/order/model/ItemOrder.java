@@ -1,6 +1,5 @@
 package com.shigu.main4.order.model;
 
-import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.vo.*;
 

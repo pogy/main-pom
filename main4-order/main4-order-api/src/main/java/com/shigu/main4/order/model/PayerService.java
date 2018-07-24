@@ -4,8 +4,6 @@ import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.vo.PayApplyVO;
 
-import java.util.List;
-
 /**
  * 支付功能
  * Created by zhaohongbo on 17/6/9.

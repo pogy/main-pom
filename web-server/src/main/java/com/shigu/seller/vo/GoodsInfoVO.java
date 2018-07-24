@@ -62,6 +62,9 @@ public class GoodsInfoVO {
      */
     private String deschtml;
 
+
+    private List<GoodsInfoSkuColorVO> skuSpecs;
+
     public String getGoodsTitle() {
         return goodsTitle;
     }
@@ -158,5 +161,11 @@ public class GoodsInfoVO {
         this.deschtml = deschtml;
     }
 
+    public List<GoodsInfoSkuColorVO> getSkuSpecs() {
+        return this.skuSpecs;
+    }
 
+    public void setSkuSpecs(List<GoodsInfoSkuColorVO> skuSpecs) {
+        this.skuSpecs = skuSpecs;
+    }
 }

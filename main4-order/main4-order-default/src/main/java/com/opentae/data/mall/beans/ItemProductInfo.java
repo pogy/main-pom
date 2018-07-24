@@ -10,6 +10,10 @@ public class ItemProductInfo {
 
     private Long skuId;
 
+    private Long price;
+
+    private Long superPrice;
+
     public Long getPid() {
         return pid;
     }
@@ -24,5 +28,21 @@ public class ItemProductInfo {
 
     public void setSkuId(Long skuId) {
         this.skuId = skuId;
+    }
+
+    public Long getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Long getSuperPrice() {
+        return this.superPrice;
+    }
+
+    public void setSuperPrice(Long superPrice) {
+        this.superPrice = superPrice;
     }
 }

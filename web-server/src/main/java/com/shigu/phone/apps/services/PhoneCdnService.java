@@ -6,7 +6,8 @@ import com.shigu.phone.baseservices.BasePhoneCdnService;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
+
+import java.util.List;
 
 /**
  * cdn服务

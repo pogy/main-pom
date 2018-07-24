@@ -38,6 +38,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -177,7 +181,8 @@ public class ItemOrderImpl implements ItemOrder {
             ItemOrderSub orderSub = subOrderMap.get(vo.getSoid());
             vo.setSubOrderStatus(SubOrderStatus.statusOf(orderSub.getStatus()));
             vo.setNum(vo.getNum());
-            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class, vo.getGoodsId(), vo.getColor(), vo.getSize()).info();
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class,orderSub.getPid(),orderSub.getSkuId()).info();
+            info.setPrice(orderSub.getPrice());
             vo.setProduct(info);
         }
         return vos;
@@ -278,7 +283,7 @@ public class ItemOrderImpl implements ItemOrder {
 
         // 子单总额
         total += subOrdersInfo().stream().mapToLong(vo -> vo.getProduct().getPrice() * vo.getNum()).sum();
-       
+
         // TODO: 包材总额
         /*ItemOrderPackage orderPackage = new ItemOrderPackage();
         orderPackage.setOid(oid);
@@ -372,7 +377,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) throws OrderException {
+    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice,Long userId) throws OrderException {
         for (SubOrderBO bo : subOrders) {
             ItemOrderSub sub=new ItemOrderSub();
             ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, bo.getPid(), bo.getSkuId());

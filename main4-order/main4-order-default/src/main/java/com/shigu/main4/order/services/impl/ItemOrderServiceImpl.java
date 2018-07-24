@@ -36,10 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -180,6 +177,22 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Transactional(rollbackFor = Exception.class)
     public Long createOrder(ItemOrderBO orderBO) throws OrderException {
         // 初始化一个订单
+        ItemOrderSenderExample itemOrderSenderExample=new ItemOrderSenderExample();
+        itemOrderSenderExample.createCriteria().andWebSiteEqualTo(orderBO.getWebSite());
+        List<ItemOrderSender> seller=itemOrderSenderMapper.selectByExample(itemOrderSenderExample);
+        if(seller.size()>0){
+            Long sellerId=orderBO.getSenderId();
+            orderBO.setSenderId(null);
+            for(ItemOrderSender itemOrderSender:seller){
+                if(Objects.equals(sellerId,itemOrderSender.getSenderId())){
+                    orderBO.setSenderId(sellerId);
+                    break;
+                }
+            }
+            if(orderBO.getSenderId()==null){
+                orderBO.setSenderId(seller.get(0).getSenderId());
+            }
+        }
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
         order.setOid(idGenerator(OrderType.XZ));
         //判断订单是淘宝订单还是星座订单
@@ -214,7 +227,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             vo.setNumber(subItemOrderBO.getNum());
             subOrders.add(vo);
         }
-        itemOrder.addSubOrder(subOrders, false);
+        itemOrder.addSubOrder(subOrders, false,order.getUserId());
 
         if (itemOrderSenderMapper.selectByPrimaryKey(orderBO.getSenderId()).getType() == 1) {//查询一下是否代发用户
             ItemOrderSubExample subExample = new ItemOrderSubExample();

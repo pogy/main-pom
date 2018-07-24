@@ -1,15 +1,9 @@
 package com.shigu.tools;
 
-import com.shigu.main4.common.tools.StringUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by wxc on 2017/3/24.

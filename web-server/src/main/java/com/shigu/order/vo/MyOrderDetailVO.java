@@ -1,7 +1,6 @@
 package com.shigu.order.vo;
 
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
 

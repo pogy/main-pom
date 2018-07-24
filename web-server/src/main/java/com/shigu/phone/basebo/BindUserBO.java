@@ -1,6 +1,5 @@
 package com.shigu.phone.basebo;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**

@@ -1,5 +1,3 @@
-import com.opentae.data.mall.beans.GoodsFile;
-import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.services.GoodsFileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

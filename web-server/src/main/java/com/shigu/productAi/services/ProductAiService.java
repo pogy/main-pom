@@ -1,11 +1,6 @@
 package com.shigu.productAi.services;
 
-import cn.productai.api.core.ISearchTag;
-import cn.productai.api.core.ITag;
 import cn.productai.api.core.IWebClient;
-import cn.productai.api.core.entity.AndTag;
-import cn.productai.api.core.entity.SearchTag;
-import cn.productai.api.core.entity.TagBase;
 import cn.productai.api.core.enums.LanguageType;
 import cn.productai.api.core.exceptions.ClientException;
 import cn.productai.api.pai.entity.dataset.DataSetBatchXzAddRequest;

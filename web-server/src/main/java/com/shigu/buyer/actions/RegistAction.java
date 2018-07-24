@@ -191,4 +191,22 @@ public class RegistAction {
         return "login/contract";
     }
 
+    /**
+     * 查看手机号是否已被注册
+     * @param telephone
+     * @return
+     */
+    @RequestMapping("telHasRegisted")
+    @ResponseBody
+    public JSONObject telHasRegisted(String telephone) {
+        if (StringUtils.isEmpty(telephone)) {
+            return JsonResponseUtil.error("手机号不能为空");
+        }
+        if (registerAndLoginService.userCanRegist(telephone , LoginFromType.PHONE)) {
+            return JsonResponseUtil.success();
+        } else {
+            return JsonResponseUtil.error("手机号已被注册");
+        }
+    }
+
 }

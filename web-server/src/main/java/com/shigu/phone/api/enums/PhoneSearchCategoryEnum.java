@@ -1,7 +1,5 @@
 package com.shigu.phone.api.enums;
 
-import com.shigu.search.vo.CateNav;
-
 import java.util.ArrayList;
 import java.util.List;
 
