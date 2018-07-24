@@ -1,14 +1,6 @@
 package com.shigu.main4.order.provcity.test;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.opentae.data.mall.beans.OrderCity;
-import com.opentae.data.mall.beans.OrderProv;
-import com.opentae.data.mall.beans.OrderTown;
-import com.opentae.data.mall.examples.OrderCityExample;
-import com.opentae.data.mall.examples.OrderProvExample;
-import com.opentae.data.mall.examples.OrderTownExample;
 import com.opentae.data.mall.interfaces.OrderCityMapper;
 import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.opentae.data.mall.interfaces.OrderTownMapper;

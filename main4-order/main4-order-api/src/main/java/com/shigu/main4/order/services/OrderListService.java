@@ -1,7 +1,6 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
 

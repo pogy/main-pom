@@ -2,7 +2,6 @@ package com.shigu.phone.apps.services;
 
 import com.openJar.beans.app.AppLoginBackBO;
 import com.openJar.beans.app.AppUser;
-import com.openJar.commons.MD5Attestation;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.*;
@@ -14,7 +13,6 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
-import com.shigu.phone.apps.actions.OrtherLoginAction;
 import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.phone.basebo.BindUserBO;
 import com.shigu.phone.baseservices.BasePhoneUserService;
@@ -38,8 +36,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 类名：PhoneUserService

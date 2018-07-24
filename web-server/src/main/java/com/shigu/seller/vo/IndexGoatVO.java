@@ -1,7 +1,5 @@
 package com.shigu.seller.vo;
 
-import java.util.Date;
-
 /**
  * Created by whx on 2017/6/22 0022.
  */

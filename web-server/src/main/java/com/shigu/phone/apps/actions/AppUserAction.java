@@ -2,7 +2,6 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.*;
 import com.openJar.responses.app.BindUserResponse;
-import com.openJar.responses.app.OtherLoginResponse;
 import com.openJar.responses.app.WxLoginResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.PhoneUserService;

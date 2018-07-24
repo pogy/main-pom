@@ -1,8 +1,5 @@
 package com.shigu.main4.ucenter.util;
 
-
-import org.apache.shiro.crypto.hash.Sha384Hash;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;

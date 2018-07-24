@@ -1,11 +1,8 @@
 package com.shigu.seller.actions;
 
-import com.opentae.data.mall.beans.ShiguShop;
 import com.shigu.main4.common.tools.ShiguPager;
-
 import com.shigu.main4.storeservices.ShopCategoryClassifyService;
 import com.shigu.main4.vo.GoodsVo;
-import com.shigu.main4.vo.TabDatasVo;
 import com.shigu.seller.vo.GoodsCateQueryVo;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;

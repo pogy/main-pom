@@ -8,7 +8,6 @@ import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.OnsaleItem;
-import com.shigu.main4.item.vo.ShopUnprocessItemCount;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

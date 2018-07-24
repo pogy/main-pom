@@ -36,6 +36,11 @@ public class OrderManageProcessImplTest extends BaseSpringTest {
 
     }
 
+    @Test
+    public void t(){
+        OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, 62018061276271L);
+        orderModel.timeout();
+    }
 
     @Test
     public void dealWaitSendOrderDisplay_test()throws DaifaException {

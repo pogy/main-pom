@@ -1,7 +1,5 @@
 package com.shigu.buyer.bo;
 
-import com.shigu.tools.EncodeParamter;
-
 import java.io.Serializable;
 
 /**

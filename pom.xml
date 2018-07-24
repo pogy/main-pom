@@ -6,7 +6,8 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.2.4-SNAPSHOT</version>
+    <version>4.2.6-SNAPSHOT</version>
+    <!--versions:set -DnewVersion=4.2.5-SNAPSHOT-->
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-common</module>
@@ -27,6 +28,7 @@
         <module>jdimg-server</module>
         <module>jdimg-sdk</module>
         <module>main4-photo</module>
+        <module>main4-package</module>
         <module>sn-sdk</module>
         <module>sn-server</module>
     </modules>
@@ -54,6 +56,8 @@
         <main4-daifa-default.version>${project.version}</main4-daifa-default.version>
         <main4-photo-api.version>${project.version}</main4-photo-api.version>
         <main4-photo-default.version>${project.version}</main4-photo-default.version>
+        <main4-package-api.version>${project.version}</main4-package-api.version>
+        <main4-package-defaule.version>${project.version}</main4-package-defaule.version>
         <main4-app-sdk.version>${project.version}</main4-app-sdk.version>
         <daifa-sdk.version>${project.version}</daifa-sdk.version>
         <jdimg-sdk.version>${project.version}</jdimg-sdk.version>

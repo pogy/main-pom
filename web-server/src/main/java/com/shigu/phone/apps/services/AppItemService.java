@@ -1,15 +1,21 @@
 package com.shigu.phone.apps.services;
 
 import com.openJar.exceptions.OpenException;
-import com.openJar.requests.app.*;
-import com.openJar.responses.app.*;
+import com.openJar.requests.app.DelItemCollectRequest;
+import com.openJar.requests.app.GoodsCollectRequest;
+import com.openJar.requests.app.ItemCollectRequest;
+import com.openJar.responses.app.DelItemCollectResponse;
+import com.openJar.responses.app.GoodsCollectResponse;
+import com.openJar.responses.app.ItemCollectResponse;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.phone.baseservices.BaseItemService;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by pc on 2017-08-29.

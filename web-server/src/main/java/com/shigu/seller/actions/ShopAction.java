@@ -1,11 +1,8 @@
 package com.shigu.seller.actions;
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.GoatLicense;
 import com.opentae.data.mall.beans.GoodsFile;
-import com.opentae.data.mall.beans.ShiguGoodsModified;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.interfaces.ShiguGoodsModifiedMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.UserInfoVO;
@@ -22,16 +19,20 @@ import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.item.bo.StoreGoodsListSearchBO;
+import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.exceptions.ShowCaseException;
+import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ItemShowCaseService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.*;
+import com.shigu.main4.item.vo.news.NewPullSynItemVO;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopLicenseService;
@@ -76,7 +77,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.elasticsearch.action.fieldstats.FieldStats;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,6 +87,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -189,6 +190,9 @@ public class ShopAction {
     RedisIO redisIO;
     @Autowired
     DataPackageImportService dataPackageImportService;
+    @Autowired
+    NewItemAddOrUpdateService newItemAddOrUpdateService;
+
 
 
     /**
@@ -549,7 +553,7 @@ public class ShopAction {
         Long itemId;
         //包装bo
         try {
-            SynItem synItem = bo.getOffer().parseToSynItem(dataPackageImportService);
+            NewPushSynItemBO synItem = bo.getOffer().parseToSynItem(dataPackageImportService);
             synItem.setShopId(shopSession.getShopId());
             synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(), synItem.getProps(), synItem.getInputStr(),
                     synItem.getInputPids(), synItem.getPropertyAlias()));
@@ -564,8 +568,10 @@ public class ShopAction {
             synItem.setListTime(created);
             //淘宝下架时间，手动发布商品默认为七天后
             synItem.setDelistTime(DateUtil.addDay(created,7));
-            synItem.setPriceString(bo.getOffer().getLowestLiPrice());
-            itemId=itemAddOrUpdateService.userAddItem(synItem);
+            if(StringUtils.isNotBlank(bo.getOffer().getLowestLiPrice())){
+                synItem.setPriceString(bo.getOffer().getLowestLiPrice());
+            }
+            itemId=newItemAddOrUpdateService.userAddItem(synItem);
             //保存上传记录
             EverUsedCatForAdd usedCat = new EverUsedCatForAdd();
             usedCat.setCid(synItem.getCid());
@@ -595,7 +601,7 @@ public class ShopAction {
         if (shopSession.getType().equals(1)) {
             throw new Main4Exception("淘宝店铺不支持手工编辑");
         }
-        SynItem synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGoodsId()), shopSession);
+        NewPullSynItemVO synItem = shopItemModService.getGoodsOffer(Long.valueOf(bo.getGoodsId()), shopSession);
         if(synItem == null){
             throw new Main4Exception("获取商品数据失败");
         }
@@ -648,28 +654,37 @@ public class ShopAction {
             }
         }
         String props = synItem.getProps();//商品属性ID串 shigu_goods_extends_hz.props //商品属性@ 格式：pid:vid;pid:vid',
-//        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
+        String propertyAlias = synItem.getPropertyAlias();//商品属性别名 '属性值别名@比如颜色的自定义名称',shigu_goods_extends_hz.property_alias
         String propsName = synItem.getPropsName();//商品属性名称@标识着props内容里面的pid和vid所对应的名称。格式为：\r\n\r\npid1:vid1:pid_name1:vid_name1;
         List<String> pCollect = new ArrayList<>();//总的pid:vid 的集合
         if(props != null){
-            for (String p : props.split(";")) {
-                pCollect.add(p);
-            }
+            pCollect.addAll(Arrays.asList(props.split(";")));
         }
-        Map<String , String> map = new HashMap<>();//<pidvid ,vid_name1>的map
-        if(propsName != null){
+        Map<String , String> propNameMap = new HashMap<>();//<pidvid ,vid_name1>的map
+        if(StringUtils.isNotBlank(propsName)){
             for (String pn : propsName.split(";")) {
                 String[] pnu = pn.split(":");
-                map.put(pnu[0]+":"+pnu[1],pnu[3]);
+                propNameMap.put(pnu[0]+":"+pnu[1],pnu[3]);
             }
         }
+        Map<String , String> propAMap = new HashMap<>();//<pidvid ,vid_name1>的map
+        if(StringUtils.isNotBlank(propertyAlias)){
+            for (String pn : propertyAlias.split(";")) {
+                String[] pnu = pn.split(":");
+                propAMap.put(pnu[0]+":"+pnu[1],pnu[2]);
+            }
+        }
+
         for (String pidvid:pCollect) {
-            if(propsName.indexOf(pidvid) != -1){//判断是否包含,没有找到返回-1
+            if(propsName.contains(pidvid)){//判断是否包含,没有找到返回-1
                 //补充sku
                 for (SKUVO sku:skuAttribute){
                     for (SKUAttrVO skuvo : sku.getFormitems()){
                         if(skuvo.getKey().equals(pidvid)){
                             skuvo.setChecked(true);
+                            if(StringUtils.isNotBlank(propAMap.get(pidvid))){
+                                skuvo.setCnname(propAMap.get(pidvid));
+                            }
                         }
                     }
                 }
@@ -702,6 +717,31 @@ public class ShopAction {
         goodsInfoVO.setSkuAttribute(skuAttribute);//SKU列表
         //  SKU列表
         goodsInfoVO.setFormAttribute(formAttribute);//商品属性数据
+        //独立sku
+        List<SingleSkuVO> singleSkus = synItem.getSingleSkus();
+        List<GoodsInfoSkuColorVO> singleProps=new ArrayList<>();
+        singleSkus.forEach(singleSkuVO -> {
+            GoodsInfoSkuSizeVO goodsInfoSkuSizeVO=new GoodsInfoSkuSizeVO();
+            goodsInfoSkuSizeVO.setNum(singleSkuVO.getStockNum());
+            goodsInfoSkuSizeVO.setPrice(singleSkuVO.getPriceString());
+            goodsInfoSkuSizeVO.setSizeId(singleSkuVO.getSizePid()+"_"+singleSkuVO.getSizeVid());
+            goodsInfoSkuSizeVO.setSizeText(singleSkuVO.getThisSize());
+            String cpv=singleSkuVO.getColorPid()+"_"+singleSkuVO.getColorVid();
+            for(GoodsInfoSkuColorVO v:singleProps){
+                if(v.getColorId().equals(cpv)){
+                    v.getSizes().add(goodsInfoSkuSizeVO);
+                    return;
+                }
+            }
+            GoodsInfoSkuColorVO vo=new GoodsInfoSkuColorVO();
+            vo.setColorId(cpv);
+            vo.setColorText(singleSkuVO.getThisColor());
+            vo.setSizes(new ArrayList<>());
+            vo.getSizes().add(goodsInfoSkuSizeVO);
+            singleProps.add(vo);
+        });
+        goodsInfoVO.setSkuSpecs(singleProps);
+
         //店内类目暂时不要
         model.addAttribute("cateText",goodsSendService.selCatPath(synItem.getCid()));
         model.addAttribute("cateId",synItem.getCid());
@@ -732,7 +772,7 @@ public class ShopAction {
         }
         //包装bo
         try {
-            SynItem synItem=bo.getOffer().parseToSynItem(dataPackageImportService);
+            NewPushSynItemBO synItem=bo.getOffer().parseToSynItem(dataPackageImportService);
             synItem.setGoodsId(Long.valueOf(bo.getOffer().getGoodsId()));
             synItem.setShopId(shopSession.getShopId());
             synItem.setPropsName(goodsSendService.parsePropName(synItem.getCid(),synItem.getProps(),synItem.getInputStr(),
@@ -741,8 +781,10 @@ public class ShopAction {
             synItem.setFloorId(shopSession.getFloorId());
             synItem.setWebSite(shopSession.getWebSite());
             synItem.setItemFrom(ItemFrom.MEMBER);
-            synItem.setPriceString(bo.getOffer().getLowestLiPrice());
-            itemAddOrUpdateService.userUpdateItem(synItem);
+            if(StringUtils.isNotBlank(bo.getOffer().getLowestLiPrice())) {
+                synItem.setPriceString(bo.getOffer().getLowestLiPrice());
+            }
+            newItemAddOrUpdateService.userUpdateItem(synItem);
 
         } catch (ItemModifyException e) {
             throw new JsonErrException(e.getMessage());
@@ -889,7 +931,7 @@ public class ShopAction {
         if (result.hasErrors()) {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
-        SynItem synItem = new SynItem();
+        NewPushSynItemBO synItem = new NewPushSynItemBO();
         synItem.setGoodsId(bo.getGoodsId());
         synItem.setTitle(bo.getTitle());
         synItem.setShopId(shopSession.getShopId());
@@ -898,7 +940,7 @@ public class ShopAction {
 //        synItem.setNumIid(40566999083L);
         synItem.setGoodsNo(bo.getGoodsNo());
         try {
-            itemAddOrUpdateService.userUpdateItem(synItem);
+            newItemAddOrUpdateService.userUpdateItem(synItem);
         } catch (ItemModifyException e) {
             logger.error("更新商品失败", e);
             throw new JsonErrException("更新商品失败");
@@ -943,7 +985,7 @@ public class ShopAction {
             throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         ShopSession shopSession = getShopSession(session);
-        SynItem synItem = new SynItem();
+        NewPushSynItemBO synItem = new NewPushSynItemBO();
         synItem.setGoodsId(bo.getGoodsId());
         synItem.setShopId(shopSession.getShopId());
         if (bo.getType() == 1) {
@@ -954,9 +996,9 @@ public class ShopAction {
         synItem.setWebSite(shopSession.getWebSite());
         try {
             if(bo.getType()==1){
-                itemAddOrUpdateService.userUpdateItem(synItem,true);
+                newItemAddOrUpdateService.userUpdateItem(synItem,true);
             }else{
-                itemAddOrUpdateService.userUpdateItem(synItem);
+                newItemAddOrUpdateService.userUpdateItem(synItem);
             }
             shopsItemService.clearShopCountCache(shopSession.getShopId(), ShopCountRedisCacheEnum.SHOP_NO_LOW_PRICE_INDEX_);
         } catch (ItemModifyException e) {

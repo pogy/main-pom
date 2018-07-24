@@ -4,24 +4,21 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.ShopCountRedisCacheEnum;
 import com.shigu.main4.item.services.ShopsItemService;
-import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.bo.BigPicOuterLinkBO;
 import com.shigu.seller.bo.OnsaleItemBO;
 import com.shigu.seller.services.GoodsFileService;
 
+import com.shigu.seller.services.VideoService;
 import com.shigu.seller.vo.GoodsFileSearchVO;
 import com.shigu.seller.vo.GoodsFileVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.tools.Arith;
 import com.shigu.tools.JsonResponseUtil;
-
 import com.shigu.tools.KeyWordsUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,11 +47,20 @@ public class GoodsFileAction {
     GoodsFileService goodsFileService;
 
     @Autowired
+    VideoService videoService;
+
+    @Autowired
     ShopsItemService shopsItemService;
 
-    @RequestMapping("seller/getAccessInfo")
+    @RequestMapping(value = {"seller/getAccessInfo","seller/getVideoAccessInfo"})
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Map<String, String> infoMap = goodsFileService.createPostSignInfo(logshop(request.getSession()).getShopId());
+        Map<String, String> infoMap=new HashMap<>();
+        String url=request.getRequestURL().toString();
+        if(url.equals(url.substring(0,url.indexOf(".com/"))+".com/seller/getVideoAccessInfo.json")){
+            infoMap= videoService.createPostSignInfo(logshop(request.getSession()).getShopId());
+        }else{
+            infoMap = goodsFileService.createPostSignInfo(logshop(request.getSession()).getShopId());
+        }
         JSONObject jsonInfo = JSONObject.fromObject(infoMap);
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST");
@@ -286,13 +293,19 @@ public class GoodsFileAction {
 
      * @return
      */
-    @RequestMapping("seller/getSizeInfo")
+    @RequestMapping(value = {"seller/getSizeInfo","seller/getVideoSizeInfo"})
     @ResponseBody
-    public JSONObject getSizeInfo( HttpSession session) {
+    public JSONObject getSizeInfo( HttpSession session,HttpServletRequest request) {
         JSONObject obj= JsonResponseUtil.success();
         Long shopId=logshop(session).getShopId();
-        obj.element("totalSize", goodsFileService.shopDataSize(shopId)/1024);
-        obj.element("useSize", goodsFileService.getSizeInfo(shopId));
+        String url=request.getRequestURL().toString();
+        if(url.equals(url.substring(0,url.indexOf(".com/"))+".com/seller/getSizeInfo.json")){
+            obj.element("totalSize", goodsFileService.shopDataSize(shopId)/1024);
+            obj.element("useSize", goodsFileService.getSizeInfo(shopId));
+        }else {
+            obj.element("totalSize", videoService.shopDataSize(shopId) / 1024);
+            obj.element("useSize", videoService.getSizeInfo(shopId));
+        }
         return obj;
     }
 

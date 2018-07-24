@@ -1,11 +1,8 @@
 package com.shigu.spread.services;
 
-
 import com.shigu.spread.exceptions.SpreadCacheException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.stereotype.Service;
 
 /**
  * 首页的缓存

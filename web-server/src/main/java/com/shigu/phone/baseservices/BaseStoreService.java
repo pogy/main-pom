@@ -4,7 +4,6 @@ import com.openJar.beans.app.*;
 import com.openJar.exceptions.OpenException;
 import com.opentae.data.mall.beans.ShiguStoreCollect;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguStoreCollectMapper;
 import com.shigu.main4.cdn.services.CdnService;
@@ -27,8 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**

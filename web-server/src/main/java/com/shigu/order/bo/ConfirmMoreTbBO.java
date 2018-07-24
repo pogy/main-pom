@@ -1,7 +1,6 @@
 package com.shigu.order.bo;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 确认页面的参数

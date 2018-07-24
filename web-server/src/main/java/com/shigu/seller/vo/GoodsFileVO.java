@@ -1,9 +1,6 @@
 package com.shigu.seller.vo;
 
-
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Date;
 
 /**
  * Created by Administrator on 2017/7/26.

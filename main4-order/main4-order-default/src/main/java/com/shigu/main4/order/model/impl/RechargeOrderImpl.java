@@ -2,15 +2,13 @@ package com.shigu.main4.order.model.impl;
 
 import com.openJar.requests.sgpay.RechargeFromOrderRequest;
 import com.openJar.responses.sgpay.RechargeFromOrderResponse;
-import com.opentae.data.mall.beans.OrderPayApply;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
 import com.shigu.main4.order.enums.PayType;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.RechargeOrder;
-import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,7 +47,7 @@ public class RechargeOrderImpl implements RechargeOrder {
     }
 
     @Override
-    public void addSubOrder(List<SubOrderBO> subOrders, boolean needReprice) {
+    public void addSubOrder(List<SubOrderBO> subOrders, boolean needReprice, Long userId) throws OrderException {
 
     }
 
