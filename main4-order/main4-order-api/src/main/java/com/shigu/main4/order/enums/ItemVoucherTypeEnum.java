@@ -8,7 +8,7 @@ package com.shigu.main4.order.enums;
  */
 public enum  ItemVoucherTypeEnum {
 
-    INVITE("invite_${userId}","${userId}","邀请红包"),
+    INVITE("INVITE_VOUCHER_TAG","${userId}","邀请红包"),
 
             ;
 
