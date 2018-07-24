@@ -6,7 +6,10 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.mall.beans.ShiguActivityApprove;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 public class ShiguActivityApproveExample extends SgExample<ShiguActivityApproveExample.Criteria> {
     public static final Class<ShiguActivityApprove> beanClass = ShiguActivityApprove.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);

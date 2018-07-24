@@ -4,8 +4,6 @@ import com.opentae.core.mybatis.SgExample;
 import com.shigu.main4.common.tools.ShiguPager;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Created by zhaohongbo on 17/3/9.
  */

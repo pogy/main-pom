@@ -1,7 +1,8 @@
 package com.shigu.buyer.vo;
 
-import com.shigu.main4.ucenter.vo.DataPackage;
-import com.shigu.main4.ucenter.vo.PackageItem;
+
+import com.shigu.main4.packages.bo.DataPackage;
+import com.shigu.main4.packages.bo.PackageItem;
 
 import java.util.ArrayList;
 import java.util.List;

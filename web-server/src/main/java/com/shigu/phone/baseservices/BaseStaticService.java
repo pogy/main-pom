@@ -1,7 +1,10 @@
 package com.shigu.phone.baseservices;
 
 import com.google.common.collect.ImmutableSet;
-import com.openJar.beans.app.*;
+import com.openJar.beans.app.AppCat;
+import com.openJar.beans.app.AppCatGroup;
+import com.openJar.beans.app.AppSearchNav;
+import com.openJar.beans.app.AppSite;
 import com.opentae.data.mall.beans.ShiguSite;
 import com.opentae.data.mall.examples.ShiguSiteExample;
 import com.opentae.data.mall.interfaces.ShiguSiteMapper;

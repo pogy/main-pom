@@ -94,13 +94,5 @@
     <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <bean id="workerMan" class="com.shigu.main4.ucenter.util.WorkerMan" >
-        <!--每个任务最大执行时间 单位秒-->
-        <property name="timeOut" value="600" />
-        <!--队列最大长度默认200-->
-        <property name="maxQueue" value="200" />
-        <!--线程池初始线程数-->
-        <property name="threadNum" value="8" />
-    </bean>
     <import resource="../../ucenter.xml"/>
 </beans>

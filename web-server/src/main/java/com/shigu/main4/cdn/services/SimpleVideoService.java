@@ -22,8 +22,6 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Date;
 
-import static com.opentae.data.mall.examples.ShiguShopApplyExample.tbUrl;
-
 /**
  * 类名：SimpleVideoService
  * 类路径：com.shigu.main4.cdn.services.SimpleVideoService

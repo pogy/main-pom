@@ -1,7 +1,5 @@
 package com.shigu.phone.baseservices;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.beans.app.AppItemKv;
 import com.openJar.exceptions.OpenException;
@@ -9,7 +7,6 @@ import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.opentae.data.mall.beans.ShiguOuterMarket;
 import com.opentae.data.mall.interfaces.ShiguGoodsCollectMapper;
 import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
-import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -22,7 +19,6 @@ import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.services.UserCollectService;
-import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
@@ -214,11 +210,11 @@ public class BasePhoneGoodsSearchService {
             }
         }
         vo.setGoodsLicenses(list);
-        vo.setColors(JSONArray.parseArray(goods.getColorsMeta()).parallelStream().map(o -> {
-            JSONObject color = (JSONObject) o;
-            return color.get("text").toString();
-        }).collect(Collectors.toList()));
-        vo.setSize(JSONArray.parseArray(goods.getSizesMeta()).parallelStream().map(Object::toString).collect(Collectors.toList()));
+//        vo.setColors(JSONArray.parseArray(goods.getColorsMeta()).parallelStream().map(o -> {
+//            JSONObject color = (JSONObject) o;
+//            return color.get("text").toString();
+//        }).collect(Collectors.toList()));
+//        vo.setSize(JSONArray.parseArray(goods.getSizesMeta()).parallelStream().map(Object::toString).collect(Collectors.toList()));
         vo.setItemKvs(goods.getNormalAttrs().parallelStream().map(o -> {
             AppItemKv itemKv = new AppItemKv();
             itemKv.setKey(o.getName());

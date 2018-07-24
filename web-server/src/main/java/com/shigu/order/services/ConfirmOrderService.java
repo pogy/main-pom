@@ -2,8 +2,6 @@ package com.shigu.order.services;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.opentae.core.mybatis.example.MultipleExample;
-import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.ItemOrderSenderExample;
@@ -13,13 +11,14 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.common.util.UUIDGenerator;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
-import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.model.Order;
 import com.shigu.main4.order.process.ItemCartProcess;
 import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -27,13 +26,13 @@ import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.order.bo.*;
+import com.shigu.order.bo.ConfirmBO;
+import com.shigu.order.bo.ConfirmMoreTbBO;
+import com.shigu.order.bo.ConfirmOrderBO;
+import com.shigu.order.bo.ConfirmSubOrderBO;
 import com.shigu.order.vo.*;
-import com.shigu.order.vo.ServiceInfoVO;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import net.sf.json.JSONString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,6 +85,8 @@ public class ConfirmOrderService {
 
     @Autowired
     private BuyerAddressMapper buyerAddressMapper;
+    @Autowired
+    NewShowForCdnService newShowForCdnService;
 
     private static String ORDER_EXPRESS_ADDRESS = "order_express_address";
 
@@ -204,6 +205,7 @@ public class ConfirmOrderService {
         Map<Long, CartVO> productsMap = BeanMapper.list2Map(orderSubmitVo.getProducts(), "cartId", Long.class);
         List<ConfirmOrderBO> confirmOrderBOS = bo.getOrders();
         String webSite = null;
+        Map<Long,NewCdnItem> longNewCdnItemMap=new HashMap<>();
         for (ConfirmOrderBO confirmOrderBO : confirmOrderBOS) {
             List<ConfirmSubOrderBO> confirmSubOrderBOS = confirmOrderBO.getChildOrders();
             //按店分子单信息
@@ -219,6 +221,35 @@ public class ConfirmOrderService {
                 SubItemOrderBO subOrder = new SubItemOrderBO();
                 subOrder.setMark(confirmOrderBO.getRemark());
                 ItemProductVO productVO = productsMap.get(Long.parseLong(confirmSubOrderBO.getId()));
+                NewCdnItem cdnItem = longNewCdnItemMap.get(productVO.getGoodsId());
+                if(cdnItem==null){
+                    cdnItem=newShowForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
+                    if(cdnItem!=null) {
+                        cdnItem.setSingleSkus(newShowForCdnService.selSingleSkus(productVO.getGoodsId()));
+                    }
+                    longNewCdnItemMap.put(productVO.getGoodsId(),cdnItem);
+                }
+                if(cdnItem==null){
+                    throw new JsonErrException("存在无效商品");
+                }else{
+                    boolean err=true;
+                    List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
+                    for(SingleSkuVO singleSkuVO:singleSkus){
+                        String color = singleSkuVO.getThisColor();
+                        String size = singleSkuVO.getThisSize();
+                        Integer stockNum=singleSkuVO.getStatus()==0?0:singleSkuVO.getStockNum();
+                        if(color.equals(productVO.getSelectiveSku().getColor())&&size.equals(productVO.getSelectiveSku().getSize())){
+                            if(stockNum==0){
+                                throw new JsonErrException("存在无效商品");
+                            }
+                            err=false;
+                            break;
+                        }
+                    }
+                    if(err){
+                        throw new JsonErrException("存在无效商品");
+                    }
+                }
                 subOrder.setNum(num);
                 subOrder.setPid(productVO.getPid());
                 subOrder.setTitle(productVO.getTitle());

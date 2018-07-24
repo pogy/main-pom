@@ -2,17 +2,11 @@ package com.shigu.main4.order.model.impltest;
 
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.PostVO;
 import com.shigu.main4.tools.SpringBeanFactory;
-import net.sf.json.JSONObject;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * Created by Admin on 2017/7/19.

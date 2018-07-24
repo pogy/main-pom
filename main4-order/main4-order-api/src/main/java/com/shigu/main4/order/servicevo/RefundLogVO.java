@@ -3,7 +3,6 @@ package com.shigu.main4.order.servicevo;
 import com.shigu.main4.order.zfenums.UserTypeEnum;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 退款日志

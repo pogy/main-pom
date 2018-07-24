@@ -1,15 +1,7 @@
 package com.shigu.seller.vo;
 
 import com.shigu.main4.vo.FitmentModule;
-import com.shigu.main4.vo.fitment.CategoryModule;
-import com.shigu.main4.vo.fitment.CustomModule;
-import com.shigu.main4.vo.fitment.ItemPromoteModule;
-import com.shigu.main4.vo.fitment.ItemSearchModule;
-import com.shigu.main4.vo.fitment.SearchItemsModule;
-import com.shigu.main4.vo.fitment.ShopBanner;
-import com.shigu.main4.vo.fitment.SlideshowModule;
-import com.shigu.main4.vo.fitment.ViwepagerModule;
-import com.shigu.main4.vo.fitment.WideImageModule;
+import com.shigu.main4.vo.fitment.*;
 import freemarker.template.Template;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 

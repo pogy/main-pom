@@ -1,6 +1,5 @@
 package com.shigu.seller.bo;
 
-import com.shigu.tools.EncodeParamter;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import javax.validation.constraints.NotNull;

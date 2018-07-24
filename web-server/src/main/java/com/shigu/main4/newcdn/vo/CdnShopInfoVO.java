@@ -1,7 +1,5 @@
 package com.shigu.main4.newcdn.vo;
 
-import java.util.List;
-
 /**
  * Created by zf on 2017/7/25.
  */

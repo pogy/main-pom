@@ -19,13 +19,10 @@ import com.shigu.phone.api.enums.PhoneCatSearchEnum;
 import com.shigu.phone.api.enums.PhoneCategoryEnum;
 import com.shigu.phone.api.enums.PhoneSearchCategoryEnum;
 import com.shigu.phone.baseservices.BaseStaticService;
-import com.shigu.phone.wrapper.WrapperUtil;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 

@@ -191,10 +191,16 @@
             </#if>
         </li>
         <li class="xzPrice yahei borderBot">
-            <#if childOrder.xzPrice??>
-            <p class="fs14">&yen; ${childOrder.xzPrice!}</p>
+            <#if childOrder.goodsType == 1>
+            <p class="fs12 fcF40">商品已下架</p>
+            <#elseif childOrder.goodsType == 2>
+            <p class="fs12 fcF40">该颜色尺码已失效</p>
             <#else>
-            <p class="fs12 fcF40">暂未关联</p>
+                <#if childOrder.xzPrice??>
+                <p class="fs14">&yen; ${childOrder.xzPrice!}</p>
+                <#else>
+                <p class="fs12 fcF40">暂未关联</p>
+                </#if>
             </#if>
         </li>
         <li class="num fs14 borderBot">${childOrder.num!}</li>

@@ -1,6 +1,6 @@
 package com.shigu.phone.apps.services;
 
-import com.openJar.beans.app.*;
+import com.openJar.beans.app.AppMarket;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.MarketsRequest;
 import com.openJar.requests.app.OneShopRequest;

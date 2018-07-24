@@ -3,8 +3,6 @@ package com.item.test.wxc;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.opentae.data.mall.beans.ESGoods;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguShop;
 import com.shigu.main4.item.vo.SearchItem;
 import org.junit.Test;
 import org.slf4j.Logger;

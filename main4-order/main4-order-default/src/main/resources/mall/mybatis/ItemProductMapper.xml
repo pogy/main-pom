@@ -5,7 +5,9 @@
 	<select	id="selProduct" resultType="com.opentae.data.mall.beans.ItemProductInfo">
 		SELECT
 			a.pid,
-			b.sku_id
+			b.sku_id,
+			b.price,
+			a.price super_price
 		FROM
 			item_product a,
 			item_product_sku b

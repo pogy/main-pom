@@ -1,7 +1,5 @@
 package com.shigu.main4.order.model;
 
-import com.shigu.main4.order.exceptions.OrderException;
-
 import java.util.List;
 import java.util.Map;
 

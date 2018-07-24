@@ -49,35 +49,6 @@
     </div>
     <div class="formData fcF40 errorWarn">不能超过60个字符</div>
 </div>
-<div class="formPriceAndGoodsNo clearfix">
-    <label class="formKey"><i>*</i>批发价与货号：</label>
-    <div class="formPriceAGnInfoCon clearfix fl">
-        <div class="formInput formInprice fl">
-            <label class="formKey"><i>*</i>批发价</label>
-            <div class="formData">
-                <input id="piPrice" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
-            </div>
-        </div>
-        <div class="formInput formCount fl">
-            <label class="formKey"><i>*</i>数量</label>
-            <div class="formData">
-                <input id="quantity" type="text" value="" maxlength="12" name="_fma.pu._0.q" class="input">
-            </div>
-        </div>
-        <div class="formInput formOid fl">
-            <label class="formKey"><i>*</i>商品货号</label>
-            <div class="formData">
-                <input id="goodsNo" type="text" value="" maxlength="15" name="_fma.pu._0.o" class="input">
-            </div>
-        </div>
-        <div class="formInput formOutprice fl">
-            <label class="formKey">电商最低零售价</label>
-            <div class="formData">
-                <input id="buynow" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
-            </div>
-        </div>
-    </div>
-</div>
 <#if webSite != 'qz'>
 <div class="goodsFabric clearfix">
     <label class="formKey"><i>*</i>材料成分：</label>
@@ -157,6 +128,78 @@
     </div>
 </div>
 </#list>
+<div class="editGoodsSkuDetail formSkuDetail clearfix">
+    <label class="formKey"></label>
+    <div class="formData">
+        <h5 class="fc3">宝贝销售规格：</h5>
+        <p class="fc9 tip">该类目下：颜色，尺码，请全选或全不选，如果只选一部分则无法保存对应的价格和库存；库存为0的宝贝规格，在商品详情页不能展示</p>
+        <div class="batchSkuBox">
+            <div class="batchEdit">
+                <label class="fc3">批量填充：</label>
+                <input type="text" class="fmInput fmInput-sm pPrice" placeholder="价格">
+                <input type="text" class="fmInput fmInput-sm batchEditNum" placeholder="数量">
+<#list [{}] as $it>
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <button type="button"
+    </#if>
+    class="fmButton
+         fmButton-sm
+         fmButton-blue
+         batchBtn"
+        <#if $it.disabled == true>disabled="disabled"</#if>
+        <#if $it.dataId??>
+            data-id="${$it.dataId!}"
+        </#if>
+        <#if $it.title??>
+            title=""
+        </#if>
+        <#if $it.id??>
+            id=""
+        </#if>
+>
+        确定
+    <#if $it.href??>
+    </a>
+    <#else>
+    </button>
+    </#if>
+</#list>
+            </div>
+            <div class="skuList"></div>
+        </div>
+    </div>
+</div>
+<div class="formPriceAndGoodsNo clearfix">
+    <label class="formKey"><i>*</i>批发价与货号：</label>
+    <div class="formPriceAGnInfoCon clearfix fl">
+        <div class="formInput formInprice fl">
+            <label class="formKey"><i>*</i>批发价</label>
+            <div class="formData">
+                <input id="piPrice" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
+            </div>
+        </div>
+        <div class="formInput formCount fl">
+            <label class="formKey"><i>*</i>数量</label>
+            <div class="formData">
+                <input id="quantity" type="text" value="" maxlength="12" name="_fma.pu._0.q" class="input">
+            </div>
+        </div>
+        <div class="formInput formOid fl">
+            <label class="formKey"><i>*</i>商品货号</label>
+            <div class="formData">
+                <input id="goodsNo" type="text" value="" maxlength="15" name="_fma.pu._0.o" class="input">
+            </div>
+        </div>
+        <div class="formInput formOutprice fl">
+            <label class="formKey">电商最低零售价</label>
+            <div class="formData">
+                <input id="buynow" type="text" value="" maxlength="12" name="_fma.pu._0.m" class="input">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="formInput formPic">
     <label class="formKey">宝贝图片：</label>
     <div class="formData">

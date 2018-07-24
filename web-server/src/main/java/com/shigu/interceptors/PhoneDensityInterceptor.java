@@ -2,8 +2,6 @@ package com.shigu.interceptors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * 发送手机验证码的拦截器

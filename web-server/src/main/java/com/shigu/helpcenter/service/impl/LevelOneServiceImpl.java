@@ -1,11 +1,8 @@
 package com.shigu.helpcenter.service.impl;
 
-
 import com.opentae.data.mall.beans.ShiguHelpcenterLevel1;
 import com.opentae.data.mall.examples.ShiguHelpcenterLevel1Example;
 import com.opentae.data.mall.interfaces.ShiguHelpcenterLevel1Mapper;
-
-
 import com.shigu.helpcenter.service.LevelOneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
