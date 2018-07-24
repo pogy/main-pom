@@ -42,6 +42,9 @@ public class InvitedUser implements Serializable {
     }
 
     public String getHeadImg() {
+        if (headImg == null) {
+            return "http://style.571xz.com/v6/fxs/css/img/DefaultImg.jpg";
+        }
         return headImg;
     }
 
