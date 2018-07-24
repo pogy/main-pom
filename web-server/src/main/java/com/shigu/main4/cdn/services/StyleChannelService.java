@@ -29,7 +29,6 @@ import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.main4.vo.ShopShow;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
-import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
 import com.shigu.spread.services.SpreadService;

@@ -9,7 +9,6 @@ import com.shigu.main4.photo.process.PhotoWorksProcess;
 import com.shigu.main4.photo.vo.PhotoWorkDetailVO;
 import com.shigu.main4.photo.vo.PhotoWorksUpdateVO;
 import com.shigu.main4.photo.vo.PhotoWorksVO;
-import com.shigu.photo.bo.PhotoWorksSearchBO;
 import com.shigu.photo.vo.PhotoWorksChangeVO;
 import com.shigu.photo.vo.PhotoWorksDetailWebVO;
 import com.shigu.photo.vo.PhotoWorksSearchVO;

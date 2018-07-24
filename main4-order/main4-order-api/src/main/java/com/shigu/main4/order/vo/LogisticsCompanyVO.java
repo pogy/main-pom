@@ -1,7 +1,6 @@
 package com.shigu.main4.order.vo;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 物流公司

@@ -9,7 +9,6 @@ import com.opentae.data.mall.examples.OrderPayExample;
 import com.opentae.data.mall.examples.OrderPayRelationshipExample;
 import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;

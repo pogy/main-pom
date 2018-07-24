@@ -2,10 +2,11 @@ package com.shigu.phone.baseservices;
 
 import com.openJar.beans.app.AppUser;
 import com.openJar.exceptions.OpenException;
-import com.openJar.responses.app.*;
-import com.opentae.data.mall.beans.*;
+import com.openJar.responses.app.ForgetPasswordResponse;
+import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.examples.MemberLicenseExample;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.interfaces.MemberLicenseMapper;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;

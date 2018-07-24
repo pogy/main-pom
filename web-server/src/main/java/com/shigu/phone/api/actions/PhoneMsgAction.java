@@ -2,11 +2,8 @@ package com.shigu.phone.api.actions;
 
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
-import com.shigu.session.main4.PhoneVerify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 类名：PhoneMsgAction

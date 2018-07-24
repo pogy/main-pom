@@ -1,7 +1,5 @@
 package com.shigu.productAi.beans;
 
-import com.shigu.main4.vo.fitment.ImageInfo;
-
 import java.util.List;
 
 /**

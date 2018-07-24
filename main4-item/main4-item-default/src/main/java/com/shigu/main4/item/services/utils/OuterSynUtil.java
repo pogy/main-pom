@@ -1,6 +1,5 @@
 package com.shigu.main4.item.services.utils;
 
-import com.aliyun.openservices.log.LogService;
 import com.opentae.data.mall.beans.ShiguGoodsModified;
 import com.opentae.data.mall.beans.ShiguGoodsSoldout;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;

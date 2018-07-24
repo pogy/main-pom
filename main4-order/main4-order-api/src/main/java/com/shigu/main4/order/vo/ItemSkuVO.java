@@ -15,6 +15,8 @@ public class ItemSkuVO implements Serializable{
 
     private String size;
 
+    private Long price;
+
     public Long getSkuId() {
         return skuId;
     }
@@ -45,5 +47,13 @@ public class ItemSkuVO implements Serializable{
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public Long getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }

@@ -2,7 +2,10 @@ package com.shigu.main4.cdn.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.bo.OnsaleItemQueryBO;
-import com.shigu.main4.cdn.bo.*;
+import com.shigu.main4.cdn.bo.ScGoodsBO;
+import com.shigu.main4.cdn.bo.ScStoreBO;
+import com.shigu.main4.cdn.bo.ShopCdnBO;
+import com.shigu.main4.cdn.bo.ShopCommentBO;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.*;
 import com.shigu.main4.cdn.vo.*;
@@ -44,7 +47,10 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.*;
-import com.shigu.tools.*;
+import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.KeyWordsUtil;
+import com.shigu.tools.ResultRetUtil;
+import com.shigu.tools.XzSdkClient;
 import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
@@ -59,7 +65,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.xml.ws.spi.http.HttpContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -1203,15 +1214,6 @@ public class CdnAction {
     @RequestMapping("item")
     public String item(Long id, Model model) throws Main4Exception, IOException, TemplateException {
         CdnGoodsInfoVO goods = cdnService.cdnGoodsInfo(id);
-        if (StringUtils.isEmpty(goods.getColorsMeta()) || "[]".equals(goods.getColorsMeta())) {
-            goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
-        }
-        if (StringUtils.isEmpty(goods.getSizesMeta()) || "[]".equals(goods.getSizesMeta())) {
-            goods.setSizesMeta("[\"均码\"]");
-        }
-        if ("kx".equalsIgnoreCase(goods.getWebSite())) {
-            return oldItemForKx(id, model);
-        }
         CdnShopInfoVO shop = cdnService.cdnShopInfo(goods.getShopId());
         String dzhtml = cdnService.bannerHtml(goods.getShopId(), goods.getWebSite());
         List<CdnShopCatVO> cats = new ArrayList<>();
@@ -1346,52 +1348,52 @@ public class CdnAction {
         return itemGoatCidAndWebsiteVO;
     }
 
-    public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {
-        //如果东北商品,用东北的模板
-        ItemShowVO itemShowVO = new ItemShowVO();
-        itemShowVO.setItemId(id);
-        CdnItem cdnItem = showForCdnService.selItemById(id);
-        itemShowVO.setOnsale(cdnItem != null && cdnItem.getOnsale());
-        if (cdnItem == null) {//已经下架
-            cdnItem = showForCdnService.selItemInstockById(id);
-        }
-        if (cdnItem == null) {//商品不存在
-            throw new CdnException("商品不存在");
-        }
-        //店招
-//        String dz=cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite());
-
-        ItemBO bo = new ItemBO();
-        bo.setId(id);
-        // 商品详情懒加载
-        if (cdnItem.getDescription() != null)
-            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ", "")
-                    .replace("<script>", "")
-                    .replace("</script>", ""));
-        itemShowVO.setCdnItem(cdnItem);
-//        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
-        itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-        Long starNum = shopForCdnService.selShopStarById(cdnItem.getShopId());
-        starNum = starNum == null ? 0L : starNum;
-        itemShowVO.setStarNum(starNum);
-        itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
-        itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
-        itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
-        itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
-
-        //极限词过滤
-        if (itemShowVO.getCdnItem() != null) {
-            itemShowVO.getCdnItem().setTitle(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getTitle()));
-            itemShowVO.getCdnItem().setDescription(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getDescription()));
-        }
-//        dz=KeyWordsUtil.duleKeyWords(dz);
-
-        model.addAttribute("bo", bo);
-        model.addAttribute("webSite", itemShowVO.getCdnItem().getWebSite());
-        model.addAttribute("hasYt", goodsFileService.hasDatu(id) + "");
-//        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
-        return "cdn/xieItem";
-    }
+//    public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {
+//        //如果东北商品,用东北的模板
+//        ItemShowVO itemShowVO = new ItemShowVO();
+//        itemShowVO.setItemId(id);
+//        CdnItem cdnItem = showForCdnService.selItemById(id);
+//        itemShowVO.setOnsale(cdnItem != null && cdnItem.getOnsale());
+//        if (cdnItem == null) {//已经下架
+//            cdnItem = showForCdnService.selItemInstockById(id);
+//        }
+//        if (cdnItem == null) {//商品不存在
+//            throw new CdnException("商品不存在");
+//        }
+//        //店招
+////        String dz=cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite());
+//
+//        ItemBO bo = new ItemBO();
+//        bo.setId(id);
+//        // 商品详情懒加载
+//        if (cdnItem.getDescription() != null)
+//            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ", "")
+//                    .replace("<script>", "")
+//                    .replace("</script>", ""));
+//        itemShowVO.setCdnItem(cdnItem);
+////        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
+//        itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
+//        Long starNum = shopForCdnService.selShopStarById(cdnItem.getShopId());
+//        starNum = starNum == null ? 0L : starNum;
+//        itemShowVO.setStarNum(starNum);
+//        itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
+//        itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
+//        itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
+//        itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
+//
+//        //极限词过滤
+//        if (itemShowVO.getCdnItem() != null) {
+//            itemShowVO.getCdnItem().setTitle(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getTitle()));
+//            itemShowVO.getCdnItem().setDescription(KeyWordsUtil.duleKeyWords(itemShowVO.getCdnItem().getDescription()));
+//        }
+////        dz=KeyWordsUtil.duleKeyWords(dz);
+//
+//        model.addAttribute("bo", bo);
+//        model.addAttribute("webSite", itemShowVO.getCdnItem().getWebSite());
+//        model.addAttribute("hasYt", goodsFileService.hasDatu(id) + "");
+////        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
+//        return "cdn/xieItem";
+//    }
 
     /**
      * 档口今日新品

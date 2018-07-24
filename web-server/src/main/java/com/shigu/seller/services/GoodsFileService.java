@@ -1,6 +1,15 @@
 package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.GoodsFile;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.GoodsFileExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
+import com.opentae.data.mall.interfaces.GoodsFileMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;

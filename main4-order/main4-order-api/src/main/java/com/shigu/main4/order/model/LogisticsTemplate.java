@@ -1,7 +1,9 @@
 package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
-import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.vo.BournRuleInfoVO;
+import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import com.shigu.main4.order.vo.PostVO;
 
 import java.util.List;
 

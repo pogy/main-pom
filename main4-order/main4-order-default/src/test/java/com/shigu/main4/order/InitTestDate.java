@@ -6,7 +6,6 @@ import com.opentae.data.mall.beans.OrderConstant;
 import com.opentae.data.mall.interfaces.ItemOrderSenderMapper;
 import com.opentae.data.mall.interfaces.OrderConstantMapper;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.MetarialVO;
 import com.shigu.main4.order.vo.OrderConstantVo;
 import com.shigu.main4.order.vo.ServiceVO;

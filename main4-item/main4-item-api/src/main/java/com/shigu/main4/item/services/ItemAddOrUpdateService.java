@@ -6,7 +6,6 @@ import com.shigu.main4.item.exceptions.SystemSynItemException;
 import com.shigu.main4.item.vo.SynItem;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 商品添加或更新服务类
@@ -50,18 +49,21 @@ public interface ItemAddOrUpdateService {
      * @param item
      * @return
      */
+    @Deprecated
     Long systemAddItem(SynItem item) throws ItemModifyException;
 
     /**
      * 系统同步一批商品
      * @param items
      */
+    @Deprecated
     void systemSynSomeItems(List<SynItem> items) throws SystemSynItemException;
 
     /**
      * 用户添加一款商品
      * @return
      */
+    @Deprecated
     Long userAddItem(SynItem item) throws ItemModifyException;
 
     /**
@@ -69,6 +71,7 @@ public interface ItemAddOrUpdateService {
      * @param item
      * @return
      */
+    @Deprecated
     int systemUpdateItem(SynItem item) throws ItemModifyException;
 
     /**
@@ -77,6 +80,7 @@ public interface ItemAddOrUpdateService {
      * @param item
      * @return
      */
+    @Deprecated
     int officeUpdateItem(SynItem item) throws ItemModifyException;
 
     /**
@@ -85,6 +89,7 @@ public interface ItemAddOrUpdateService {
      * @param item
      * @return
      */
+    @Deprecated
     int userUpdateItem(SynItem item) throws ItemModifyException;
     /**
      * 用户更新一款商品
@@ -92,6 +97,7 @@ public interface ItemAddOrUpdateService {
      * @param item
      * @return
      */
+    @Deprecated
     int userUpdateItem(SynItem item,Boolean updatePrice) throws ItemModifyException;
 
     /**
@@ -99,6 +105,7 @@ public interface ItemAddOrUpdateService {
      * @param numIid
      * @return
      */
+    @Deprecated
     SynItem selItemWithSynItem(Long numIid,Long shopId);
 
     /**
@@ -107,6 +114,7 @@ public interface ItemAddOrUpdateService {
      * @param webSite 分站
      * @return 商品通讯对象
      */
+    @Deprecated
     SynItem selItemByGoodsId(Long goodsId, String webSite);
 
     /**

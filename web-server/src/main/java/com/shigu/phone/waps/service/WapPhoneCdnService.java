@@ -2,7 +2,6 @@ package com.shigu.phone.waps.service;
 
 import com.openJar.exceptions.OpenException;
 import com.opentae.data.mall.beans.ShiguGoodsCollect;
-import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.baseservices.BasePhoneCdnService;
 import com.shigu.phone.basevo.BaseCollectItemVO;
 import org.springframework.beans.factory.annotation.Autowired;

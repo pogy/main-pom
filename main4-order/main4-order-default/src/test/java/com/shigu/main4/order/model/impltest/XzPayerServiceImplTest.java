@@ -2,17 +2,12 @@ package com.shigu.main4.order.model.impltest;
 
 import com.openJar.beans.sgpay.XzbPayTrade;
 import com.openJar.requests.sgpay.XzbPayRequest;
-import com.openJar.responses.sgpay.RefundResponse;
-import com.openJar.responses.sgpay.XzbPayResponse;
-import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.PayerService;
-import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 public class XzPayerServiceImplTest extends BaseTest {
     @Autowired

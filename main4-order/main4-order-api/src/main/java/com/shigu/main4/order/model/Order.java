@@ -6,7 +6,6 @@ import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.order.vo.PayedVO;
-import com.shigu.main4.order.vo.SubOrderVO;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public interface Order{
      * 追加子订单
      * @param subOrders 子订单
      */
-    void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) throws OrderException;
+    void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice,Long userId) throws OrderException;
 
     /**
      * 二次支付申请

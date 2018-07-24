@@ -1,11 +1,9 @@
 package com.shigu.main4.cdn.bo;
 
-
 import com.shigu.tools.EncodeParamter;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 店铺类别参数
