@@ -19,7 +19,7 @@ public class InviteGoodsVO implements Serializable {
 
     private String title;
 
-    private Long piPrice;
+    private Long piPriceLong;
 
     private String piprice;
 
@@ -51,12 +51,12 @@ public class InviteGoodsVO implements Serializable {
         this.title = title;
     }
 
-    public Long getPiPrice() {
-        return piPrice;
+    public Long getPiPriceLong() {
+        return piPriceLong;
     }
 
-    public void setPiPrice(Long piPrice) {
-        this.piPrice = piPrice;
+    public void setPiPriceLong(Long piPriceLong) {
+        this.piPriceLong = piPriceLong;
     }
 
     public String getPiprice() {

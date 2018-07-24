@@ -44,7 +44,7 @@
                     <a href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank"><image src="${goods.imgsrc!}_240x240.jpg" /></a>
                     <p class="title"><a href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank">${goods.title!}</a></p>
                     <div class="infobox">
-                        <div class="fl price">￥<em>${goods.piprice!}</em>/件</div>
+                        <div class="fl price">￥<em>${goods.piprice!}</em>/件</div>${goods.piPrice}
                         <div class="fr service simsun">
                             <#list goods.services as service>
                                 <#if service == 1>

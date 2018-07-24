@@ -57,8 +57,8 @@ public class InviteGoodsActivityService {
             shopLicenseExample.createCriteria().andShopIdIn(new ArrayList<>(shopIds)).andLicenseTypeEqualTo(5).andLicenseFailureEqualTo(0);
             Map<Long, String> shopLicenseMap = shiguShopLicenseMapper.selectByExample(shopLicenseExample).stream().collect(Collectors.toMap(ShiguShopLicense::getShopId, ShiguShopLicense::getContext));
             for (InviteGoodsVO vo : inviteGoodsVOS) {
-                if (vo.getPiPrice() != null) {
-                    vo.setPiprice(String.format("%.2f",vo.getPiPrice() * 0.01));
+                if (vo.getPiPriceLong() != null) {
+                    vo.setPiprice(String.format("%.2f",vo.getPiPriceLong() * 0.01));
                 }
                 List<String> services = new ArrayList<>();
                 if (vo.getShopId() != null) {
