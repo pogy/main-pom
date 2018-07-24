@@ -28,7 +28,7 @@
                 <version>9.4.8.v20171121</version>
                 <configuration>
                     <httpConnector>
-                        <port>8080</port>
+                        <port>80</port>
                     </httpConnector>
                 </configuration>
             </plugin>
@@ -275,6 +275,7 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.22</version>
         </dependency>
+
         <!--对象拷贝-->
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
