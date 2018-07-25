@@ -1,6 +1,7 @@
 package com.shigu.buyer.vo;
 
-import com.shigu.main4.ucenter.vo.PackageItem;
+
+import com.shigu.main4.packages.bo.PackageItem;
 
 import java.io.Serializable;
 

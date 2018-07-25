@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main4-ucenter</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.4-SNAPSHOT</version>
+        <version>4.2.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,8 +17,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

@@ -5,12 +5,10 @@ import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by whx on 2017/7/26 0026.

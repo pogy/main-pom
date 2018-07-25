@@ -7,10 +7,11 @@ import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
 import com.shigu.main4.item.services.ShowForCdnService;
-import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.order.exceptions.CartException;
 import com.shigu.main4.order.process.ItemCartProcess;
 import com.shigu.main4.order.process.ItemProductProcess;
@@ -19,6 +20,9 @@ import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.OrderSubmitType;
 import com.shigu.order.bo.AddCartPropBO;
+import com.shigu.order.vo.*;
+import org.apache.commons.lang3.StringUtils;
+import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
@@ -28,10 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -57,6 +58,8 @@ public class CartService {
 
     @Autowired
     private ItemProductProcess itemProductProcess;
+    @Autowired
+    NewShowForCdnService newShowForCdnService;
 
     @Autowired
     private RedisIO redisIO;
@@ -86,7 +89,7 @@ public class CartService {
      * @param userId 用户ID
      * @return 页面数据
      */
-    public CartPageVO selMyCart(Long userId) {
+    public CartPageVO selMyCart(Long userId) throws OrderException {
         CartPageVO vo = packCartProductVo(itemCartProcess.someOneCart(userId));
 //        vo.setGoodsCount(itemCartProcess.productNumbers(userId));
         return vo;
@@ -96,7 +99,7 @@ public class CartService {
      * 包装进货车商品对象
      * @param vos 进货车商品源信息
      */
-    public CartPageVO packCartProductVo(List<CartVO> vos) {
+    public CartPageVO packCartProductVo(List<CartVO> vos) throws OrderException {
         CartPageVO vo = new CartPageVO();
         Map<Long, List<CartVO>> groupByShop = vos.stream().collect(Collectors.groupingBy(CartVO::getShopId));
         vo.setOrders(new ArrayList<>(groupByShop.size()));
@@ -120,7 +123,8 @@ public class CartService {
                 }
                 List<CartVO> productVOS = entry.getValue();
                 orderVO.setChildOrders(new ArrayList<>(productVOS.size()));
-                for (CartVO productVO : productVOS) {
+                Map<Long,NewCdnItem> longNewCdnItemMap=new HashMap<>();
+                child:for (CartVO productVO : productVOS) {
                     CartChildOrderVO childOrderVO = new CartChildOrderVO();
                     orderVO.getChildOrders().add(childOrderVO);
                     childOrderVO.setLastModify(productVO.getLastModify());
@@ -129,19 +133,46 @@ public class CartService {
                     childOrderVO.setGoodsid(productVO.getGoodsId());
                     childOrderVO.setImgsrc(productVO.getPicUrl());
                     childOrderVO.setTitle(productVO.getTitle());
-                    childOrderVO.setPrice(productVO.getPrice().doubleValue() / 100);
                     childOrderVO.setNum(productVO.getNum());
                     ItemSkuVO selectiveSku = productVO.getSelectiveSku();
                     childOrderVO.setColor(selectiveSku.getColor());
                     childOrderVO.setSize(selectiveSku.getSize());
-                    CdnItem cdnItem = showForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
-                    if (cdnItem == null) {
+                    NewCdnItem cdnItem = longNewCdnItemMap.get(productVO.getGoodsId());
+                    if(cdnItem==null){
+                        cdnItem=newShowForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
+                        if(cdnItem!=null) {
+                            cdnItem.setSingleSkus(newShowForCdnService.selSingleSkus(productVO.getGoodsId()));
+                        }
+                        longNewCdnItemMap.put(productVO.getGoodsId(),cdnItem);
+                    }
+                    if (cdnItem == null||!cdnItem.getOnsale()) {
                         childOrderVO.setDisabled(true);
+                        orderVO.setWebSite(productVO.getWebSite());
                     } else {
+                        List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
+                        List<String> colors=new ArrayList<>();
+                        List<String> sizes=new ArrayList<>();
+                        for(SingleSkuVO singleSkuVO:singleSkus){
+                            String color = singleSkuVO.getThisColor();
+                            String size = singleSkuVO.getThisSize();
+                            Integer stockNum=singleSkuVO.getStatus()==0?0:singleSkuVO.getStockNum();
+                            if(color.equals(selectiveSku.getColor())&&size.equals(selectiveSku.getSize())){
+                                childOrderVO.setPrice(singleSkuVO.getPriceString());
+                                if(stockNum==0){
+                                    childOrderVO.setDisabled(true);
+                                    continue child;
+                                }
+                            }
+                        }
+                        if(childOrderVO.getPrice()==null){
+                            childOrderVO.setDisabled(true);
+                            continue;
+                        }
                         childOrderVO.setGoodsNo(cdnItem.getHuohao());
-                        childOrderVO.setColors(BeanMapper.getFieldList(cdnItem.getColors(), "value", String.class));
-                        childOrderVO.setSizes(BeanMapper.getFieldList(cdnItem.getSizes(), "value", String.class));
+                        childOrderVO.setColors(colors);
+                        childOrderVO.setSizes(sizes);
                         num+=productVO.getNum();
+                        orderVO.setWebSite(cdnItem.getWebSite());
                     }
                 }
                 Collections.sort(orderVO.getChildOrders());
@@ -188,7 +219,10 @@ public class CartService {
         }
         List<CartVO> cartVOS = itemCartProcess.someOneCart(userId);
         cartVOS.removeIf(cartVO -> !cids.contains(cartVO.getCartId()));
-
+        Set<String> webs=cartVOS.stream().map(CartVO::getWebSite).collect(Collectors.toSet());
+        if(webs.size()>1){
+            throw new JsonErrException("单次只能结算单个分站的订单");
+        }
         String uuid = UUIDGenerator.getUUID();
 
         OrderSubmitVo submitVo = new OrderSubmitVo();
@@ -253,9 +287,20 @@ public class CartService {
         for(AddCartPropBO sku:skus){
             itemCartProcess.addProduct(
                     userId,
-                    itemProductProcess.generateProduct(goodsId, sku.getColor(), sku.getSize()),
+                    itemProductProcess.generateProduct(goodsId,sku.getColor(), sku.getSize()),
                     sku.getCount()
             );
         }
+    }
+
+    public List<CartSingleSkuVO> getGoodsSkuList(Long goodsId) {
+        return newShowForCdnService.selSingleSkus(goodsId).stream().map(singleSkuVO -> {
+            CartSingleSkuVO vo=new CartSingleSkuVO();
+            vo.setColor(singleSkuVO.getThisColor());
+            vo.setSize(singleSkuVO.getThisSize());
+            vo.setPrice(singleSkuVO.getPriceString());
+            vo.setNum(singleSkuVO.getStockNum());
+            return vo;
+        }).collect(Collectors.toList());
     }
 }

@@ -9,10 +9,15 @@ import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.TaobaoItemPropMapper;
 import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
 import com.shigu.goodsup.jd.vo.*;
+import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
+import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.tb.finder.vo.PropType;
 import com.taobao.api.domain.ItemProp;
 import com.taobao.api.domain.PropImg;
 import com.taobao.api.domain.PropValue;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -40,6 +45,8 @@ public class PropsService {
     private TaobaoItemPropMapper taobaoItemPropMapper;
     @Autowired
     EhCacheCacheManager ehCacheManager;
+    @Autowired
+    NewShowForCdnService newShowForCdnService;
 
     /**
      * 计算页面要显示的属性列
@@ -49,7 +56,7 @@ public class PropsService {
 
     public PropsVO selProps(Long cid){
         Cache cache=ehCacheManager.getCache("jdProps");
-        PropsVO propsVO=cache.get("tbprop_"+cid,PropsVO.class);
+        PropsVO propsVO=cache.get("prop_"+cid,PropsVO.class);
         if(propsVO!=null){
             return propsVO;
         }
@@ -101,7 +108,7 @@ public class PropsService {
      * @param inputIds 自定义ID串
      * @return
      */
-    public PropsVO importValue(PropsVO propsVO, String propName, List<PropImg> propImgs, String alias, String inputStr, String inputIds) throws IOException, ClassNotFoundException, CloneNotSupportedException {
+    public PropsVO importValue(PropsVO propsVO, String propName, List<PropImg> propImgs, String alias, String inputStr, String inputIds,Long itemId) throws IOException, ClassNotFoundException, CloneNotSupportedException {
         //**************先把propsVO克隆一把,以免破坏缓存
         PropsVO psv=propsVO.deepClone();
         //把所有属性key\value化
@@ -237,7 +244,7 @@ public class PropsService {
         //制作SKU显示列表,按页面上每一个tr为一个对象,如果有一项销售属性没有选择,sku没有
         //先拿出已选的颜色,再选出已选的销售属性
         //把销售属性搞出来
-        psv.setSkus(calculateSku(psv.getColor(),psv.getSaleProps()));
+        psv.setSkus(calculateSku(psv.getColor(),psv.getSaleProps(),itemId));
         //如果通过上面,最终都没有name的,写入日志
         //处理材质成份
         if(psv.getProperties()==null){
@@ -265,7 +272,7 @@ public class PropsService {
      * @param sales 其它销售属性
      * @return
      */
-    public List<SkuVO> calculateSku(PropertyItemVO color, List<PropertyItemVO> sales) throws CloneNotSupportedException {
+    public List<SkuVO> calculateSku(PropertyItemVO color, List<PropertyItemVO> sales,Long itemId) throws CloneNotSupportedException {
         PropertyItemVO colorSelected=null;
         if(color!=null){
             colorSelected= (PropertyItemVO) color.clone();
@@ -318,6 +325,7 @@ public class PropsService {
         }else{
             srv=calculateSkuRank(colorSelected,salesselected,true,"");
         }
+        addSingleSkuInfo(srv,itemId);
         //计算表头
         SkuVO head=new SkuVO();
         head.setType(1);
@@ -333,6 +341,35 @@ public class PropsService {
             skus.add(0,head);
         }
         return skus;
+    }
+    private void addSingleSkuInfo(SkuRankVO srv, Long itemId){
+        NewCdnItem newCdnItem = newShowForCdnService.selItemById(itemId);
+        String price= StringUtils.isNotBlank(newCdnItem.getPrice()) ? newCdnItem.getPrice() : newCdnItem
+                .getPiPrice();
+        Long cprice = MoneyUtil
+                .StringToLong(price) - MoneyUtil.StringToLong(newCdnItem.getPiPrice());
+        Map<String,SingleSkuVO> skuMap=new HashMap<>();
+        for(SingleSkuVO vo:newCdnItem.getSingleSkus()){
+            String color= vo.getThisColor();
+            String size= vo.getThisSize();
+            skuMap.put(color+"_"+size,vo);
+        }
+        for(TdVO ctd:srv){
+            String color=ctd.getValue();
+            for(TdVO std:ctd.getSkuRankVO()){
+                String size=std.getValue();
+                SingleSkuVO singleSkuVO=skuMap.get(color+"_"+size);
+                std.setSkuRankVO(new SkuRankVO());
+                if(singleSkuVO!=null){
+                    String skuPrice=MoneyUtil.dealPrice(MoneyUtil.StringToLong(singleSkuVO.getPriceString())+cprice);
+                    std.getSkuRankVO().add(0,new TdVO(std.getPid(),std.getVid(),std.getIds(),skuPrice,true,false));
+                    std.getSkuRankVO().add(1,new TdVO(std.getPid(),std.getVid(),std.getIds(),singleSkuVO.getStockNum()>0?"100":"0",false,true));
+                }else{
+                    std.getSkuRankVO().add(0,new TdVO(std.getPid(),std.getVid(),std.getIds(),price,true,false));
+                    std.getSkuRankVO().add(1,new TdVO(std.getPid(),std.getVid(),std.getIds(),"100",false,true));
+                }
+            }
+        }
     }
 
     /**

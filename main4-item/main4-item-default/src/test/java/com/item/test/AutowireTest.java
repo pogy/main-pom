@@ -1,7 +1,6 @@
 package com.item.test;
 
 import com.shigu.main4.item.services.ShowForCdnService;
-import com.shigu.main4.item.services.ShowForCdnServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

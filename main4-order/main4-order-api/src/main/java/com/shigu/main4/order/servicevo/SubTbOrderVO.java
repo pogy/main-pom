@@ -56,6 +56,7 @@ public class SubTbOrderVO implements Serializable {
 
     private String webSite;
 
+    private Integer goodsType;
     public String getWebSite() {
         return webSite;
     }
@@ -240,5 +241,13 @@ public class SubTbOrderVO implements Serializable {
      */
     public void setNumiid(Long numiid) {
         this.numiid = numiid;
+    }
+
+    public Integer getGoodsType() {
+        return this.goodsType;
+    }
+
+    public void setGoodsType(Integer goodsType) {
+        this.goodsType = goodsType;
     }
 }

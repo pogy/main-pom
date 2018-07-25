@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * 描述：
  */
 
-@Service
+@Service("memberInviteService")
 public class MemberInviteServiceImpl implements MemberInviteService {
 
     @Autowired

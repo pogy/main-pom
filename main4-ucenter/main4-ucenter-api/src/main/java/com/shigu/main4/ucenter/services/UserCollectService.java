@@ -3,7 +3,6 @@ package com.shigu.main4.ucenter.services;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.ucenter.exceptions.ItemCollectionException;
 import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
-import com.shigu.main4.ucenter.vo.DataPackage;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.*;
@@ -57,38 +56,6 @@ public interface UserCollectService {
      * @param collect
      */
     void addItemCollection(ItemCollect collect) throws ItemCollectionException;
-
-    /**
-     * 生成商品数据包
-     * @param userId
-     * @param itemIds
-     * @return
-     */
-    boolean createDataPackage(Long userId,List<Long> itemIds);
-
-    /**
-     * 生成数据包 根据数据包IDs
-     * @param userId
-     * @param collectIdList
-     * @return
-     */
-    boolean createDataPackageByCoolectIds(Long userId,List<Long> collectIdList);
-
-    /**
-     * 查询数据包
-     * @param userId
-     * @param pageNo
-     * @param pageSize
-     * @return
-     */
-    ShiguPager<DataPackage> selPackages(Long userId,int pageNo,int pageSize);
-
-    /**
-     * 按包主键删除数据包
-     * @param userId
-     * @param packageIds
-     */
-    void delPackagesById(Long userId,List<Long> packageIds);
 
     /**
      * 店铺收藏

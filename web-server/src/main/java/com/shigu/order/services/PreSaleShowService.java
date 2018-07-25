@@ -1,13 +1,11 @@
 package com.shigu.order.services;
 
-import com.opentae.data.mall.beans.ItemOrderSub;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.AfterSaleSimpleOrderVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
 import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
-
 import com.shigu.order.vo.RefundApplyRecordVO;
 import com.shigu.order.vo.RefundOrderVO;
 import com.shigu.order.vo.SubRefundOrderVO;
@@ -22,9 +20,6 @@ import java.util.List;
 public class PreSaleShowService {
     @Autowired
     AfterSaleService afterSaleService;
-
-    @Autowired
-    OrderManageProcess orderManageProcess;
 
     public SubRefundOrderVO selSubRefundOrderVO(Long subOrderId){
         SubAfterSaleSimpleOrderVO subSimple=afterSaleService.subAfterSaleSimpleOrder(subOrderId);
@@ -70,8 +65,5 @@ public class PreSaleShowService {
         return vos;
     }
 
-    public int maxCanPreRefund(Long subId) throws OrderNotFindException {
-        return orderManageProcess.tryRefund(subId.toString()).size();
-    }
 
 }

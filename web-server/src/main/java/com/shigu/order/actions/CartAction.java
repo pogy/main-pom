@@ -5,10 +5,10 @@ import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.order.bo.AddCartBO;
+import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
-import com.shigu.order.vo.CartChildOrderVO;
-import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
+import com.shigu.order.vo.CartSingleSkuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -26,8 +26,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 进货车
@@ -41,7 +39,7 @@ public class CartAction {
     private CartService cartService;
 
     @RequestMapping("cart")
-    public String cart(HttpSession session, Model model) {
+    public String cart(HttpSession session, Model model) throws OrderException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         CartPageVO cartPageVO = cartService.selMyCart(ps.getUserId());
         //极限词过滤
@@ -151,7 +149,7 @@ public class CartAction {
      */
     @RequestMapping("getOrderNum")
     @ResponseBody
-    public String cartCount(HttpSession session, HttpServletResponse response, String callback) throws IOException {
+    public String cartCount(HttpSession session, HttpServletResponse response, String callback) throws IOException, OrderException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         int count=0;
         if(ps!=null){
@@ -178,6 +176,13 @@ public class CartAction {
             return JsonResponseUtil.error("商品不存在");
         }
         return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("getGoodsSkuList")
+    @ResponseBody
+    public JSONObject getGoodsSkuList(Long goodsId){
+        List<CartSingleSkuVO> skus=cartService.getGoodsSkuList(goodsId);
+        return JsonResponseUtil.success().element("skuList",skus);
     }
 
 }

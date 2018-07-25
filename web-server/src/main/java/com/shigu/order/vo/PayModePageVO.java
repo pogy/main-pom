@@ -34,6 +34,11 @@ public class PayModePageVO {
      */
     private String alipayUrl;
 
+    /**
+     * 泉州站支付宝链接
+     */
+    private String qzAlipayUrl;
+
     public String getWebSite() {
         return webSite;
     }
@@ -88,5 +93,19 @@ public class PayModePageVO {
 
     public void setAlipayUrl(String alipayUrl) {
         this.alipayUrl = alipayUrl;
+    }
+
+    /**
+     * 获取 泉州站支付宝链接
+     */
+    public String getQzAlipayUrl() {
+        return this.qzAlipayUrl;
+    }
+
+    /**
+     * 设置 泉州站支付宝链接
+     */
+    public void setQzAlipayUrl(String qzAlipayUrl) {
+        this.qzAlipayUrl = qzAlipayUrl;
     }
 }

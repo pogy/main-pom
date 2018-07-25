@@ -20,7 +20,6 @@ import com.taobao.api.request.UserSellerGetRequest;
 import com.taobao.api.response.UserSellerGetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 

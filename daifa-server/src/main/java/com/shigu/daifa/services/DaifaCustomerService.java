@@ -154,10 +154,13 @@ public class DaifaCustomerService {
         return JsonResponseUtil.success("修改成功");
     }
 
-    public JSONObject toNotTake(Long orderId) {
+    public synchronized JSONObject toNotTake(Long orderId) {
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(orderId);
         if(order==null){
             return JsonResponseUtil.error("未匹配到记录");
+        }
+        if(order.getTakeGoodsStatus()==2){
+            return JsonResponseUtil.success("已转为缺货");
         }
         if(order.getOrderStatus()==3){
             return JsonResponseUtil.error("已发货,不可操作");

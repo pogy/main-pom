@@ -50,6 +50,11 @@
     <dubbo:reference interface="com.shigu.main4.item.services.ItemCatService" id="itemCatService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ItemAddOrUpdateService" id="itemAddOrUpdateService" timeout="10000"/>
 
+    <dubbo:reference interface="com.shigu.main4.item.newservice.NewItemAddOrUpdateService" id="newItemAddOrUpdateService" timeout="20000" />
+    <dubbo:reference interface="com.shigu.main4.item.newservice.NewShowForCdnService" id="newShowForCdnService" timeout="20000" />
+
+
+
     <dubbo:reference interface="com.shigu.main4.order.services.AfterSaleService" id="afterSaleService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.ItemOrderService" id="itemOrderService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.services.OrderConstantService" id="orderConstantService" timeout="10000"/>
@@ -58,6 +63,10 @@
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="aliPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="wxPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="xzPayerService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="aliPayerQzService" timeout="10000"/>
+
+
+
     <dubbo:reference interface="com.shigu.main4.order.process.ItemCartProcess" id="itemCartProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.PayProcess" id="payProcess" timeout="10000"/>
@@ -70,10 +79,7 @@
     <dubbo:reference interface="com.shigu.main4.monitor.services.RankingSimpleService" id="rankingSimpleService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.ShiguFeedbackService" id="shiguFeedbackService"  timeout="20000"/>
 
-    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
-
-    <dubbo:reference interface="com.shigu.main4.ucenter.services.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
+    <dubbo:reference interface="com.shigu.main4.packages.process.PackageImportGoodsDataService" id="packageImportGoodsDataServiceImpl" timeout="500000"/>
 
     <dubbo:reference interface="com.shigu.activity.process.NewActivityProcess" id="newActivityProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.activity.process.StrengthMemberService" id="strengthMemberService" retries="0" timeout="20000"/>
@@ -82,5 +88,5 @@
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoImgProcess" id="photoImgProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoWorksProcess" id="photoWorksProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoGoatProcess" id="photoGoatProcess" retries="0" timeout="20000"/>
-
+    <import resource="daifa/dubbo/*"/>
 </beans>

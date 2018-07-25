@@ -3,7 +3,6 @@ package com.shigu.main4.order.whx;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,8 +1,6 @@
 package com.shigu.seller.vo;
 
 import com.shigu.main4.monitor.vo.DataLineVO;
-import com.shigu.main4.monitor.vo.HotUpItem;
-import com.shigu.main4.monitor.vo.NoUpItem;
 
 import java.io.Serializable;
 import java.util.List;

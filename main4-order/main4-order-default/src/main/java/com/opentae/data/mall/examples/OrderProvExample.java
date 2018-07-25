@@ -6,7 +6,10 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.mall.beans.OrderProv;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 public class OrderProvExample extends SgExample<OrderProvExample.Criteria> {
     public static final Class<OrderProv> beanClass = OrderProv.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);

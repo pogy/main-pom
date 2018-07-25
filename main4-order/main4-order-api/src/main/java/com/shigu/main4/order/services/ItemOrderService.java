@@ -4,6 +4,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.PidNumBO;
+import com.shigu.main4.order.bo.VoucherBO;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
@@ -11,6 +12,7 @@ import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.OrderLogVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.ItemOrderVO;
+import com.shigu.main4.order.vo.VoucherVO;
 
 import java.text.ParseException;
 import java.util.List;
@@ -121,4 +123,25 @@ public interface ItemOrderService {
      * @return
      */
     ItemOrderVO orderInfo(Long orderId);
+
+    /**
+     * 为用户生成优惠券
+     * @param bo
+     * @return
+     */
+    Long giveVoucher(VoucherBO bo);
+
+    /**
+     * 获取可用优惠信息 代金券方式
+     * @param userId
+     * @return
+     */
+    List<VoucherVO> findAvailableFavourableInfo(Long userId);
+
+
+    /**
+     * 邀请注册返现成功回调通知
+     * @param oid
+     */
+    void inviteRebateSuccessNotify(Long oid);
 }

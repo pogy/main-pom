@@ -3,12 +3,9 @@ package com.shigu.buyer.actions;
 import com.opentae.data.mall.beans.ShiguBonusRecord;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.enums.BonusRecordTypeEnum;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.enums.OutUserBindTypeEnum;
-import com.shigu.buyer.services.GoodsupRecordSimpleService;
-import com.shigu.buyer.services.MemberSimpleService;
-import com.shigu.buyer.services.PaySdkClientService;
-import com.shigu.buyer.services.UserAccountService;
-import com.shigu.buyer.services.UserCollectSimpleService;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -18,12 +15,13 @@ import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
+import com.shigu.main4.packages.bo.DataPackage;
+import com.shigu.main4.packages.process.PackageImportGoodsDataService;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
-import com.shigu.main4.ucenter.services.MemberInviteService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
@@ -47,7 +45,6 @@ import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail.EmailException;
-import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -77,6 +74,8 @@ import java.util.Objects;
  */
 @Controller
 public class MemberAction {
+    @Autowired
+    PackageImportGoodsDataService packageImportGoodsDataService;
 
     @Autowired
     PaySdkClientService paySdkClientService;
@@ -126,7 +125,7 @@ public class MemberAction {
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
     @Autowired
-    MemberInviteService memberInviteService;
+    InviteService inviteService;
 
     @Autowired
     private RedisIO redisIO;
@@ -301,7 +300,7 @@ public class MemberAction {
             return JsonResponseUtil.error("ids参数异常");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        userCollectService.createDataPackageByCoolectIds(ps.getUserId(), packegeIds);
+        packageImportGoodsDataService.createDataPackageByCoolectIds(ps.getUserId(), packegeIds);
         return JsonResponseUtil.success();
     }
 
@@ -314,7 +313,7 @@ public class MemberAction {
     @RequestMapping("member/goodsDataPackageinit")
     public String goodsDataPackageinit(DataPackageBO bo, HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<DataPackage> pager = userCollectService.selPackages(ps.getUserId(), bo.getPage(), bo.getRows());
+        ShiguPager<DataPackage> pager = packageImportGoodsDataService.selPackages(ps.getUserId(), bo.getPage(), bo.getRows());
         List<PackageVO> goodslist = new ArrayList<>();
         for (DataPackage dp : pager.getContent()) {
             if (dp.getGoods() != null)
@@ -362,7 +361,7 @@ public class MemberAction {
     @ResponseBody
     public JSONObject rmv_zipdp(String ids, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        userCollectService.delPackagesById(ps.getUserId(), parseIds(ids));
+        packageImportGoodsDataService.delPackagesById(ps.getUserId(), parseIds(ids));
         return JsonResponseUtil.success();
     }
 
@@ -1158,22 +1157,12 @@ public class MemberAction {
             }
         }
         //用户首单减免
-        Integer b = memberSimpleService.getUserFirstReduction(ps.getUserId());
-        if (b==1) {
-            BonusRecordVo bonusRecordVo = new BonusRecordVo();
-            bonusRecordVo.setMoney("+" + String.format("%.2f", 1000 * 0.01));
-            bonusRecordVo.setPayState(1);
-            bonusRecordVo.setPayText("新用户首单减免红包");
-            bonusRecordVo.setTime(memberSimpleService.getUserCreateTime(ps.getUserId()));
-            bonusRecordVoList.add(0,bonusRecordVo);
-            model.addAttribute("creditAmount", String.format("%.2f", 1000 * 0.01));
-        }else if (b == 2){
-            BonusRecordVo bonusRecordVo = new BonusRecordVo();
-            bonusRecordVo.setMoney("-" + String.format("%.2f", 1000 * 0.01));
-            bonusRecordVo.setPayState(2);
-            bonusRecordVo.setPayText("新用户首单减免红包");
-            bonusRecordVoList.add(0,bonusRecordVo);
-            bonusRecordVo.setTime(memberSimpleService.getUserCreateTime(ps.getUserId()));
+        BonusRecordVo inviteVoucher = inviteService.userInviteVoucherShow(ps.getUserId());
+        if (inviteVoucher != null) {
+            bonusRecordVoList.add(0,inviteVoucher);
+            if (inviteVoucher.getPayState() == 1) {
+                model.addAttribute("creditAmount", inviteVoucher.getMoney());
+            }
         }
         model.addAttribute("bonusList", bonusRecordVoList);
         if (SELLER_PATH.equals(identity)) {
@@ -1471,10 +1460,10 @@ public class MemberAction {
     @RequestMapping("member/inviteVip")
     public String inviteVip(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String inviteCode = memberInviteService.userInviteCode(ps.getUserId());
+        String inviteCode = inviteService.userInviteCode(ps.getUserId());
         model.addAttribute("inviteCode", inviteCode);
         model.addAttribute("inviteSrc", "www.571xz.com/regedit.htm?inviteCode=" + inviteCode);
-        model.addAttribute("invitedUserList", memberInviteService.inviteUserInfoList(ps.getUserId()));
+        model.addAttribute("invitedUserList", inviteService.inviteUserInfoList(ps.getUserId()));
         return "fxs/inviteVip";
     }
 }

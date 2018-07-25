@@ -120,13 +120,11 @@ public class ConfirmOrderAction {
         if (!Objects.equals(orderSubmitVo.getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        List<SenderInfoVO> senderInfoVOList = confirmOrderService.senderListDefault(bo.getSenderId());
+        String webSite=orderSubmitVo.getProducts().get(0).getWebSite();
+        Long senderId=confirmOrderService.selSendIdByItemId(webSite);
+        List<SenderInfoVO> senderInfoVOList = confirmOrderService.senderListDefault(senderId);
         model.addAttribute("sender", senderInfoVOList);
-        if (bo.getSenderId() == null) {
-            SenderInfoVO senderInfoVO = senderInfoVOList.get(0);
-            bo.setSenderId(Long.valueOf(senderInfoVO.getId()));
-            senderInfoVO.setChecked(true);
-        }
+
         String version = redisIO.get(ORDER_EXPRESS_VERSION, String.class);
         if (StringUtils.isBlank(version)) {
             Long time = System.currentTimeMillis();
@@ -148,7 +146,7 @@ public class ConfirmOrderAction {
         vos.forEach(cartOrderVO -> cartOrderVO.getChildOrders().forEach(cartChildOrderVO -> cartChildOrderVO.setTitle(KeyWordsUtil.duleKeyWords(cartChildOrderVO.getTitle()))));
 
         // 商品服务信息
-        model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vos, bo.getSenderId())));
+        model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vos, senderId)));
         model.addAttribute("goodsOrders", vos);
         model.addAttribute("collList", confirmOrderService.collListByUser(userId));//收藏的地址数据
         model.addAttribute("webSite", "hz");//站点
@@ -265,10 +263,11 @@ public class ConfirmOrderAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         OtherCostVO otherCostVO = confirmOrderService.getOtherCost(new Long(postName), provId, eachShopNum, totalWeight, senderId, ps.getUserId());
         Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS, String.class));
-        Long freePostCost = 0l;
+        Long freePostCost = 0L;
         if (activity) {
-            if (logisticsService.isMinusFreight(ps.getUserId(), null))
+            if (logisticsService.isMinusFreight(ps.getUserId(), null)) {
                 freePostCost = otherCostVO.getPostPrice() > 500 ? 500 : otherCostVO.getPostPrice();
+            }
         }
         return JsonResponseUtil
                 .success()
@@ -302,8 +301,10 @@ public class ConfirmOrderAction {
         if (!Objects.equals(tbTrades.get(0).getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
-        List<PostVO> psv = logisticsService.defaultPost(bo.getSenderId());
-        return JSONObject.fromObject(confirmOrderService.confirmTbBatchOrder(tbTrades, bo.getSenderId()))
+        String webSite=tbTrades.get(0).getProducts().get(0).getWebSite();
+        Long senderId=confirmOrderService.selSendIdByItemId(webSite);
+        List<PostVO> psv = logisticsService.defaultPost(senderId);
+        return JSONObject.fromObject(confirmOrderService.confirmTbBatchOrder(tbTrades, senderId))
                 .element("result", "success")
                 .element("postTotalPrice", "0.00")
                 .element("postList", psv.stream().map(postVO -> new JSONObject()
@@ -336,7 +337,9 @@ public class ConfirmOrderAction {
             throw new OrderException("订单信息错误");
         }
         Double freePostCost = 0.00;
-        String postTotalPrice = MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades, bo.getSenderId(), bo.getPostId(), sessionUser.getUserId()));
+        String webSite=tbTrades.get(0).getProducts().get(0).getWebSite();
+        Long senderId=confirmOrderService.selSendIdByItemId(webSite);
+        String postTotalPrice = MoneyUtil.dealPrice(confirmOrderService.confirmTbBatchOrderPostFee(tbTrades, senderId, bo.getPostId(), sessionUser.getUserId()));
         Boolean activity = Boolean.parseBoolean(redisIO.get(ACTIVITY_EXPRESS_DISCOUNTS, String.class));
         if (activity) {
             if (logisticsService.isMinusFreight(sessionUser.getUserId(), null))

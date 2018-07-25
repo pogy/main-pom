@@ -1,13 +1,13 @@
 package com.shigu.main4.order.services;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
 
 import java.util.List;
 
@@ -181,4 +181,18 @@ public interface AfterSaleService {
      * @param userId
      */
     void finishExchange(Long refundId,Long userId) throws OrderException;
+
+    /**
+     * 订单最大可退商品金额
+     * @param oid
+     * @return
+     */
+    Long maxItemCanRefund(Long oid);
+
+    /**
+     * 根据子单号获取订单剩余最大可退商品金额
+     * @param soid
+     * @return
+     */
+    Long maxItemCanRefundBySubOrderId(Long soid);
 }

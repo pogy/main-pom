@@ -1,10 +1,7 @@
 package com.shigu.main4.item.services.utils;
 
 import com.opentae.core.mybatis.SgExample;
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguShop;
 import com.shigu.main4.item.exceptions.ItemException;
-import com.shigu.main4.item.exceptions.ShopsItemException;
 
 import java.util.List;
 

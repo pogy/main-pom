@@ -4,14 +4,8 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.beans.ItemTradeForbid;
 import com.opentae.data.mall.beans.ShiguGoodsTaoRelation;
-import com.opentae.data.mall.examples.ItemOrderSubExample;
-import com.opentae.data.mall.examples.ItemProductExample;
-import com.opentae.data.mall.examples.ItemTradeForbidExample;
-import com.opentae.data.mall.examples.ShiguGoodsTaoRelationExample;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
-import com.opentae.data.mall.interfaces.ItemProductMapper;
-import com.opentae.data.mall.interfaces.ItemTradeForbidMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTaoRelationMapper;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.GoodsTaoRelationBO;
 import com.shigu.main4.order.exceptions.OrderException;
@@ -43,10 +37,12 @@ public class ItemProductProcessImpl implements ItemProductProcess {
 
     @Autowired
     private ItemTradeForbidMapper itemTradeForbidMapper;
+    @Autowired
+    ItemOrderSenderMapper itemOrderSenderMapper;
 
     @Override
     public ItemProductVO generateProduct(Long goodsId, String color, String size) {
-        return SpringBeanFactory.getBean(ItemProduct.class, goodsId, color, size).info();
+        return SpringBeanFactory.getBean(ItemProduct.class, goodsId,color, size).info();
     }
 
     @Override
@@ -90,9 +86,12 @@ public class ItemProductProcessImpl implements ItemProductProcess {
 
     @Override
     public Boolean listGoodsCanSale(Long marketId,Long floorId, Long storeId, List<Long> goodsIds, String webSite) {
-        if (!webSite.equals("hz")){
+        ItemOrderSenderExample itemOrderSenderExample=new ItemOrderSenderExample();
+        itemOrderSenderExample.createCriteria().andWebSiteEqualTo(webSite);
+        if(itemOrderSenderMapper.countByExample(itemOrderSenderExample)==0){
             return false;
         }
+
         ItemTradeForbidExample example=new ItemTradeForbidExample();
         example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
         example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来

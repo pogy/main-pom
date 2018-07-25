@@ -79,4 +79,6 @@ public interface OrderManageProcess {
      * 档口迁移,修改所有订单数据
      */
     void storeMove(MoveShopDataBO bo);
+
+    void getMessage(Integer refundId);
 }

@@ -4,11 +4,17 @@ import com.openJar.beans.*;
 import com.openJar.requests.api.JdCategoryAttrValueRequest;
 import com.openJar.requests.api.JdPostTemplateRequest;
 import com.openJar.requests.api.JdShopCategoryRequest;
-import com.openJar.requests.interfaces.*;
+import com.openJar.requests.interfaces.SelJdItemPropsNewRequest;
+import com.openJar.requests.interfaces.SelJdPropValuesRequest;
+import com.openJar.requests.interfaces.SelJdTbBindsRequest;
+import com.openJar.requests.interfaces.SelShiguJdCatRequest;
 import com.openJar.responses.api.JdCategoryAttrValueResponse;
 import com.openJar.responses.api.JdPostTemplateResponse;
 import com.openJar.responses.api.JdShopCategoryResponse;
-import com.openJar.responses.interfaces.*;
+import com.openJar.responses.interfaces.SelJdItemPropsNewResponse;
+import com.openJar.responses.interfaces.SelJdPropValuesResponse;
+import com.openJar.responses.interfaces.SelJdTbBindsResponse;
+import com.openJar.responses.interfaces.SelShiguJdCatResponse;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguPropImgsExample;
 import com.opentae.data.mall.interfaces.*;
@@ -231,7 +237,7 @@ public class JdUpItemService {
             propImgs=new ArrayList<>();
         }
         tbPropsVO=propsService.importValue(tbPropsVO,item.getPropsName(), BeanMapper.mapList(propImgs, PropImg.class),item.getPropertyAlias(),item
-                .getInputStr(),item.getInputPids());
+                .getInputStr(),item.getInputPids(),goodsId);
         PropsVO prop=find(item,jdUserId,jdCid,brands);
 //        if (prop.getColor() == null) {
 //            throw new CustomException("获取颜色信息失败");
@@ -247,7 +253,7 @@ public class JdUpItemService {
         }
         fillProp(prop.getProperties(),tbPropsVO.getSaleProps());
         fillProp(prop.getSpecification(),tbPropsVO.getProperties());
-        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps()));
+        prop.setSkus(propsService.calculateSku(prop.getColor(),prop.getSaleProps(),goodsId));
         return prop;
     }
 
@@ -370,7 +376,7 @@ public class JdUpItemService {
     }
 
 
-    private void fillProp(List<PropertyItemVO> jdVS,List<PropertyItemVO> tbVS){
+    public void fillProp(List<PropertyItemVO> jdVS,List<PropertyItemVO> tbVS){
         for(PropertyItemVO jdV:jdVS){
             for(PropertyItemVO tbV:tbVS){
                 if(tbV.getName().equals(jdV.getName())){
@@ -405,7 +411,7 @@ public class JdUpItemService {
             }
         }
     }
-    private void fillPropValue(PropertyItemVO jdV,PropertyItemVO tbV){
+    public void fillPropValue(PropertyItemVO jdV,PropertyItemVO tbV){
         if (jdV == null) {
             return;
         }

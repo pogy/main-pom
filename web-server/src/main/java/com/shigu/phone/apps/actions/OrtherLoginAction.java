@@ -2,13 +2,8 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.beans.app.AppLoginBackBO;
 import com.openJar.commons.MD5Attestation;
-import com.opentae.data.mall.beans.TaobaoSessionMap;
-import com.opentae.data.mall.examples.TaobaoSessionMapExample;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
-import com.shigu.buyer.actions.UserLoginAction;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
-import com.shigu.component.shiro.enums.LoginErrorEnum;
-import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -18,12 +13,7 @@ import com.shigu.phone.apps.services.PhoneUserService;
 import com.shigu.phone.apps.utils.TokenUtil;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
-import com.shigu.session.main4.names.SessionEnum;
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,18 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -1,15 +1,12 @@
 package com.shigu.buyer.services;
 
 import com.google.common.collect.Lists;
-import com.opentae.data.mall.beans.ShiguShop;
-
 import com.shigu.buyer.vo.NewStoreCollectVO;
 import com.shigu.buyer.vo.SimpleGoodsInfoVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.ucenter.services.UserCollectService;
-import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.NewGoodsCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.order.services.CartService;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

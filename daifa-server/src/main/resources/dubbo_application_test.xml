@@ -6,15 +6,15 @@
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 
-    <dubbo:reference interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" id="takeGoodsIssueProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.PackDeliveryProcess" id="packDeliveryProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" timeout="10000" >
+    <dubbo:reference interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" id="takeGoodsIssueProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.PackDeliveryProcess" id="packDeliveryProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" group="${DAIFA_GROUP}" timeout="10000" >
         <dubbo:method name="orderTimeout" timeout="300000"/>
     </dubbo:reference>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.SysDealProcess" id="sysDealProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" id="scanSaleAfterExpressProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.DaifaActProcess" id="daifaActProcess" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.SaleAfterProcess" id="saleAfterProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.SysDealProcess" id="sysDealProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" id="scanSaleAfterExpressProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.DaifaActProcess" id="daifaActProcess" group="${DAIFA_GROUP}" timeout="10000"/>
 
 
     <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>

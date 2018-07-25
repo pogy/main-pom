@@ -27,6 +27,11 @@ public class ItemProductSku implements Serializable {
      */
 	private Long pid;
 
+    /**
+     * 
+     */
+	private Long price;
+
 	public void setSkuId(Long skuId) {
 		this.skuId = skuId;
 	}
@@ -57,6 +62,14 @@ public class ItemProductSku implements Serializable {
 
 	public Long getPid() {
 		return this.pid;
+	}
+
+	public void setPrice(Long price) {
+		this.price = price;
+	}
+
+	public Long getPrice() {
+		return this.price;
 	}
 
 }
