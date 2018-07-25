@@ -21,12 +21,14 @@
 <#include "/__ftl_links__/login__common__header.ftl">
 <div class="regeditContainer layout950">
 <div class="regeditForm validateForm">
-    <div class="validateItem">
-        <div class="formGroup">
-            <label>邀请码：</label>
-            <input type="text" name="inviteCode" class="fmInput" placeholder="请输入邀请码" >
+    <#if inviteRebateActive == 1>
+        <div class="validateItem">
+            <div class="formGroup">
+                <label>邀请码：</label>
+                <input type="text" name="inviteCode" class="fmInput" placeholder="请输入邀请码" >
+            </div>
         </div>
-    </div>
+    </#if>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>手机号码：</label>
