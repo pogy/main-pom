@@ -27,16 +27,14 @@ import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -530,7 +528,7 @@ public class ItemOrderImpl implements ItemOrder {
                     ShiguRebateGoodsExample goodsExample = new ShiguRebateGoodsExample();
                     goodsExample.createCriteria().andGoodsStatusEqualTo(1).andGoodsIdIn(goodsIds);
                     List<ShiguRebateGoods> goodsRebates = shiguRebateGoodsMapper.selectByExample(goodsExample);
-                    Map<Long, ShiguRebateGoods> goodsTypeMap = goodsRebates.stream().collect(Collectors.toMap(ShiguRebateGoods::getGoodsId, o -> o));
+                    Map<String, ShiguRebateGoods> goodsTypeMap = goodsRebates.stream().collect(Collectors.toMap(item->String.valueOf(item.getGoodsId()), o -> o));
                     Set<Long> typeTabs = goodsRebates.stream().map(ShiguRebateGoods::getGoodsTabId).collect(Collectors.toSet());
                     if (typeTabs.size()>0) {
                         ShiguRebateTypeExample shiguRebateTypeExample = new ShiguRebateTypeExample();
@@ -553,17 +551,18 @@ public class ItemOrderImpl implements ItemOrder {
                         BigDecimal unRefundItemPrice = BigDecimal.valueOf(goodsUnRefundNum).multiply(BigDecimal.valueOf(subItemOrderVO.getPrice()));
                         if (goodsUnRefundNum>0) {
                             Long goodsId = subItemOrderVO.getGoodsId();
-                            ShiguRebateGoods rebateType = goodsTypeMap.get(goodsId);
+                            ShiguRebateGoods rebateType = goodsTypeMap.get(String.valueOf(goodsId));
                             if (rebateType != null && shiguRebateTypeIdMap.get(rebateType.getGoodsTabId())!=null && shiguRebateTypeIdMap.get(rebateType.getGoodsTabId()).getIsDefault()!=1) {
                                 goodsRebateNum =  shiguRebateTypeIdMap.get(rebateType.getGoodsTabId()).getRebateNum();
                             } else {
                                 goodsRebateNum = defaultRebateNum;
                             }
-                            rebateAmount += unRefundItemPrice.multiply(BigDecimal.valueOf(goodsRebateNum)).divide(BigDecimal.valueOf(10000)).longValue();
+                            rebateAmount += unRefundItemPrice.multiply(BigDecimal.valueOf(goodsRebateNum)).divide(BigDecimal.valueOf(10000),2,BigDecimal.ROUND_DOWN).longValue();
                         }
                     }
+
                     // 邀请人用户id
-                    Long inviteUserId = memberInvite.getUserId();
+                    Long inviteUserId = memberInvite.getInviteUserId();
                     if (rebateAmount > 0) {
                         InviteOrderRebateRecord inviteOrderRebateRecord = new InviteOrderRebateRecord();
                         inviteOrderRebateRecord.setOrderId(oid);
@@ -577,6 +576,7 @@ public class ItemOrderImpl implements ItemOrder {
                         inviteRebateRechargeRequest.setXzUserId(inviteUserId);
                         inviteRebateRechargeRequest.setRebateOrderNo(oid);
                         inviteRebateRechargeRequest.setRebateAmount(rebateAmount);
+
                         InviteRebateRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(inviteRebateRechargeRequest);
                         if (resp == null || !resp.isSuccess()) {
                             try {

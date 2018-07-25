@@ -5,10 +5,7 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.custombeans.BalanceVO;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.MemberInviteMapper;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.component.shiro.enums.CacheEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -33,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +62,8 @@ public class MemberSimpleService {
 
     @Autowired
     ItemOrderMapper itemOrderMapper;
+    @Autowired
+    ItemVoucherMapper itemVoucherMapper;
 
     /**
      * 查用户的淘宝昵称,如果有多个淘宝账号,只取第一个
@@ -255,19 +255,19 @@ public class MemberSimpleService {
      */
     public Integer getUserFirstReduction(Long userId) {
         if (userId == null) {
-            return -1;
+            return 0;
         }
-        MemberInvite memberInvite = new MemberInvite();
-        memberInvite.setUserId(userId);
-        List<MemberInvite> userList = memberInviteMapper.select(memberInvite);
-        if (userList == null || userList.size() <= 0)
-            return -1;
-        ItemOrderExample itemOrderExample = new ItemOrderExample();
-        itemOrderExample.createCriteria().andUserIdEqualTo(userId).andOrderStatusGreaterThan(1);
-        List<ItemOrder> orderList = itemOrderMapper.selectByExample(itemOrderExample);
-        if (orderList == null || orderList.size() <= 0)
-            return 1;
-        return 2;
+        ItemVoucher inviteVoucher = new ItemVoucher();
+        inviteVoucher.setUserId(userId);
+        inviteVoucher.setVoucherTag("INVITE_VOUCHER_TAG");
+        inviteVoucher = itemVoucherMapper.selectOne(inviteVoucher);
+        if (inviteVoucher == null) {
+            return 0;
+        }
+        if (inviteVoucher.getUsedTime() == null && new Date().after(inviteVoucher.getExpireTime())) {
+            return 0;
+        }
+        return inviteVoucher.getVoucherState().equals(1) ? 1 : 0;
     }
 
     /**
