@@ -546,7 +546,10 @@ public class ItemOrderImpl implements ItemOrder {
                     Integer goodsRebateNum = 0;
                     for (SubItemOrderVO subItemOrderVO : subItemOrderVOS) {
                         // 未退款/售后商品数量
-                        int goodsUnRefundNum = subItemOrderVO.getNum() - soidMaps.get(subItemOrderVO.getSoid()).stream().mapToInt(ItemOrderRefund::getNumber).sum();
+                        int goodsUnRefundNum = subItemOrderVO.getNum() -
+                                (soidMaps.get(subItemOrderVO.getSoid()) == null ? 0 : soidMaps
+                                        .get(subItemOrderVO.getSoid()).stream().mapToInt(ItemOrderRefund::getNumber)
+                                        .sum());
                         BigDecimal unRefundItemPrice = BigDecimal.valueOf(goodsUnRefundNum).multiply(BigDecimal.valueOf(subItemOrderVO.getPrice()));
                         if (goodsUnRefundNum>0) {
                             Long goodsId = subItemOrderVO.getGoodsId();
