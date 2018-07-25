@@ -25,6 +25,7 @@ public class InviteGoodsActivityAction {
     public String inviteGoods(InvitePageSearchBO bo, Model model) {
         model.addAttribute("query", bo);
         model.addAttribute("goodslist",inviteGoodsActivityService.getInviteGoodsList(bo));
+        model.addAttribute("pageOption",inviteGoodsActivityService.countInviteGoods(bo.getType())+",20,"+bo.getPage());
         return "xzPage/inviteGoods";
     }
 

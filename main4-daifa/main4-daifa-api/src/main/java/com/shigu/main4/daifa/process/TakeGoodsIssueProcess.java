@@ -130,6 +130,16 @@ public interface TakeGoodsIssueProcess {
     UnComleteAllVO uncompleteAllNew(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
 
     /**
+     * 当前拿货人账户标记拿货缺货
+     * @param wholeId
+     * @param issueIds
+     * @param idIsCheck
+     * @return
+     * @throws DaifaException
+     */
+    UnComleteAllVO tabIsTakeGoods(Long wholeId, List<Long> issueIds, Boolean idIsCheck) throws DaifaException;
+
+    /**
      * @警告: 请确认需求再调该接口
      * 该操作会修改下列表为缺货状态
      * daifa_order,daifa_ggoods_tasks,daifa_ggoods,daifa_wait_send_order,daifa_send_order

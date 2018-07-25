@@ -73,4 +73,19 @@ public class InviteGoodsActivityService {
         }
         return result;
     }
+
+    public int countInviteGoods(String  typeAbridge) {
+        ShiguRebateType type = new ShiguRebateType();
+        type.setIsActive(1);
+        type.setTypeAbridge(typeAbridge);
+        type = shiguRebateTypeMapper.selectOne(type);
+        if (type == null) {
+            return 0;
+        }
+        Long typeId = type.getTypeId();
+        if (typeId == null) {
+            return 0;
+        }
+        return shiguRebateGoodsMapper.countRebateGoodsByType(typeId);
+    }
 }
