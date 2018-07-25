@@ -107,7 +107,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
             if(singleSkus==null||singleSkus.isEmpty()){
                 model = SpringBeanFactory.getBean(ItemSkuModel.class, item.getGoodsId());
                 List<SingleSkuVO> pull = model.pull();
-                List<SingleSkuVO> customPrices = pull.stream().filter(SingleSkuVO::getIsDefaultPrice).collect(Collectors.toList());
+                List<SingleSkuVO> customPrices = pull.stream().filter(singleSkuVO -> !singleSkuVO.getIsDefaultPrice()).collect(Collectors.toList());
                 singlePrices=customPrices.stream().map(singleSkuVO ->MoneyUtil.StringToLong(singleSkuVO.getPriceString())).collect(Collectors.toList());
             }else{
                 singlePrices=singleSkus.stream().map(singleSkuBO -> MoneyUtil.StringToLong(singleSkuBO.getPriceString())).collect(Collectors.toList());
