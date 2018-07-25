@@ -8,7 +8,9 @@ public enum HostEnum {
     //TEST_HOST("http://127.0.0.1:8080/daifa5/api/"),
     TEST_HOST("http://127.0.0.1/api/"),
 
-    REST_HOST("http://daifa.571xz.com/api/");
+    REST_HOST("http://daifa.571xz.com/api/"),
+
+    DAIFA_HOST("http://daifa.571xz.com/issuingApp/");
 
     HostEnum(String url) {
         this.url=url;
