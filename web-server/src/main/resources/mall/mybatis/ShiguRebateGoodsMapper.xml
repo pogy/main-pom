@@ -8,4 +8,12 @@
         and a.goods_id = b.goods_id
         limit #{fromSize},#{pageSize}
 	</select>
+
+    <select id="countRebateGoodsByType" resultType = "int">
+        SELECT COUNT( DISTINCT b.goods_id)
+        from shigu_rebate_goods a, shigu_goods_tiny_hz b
+        where a.goods_tab_id = #{typeId} and a.goods_status = 1
+        and a.goods_id = b.goods_id
+    </select>
+
 </mapper>

@@ -20,4 +20,5 @@ import java.util.List;
 public interface ShiguRebateGoodsMapper extends Mapper<ShiguRebateGoods> {
 
     List<InviteGoodsVO> selRebateGoodsByType(@Param("typeId") Long typeId, @Param("fromSize") Integer fromSize, @Param("pageSize") Integer pageSize);
+    int countRebateGoodsByType(@Param("typeId") Long typeId);
 }
