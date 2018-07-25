@@ -397,24 +397,24 @@ public class MyTbOrderService {
                         noSkuTids.add(order.getTbId());
                         continue;
                     } else {
-                        boolean hasSku=false;
-                        for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
-                            String color= sku.getThisColor();
-                            String size=sku.getThisSize();
-                            String tcolor=StringUtils.isBlank(sub.getColor())?"图片色":sub.getColor();
-                            String tsize=StringUtils.isBlank(sub.getSize())?"均码":sub.getSize();
-                            if(tcolor.equals(color)&&tsize.equals(size)){
-                                hasSku=true;
-                                if(sku.getStockNum()==0){
-                                    noSkuTids.add(order.getTbId());
-                                    continue sku;
-                                }
-                            }
-                        }
-                        if(!hasSku){
-                            noSkuTids.add(order.getTbId());
-                            continue;
-                        }
+//                        boolean hasSku=false;
+//                        for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
+//                            String color= sku.getThisColor();
+//                            String size=sku.getThisSize();
+//                            String tcolor=StringUtils.isBlank(sub.getColor())?"图片色":sub.getColor();
+//                            String tsize=StringUtils.isBlank(sub.getSize())?"均码":sub.getSize();
+//                            if(tcolor.equals(color)&&tsize.equals(size)){
+//                                hasSku=true;
+//                                if(sku.getStockNum()==0){
+//                                    noSkuTids.add(order.getTbId());
+//                                    continue sku;
+//                                }
+//                            }
+//                        }
+//                        if(!hasSku){
+//                            noSkuTids.add(order.getTbId());
+//                            continue;
+//                        }
                     }
                     tinyVOMap.put(sub.getNumiid(),rgv);
                 }
@@ -671,20 +671,21 @@ public class MyTbOrderService {
                         subvo.setGoodsType(1);
                         vo.setCanOrder(false);
                     } else {
-                        for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
-                            String color= sku.getThisColor();
-                            String size=sku.getThisSize();
-                            String tcolor=StringUtils.isBlank(subvo.getColor())?"图片色":subvo.getColor();
-                            String tsize=StringUtils.isBlank(subvo.getSize())?"均码":subvo.getSize();
-                            if(tcolor.equals(color)&&tsize.equals(size)){
-                                if(sku.getStockNum()==0){
-                                    subvo.setGoodsType(2);
-                                    vo.setCanOrder(false);
-                                }else{
-                                    subvo.setGoodsType(0);
-                                }
-                            }
-                        }
+//                        for (SingleSkuVO sku:newPullSynItemVO.getSingleSkus()){
+//                            String color= sku.getThisColor();
+//                            String size=sku.getThisSize();
+//                            String tcolor=StringUtils.isBlank(subvo.getColor())?"图片色":subvo.getColor();
+//                            String tsize=StringUtils.isBlank(subvo.getSize())?"均码":subvo.getSize();
+//                            if(tcolor.equals(color)&&tsize.equals(size)){
+//                                if(sku.getStockNum()==0){
+//                                    subvo.setGoodsType(2);
+//                                    vo.setCanOrder(false);
+//                                }else{
+//                                    subvo.setGoodsType(0);
+//                                }
+//                            }
+//                        }
+                        subvo.setGoodsType(0);
                         if(subvo.getGoodsType()==null){
                             subvo.setGoodsType(2);
                             vo.setCanOrder(false);
