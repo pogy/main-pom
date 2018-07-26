@@ -15,6 +15,7 @@ public class InviteOrderRebateRecordExample extends SgExample<InviteOrderRebateR
     public static EntityColumn rebateAmount;
     public static EntityColumn orderId;
     public static EntityColumn rebateState;
+    public static EntityColumn rebateTime;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -26,6 +27,7 @@ public class InviteOrderRebateRecordExample extends SgExample<InviteOrderRebateR
         rebateAmount = listMap.get("rebateAmount");
         orderId = listMap.get("orderId");
         rebateState = listMap.get("rebateState");
+        rebateTime = listMap.get("rebateTime");
         }
 
     public InviteOrderRebateRecordExample() {
@@ -281,6 +283,53 @@ public class InviteOrderRebateRecordExample extends SgExample<InviteOrderRebateR
 
         public InviteOrderRebateRecordExample.Criteria andRebateStateNotBetween(Integer value1, Integer value2) {
             return notBetween(rebateState, value1, value2);
+        }
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeIsNull() {
+            return isNull(rebateTime);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeIsNotNull() {
+            return isNotNull(rebateTime);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeEqualTo(Date value) {
+            return equalTo(rebateTime, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeNotEqualTo(Date value) {
+            return notEqualTo(rebateTime, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeGreaterThan(Date value) {
+            return greaterThan(rebateTime, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(rebateTime, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeLessThan(Date value) {
+            return lessThan(rebateTime, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(rebateTime, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeIn(List<Date> values) {
+            return in(rebateTime, values);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeNotIn(List<Date> values) {
+            return notIn(rebateTime, values);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeBetween(Date value1, Date value2) {
+            return between(rebateTime, value1, value2);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andRebateTimeNotBetween(Date value1, Date value2) {
+            return notBetween(rebateTime, value1, value2);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 import java.io.Serializable;
 
 public class InviteOrderRebateRecord implements Serializable {
@@ -31,6 +32,11 @@ public class InviteOrderRebateRecord implements Serializable {
      * 返点状态 1向支付站发起返点申请 2返点成功
      */
 	private Integer rebateState;
+
+    /**
+     * 返现成功时间
+     */
+	private Date rebateTime;
 
 	public void setIdinviteOrderRebateRecordId(Integer idinviteOrderRebateRecordId) {
 		this.idinviteOrderRebateRecordId = idinviteOrderRebateRecordId;
@@ -70,6 +76,14 @@ public class InviteOrderRebateRecord implements Serializable {
 
 	public Integer getRebateState() {
 		return this.rebateState;
+	}
+
+	public void setRebateTime(Date rebateTime) {
+		this.rebateTime = rebateTime;
+	}
+
+	public Date getRebateTime() {
+		return this.rebateTime;
 	}
 
 }

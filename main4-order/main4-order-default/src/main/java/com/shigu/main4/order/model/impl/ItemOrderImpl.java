@@ -29,12 +29,18 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -501,7 +507,7 @@ public class ItemOrderImpl implements ItemOrder {
             }
         }
         // 邀请新人返点是否可用
-        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("activity_order_invite", String.class));
+        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("activity_order_invite_rebate", String.class));
         if (inviteRebateActive) {
             Long userId = orderInfo().getUserId();
             MemberInvite memberInvite = new MemberInvite();
@@ -560,7 +566,6 @@ public class ItemOrderImpl implements ItemOrder {
                             rebateAmount += unRefundItemPrice.multiply(BigDecimal.valueOf(goodsRebateNum)).divide(BigDecimal.valueOf(10000),2,BigDecimal.ROUND_DOWN).longValue();
                         }
                     }
-
                     // 邀请人用户id
                     Long inviteUserId = memberInvite.getInviteUserId();
                     if (rebateAmount > 0) {
@@ -576,7 +581,6 @@ public class ItemOrderImpl implements ItemOrder {
                         inviteRebateRechargeRequest.setXzUserId(inviteUserId);
                         inviteRebateRechargeRequest.setRebateOrderNo(oid);
                         inviteRebateRechargeRequest.setRebateAmount(rebateAmount);
-
                         InviteRebateRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(inviteRebateRechargeRequest);
                         if (resp == null || !resp.isSuccess()) {
                             try {

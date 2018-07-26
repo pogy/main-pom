@@ -634,6 +634,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public void inviteRebateSuccessNotify(Long oid) {
         InviteOrderRebateRecord inviteOrderRebateRecord = new InviteOrderRebateRecord();
         inviteOrderRebateRecord.setRebateState(2);
+        inviteOrderRebateRecord.setRebateTime(new Date());
         InviteOrderRebateRecordExample example = new InviteOrderRebateRecordExample();
         example.createCriteria().andOrderIdEqualTo(oid);
         inviteOrderRebateRecordMapper.updateByExampleSelective(inviteOrderRebateRecord, example);
