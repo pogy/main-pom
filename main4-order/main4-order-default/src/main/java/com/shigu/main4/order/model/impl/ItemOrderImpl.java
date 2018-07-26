@@ -501,7 +501,7 @@ public class ItemOrderImpl implements ItemOrder {
             }
         }
         // 邀请新人返点是否可用
-        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("shigu_rebate_type", String.class));
+        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("activity_order_invite", String.class));
         if (inviteRebateActive) {
             Long userId = orderInfo().getUserId();
             MemberInvite memberInvite = new MemberInvite();

@@ -70,7 +70,7 @@ public class InviteService {
      * @param userId
      */
     public void giveVoucher(Long userId) {
-        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("shigu_rebate_type", String.class));
+        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("activity_order_invite", String.class));
         if (inviteRebateActive) {
             // 邀请新人活动
             String INVITE_VOUCHER_TAG = "INVITE_VOUCHER_TAG";

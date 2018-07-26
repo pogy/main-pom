@@ -25,7 +25,7 @@ public class RedisIOTest {
     public static void main(String[] args) {
         RedisIOTest test = new RedisIOTest();
         RedisIO redisIO = test.getRedisIOInstance();
-        redisIO.put("shigu_rebate_type", "true");
+        redisIO.put("activity_order_invite", "true");
     }
 
 
