@@ -14,6 +14,11 @@ public class InviteOrderRebateRecord implements Serializable {
 	private Integer idinviteOrderRebateRecordId;
 
     /**
+     * 被邀请用户id
+     */
+	private Long userId;
+
+    /**
      * 返现订单id
      */
 	private Long orderId;
@@ -44,6 +49,14 @@ public class InviteOrderRebateRecord implements Serializable {
 
 	public Integer getIdinviteOrderRebateRecordId() {
 		return this.idinviteOrderRebateRecordId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getUserId() {
+		return this.userId;
 	}
 
 	public void setOrderId(Long orderId) {

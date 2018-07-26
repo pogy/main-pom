@@ -15,6 +15,7 @@ public class InviteOrderRebateRecordExample extends SgExample<InviteOrderRebateR
     public static EntityColumn rebateAmount;
     public static EntityColumn orderId;
     public static EntityColumn rebateState;
+    public static EntityColumn userId;
     public static EntityColumn rebateTime;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -27,6 +28,7 @@ public class InviteOrderRebateRecordExample extends SgExample<InviteOrderRebateR
         rebateAmount = listMap.get("rebateAmount");
         orderId = listMap.get("orderId");
         rebateState = listMap.get("rebateState");
+        userId = listMap.get("userId");
         rebateTime = listMap.get("rebateTime");
         }
 
@@ -283,6 +285,53 @@ public class InviteOrderRebateRecordExample extends SgExample<InviteOrderRebateR
 
         public InviteOrderRebateRecordExample.Criteria andRebateStateNotBetween(Integer value1, Integer value2) {
             return notBetween(rebateState, value1, value2);
+        }
+        public InviteOrderRebateRecordExample.Criteria andUserIdIsNull() {
+            return isNull(userId);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
+        }
+
+        public InviteOrderRebateRecordExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
         }
         public InviteOrderRebateRecordExample.Criteria andRebateTimeIsNull() {
             return isNull(rebateTime);

@@ -573,6 +573,7 @@ public class ItemOrderImpl implements ItemOrder {
                         inviteOrderRebateRecord.setOrderId(oid);
                         if (inviteOrderRebateRecordMapper.selectCount(inviteOrderRebateRecord) == 0) {
                             inviteOrderRebateRecord.setInviteUserId(inviteUserId);
+                            inviteOrderRebateRecord.setUserId(userId);
                             inviteOrderRebateRecord.setRebateAmount(rebateAmount);
                             inviteOrderRebateRecord.setRebateState(1);
                             inviteOrderRebateRecordMapper.insertSelective(inviteOrderRebateRecord);
