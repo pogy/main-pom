@@ -28,15 +28,11 @@ import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -160,7 +156,8 @@ public class ItemOrderImpl implements ItemOrder {
             ItemOrderSub orderSub = subOrderMap.get(vo.getSoid());
             vo.setSubOrderStatus(SubOrderStatus.statusOf(orderSub.getStatus()));
             vo.setNum(vo.getNum());
-            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class, vo.getGoodsId(), vo.getColor(), vo.getSize()).info();
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class,orderSub.getPid(),orderSub.getSkuId()).info();
+            info.setPrice(orderSub.getPrice());
             vo.setProduct(info);
         }
         return vos;
@@ -349,7 +346,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) throws OrderException {
+    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice,Long userId) throws OrderException {
         for (SubOrderBO bo : subOrders) {
             ItemOrderSub sub=new ItemOrderSub();
             ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, bo.getPid(), bo.getSkuId());

@@ -12,7 +12,14 @@ public class TdVO implements Serializable{
         this.pid = pid;
         this.value = value;
     }
-
+    public TdVO(Long pid, Long vid, String ids, String value, boolean price, boolean num) {
+        this.pid = pid;
+        this.vid = vid;
+        this.ids = ids;
+        this.value = value;
+        this.price = price;
+        this.num = num;
+    }
     public TdVO() {
     }
 
@@ -40,6 +47,14 @@ public class TdVO implements Serializable{
      * 是否颜色,是为true
      */
     private boolean color;
+    /**
+     * 是否价格
+     */
+    private boolean price;
+    /**
+     * 是否数量
+     */
+    private boolean num;
     /**
      * 跟在这个td后面的所有td
      */
@@ -123,5 +138,33 @@ public class TdVO implements Serializable{
                 ", vid=" + vid +
                 ", pid=" + pid +
                 '}';
+    }
+
+    /**
+     * 获取 是否价格
+     */
+    public boolean isPrice() {
+        return this.price;
+    }
+
+    /**
+     * 设置 是否价格
+     */
+    public void setPrice(boolean price) {
+        this.price = price;
+    }
+
+    /**
+     * 获取 是否数量
+     */
+    public boolean isNum() {
+        return this.num;
+    }
+
+    /**
+     * 设置 是否数量
+     */
+    public void setNum(boolean num) {
+        this.num = num;
     }
 }

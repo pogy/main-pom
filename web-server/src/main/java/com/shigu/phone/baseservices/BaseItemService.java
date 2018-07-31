@@ -2,11 +2,8 @@ package com.shigu.phone.baseservices;
 
 import com.openJar.exceptions.OpenException;
 import com.opentae.data.mall.beans.ShiguGoodsCollect;
-import com.opentae.data.mall.examples.ShiguGoodsCollectExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsCollectMapper;
-import com.shigu.main4.ucenter.exceptions.ItemCollectionException;
 import com.shigu.main4.ucenter.services.UserCollectService;
-import com.shigu.main4.ucenter.webvo.ItemCollectInfoVO;
 import com.shigu.phone.api.enums.ImgFormatEnum;
 import com.shigu.phone.apps.utils.ImgUtils;
 import com.shigu.phone.basevo.BaseCollectItemVO;

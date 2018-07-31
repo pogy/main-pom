@@ -4,18 +4,14 @@ import com.shigu.api.exceptions.SystemException;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.phone.apps.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.Date;
 import java.util.Map;
 
 public class AppInterceptor implements HandlerInterceptor {

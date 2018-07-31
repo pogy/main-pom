@@ -27,6 +27,7 @@
 				/daili/**.png = anon
                 /api/**.action = api
                 /api/**.json = api
+                /issuingApp/**.json = api
 				/daifa/*.json = daifa
 				/daifa/*.htm = daifa
 				/daifa/** = daifa

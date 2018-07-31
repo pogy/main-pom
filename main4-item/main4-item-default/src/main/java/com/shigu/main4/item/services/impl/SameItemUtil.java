@@ -1,21 +1,20 @@
 package com.shigu.main4.item.services.impl;
 
-
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.searchtool.configs.ElasticConfiguration;
-import com.searchtool.domain.SimpleElaBean;
-import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.item.exceptions.SameItemException;
 import com.shigu.main4.item.tools.Similarity;
 import com.shigu.main4.item.vo.ItemKus;
 import com.shigu.main4.item.vo.NowItemInfo;
 import net.sf.json.JSONObject;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.get.*;
-import org.elasticsearch.client.Client;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.get.MultiGetItemResponse;
+import org.elasticsearch.action.get.MultiGetRequestBuilder;
+import org.elasticsearch.action.get.MultiGetResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

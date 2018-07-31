@@ -1,6 +1,9 @@
 package com.shigu.seller.bo;
 
-import com.shigu.main4.item.vo.SynItem;
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.item.bo.news.NewPushSynItemBO;
+import com.shigu.main4.item.bo.news.SingleSkuBO;
 import com.shigu.seller.services.DataPackageImportService;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -12,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -112,6 +116,9 @@ public class GoodsOfferBO implements Serializable{
      * 商品id
      */
     private String goodsId;
+
+
+    private List<String> skuSpecs;
 
     public String getGoodsId() {
         return goodsId;
@@ -273,15 +280,75 @@ public class GoodsOfferBO implements Serializable{
      * 转化成标准对象
      * @return
      */
-    public SynItem parseToSynItem(DataPackageImportService dataPackageImportService){
-        SynItem synItem=new SynItem();
-        synItem.setPicUrl(dataPackageImportService.banjia(picPath));
+    public NewPushSynItemBO parseToSynItem(DataPackageImportService dataPackageImportService) throws JsonErrException {
+        NewPushSynItemBO synItem=new NewPushSynItemBO();
+        synItem.setInputPids(this.getInputPids());
+        synItem.setInputStr(this.getInputStr());
+        synItem.setProps(this.getParamstr());
+        synItem.setPropertyAlias(this.getPropertyAlias());
+        if (StringUtils.isBlank(this.getBuynow())) {
+            this.setBuynow(this.getPiPrice());
+        }
+        synItem.setPriceString(this.getBuynow());
+        synItem.setPiPriceString(this.getPiPrice());
+        synItem.setSellPoint(this.getSellPoint());
+        synItem.setNum(this.getQuantity());
+        synItem.setTitle(this.getTitle());
+        synItem.setCidAll(this.getSellerids());
+        synItem.setCid(this.getCid());
+        synItem.setFabric(this.getFabric());
+        synItem.setInFabric(this.getInFabric());
+        synItem.setGoodsNo(this.getGoodsNo());
+
+        List<SingleSkuBO> singleSkus=new ArrayList<>();
+        List<Long> singlePrices=new ArrayList<>();
+        for(String skuSpec:getSkuSpecs()){
+            String[] cs=skuSpec.split("-");
+            String[] colorStrs=cs[0].split("_");
+            String[] sizeStrs=cs[1].split("_");
+            Long price=MoneyUtil.StringToLong(cs[2]);
+            singlePrices.add(price);
+            String piPriceString= MoneyUtil.dealPrice(price);
+            Integer num=new Integer(cs[3]);
+            SingleSkuBO sbo=new SingleSkuBO();
+            sbo.setPriceString(piPriceString);
+            sbo.setStockNum(num);
+            if(!"null".equals(colorStrs[1])){
+                sbo.setColorVid(new Long(colorStrs[1]));
+                sbo.setColorAlias(colorStrs[2]);
+            }
+            if(!"null".equals(sizeStrs[1])){
+                sbo.setSizeVid(new Long(sizeStrs[1]));
+                sbo.setSizeAlias(sizeStrs[2]);
+            }
+            singleSkus.add(sbo);
+        }
+        if(singlePrices.size()>0){
+            singlePrices.sort(Comparator.comparingLong(o -> o));
+            Long piprice=MoneyUtil.StringToLong(this.getPiPrice());
+            if(piprice < singlePrices.get(0) || piprice >singlePrices.get(singlePrices.size()-1)){
+                throw new JsonErrException(
+                        "批发价修改失败,批发价必须在sku价格的区间范围之内,当前范围:[" + MoneyUtil.dealPrice(singlePrices.get(0)) + "-" +
+                                MoneyUtil.dealPrice(singlePrices.get(singlePrices.size() - 1)) + "]");
+            }
+        }
+
+        if(singleSkus.size()==0){
+            SingleSkuBO sbo=new SingleSkuBO();
+            sbo.setPriceString(this.getPiPrice());
+            sbo.setStockNum(999);
+            singleSkus.add(sbo);
+        }
+        synItem.setSingleSkus(singleSkus);
+
+
+        synItem.setPicUrl(dataPackageImportService.banjia(this.getPicPath()));
         List<String> allImgUrl=new ArrayList<>();
-        if(this.picPath!=null){
+        if(this.getPicPath()!=null){
             allImgUrl.add(synItem.getPicUrl());
         }
-        if(this.allimg!=null&&!"".equals(allimg)){
-            List<String> images=Arrays.asList(allimg.split(","));
+        if(this.getAllimg()!=null&&!"".equals(this.getAllimg())){
+            List<String> images=Arrays.asList(this.getAllimg().split(","));
             for(int i=0;i<images.size();i++){
                 images.set(i,dataPackageImportService.banjia(images.get(i)));
             }
@@ -290,29 +357,20 @@ public class GoodsOfferBO implements Serializable{
         }else{
             synItem.setImageList(allImgUrl);
         }
-        synItem.setInputPids(this.getInputPids());
-        synItem.setInputStr(this.getInputStr());
-        synItem.setProps(this.getParamstr());
-        synItem.setPropertyAlias(this.getPropertyAlias());
-        if (StringUtils.isBlank(this.buynow)) {
-            this.buynow = this.getPiPrice();
-        }
-        synItem.setPriceString(this.getBuynow());
-        synItem.setPiPriceString(this.getPiPrice());
-        synItem.setSellPoint(this.getSellPoint());
-        synItem.setNum(this.getQuantity());
-        synItem.setTitle(this.getTitle());
         Document d=Jsoup.parse(this.getDeschtml());
         Elements imgs=d.select("img");
         imgs.forEach(element -> {
             element.attr("src",dataPackageImportService.banjia(element.attr("src")));
         });
         synItem.setGoodsDesc(d.body().html());
-        synItem.setCidAll(this.getSellerids());
-        synItem.setCid(this.getCid());
-        synItem.setFabric(this.getFabric());
-        synItem.setInFabric(this.getInFabric());
-        synItem.setGoodsNo(this.getGoodsNo());
         return synItem;
+    }
+
+    public List<String> getSkuSpecs() {
+        return this.skuSpecs;
+    }
+
+    public void setSkuSpecs(List<String> skuSpecs) {
+        this.skuSpecs = skuSpecs;
     }
 }

@@ -219,7 +219,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             vo.setNumber(subItemOrderBO.getNum());
             subOrders.add(vo);
         }
-        itemOrder.addSubOrder(subOrders, false);
+        itemOrder.addSubOrder(subOrders, false,order.getUserId());
 
         if (itemOrderSenderMapper.selectByPrimaryKey(orderBO.getSenderId()).getType() == 1) {//查询一下是否代发用户
             ItemOrderSubExample subExample = new ItemOrderSubExample();

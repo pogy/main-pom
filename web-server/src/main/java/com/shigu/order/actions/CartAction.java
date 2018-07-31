@@ -7,9 +7,8 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.order.bo.AddCartBO;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
-import com.shigu.order.vo.CartChildOrderVO;
-import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
+import com.shigu.order.vo.CartSingleSkuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -27,8 +26,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 进货车
@@ -179,6 +176,13 @@ public class CartAction {
             return JsonResponseUtil.error("商品不存在");
         }
         return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("getGoodsSkuList")
+    @ResponseBody
+    public JSONObject getGoodsSkuList(Long goodsId){
+        List<CartSingleSkuVO> skus=cartService.getGoodsSkuList(goodsId);
+        return JsonResponseUtil.success().element("skuList",skus);
     }
 
 }

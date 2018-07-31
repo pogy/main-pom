@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ShiguGoodsExtends;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguPropImgs;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.item.vo.SynItem;
@@ -212,24 +213,29 @@ public class ItemHelper {
             this.tiny.setMarketId(synItem.getFloorId());
             this.tiny.setStoreId(synItem.getShopId());
             // 提取价格Long值
-            if (this.tiny.getPriceString() != null)
+            if(StringUtils.isNotBlank(this.tiny.getPriceString())){
                 try {
-                    Double dbPrice = Double.valueOf(synItem.getPriceString());
-                    this.tiny.setPriceString(String.format("%.2f", dbPrice));
-                    Double price = dbPrice * 100.0;
-                    this.tiny.setPrice(price.longValue());
+                    Long price= MoneyUtil.StringToLong(synItem.getPriceString());
+                    this.tiny.setPrice(price);
+                    this.tiny.setPriceString(MoneyUtil.dealPrice(price));
                 } catch (Exception ignore) {}
+            }
             // 提取批发价Long值
-            if (this.tiny.getPiPriceString() != null)
+            if(StringUtils.isNotBlank(this.tiny.getPiPriceString())){
                 try {
-                    Double dbPiPrice = Double.valueOf(synItem.getPiPriceString());
-                    this.tiny.setPiPriceString(String.format("%.2f", dbPiPrice));
-                    Double piPrice = dbPiPrice * 100.0;
-                    this.tiny.setPiPrice(piPrice.longValue());
-                } catch (Exception ignore) {}
+                    Long piPrice= MoneyUtil.StringToLong(synItem.getPiPriceString());
+                    this.tiny.setPiPrice(piPrice);
+                    this.tiny.setPiPriceString(MoneyUtil.dealPrice(piPrice));
+                } catch (Exception ignored) {}
+                if(StringUtils.isBlank(this.tiny.getPriceString())){
+                    this.tiny.setPrice(this.tiny.getPiPrice());
+                    this.tiny.setPriceString(this.tiny.getPiPriceString());
+                }
+            }
             // 设置商品来源
-            if (synItem.getItemFrom() != null)
+            if (synItem.getItemFrom() != null) {
                 this.tiny.setIsExcelImp(synItem.getItemFrom().ordinal());
+            }
         }
 
         private ShiguGoodsTiny tiny;

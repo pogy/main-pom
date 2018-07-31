@@ -1,7 +1,6 @@
 package com.shigu.main4.cdn.services;
 
 import com.opentae.data.mall.beans.ShiguStoreNumShow;
-import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.ShiguStoreNumShowMapper;
 import org.springframework.beans.factory.annotation.Autowired;

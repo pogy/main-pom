@@ -2,11 +2,8 @@ package com.shigu.seller.services;
 
 import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.main4.activity.beans.ActivityTerm;
-import com.shigu.main4.activity.beans.GoatActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.model.Activity;
 import com.shigu.main4.activity.service.ActivityDubboService;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
@@ -18,12 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by zhaohongbo on 17/5/13.

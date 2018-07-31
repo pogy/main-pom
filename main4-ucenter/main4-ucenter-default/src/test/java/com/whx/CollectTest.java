@@ -37,10 +37,6 @@ public class CollectTest {
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
-    @Test
-    public void createDataPackageByCoolectIdsTest(){
-        userCollectService.createDataPackageByCoolectIds(1000083680L,Lists.newArrayList(852209L));
-    }
 
     @Test
     public void selShopCollectionsTest(){

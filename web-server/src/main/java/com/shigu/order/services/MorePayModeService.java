@@ -1,29 +1,20 @@
 package com.shigu.order.services;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ItemOrderExample;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.services.PaySdkClientService;
-import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
-import com.shigu.main4.order.exceptions.PayerException;
-import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.process.PayProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
-import com.shigu.main4.tools.SpringBeanFactory;
-import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.order.vo.PayModePageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 收款台-支付方式选择

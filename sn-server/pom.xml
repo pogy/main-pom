@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.4-SNAPSHOT</version>
+        <version>4.2.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>sn-sdk</artifactId>
-            <version>4.2.4-SNAPSHOT</version>
+            <version>4.2.6-SNAPSHOT</version>
         </dependency>
 
         <dependency>

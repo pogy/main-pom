@@ -15,7 +15,6 @@ import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.jd.util.XzJdSdkSend;
 import com.shigu.goodsup.jd.vo.PropsVO;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.tools.XzSdkClient;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.alibaba.*"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:/*.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
+        <property name="properties">
+            <map>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper,com.opentae.core.mybatis.mapper.MultipleMapper"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="workerMan" class="com.shigu.main4.packages.util.WorkerMan" >
+        <!--每个任务最大执行时间 单位秒-->
+        <property name="timeOut" value="600" />
+        <!--队列最大长度默认200-->
+        <property name="maxQueue" value="200" />
+        <!--线程池初始线程数-->
+        <property name="threadNum" value="8" />
+    </bean>
+
+    <import resource="datasource/shigu_mall.xml"/>
+
+    <import resource="../../package.xml"/>
+
+</beans>

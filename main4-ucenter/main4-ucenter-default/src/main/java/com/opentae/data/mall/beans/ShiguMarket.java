@@ -1,7 +1,5 @@
 package com.opentae.data.mall.beans;
 
-import com.opentae.common.beans.MoreSiteBean;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 

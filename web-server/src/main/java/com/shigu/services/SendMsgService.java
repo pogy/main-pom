@@ -5,8 +5,6 @@ import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.shigu.sms.beans.SmsSendResult;
 import com.shigu.sms.utils.SmsJsoup;
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
