@@ -659,4 +659,14 @@ public class ConfirmOrderService {
         return senderId;
     }
 
+
+    /**
+     * 获取可用优惠信息 代金券方式
+     * @param userId
+     * @return
+     */
+    public List<VoucherVO> findAvailableFavourableInfo(Long userId) {
+        return itemOrderService.findAvailableFavourableInfo(userId);
+    }
+
 }

@@ -11,6 +11,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.enums.ItemVoucherTypeEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 商品订单服务
@@ -87,6 +89,12 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
+
+    @Autowired
+    private ItemVoucherMapper itemVoucherMapper;
+
+    @Autowired
+    private InviteOrderRebateRecordMapper inviteOrderRebateRecordMapper;
 
     private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
 
@@ -271,6 +279,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         logistic.setAddress(buyerAddress.getAddress());
         logistic.setMoney(calculateLogisticsFee(orderBO.getUserId(),order.getOid(),orderBO.getSenderId(), companyId, buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic, true);//最后一步才重怎么价格
+
+        Long inviteVoucher = getInviteVoucher(orderBO.getUserId());
+        if (inviteVoucher != null) {
+            itemOrder.addVoucher(inviteVoucher);
+        }
         return order.getOid();
     }
 
@@ -545,4 +558,85 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId).orderInfo();
     }
 
+
+    @Override
+    public Long giveVoucher(VoucherBO bo) {
+        ItemVoucher itemVoucher = new ItemVoucher();
+        itemVoucher.setUserId(bo.getUserId());
+        itemVoucher.setVoucherTag(bo.getVoucherTag());
+        ItemVoucher existVoucher = itemVoucherMapper.selectOne(itemVoucher);
+        if (existVoucher != null) {
+            return existVoucher.getVoucherId();
+        }
+        itemVoucher.setVoucherAmount(bo.getVoucherAmount());
+        Calendar calendar = Calendar.getInstance();
+        itemVoucher.setCreateTime(calendar.getTime());
+        calendar.add(Calendar.DATE,bo.getGuaranteePeriod());
+        itemVoucher.setExpireTime(calendar.getTime());
+        itemVoucher.setVoucherState(1);
+        itemVoucher.setVoucherInfo("邀请码注册首单减免");
+        itemVoucherMapper.insertSelective(itemVoucher);
+        return itemVoucher.getVoucherId();
+    }
+
+
+    /**
+     * 获取可用优惠信息 代金券方式
+     * @param userId
+     * @return
+     */
+    public List<VoucherVO> findAvailableFavourableInfo(Long userId) {
+        ItemVoucherExample example = new ItemVoucherExample();
+        example.createCriteria().andUserIdEqualTo(userId).andVoucherStateEqualTo(1).andExpireTimeGreaterThan(new Date());
+        return itemVoucherMapper.selectByExample(example).stream().map(o -> {
+            VoucherVO vo = new VoucherVO();
+            vo.setVoucherId(o.getVoucherId());
+            vo.setVoucherInfo(o.getVoucherInfo());
+            vo.setVoucherAmount(o.getVoucherAmount());
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
+
+    @Autowired
+    private MemberInviteMapper memberInviteMapper;
+
+
+    /**
+     * 邀请注册首单减免 可用代金券获取
+     * @param userId
+     * @return
+     */
+    public Long getInviteVoucher(Long userId) {
+        MemberInvite memberInvite = new MemberInvite();
+        memberInvite.setUserId(userId);
+        memberInvite = memberInviteMapper.selectOne(memberInvite);
+        if (memberInvite == null) {
+            return null;
+        }
+        // 邀请注册代金券
+        ItemVoucher itemVoucher = new ItemVoucher();
+        itemVoucher.setUserId(userId);
+        itemVoucher.setVoucherState(1);
+        itemVoucher.setVoucherTag(ItemVoucherTypeEnum.INVITE.voucherTag(String.valueOf(userId)));
+        itemVoucher = itemVoucherMapper.selectOne(itemVoucher);
+        if (itemVoucher == null) {
+            return null;
+        }
+        if (itemVoucher.getExpireTime().before(new Date())) {
+            return null;
+        }
+        return itemVoucher.getVoucherId();
+    }
+
+
+    @Override
+    public void inviteRebateSuccessNotify(Long oid) {
+        InviteOrderRebateRecord inviteOrderRebateRecord = new InviteOrderRebateRecord();
+        inviteOrderRebateRecord.setRebateState(2);
+        inviteOrderRebateRecord.setRebateTime(new Date());
+        InviteOrderRebateRecordExample example = new InviteOrderRebateRecordExample();
+        example.createCriteria().andOrderIdEqualTo(oid);
+        inviteOrderRebateRecordMapper.updateByExampleSelective(inviteOrderRebateRecord, example);
+    }
 }

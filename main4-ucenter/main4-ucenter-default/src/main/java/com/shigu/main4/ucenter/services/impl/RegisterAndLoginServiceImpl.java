@@ -1,6 +1,7 @@
 package com.shigu.main4.ucenter.services.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.data.mall.beans.MemberInvite;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.beans.UidOutIdReference;
@@ -25,6 +26,7 @@ import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -63,6 +65,9 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
 
     @Resource(name = "tae_mall_uidOutIdReferenceMapper")
     private UidOutIdReferenceMapper uidOutIdReferenceMapper;
+
+    @Autowired
+    private MemberInviteMapper memberInviteMapper;
 
 
     /**
@@ -122,8 +127,26 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         uidOutIdReference.setGmtCreate(now);
         uidOutIdReference.setGmtModify(now);
         uidOutIdReferenceMapper.insertSelective(uidOutIdReference);
-
+        //邀请推广 推广关系记录
+        userInvited(memberUser.getUserId(), user.getInviteUserId());
         return memberUser.getUserId();
+    }
+
+    /**
+     * 邀请推广，受邀请注册用户邀请人关系记录
+     * @param userId 新注册用户id 非空
+     * @param invitedUserId 邀请人用户id
+     */
+    private void userInvited(Long userId, Long invitedUserId){
+        //推广
+        if (invitedUserId != null) {
+            MemberInvite memberInvite = new MemberInvite();
+            memberInvite.setUserId(userId);
+            memberInvite.setInviteUserId(invitedUserId);
+            memberInvite.setValid(0);
+            memberInvite.setInviteCreateTime(new Date());
+            memberInviteMapper.insertSelective(memberInvite);
+        }
     }
 
     /**

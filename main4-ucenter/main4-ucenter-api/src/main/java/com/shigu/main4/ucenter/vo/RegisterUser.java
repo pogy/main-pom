@@ -19,6 +19,10 @@ public class RegisterUser implements Serializable{
      * 密码
      */
     private String password;
+    /**
+     * 邀请人用户Id
+     */
+    private Long inviteUserId;
 
     public String getPassword() {
         return password;
@@ -42,5 +46,13 @@ public class RegisterUser implements Serializable{
 
     public void setUserNick(String userNick) {
         this.userNick = userNick;
+    }
+
+    public Long getInviteUserId() {
+        return inviteUserId;
+    }
+
+    public void setInviteUserId(Long inviteUserId) {
+        this.inviteUserId = inviteUserId;
     }
 }

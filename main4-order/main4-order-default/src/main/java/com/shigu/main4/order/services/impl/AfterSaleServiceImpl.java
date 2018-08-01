@@ -4,6 +4,7 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
@@ -62,6 +63,9 @@ public class AfterSaleServiceImpl implements AfterSaleService {
 
     @Autowired
     private SubOrderSoidpsMapper subOrderSoidpsMapper;
+
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
 
     @Autowired
     private SoidsCreater soidsCreater;
@@ -538,5 +542,40 @@ public class AfterSaleServiceImpl implements AfterSaleService {
             throw new OrderException("不能操作他人订单");
         }
         refundModel.finishExchange();
+    }
+
+    /**
+     * 订单最大可退商品金额
+     * @param oid
+     * @return
+     */
+    public Long maxItemCanRefund(Long oid) {
+        if (oid == null) {
+            return 0L;
+        }
+        com.opentae.data.mall.beans.ItemOrder itemOrder = itemOrderMapper.selectByPrimaryKey(oid);
+        if (itemOrder == null) {
+            return 0L;
+        }
+        Long realVoucherAmount = itemOrder.getRealVoucherAmount();
+        if (realVoucherAmount == null) {
+            realVoucherAmount = 0L;
+        }
+        ItemOrderSub query = new ItemOrderSub();
+        query.setOid(oid);
+        return itemOrderSubMapper.select(query).stream().mapToLong(o -> o.getShouldPayMoney() - o.getRefundMoney()).sum() - realVoucherAmount;
+    }
+
+    /**
+     * 根据子单号获取订单剩余最大可退商品金额
+     * @param soid
+     * @return
+     */
+    public Long maxItemCanRefundBySubOrderId(Long soid) {
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(soid);
+        if (itemOrderSub == null) {
+            return 0L;
+        }
+        return maxItemCanRefund(itemOrderSub.getOid());
     }
 }

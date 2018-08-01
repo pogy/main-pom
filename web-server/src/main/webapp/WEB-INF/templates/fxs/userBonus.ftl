@@ -35,13 +35,18 @@
 <div class="bonusBalance">
     <h3 class="fs16 yahei fc3">红包余额（元）</h3>
     <p class="money fcF40 yahei">
-        <#if bonusBalance??>
-            ${bonusBalance!}
-        <#else>
-            0.00
+         <span>
+             <#if bonusBalance??>
+               ${bonusBalance!}
+            <#else>
+                0.00
+            </#if>
+        </span>
+        <#if creditAmount??>
+            <span class="credit"><i></i>${creditAmount!}<em class="simsun">（新人红包）</em></span>
         </#if>
     </p>
-    <p class="tips fc3">红包余额仅支持兑换代金券，线下档口支付使用！&nbsp;&nbsp;&nbsp;&nbsp;兑换地址：电商基地一楼大厅</p>
+    <p class="tips fc3">红包余额仅支持兑换代金券，线下档口支付使用！&nbsp;&nbsp;&nbsp;&nbsp;兑换地址：电商基地一楼大厅&nbsp;&nbsp;&nbsp;&nbsp;10元新人红包仅限于首次下单减免使用!</p>
 </div>
 <div class="bonusList">
     <h3 class="yahei fs16 fc3">红包明细</h3>
