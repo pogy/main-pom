@@ -1,13 +1,11 @@
 package com.shigu.buyer.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.MemberUser;
-import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguBonusRecord;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.custombeans.BalanceVO;
+import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.component.shiro.enums.CacheEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -23,6 +21,7 @@ import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -31,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +56,14 @@ public class MemberSimpleService {
 
     @Autowired
     PaySdkClientService paySdkClientService;
+
+    @Autowired
+    MemberInviteMapper memberInviteMapper;
+
+    @Autowired
+    ItemOrderMapper itemOrderMapper;
+    @Autowired
+    ItemVoucherMapper itemVoucherMapper;
 
     /**
      * 查用户的淘宝昵称,如果有多个淘宝账号,只取第一个
@@ -137,6 +145,10 @@ public class MemberSimpleService {
             throw new JsonErrException(e.getMessage());
         }
         userBaseService.setNewPayPwd(userId, newPwd);
+    }
+    public String getUserCreateTime(Long userId){
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        return DateFormatUtils.format(memberUser.getRegTime(), "yyyy-MM-dd HH:mm:ss");
     }
 
     public boolean isPayPwdMatch(Long userId, String payPwd) {
@@ -233,6 +245,29 @@ public class MemberSimpleService {
             return null;
         }
         return memberUserMapper.getUserBonusRecord(userId);
+    }
+
+    /**
+     * 获取用户红包明细
+     *
+     * @param userId
+     * @return
+     */
+    public Integer getUserFirstReduction(Long userId) {
+        if (userId == null) {
+            return 0;
+        }
+        ItemVoucher inviteVoucher = new ItemVoucher();
+        inviteVoucher.setUserId(userId);
+        inviteVoucher.setVoucherTag("INVITE_VOUCHER_TAG");
+        inviteVoucher = itemVoucherMapper.selectOne(inviteVoucher);
+        if (inviteVoucher == null) {
+            return 0;
+        }
+        if (inviteVoucher.getUsedTime() == null && new Date().after(inviteVoucher.getExpireTime())) {
+            return 0;
+        }
+        return inviteVoucher.getVoucherState().equals(1) ? 1 : 0;
     }
 
     /**

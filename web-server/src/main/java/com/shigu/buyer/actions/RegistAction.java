@@ -2,11 +2,13 @@ package com.shigu.buyer.actions;
 
 import com.shigu.buyer.bo.RegistBO;
 import com.shigu.buyer.bo.RegistVerifyBO;
+import com.shigu.buyer.services.InviteService;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.ucenter.services.MemberInviteService;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.services.SendMsgService;
@@ -17,6 +19,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.RedomUtil;
 import com.shigu.tools.VerifyUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -50,13 +53,19 @@ public class RegistAction {
     @Autowired
     RegisterAndLoginService registerAndLoginService;
 
+    @Autowired
+    InviteService inviteService;
+
     /**
      * 用户注册
      *
      * @return
      */
     @RequestMapping(value = "regedit", method = RequestMethod.GET)
-    public String regedit() {
+    public String regedit(String inviteCode, Model model) {
+        if (StringUtils.isNotBlank(inviteCode)) {
+            model.addAttribute("inviteCode", inviteCode);
+        }
         return "login/regedit";
     }
 
@@ -109,24 +118,40 @@ public class RegistAction {
     public JSONObject jsonregeditSubmit(@Valid RegistBO bo, BindingResult result, HttpSession session,
                                         HttpServletRequest request) throws JsonErrException {
         if(result.hasErrors()){
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+            return JsonResponseUtil.error(result.getAllErrors().get(0).getDefaultMessage());
+            //throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
         }
         //认证手机
         PhoneVerify pv= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue());
         if(!bo.getTelephone().equals(pv.getPhone())||!bo.getMsgValidate().equals(pv.getVerify())){
-            throw new JsonErrException("手机验证码错误").addErrMap("ele", "msgValidate");
+            return JsonResponseUtil.error("手机验证码错误").element("ele", "msgValidate");
+            //throw new JsonErrException("手机验证码错误").addErrMap("ele", "msgValidate");
         }
         RegisterUser registerUser=new RegisterUser();
         registerUser.setPassword(bo.getPassword());
         registerUser.setTelephone(bo.getTelephone());
+        String inviteCode = bo.getInviteCode();
+        if (StringUtils.isNotBlank(inviteCode)) {
+            //有邀请码时验证邀请码
+            Long invitedUserId = inviteService.findUserByInviteCode(inviteCode);
+            if (invitedUserId == null) {
+                return JsonResponseUtil.error("邀请码错误");
+            }
+            registerUser.setInviteUserId(invitedUserId);
+        }
         Long userId = null;
         try {
             userId = registerAndLoginService.registerByPhone(registerUser);
             if(userId ==null){
-                throw new JsonErrException("用户已经存在");
+                return JsonResponseUtil.error("用户已经存在");
+                //throw new JsonErrException("用户已经存在");
+            }
+            if (registerUser.getInviteUserId() != null) {
+                inviteService.giveVoucher(userId);
             }
         } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage()).addErrMap("ele","telephone");
+            return JsonResponseUtil.error(e.getMessage()).element("ele","telephone");
+            //throw new JsonErrException(e.getMessage()).addErrMap("ele","telephone");
         }
         //成功以后,需要登陆一下
         Subject currentUser = SecurityUtils.getSubject();
@@ -164,6 +189,24 @@ public class RegistAction {
     public String contract(Model model){
         model.addAttribute("webSite", "hz");
         return "login/contract";
+    }
+
+    /**
+     * 查看手机号是否已被注册
+     * @param telephone
+     * @return
+     */
+    @RequestMapping("telHasRegisted")
+    @ResponseBody
+    public JSONObject telHasRegisted(String telephone) {
+        if (StringUtils.isEmpty(telephone)) {
+            return JsonResponseUtil.error("手机号不能为空");
+        }
+        if (registerAndLoginService.userCanRegist(telephone , LoginFromType.PHONE)) {
+            return JsonResponseUtil.success();
+        } else {
+            return JsonResponseUtil.error("手机号已被注册");
+        }
     }
 
 }

@@ -181,4 +181,18 @@ public interface AfterSaleService {
      * @param userId
      */
     void finishExchange(Long refundId,Long userId) throws OrderException;
+
+    /**
+     * 订单最大可退商品金额
+     * @param oid
+     * @return
+     */
+    Long maxItemCanRefund(Long oid);
+
+    /**
+     * 根据子单号获取订单剩余最大可退商品金额
+     * @param soid
+     * @return
+     */
+    Long maxItemCanRefundBySubOrderId(Long soid);
 }

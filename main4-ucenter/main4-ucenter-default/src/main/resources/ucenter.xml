@@ -16,8 +16,9 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <dubbo:service interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" ref="registerAndLoginService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.ucenter.services.UserBaseService" ref="userBaseService" retries="0" timeout="20000" />
@@ -25,4 +26,6 @@
     <dubbo:service interface="com.shigu.main4.ucenter.services.UserLicenseService" ref="userLicenseService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.ucenter.services.UserShopService" ref="userShopService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.ucenter.services.WxUserService" ref="wxUserService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.ucenter.services.MemberInviteService" ref="memberInviteService" retries="0" timeout="20000" />
+
 </beans>

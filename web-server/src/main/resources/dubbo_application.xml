@@ -29,6 +29,7 @@
     </dubbo:reference>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" id="registerAndLoginService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserLicenseService" id="userLicenseService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.MemberInviteService" id="memberInviteService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopRegistService" id="shopRegistService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopBaseService" id="shopBaseService" timeout="10000"/>

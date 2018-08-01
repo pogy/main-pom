@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguRebateGoodsMapper" >
+    <select id="selRebateGoodsByType" resultType = "com.shigu.spread.vo.InviteGoodsVO">
+        select b.goods_id id, b.title title,b.pic_url imgsrc, b.pi_price piPriceLong,b.store_id shopId
+        from shigu_rebate_goods a, shigu_goods_tiny_hz b
+        where a.goods_tab_id = #{typeId} and a.goods_status = 1
+        and a.goods_id = b.goods_id
+        limit #{fromSize},#{pageSize}
+	</select>
+
+    <select id="countRebateGoodsByType" resultType = "int">
+        SELECT COUNT( DISTINCT b.goods_id)
+        from shigu_rebate_goods a, shigu_goods_tiny_hz b
+        where a.goods_tab_id = #{typeId} and a.goods_status = 1
+        and a.goods_id = b.goods_id
+    </select>
+
+</mapper>

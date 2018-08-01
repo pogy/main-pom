@@ -24,6 +24,10 @@ public class RegistBO {
     @NotEmpty(message = "密码不能为空")
     @Length(max = 50,min = 6,message = "密码必须在6-20位之间")
     private String password;
+    /**
+     * 邀请码
+     */
+    private String inviteCode;
 
     public String getTelephone() {
         return telephone;
@@ -47,5 +51,13 @@ public class RegistBO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 }
