@@ -157,7 +157,7 @@
     <!--<div class="tips fc3 pa"><i class="icon-warn fcF40 pr" id="bonusTipIcon"><em></em><b></b></i>
         <div class="tipTest pa">${bonusTips!}</div>
     </div>-->
-    <p class="newTip">10元新人红包仅限于首次下单减免使用</p>
+    <#if creditAmount??><p class="newTip">10元新人红包仅限于首次下单减免使用</p></#if>
     <a href="${bonusBtnInfo.href!}" style="display:<#if bonusBtnInfo.display == false>none</#if>" target="_blank" class="goView">${bonusBtnInfo.btnText!}</a>
 </div>
 </div>
