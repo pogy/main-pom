@@ -16,6 +16,7 @@
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="//style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
 <script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+<script src="//style.571xz.com/v6/gys/plugin/sort/Sortable.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__releaseGoodsSend_js.ftl">
@@ -204,64 +205,66 @@
     <label class="formKey">宝贝图片：</label>
     <div class="formData">
         <p class="tips">图片大小不能超过3M；700*700 以上的图片可以在宝贝详情页主图提供图片放大功能 </p>
-        <ul class="clearfix">
-            <li class="active">
-                <i class="iconfont bg icon-plus"></i>
-                <span class="mainText"><i>*</i>宝贝主图</span>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont toright icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            <li >
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont toright icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            <li >
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont toright icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            <li >
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont toright icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            <li >
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont toright icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                </div>
-                <div class="waitgif"></div>
-            </li>
-        </ul>
+        <div class="mainImgBox">
+            <ul class="clearfix" id="bar">
+                <li class="active">
+                    <i class="iconfont bg icon-plus"></i>
+                    <div class="ctBox">
+                        <i class="iconfont toleft icon-leftarrow"></i>
+                        <i class="iconfont toright icon-rightarrow"></i>
+                        <i class="iconfont delete icon-close"></i>
+                    </div>
+                    <div class="imgbox">
+                    </div>
+                    <div class="waitgif"></div>
+                </li>
+                <li >
+                    <i class="iconfont bg icon-plus"></i>
+                    <div class="ctBox">
+                        <i class="iconfont toleft icon-leftarrow"></i>
+                        <i class="iconfont toright icon-rightarrow"></i>
+                        <i class="iconfont delete icon-close"></i>
+                    </div>
+                    <div class="imgbox">
+                    </div>
+                    <div class="waitgif"></div>
+                </li>
+                <li >
+                    <i class="iconfont bg icon-plus"></i>
+                    <div class="ctBox">
+                        <i class="iconfont toleft icon-leftarrow"></i>
+                        <i class="iconfont toright icon-rightarrow"></i>
+                        <i class="iconfont delete icon-close"></i>
+                    </div>
+                    <div class="imgbox">
+                    </div>
+                    <div class="waitgif"></div>
+                </li>
+                <li >
+                    <i class="iconfont bg icon-plus"></i>
+                    <div class="ctBox">
+                        <i class="iconfont toleft icon-leftarrow"></i>
+                        <i class="iconfont toright icon-rightarrow"></i>
+                        <i class="iconfont delete icon-close"></i>
+                    </div>
+                    <div class="imgbox">
+                    </div>
+                    <div class="waitgif"></div>
+                </li>
+                <li >
+                    <i class="iconfont bg icon-plus"></i>
+                    <div class="ctBox">
+                        <i class="iconfont toleft icon-leftarrow"></i>
+                        <i class="iconfont toright icon-rightarrow"></i>
+                        <i class="iconfont delete icon-close"></i>
+                    </div>
+                    <div class="imgbox">
+                    </div>
+                    <div class="waitgif"></div>
+                </li>
+            </ul>
+            <span class="mainText"><i>*</i>宝贝主图</span>
+        </div>
     </div>
 </div>
 <div class="moreMainImgUpload">

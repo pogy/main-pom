@@ -16,6 +16,7 @@
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="//style.571xz.com/v6/gys/temp/webuploader/webuploader.js"></script>
 <script src="//style.571xz.com/v6/gys/plugin/plupload2.1.2/plupload.full.min.js"></script>
+<script src="//style.571xz.com/v6/gys/plugin/sort/Sortable.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/gys__editGoodsInfo_js.ftl">
@@ -233,37 +234,39 @@ var deschtml = '${goodsInfo.deschtml}';
     <label class="formKey">宝贝图片：</label>
     <div class="formData">
         <p class="tips">图片大小不能超过3M；700*700 以上的图片可以在宝贝详情页主图提供图片放大功能 </p>
-        <ul class="clearfix">
-            <#if goodsInfo.picPath??>
-            <li class="active">
-                <i class="iconfont bg icon-plus"></i>
-                <span class="mainText"><i>*</i>宝贝主图</span>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont tori ght icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                    <img src="${goodsInfo.picPath!}" class="showDefaultPic">
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            </#if>
-            <#list goodsInfo.allimg as img>
-            <li>
-                <i class="iconfont bg icon-plus"></i>
-                <div class="ctBox">
-                    <i class="iconfont toleft icon-leftarrow"></i>
-                    <i class="iconfont tori ght icon-rightarrow"></i>
-                    <i class="iconfont delete icon-close"></i>
-                </div>
-                <div class="imgbox">
-                    <img src="${img!}" class="showDefaultPic">
-                </div>
-                <div class="waitgif"></div>
-            </li>
-            </#list>
-        </ul>
+        <div class="mainImgBox">
+            <ul class="clearfix" id="bar">
+                <#if goodsInfo.picPath??>
+                <li class="active">
+                    <i class="iconfont bg icon-plus"></i>
+                    <div class="ctBox">
+                        <i class="iconfont toleft icon-leftarrow"></i>
+                        <i class="iconfont toright ght icon-rightarrow"></i>
+                        <i class="iconfont delete icon-close"></i>
+                    </div>
+                    <div class="imgbox">
+                        <img src="${goodsInfo.picPath!}" class="showDefaultPic">
+                    </div>
+                    <div class="waitgif"></div>
+                </li>
+                </#if>
+                <#list goodsInfo.allimg as img>
+                <li>
+                    <i class="iconfont bg icon-plus"></i>
+                    <div class="ctBox">
+                        <i class="iconfont toleft icon-leftarrow"></i>
+                        <i class="iconfont toright ght icon-rightarrow"></i>
+                        <i class="iconfont delete icon-close"></i>
+                    </div>
+                    <div class="imgbox">
+                        <img src="${img!}" class="showDefaultPic">
+                    </div>
+                    <div class="waitgif"></div>
+                </li>
+                </#list>
+            </ul>
+            <span class="mainText"><i>*</i>宝贝主图</span>
+        </div>
     </div>
 </div>
 <div class="moreMainImgUpload">
