@@ -21,6 +21,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
     public static EntityColumn type;
     public static EntityColumn title;
     public static EntityColumn userId;
+    public static EntityColumn realVoucherAmount;
     public static EntityColumn sendTime;
     public static EntityColumn webSite;
     public static EntityColumn senderId;
@@ -29,6 +30,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
     public static EntityColumn outerId;
     public static EntityColumn orderFrom;
     public static EntityColumn mark;
+    public static EntityColumn totalFeeWithoutVoucher;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -46,6 +48,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         type = listMap.get("type");
         title = listMap.get("title");
         userId = listMap.get("userId");
+        realVoucherAmount = listMap.get("realVoucherAmount");
         sendTime = listMap.get("sendTime");
         webSite = listMap.get("webSite");
         senderId = listMap.get("senderId");
@@ -54,6 +57,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         outerId = listMap.get("outerId");
         orderFrom = listMap.get("orderFrom");
         mark = listMap.get("mark");
+        totalFeeWithoutVoucher = listMap.get("totalFeeWithoutVoucher");
         }
 
     public ItemOrderExample() {
@@ -600,6 +604,53 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
             return notBetween(userId, value1, value2);
         }
+        public ItemOrderExample.Criteria andRealVoucherAmountIsNull() {
+            return isNull(realVoucherAmount);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountIsNotNull() {
+            return isNotNull(realVoucherAmount);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountEqualTo(Long value) {
+            return equalTo(realVoucherAmount, value);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountNotEqualTo(Long value) {
+            return notEqualTo(realVoucherAmount, value);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountGreaterThan(Long value) {
+            return greaterThan(realVoucherAmount, value);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(realVoucherAmount, value);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountLessThan(Long value) {
+            return lessThan(realVoucherAmount, value);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(realVoucherAmount, value);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountIn(List<Long> values) {
+            return in(realVoucherAmount, values);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountNotIn(List<Long> values) {
+            return notIn(realVoucherAmount, values);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountBetween(Long value1, Long value2) {
+            return between(realVoucherAmount, value1, value2);
+        }
+
+        public ItemOrderExample.Criteria andRealVoucherAmountNotBetween(Long value1, Long value2) {
+            return notBetween(realVoucherAmount, value1, value2);
+        }
         public ItemOrderExample.Criteria andSendTimeIsNull() {
             return isNull(sendTime);
         }
@@ -999,6 +1050,53 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
 
         public ItemOrderExample.Criteria andMarkNotBetween(String value1, String value2) {
             return notBetween(mark, value1, value2);
+        }
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherIsNull() {
+            return isNull(totalFeeWithoutVoucher);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherIsNotNull() {
+            return isNotNull(totalFeeWithoutVoucher);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherEqualTo(Long value) {
+            return equalTo(totalFeeWithoutVoucher, value);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherNotEqualTo(Long value) {
+            return notEqualTo(totalFeeWithoutVoucher, value);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherGreaterThan(Long value) {
+            return greaterThan(totalFeeWithoutVoucher, value);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(totalFeeWithoutVoucher, value);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherLessThan(Long value) {
+            return lessThan(totalFeeWithoutVoucher, value);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(totalFeeWithoutVoucher, value);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherIn(List<Long> values) {
+            return in(totalFeeWithoutVoucher, values);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherNotIn(List<Long> values) {
+            return notIn(totalFeeWithoutVoucher, values);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherBetween(Long value1, Long value2) {
+            return between(totalFeeWithoutVoucher, value1, value2);
+        }
+
+        public ItemOrderExample.Criteria andTotalFeeWithoutVoucherNotBetween(Long value1, Long value2) {
+            return notBetween(totalFeeWithoutVoucher, value1, value2);
         }
     }
 }

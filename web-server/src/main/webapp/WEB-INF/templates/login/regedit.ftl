@@ -21,6 +21,14 @@
 <#include "/__ftl_links__/login__common__header.ftl">
 <div class="regeditContainer layout950">
 <div class="regeditForm validateForm">
+    <#if inviteRebateActive == 1>
+        <div class="validateItem">
+            <div class="formGroup">
+                <label>邀请码：</label>
+                <input type="text" name="inviteCode" class="fmInput" placeholder="请输入邀请码" >
+            </div>
+        </div>
+    </#if>
     <div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>手机号码：</label>
@@ -47,12 +55,12 @@
             <input type="password" name="password" class="fmInput" maxlength="20" placeholder="请输入登录密码" >
         </div>
     </div>
-    <div class="validateItem">
+    <!--<div class="validateItem">
         <div class="formGroup">
             <label><i>*</i>确认密码：</label>
             <input type="password" name="confirmPassword" class="fmInput" maxlength="20" placeholder="再次输入密码" >
         </div>
-    </div>
+    </div>-->
     <div class="validateItem">
         <div class="formGroup">
             <label></label>

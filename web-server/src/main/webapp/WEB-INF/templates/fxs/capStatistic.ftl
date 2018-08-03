@@ -57,6 +57,7 @@
         <span data-id="1" jbtn="type_btn">充值</span>
         <span data-id="3" jbtn="type_btn">退款</span>
         <span data-id="4" jbtn="type_btn">提现</span>
+        <span data-id="10" jbtn="type_btn">返点</span>
     </div>
     <div class="search_con">
         <label>搜索：<input autocomplete="off" type="text" placeholder="请输入订单号关键词" class="input_search" /></label>

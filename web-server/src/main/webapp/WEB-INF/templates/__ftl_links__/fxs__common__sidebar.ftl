@@ -114,6 +114,16 @@
                     href="/member/awardInfo.htm"
             >开奖结果</a>
         </li>
+        <#if inviteRebateActive == 1>
+        <li>
+            <a
+                <#if 'inviteVip' == $pageid >
+                    class="selected"
+                </#if>
+                    href="/member/inviteVip.htm"
+            >邀请有礼</a>
+        </li>
+        </#if>
     </ul>
     <#elseif $it.type == 'mybag'>
     <h2>我的钱包</h2>

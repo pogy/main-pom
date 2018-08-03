@@ -74,7 +74,7 @@ public class ItemOrder implements Serializable {
 	private Date finishTime;
 
     /**
-     * 
+     * 淘宝订单id
      */
 	private String outerId;
 
@@ -102,6 +102,16 @@ public class ItemOrder implements Serializable {
      * 订单终端来源 1:PC 2:APP 3:WAP 4:WX
      */
 	private Integer orderFrom;
+
+    /**
+     * 不计算减免的总金额，单位为分
+     */
+	private Long totalFeeWithoutVoucher;
+
+    /**
+     * 实际代金券减免金额
+     */
+	private Long realVoucherAmount;
 
 	public void setOid(Long oid) {
 		this.oid = oid;
@@ -253,6 +263,22 @@ public class ItemOrder implements Serializable {
 
 	public Integer getOrderFrom() {
 		return this.orderFrom;
+	}
+
+	public void setTotalFeeWithoutVoucher(Long totalFeeWithoutVoucher) {
+		this.totalFeeWithoutVoucher = totalFeeWithoutVoucher;
+	}
+
+	public Long getTotalFeeWithoutVoucher() {
+		return this.totalFeeWithoutVoucher;
+	}
+
+	public void setRealVoucherAmount(Long realVoucherAmount) {
+		this.realVoucherAmount = realVoucherAmount;
+	}
+
+	public Long getRealVoucherAmount() {
+		return this.realVoucherAmount;
 	}
 
 }

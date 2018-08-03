@@ -14,6 +14,7 @@ import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.RefundItemOrder;
+import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundProcessVO;
 import com.shigu.main4.order.vo.RefundVO;
@@ -399,6 +400,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
             List<PayedVO> payedVOS = itemOrder.payedInfo();
             for (PayedVO payedVO : payedVOS) {
                 if (payedVO.getMoney() - payedVO.getRefundMoney() >= money) {
+
                     SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
                             .refund(payedVO.getPayId(),"RF_"+refundId, money);
                     refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);

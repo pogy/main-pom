@@ -5,11 +5,7 @@ import com.shigu.buyer.bo.*;
 import com.shigu.buyer.enums.BonusRecordTypeEnum;
 import com.shigu.buyer.services.*;
 import com.shigu.buyer.enums.OutUserBindTypeEnum;
-import com.shigu.buyer.services.GoodsupRecordSimpleService;
-import com.shigu.buyer.services.MemberSimpleService;
-import com.shigu.buyer.services.PaySdkClientService;
-import com.shigu.buyer.services.UserAccountService;
-import com.shigu.buyer.services.UserCollectSimpleService;
+import com.shigu.buyer.services.*;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -129,6 +125,9 @@ public class MemberAction {
     GoodsupRecordSimpleService goodsupRecordSimpleService;
 
     @Autowired
+    InviteService inviteService;
+
+    @Autowired
     private RedisIO redisIO;
 
     private final static String MEMBER_PATH = "member";
@@ -155,6 +154,11 @@ public class MemberAction {
             ImgBannerVO imgBannerVO = imageGoat.get(0);
             model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
             model.addAttribute("tHref", imgBannerVO.getHref());
+        }
+        //用户首单减免
+        Integer b = memberSimpleService.getUserFirstReduction(ps.getUserId());
+        if (b != null && b==1) {
+            model.addAttribute("creditAmount", String.format("%.2f", 1000 * 0.01));
         }
         // 用户红包余额
         Long bonusBalance = memberSimpleService.getUserBonusBalance(ps.getUserId());
@@ -1152,6 +1156,14 @@ public class MemberAction {
                 bonusRecordVoList.add(bonusRecordVo);
             }
         }
+        //用户首单减免
+        BonusRecordVo inviteVoucher = inviteService.userInviteVoucherShow(ps.getUserId());
+        if (inviteVoucher != null) {
+            bonusRecordVoList.add(0,inviteVoucher);
+            if (inviteVoucher.getPayState() == 1) {
+                model.addAttribute("creditAmount", inviteVoucher.getMoney());
+            }
+        }
         model.addAttribute("bonusList", bonusRecordVoList);
         if (SELLER_PATH.equals(identity)) {
             return "gys/userBonus";
@@ -1441,5 +1453,17 @@ public class MemberAction {
 
     private boolean isMemberOrSeller(String identityPath) {
         return MEMBER_PATH.equals(identityPath) || SELLER_PATH.equals(identityPath);
+    }
+
+
+
+    @RequestMapping("member/inviteVip")
+    public String inviteVip(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String inviteCode = inviteService.userInviteCode(ps.getUserId());
+        model.addAttribute("inviteCode", inviteCode);
+        model.addAttribute("inviteSrc", "www.571xz.com/regedit.htm?inviteCode=" + inviteCode);
+        model.addAttribute("invitedUserList", inviteService.inviteUserInfoList(ps.getUserId()));
+        return "fxs/inviteVip";
     }
 }

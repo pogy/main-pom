@@ -97,5 +97,11 @@ public interface ItemOrder extends Order{
     SenderVO selSender();
 
 
+    /**
+     * 添加代金券折扣
+     * @param voucherId
+     * @return
+     */
+    void addVoucher(Long voucherId);
 
 }

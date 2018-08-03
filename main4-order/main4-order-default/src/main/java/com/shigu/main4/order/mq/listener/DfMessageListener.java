@@ -183,6 +183,10 @@ public class DfMessageListener implements MessageListener {
             try {
                 SubAfterSaleSimpleOrderVO subSimple = afterSaleService.subAfterSaleSimpleOrder(k);
                 Long price = v.size() * subSimple.getPrice();
+                Long maxItemCanRefund = afterSaleService.maxItemCanRefundBySubOrderId(subSimple.getSubOrderId());
+                if (price > maxItemCanRefund) {
+                    price = maxItemCanRefund;
+                }
                 if (subSimple.getOtherRefundPrice() != null) {
                     //最后一单全退，才退快递费
                     if (Objects.equals(v.size(),subSimple.getNum())) {
