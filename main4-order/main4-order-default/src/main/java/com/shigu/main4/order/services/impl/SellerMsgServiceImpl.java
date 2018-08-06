@@ -268,8 +268,6 @@ public class SellerMsgServiceImpl implements SellerMsgService {
 
                 shiguSellerAppMsgMapper.insert(shiguSellerAppMsg);
 
-
-
                 List<ShiguPhonePushMark> shiguPhonePushMarksList = cidGroup.get("shop" + strShopId);
 
                 NewOrderMsg newOrderMsg = new NewOrderMsg();
