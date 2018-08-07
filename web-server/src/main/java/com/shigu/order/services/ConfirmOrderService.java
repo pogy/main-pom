@@ -232,23 +232,23 @@ public class ConfirmOrderService {
                 if(cdnItem==null){
                     throw new JsonErrException("存在无效商品");
                 }else{
-                    boolean err=true;
-                    List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
-                    for(SingleSkuVO singleSkuVO:singleSkus){
-                        String color = singleSkuVO.getThisColor();
-                        String size = singleSkuVO.getThisSize();
-                        Integer stockNum=singleSkuVO.getStatus()==0?0:singleSkuVO.getStockNum();
-                        if(color.equals(productVO.getSelectiveSku().getColor())&&size.equals(productVO.getSelectiveSku().getSize())){
-                            if(stockNum==0){
-                                throw new JsonErrException("存在无效商品");
-                            }
-                            err=false;
-                            break;
-                        }
-                    }
-                    if(err){
-                        throw new JsonErrException("存在无效商品");
-                    }
+//                    boolean err=true;
+//                    List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
+//                    for(SingleSkuVO singleSkuVO:singleSkus){
+//                        String color = singleSkuVO.getThisColor();
+//                        String size = singleSkuVO.getThisSize();
+//                        Integer stockNum=singleSkuVO.getStatus()==0?0:singleSkuVO.getStockNum();
+//                        if(color.equals(productVO.getSelectiveSku().getColor())&&size.equals(productVO.getSelectiveSku().getSize())){
+//                            if(stockNum==0){
+//                                throw new JsonErrException("存在无效商品");
+//                            }
+//                            err=false;
+//                            break;
+//                        }
+//                    }
+//                    if(err){
+//                        throw new JsonErrException("存在无效商品");
+//                    }
                 }
                 subOrder.setNum(num);
                 subOrder.setPid(productVO.getPid());
