@@ -12,6 +12,8 @@ import com.shigu.main4.item.model.ItemSkuModel;
 import com.shigu.main4.item.news.utils.SingleSkuUtils;
 import com.shigu.main4.item.vo.CatColorSizeVO;
 import com.shigu.main4.item.vo.news.SingleSkuVO;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -113,6 +115,9 @@ public class ItemSkuModelImpl implements ItemSkuModel {
         if (singleSkuVOS == null) {
             singleSkuVOS = new ArrayList<>();
         }
+        if(goodsId.equals(30312792L)){
+            System.out.println(JSONArray.fromObject(skus));
+        }
         Map<String, SingleSkuVO> thMap = singleSkuVOS.stream().filter(singleSkuVO -> !(singleSkuVO.getColorVid()==null&&singleSkuVO.getSizeVid()==null))
                 .collect(Collectors.toMap(sku -> sku.getColorVid() + "," + sku.getSizeVid(), sku -> sku));
         Map<String, SingleSkuBO> ahMap = skus.stream().filter(singleSkuVO -> !(singleSkuVO.getColorVid()==null&&singleSkuVO.getSizeVid()==null))
@@ -146,6 +151,12 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                 singleSkuVO.setSizePid(selColorSizeMap().getSizePid());
                 singleSkuVO.setColorPid(selColorSizeMap().getColorPid());
                 ShiguGoodsSingleSku sku = BeanMapper.map(singleSkuVO, ShiguGoodsSingleSku.class);
+                if (!Objects.equals(sku.getColorName(),singleSkuBO.getColorVname())) {
+                    sku.setColorName(singleSkuBO.getColorVname());
+                }
+                if (!Objects.equals(sku.getSizeName(),singleSkuBO.getSizeVname())) {
+                    sku.setSizeName(singleSkuBO.getSizeVname());
+                }
                 //根据条件修改别名
                 if (!Objects.equals(sku.getColorPropertyAlias(),singleSkuBO.getColorAlias())) {
                     if (singleSkuBO.getColorAlias()== null) {
@@ -180,7 +191,7 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                     if (singleSkuBO.getSizeInput() == null) {
                         sku.setSizeInputStr("");
                     } else if (!singleSkuBO.getSizeInput().equals(sku.getSizeInputStr())) {
-                            sku.setSizeInputStr(singleSkuBO.getSizeInput());
+                        sku.setSizeInputStr(singleSkuBO.getSizeInput());
                     }
                 }
 
@@ -194,6 +205,8 @@ public class ItemSkuModelImpl implements ItemSkuModel {
                         !Objects.equals(sku.getSizeInputStr(), singleSkuVO.getSizeInputStr()) ||
                         !Objects.equals(sku.getStatus(), singleSkuVO.getStatus()) ||
                         !Objects.equals(sku.getStockNum(), singleSkuVO.getStockNum()) ||
+                        !Objects.equals(sku.getColorName(), singleSkuVO.getColorName()) ||
+                        !Objects.equals(sku.getSizeName(), singleSkuVO.getSizeName()) ||
                         (sku.getPriceString() != null &&
                                 !MoneyUtil.StringToLong(sku.getPriceString()).equals(MoneyUtil.StringToLong(singleSkuVO.getPriceString())))
                         ) {
