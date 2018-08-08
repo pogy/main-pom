@@ -9,7 +9,8 @@ public class TbSendException extends Exception{
         NOT_IS_TB_ORDER("不是淘宝订单"),
         WAIT_SENT("订单未发货"),
         SESSION_EXPORE("session过期"),
-        IO_ERROR("调用接口失败");
+        IO_ERROR("调用接口失败"),
+        SEND_ADDR_NOT_SET("请前往淘宝设置发货地址");
 
 
         private String msg;

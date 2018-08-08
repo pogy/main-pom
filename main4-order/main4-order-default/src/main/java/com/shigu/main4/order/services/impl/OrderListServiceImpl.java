@@ -138,6 +138,7 @@ public class OrderListServiceImpl implements OrderListService {
         ItemOrderVO itemOrderVO = itemOrder.orderInfo();
         vo.setOrderId(orderId);
         vo.setOrderCreateTimed(itemOrderVO.getCreateTime());
+        vo.setOuterId(itemOrderVO.getOuterId());
         vo.setMainState(MainOrderStatusEnum.statusOf(itemOrderVO.getOrderStatus().status));
 
         OrderDetailTotalVO totalVO=new OrderDetailTotalVO();
