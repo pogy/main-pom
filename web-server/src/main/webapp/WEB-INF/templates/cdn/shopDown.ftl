@@ -209,7 +209,7 @@ var webSite = '${webSite!}';
                 <h3 onclick="openShop()">${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h3>
 <#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
 <#assign $it=text?eval />
-                <a class="imAliww" href="//www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+                <a class="imAliww" href="//amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&uid=${$it.id!}" target="_blank"></a>
 <#assign text>{"id":"${vo.storeRelation.imQq!}"}</#assign>
 <#assign $it=text?eval />
                 <#if $it.id != "">
