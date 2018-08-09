@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -38,6 +39,8 @@ import java.util.concurrent.ExecutionException;
 public class UserAndRoleAction {
     @Autowired
     UserAndRoleService userAndRoleService;
+    @Value("${DAIFA_GROUP}")
+    Long sellerId;
     /**
      * ====================================================================================
      * @方法名： userAndRole
@@ -54,7 +57,6 @@ public class UserAndRoleAction {
 
         Session session = SecurityUtils.getSubject().getSession();
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
-        Long sellerId=999999990L;
 
         List<UserTreeVO> userTree= userAndRoleService.listAllUser (sellerId);
         List<RoleTreeVO> roleTree= userAndRoleService.listAllRole (sellerId);

@@ -5,15 +5,6 @@
 /*====== xz/page#config.js:2 ======*/
 var $stylepath = 'http://style.571xz.com/v2/';
 /*=================左侧菜单的选中===============*/
-$(function(){
-
-    $("a[id^='niemenu']").each(function(){
-        if($(this).prop("href").indexOf("orderSendErrorindex.htm")>0){
-            $(this).prop("class","current");
-        }
-    });
-});
-
 
 /*====== global/js#base.js:0 ======*/
 function $$(namespace, factory, module){

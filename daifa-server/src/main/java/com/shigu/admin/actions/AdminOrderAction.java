@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,8 @@ public class AdminOrderAction {
     private DaifaAllOrderIndexService daifaAllOrderIndexService;
     @Autowired
     ItemOrderProcess itemOrderProcess;
+    @Value("${DAIFA_GROUP}")
+    Long sellerId;
     @Autowired
     public void setDaifaAllOrderIndexService(DaifaAllOrderIndexService daifaAllOrderIndexService) {
         this.daifaAllOrderIndexService = daifaAllOrderIndexService;
@@ -56,7 +59,7 @@ public class AdminOrderAction {
 
         Session session = SecurityUtils.getSubject().getSession();
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
-        List<DaifaAllOrderVO> allOrders = daifaAllOrderIndexService.allOrderPage(bo,999999990L);
+        List<DaifaAllOrderVO> allOrders = daifaAllOrderIndexService.allOrderPage(bo,sellerId);
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("orders", allOrders);
