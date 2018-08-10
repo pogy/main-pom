@@ -12,7 +12,8 @@
 <#include "/__style_torrent__/helpCenter__common_css.ftl">
 <#include "/__style_torrent__/helpCenter__addOrModify_css.ftl">
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
-    <#include "/__style_torrent__/common__base_js.ftl">
+    <script src="//style.571xz.com/v6/common/js/plugin/jq.form.js"></script>
+<#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/helpCenter__addOrModify_js.ftl">
 </head>
@@ -46,22 +47,23 @@
         <input type="text" name="queTitle" class="fmInput" <#if queTitle??>value="${queTitle!}"</#if>>
         <input type="hidden" name="queId" <#if query.id??>value="${query.id!}"</#if>>
     </div>
-    <div class="dataItem">
-        <label>问题答案：</label>
-        <div id="edit" class="fl" style="height:400px;max-height:500px;">
-            ${queAnswer}
+    <div class="dataItem clearfix">
+        <label class="fl">问题答案：</label>
+        <div id="edit" class="fl">
+            <script id="editor" type="text/plain" style="width:872px; height:400px;">${queAnswer}</script>
+            <input type="file" name="wangEditorH5File" class="uploadPic">
         </div>
     </div>
     <div class="dataItem">
         <p class="tac"><b class="save">保存</b></p>
     </div>
 </div>
-<link href="//style.571xz.com/v6/helpCenter/temp/css/wangEditor.min.css" rel="stylesheet">
-<script src="//style.571xz.com/v6/helpCenter/temp/wangEditor.min.js"></script>
-<script src="//style.571xz.com/v6/helpCenter/temp/MyEditor.js"></script>
 <script modulepath="helpCenter/addOrModify#queDetail">
 var cid = '${cid!}';
 </script>
+<script src="//style.571xz.com/v6/helpCenter/myEditor/ueditor/ueditor.all.min.js"></script>
+<script src="//style.571xz.com/v6/helpCenter/myEditor/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="//style.571xz.com/v6/helpCenter/myEditor/myUEditor.js"></script>
 </div>
     </div>
 </div>

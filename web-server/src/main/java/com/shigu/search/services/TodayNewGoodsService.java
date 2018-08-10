@@ -117,11 +117,17 @@ public class TodayNewGoodsService {
         }else{
             realCidnum=Long.valueOf(realCid);
         }
+
         Calendar cal=Calendar.getInstance();
         Date to=cal.getTime();
-        cal.set(Calendar.HOUR_OF_DAY,0);
-        cal.set(Calendar.MINUTE,0);
-        cal.set(Calendar.SECOND,0);
+        // 泉州要24小时内的
+        if ("qz".equals(bo.getWebSite())) {
+            cal.add(Calendar.DATE, -1);
+        } else {
+            cal.set(Calendar.HOUR_OF_DAY,0);
+            cal.set(Calendar.MINUTE,0);
+            cal.set(Calendar.SECOND,0);
+        }
         Date from=cal.getTime();
         return goodsSelFromEsService.selGoodsInSearch(bo.getKeyword(),bo.getWebSite(),realCidnum,null,from,to,bo);
     }
