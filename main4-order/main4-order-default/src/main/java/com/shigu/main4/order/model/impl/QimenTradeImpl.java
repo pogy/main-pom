@@ -88,7 +88,7 @@ public class QimenTradeImpl implements QimenTrade{
     }
 
     @Override
-    public void toCheack(String tid) throws Main4Exception {
+    public void toCheck(String tid) throws Main4Exception {
         QimenEventProduceRequest req = new QimenEventProduceRequest();
         req.setStatus("QIMEN_ERP_CHECK");
         req.setTid(tid);

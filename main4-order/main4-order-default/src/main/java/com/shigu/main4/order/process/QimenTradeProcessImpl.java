@@ -46,7 +46,7 @@ public class QimenTradeProcessImpl implements QimenTradeProcess {
         }
     }
     @Override
-    public void toCheack(Long oid) {
+    public void toCheck(Long oid) {
         ItemOrder o=itemOrderMapper.selectFieldsByPrimaryKey(oid, FieldUtil.codeFields("oid,outer_id,user_id"));
         if(o==null|| StringUtils.isBlank(o.getOuterId())){
             return;
@@ -59,7 +59,7 @@ public class QimenTradeProcessImpl implements QimenTradeProcess {
         }
         QimenTrade model= SpringBeanFactory.getBean(QimenTrade.class,us.get(0).getSubUserName());
         try {
-            model.toCheack(o.getOuterId());
+            model.toCheck(o.getOuterId());
         } catch (Main4Exception e) {
             if(!"不处于监控队列".equals(e.getMessage())){
                 logger.warn(o.getOuterId()+"_"+e.getMessage());

@@ -48,7 +48,7 @@ public class OrderConsumerService {
                 orderManageProcess.newOrder(orderBean);
             }
             try {
-                qimenTradeProcess.toCheack(orderBean.getOid());
+                qimenTradeProcess.toCheck(orderBean.getOid());
             } catch (Exception e) {
                 e.printStackTrace();
             }
