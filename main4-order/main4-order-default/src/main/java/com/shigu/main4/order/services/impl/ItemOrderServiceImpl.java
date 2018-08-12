@@ -17,6 +17,9 @@ import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.LogisticsTemplate;
+import com.shigu.main4.order.model.QimenTrade;
+import com.shigu.main4.order.process.QimenTradeProcess;
+import com.shigu.main4.order.process.QimenTradeProcessImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
@@ -33,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.applet.Main;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,6 +52,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemOrderServiceImpl.class);
 
+    private static final com.alibaba.dubbo.common.logger.Logger dubbologger = com.alibaba.dubbo.common.logger.LoggerFactory
+            .getLogger(QimenTradeProcessImpl.class);
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
@@ -95,6 +101,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     @Autowired
     private InviteOrderRebateRecordMapper inviteOrderRebateRecordMapper;
+    @Autowired
+    QimenTradeProcess qimenTradeProcess;
 
     private static String ACTIVITY_EXPRESS_DISCOUNTS = "activity_express_discounts";
 
@@ -284,6 +292,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         if (inviteVoucher != null) {
             itemOrder.addVoucher(inviteVoucher);
         }
+        qimenTradeProcess.toTransfer(order.getOid());
         return order.getOid();
     }
 

@@ -233,7 +233,7 @@
         <dependency>
             <groupId>taobao-sdk-java-auto</groupId>
             <artifactId>taobao-sdk-java-auto</artifactId>
-            <version>1487931282132</version>
+            <version>20180812</version>
         </dependency>
 
         <dependency>
