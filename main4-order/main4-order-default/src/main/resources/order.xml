@@ -94,4 +94,5 @@
 
     <dubbo:service interface="com.shigu.main4.order.process.ItemOrderProcess" ref="itemOrderProcess" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.process.QimenTradeProcess" ref="qimenTradeProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.services.SellerMsgService" ref="sellerMsgService" retries="0" timeout="20000" />
 </beans>

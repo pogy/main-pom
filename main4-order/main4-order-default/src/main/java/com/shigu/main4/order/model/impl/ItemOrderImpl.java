@@ -22,25 +22,18 @@ import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.services.SellerMsgService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -112,6 +105,9 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private InviteOrderRebateRecordMapper inviteOrderRebateRecordMapper;
+
+    @Autowired
+    private SellerMsgService sellerMsgService;
 
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
@@ -464,6 +460,13 @@ public class ItemOrderImpl implements ItemOrder {
         order.setPayedFee(payMoney);
         order.setPayTime(new Date());
         itemOrderMapper.updateByPrimaryKeySelective(order);
+
+        try {
+            sellerMsgService.pushNewOrderMsg(oid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // 实际使用代金券
         realUseVoucher();
         changeStatus(OrderStatus.BUYER_PAYED);
