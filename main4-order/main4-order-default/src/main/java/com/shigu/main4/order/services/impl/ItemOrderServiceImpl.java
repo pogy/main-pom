@@ -292,7 +292,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         if (inviteVoucher != null) {
             itemOrder.addVoucher(inviteVoucher);
         }
-        qimenTradeProcess.toTransfer(order.getOid());
+        try {
+            qimenTradeProcess.toTransfer(order.getOid());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return order.getOid();
     }
 
