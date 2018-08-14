@@ -37,6 +37,8 @@ public class ShowOrderDetailVO implements Serializable{
      */
     private Boolean isTbOrder;
 
+    private String outerId;
+
     public Boolean getIsTbOrder() {
         return isTbOrder;
     }
@@ -129,5 +131,13 @@ public class ShowOrderDetailVO implements Serializable{
 
     public void setTotalVO(OrderDetailTotalVO totalVO) {
         this.totalVO = totalVO;
+    }
+
+    public String getOuterId() {
+        return outerId;
+    }
+
+    public void setOuterId(String outerId) {
+        this.outerId = outerId;
     }
 }
