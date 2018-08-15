@@ -209,7 +209,7 @@
 <li
 >
     <a href="//hz.571xz.com" target="_blank">
-        男装
+        服装
     </a>
 </li>
         <#elseif webSite == 'zl'>
