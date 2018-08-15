@@ -158,10 +158,9 @@ public class ImportCsvFileService {
                             .filter(StringUtils::isNotBlank).collect(Collectors.toList());
                     List<String> inputList = Arrays.stream(((String) codeValueMap.get("input_custom_cpv")).split(";"))
                             .filter(StringUtils::isNotBlank).collect(Collectors.toList());
-                    List<String> hasProps = Arrays.stream(((String) codeValueMap.get("cateProps")).split(";"))
-                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
-                    List<String> imgs = Arrays.stream(((String) codeValueMap.get("picture")).split(";"))
-                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    String cateProps=((String) codeValueMap.get("cateProps"));
+                    String picture=((String) codeValueMap.get("picture"));
+
                     List<Long> hasInputVid = new ArrayList<>();
                     for (String anInputList : inputList) {
                         String[] inputs = anInputList.split(":");
@@ -189,8 +188,16 @@ public class ImportCsvFileService {
                             inputList.set(iv, input);
                             singSkus=singSkus.replace(":"+inputs[0] + ":" + inputs[1]+";",":"+inputs[0] + ":" + newVid+";");
                             singSkus=singSkus.replace(";"+inputs[0] + ":" + inputs[1]+";",";"+inputs[0] + ":" + newVid+";");
+                            cateProps=cateProps.replace(";"+inputs[0] + ":" + inputs[1]+";",";"+inputs[0] + ":" + newVid+";");
+                            picture=picture.replace(":"+inputs[0] + ":" + inputs[1]+"|",":"+inputs[0] + ":" + newVid+"|");
                         }
                     }
+                    List<String> hasProps = Arrays.stream(cateProps.split(";"))
+                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> imgs = Arrays.stream(picture.split(";"))
+                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
+
+
 
                     for (TaobaoItemProp prop : taobaoItemProps) {
                         TaobaoPropValueExample taobaoPropValueExample = new TaobaoPropValueExample();
