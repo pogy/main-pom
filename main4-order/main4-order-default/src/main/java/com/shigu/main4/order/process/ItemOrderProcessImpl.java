@@ -84,7 +84,7 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         ItemOrder orderModel= SpringBeanFactory.getBean(ItemOrder.class,oid);
         ItemOrderVO order=orderModel.orderInfo();
         LogisticsVO logistics=orderModel.selLogisticses().get(0);
-        if(order.getOrderId()==null){
+        if(order.getOuterId()==null){
             //不是淘宝订单
             throw new TbSendException(TbSendException.TbSendExceptionEnum.NOT_IS_TB_ORDER.toString());
         }
@@ -107,6 +107,11 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
             rsp = client.execute(req,session);
         } catch (ApiException e) {
             throw new TbSendException(TbSendException.TbSendExceptionEnum.IO_ERROR.toString());
+        }
+        if (StringUtils.isNotBlank(rsp.getSubCode())) {
+            if (rsp.getSubCode().contains("CD08")) {//卖家未设置发货地址
+                throw new TbSendException(TbSendException.TbSendExceptionEnum.SEND_ADDR_NOT_SET.toString());
+            }
         }
         if(!StringUtils.isEmpty(rsp.getErrorCode())){
             List<String> hasSendException=Arrays.asList("isv.logistics-offline-service-error:B27",
