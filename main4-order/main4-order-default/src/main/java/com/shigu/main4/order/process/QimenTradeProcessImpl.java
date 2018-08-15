@@ -9,8 +9,7 @@ import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.order.model.QimenTrade;
-import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.main4.order.model.impl.QimenTrade;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,8 @@ public class QimenTradeProcessImpl implements QimenTradeProcess {
     ItemOrderMapper itemOrderMapper;
     @Autowired
     MemberUserSubMapper memberUserSubMapper;
+    @Autowired
+    QimenTrade qimenTrade;
     @Override
     public void toTransfer(Long oid) {
         ItemOrder o=itemOrderMapper.selectFieldsByPrimaryKey(oid, FieldUtil.codeFields("oid,outer_id,user_id"));
@@ -36,9 +37,8 @@ public class QimenTradeProcessImpl implements QimenTradeProcess {
         if(us.size()==0){
             return;
         }
-        QimenTrade model= SpringBeanFactory.getBean(QimenTrade.class,us.get(0).getSubUserName());
         try {
-            model.toTransfer(o.getOuterId());
+            qimenTrade.toTransfer(o.getOuterId(),us.get(0).getSubUserName());
         } catch (Main4Exception e) {
             if(!"不处于监控队列".equals(e.getMessage())){
                 logger.warn(o.getOuterId()+"_"+e.getMessage());
@@ -57,9 +57,8 @@ public class QimenTradeProcessImpl implements QimenTradeProcess {
         if(us.size()==0){
             return;
         }
-        QimenTrade model= SpringBeanFactory.getBean(QimenTrade.class,us.get(0).getSubUserName());
         try {
-            model.toCheck(o.getOuterId());
+            qimenTrade.toCheck(o.getOuterId(),us.get(0).getSubUserName());
         } catch (Main4Exception e) {
             if(!"不处于监控队列".equals(e.getMessage())){
                 logger.warn(o.getOuterId()+"_"+e.getMessage());
@@ -78,9 +77,8 @@ public class QimenTradeProcessImpl implements QimenTradeProcess {
         if(us.size()==0){
             return;
         }
-        QimenTrade model= SpringBeanFactory.getBean(QimenTrade.class,us.get(0).getSubUserName());
         try {
-            model.toNotify(o.getOuterId());
+            qimenTrade.toNotify(o.getOuterId(),us.get(0).getSubUserName());
         } catch (Main4Exception e) {
             if(!"不处于监控队列".equals(e.getMessage())){
                 logger.warn(o.getOuterId()+"_"+e.getMessage());
@@ -99,9 +97,8 @@ public class QimenTradeProcessImpl implements QimenTradeProcess {
         if(us.size()==0){
             return;
         }
-        QimenTrade model= SpringBeanFactory.getBean(QimenTrade.class,us.get(0).getSubUserName());
         try {
-            model.toOut(o.getOuterId());
+            qimenTrade.toOut(o.getOuterId(),us.get(0).getSubUserName());
         } catch (Main4Exception e) {
             if(!"不处于监控队列".equals(e.getMessage())){
                 logger.warn(o.getOuterId()+"_"+e.getMessage());

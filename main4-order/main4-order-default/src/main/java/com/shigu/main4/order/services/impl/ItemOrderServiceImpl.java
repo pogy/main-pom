@@ -17,7 +17,6 @@ import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.model.QimenTrade;
 import com.shigu.main4.order.process.QimenTradeProcess;
 import com.shigu.main4.order.process.QimenTradeProcessImpl;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -36,7 +35,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.applet.Main;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
