@@ -206,6 +206,12 @@
         资讯
     </a>
 </li>
+<li
+>
+    <a href="//hz.571xz.com" target="_blank">
+        男装
+    </a>
+</li>
         <#elseif webSite == 'zl'>
 <li
         <#if 'market' == $pageid>class="actived"</#if>
@@ -410,4 +416,4 @@
 <#list [{"bg":"whiteBg"}] as $it>
 <#include "/common/xz__footer.ftl">
 </#list>
-<#include "/common/qzcnzz.ftl">
+<#include "/common/cnzz.ftl">
