@@ -504,7 +504,11 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
     <div class="innerbox">
          <ul class="keybox">
                 <li><a href="//upload.571xz.com/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
+                <li><a href="//upload.571xz.com/tmall/changeCate.htm?goodsId=43131" target="_blank"><i class="ii"></i><span>上传到天猫</span></a></li>
                 <li><a href="//1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
+                <li><a href="//www.571xz.com/jd/publish.htm?itemId=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到京东</span></a></li>
+                <li><a href="//www.571xz.com/pdd/publish.htm?goodsId=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到拼多多</span></a></li>
+                <li><a href="//www.571xz.com/sn/publish.htm?itemId=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到苏宁</span></a></li>
                 <li class="wxContainer"><b id="showGoodsWxCode" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox" data-goodsid="${goodsInfo.goodsId!}"></div></li>
                 <li class="addData"><b xzclick="addGoodsPkg" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 <li class="imgDownload" jhand="downloadPic" data-goodsid="${goodsInfo.goodsId!}"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
