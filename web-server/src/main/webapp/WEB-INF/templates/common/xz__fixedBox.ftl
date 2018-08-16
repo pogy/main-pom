@@ -8,19 +8,24 @@
             <li>
 <#list [{"id":""}] as $it>
 <#if $it.id != ''>
-<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
-</#if>
-</#list>
-<#list [{"id":""}] as $it>
-<#if $it.id != ''>
 <a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list>
-                <p>杭州站代发 <span><a class="imAliww" href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"></a></span></p>
+                <p>杭州站代发 <span>
+<#list [{"id":"杭州石谷网络科技有限公司%3A售后客服"}] as $it>
+<#if $it.id != ''>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
+</#if>
+</#list></span></p>
                 <p>电话：17367058612</p>
             </li>
             <li>
-                <p>网站咨询 <span><a class="imAliww" href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后依依&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"></a></span> <span><a class="imQQ" href="http://crm2.qq.com/page/portalpage/wpa.php?uin=4000761116&amp;aty=0&amp;a=0&amp;curl=&amp;ty=1" target="_blank"></a></span></p>
+                <p>网站咨询 <span>
+<#list [{"id":"杭州石谷网络科技有限公司%3A网站咨询"}] as $it>
+<#if $it.id != ''>
+<a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
+</#if>
+</#list></span> <span><a class="imQQ" href="http://crm2.qq.com/page/portalpage/wpa.php?uin=4000761116&amp;aty=0&amp;a=0&amp;curl=&amp;ty=1" target="_blank"></a></span></p>
                 <p class="fs16 yahei">400-076-1116</p>
             </li>
         </ul>
