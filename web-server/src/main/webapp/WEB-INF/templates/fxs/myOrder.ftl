@@ -329,15 +329,19 @@
     <li class="price yahei fs14">&yen;${childOrder.price!}</li>
     <li class="num">
         <p class="fs14">${childOrder.num!}</p>
-        <#if childOrder.stockoutNum??>
+        <#if childOrder.downShelfIs??>
+        <div class="pr downShelfIs">
+            <p class="fcF40">
+                商品已下架
+            </p>
+        </div>
+        <#elseif childOrder.stockoutNum??>
         <div class="pr stockoutNum">
             <p class="fcF40">
                 <#if childOrder.haveGoodsTime??><i class="icon-time"></i></#if>缺货 x${childOrder.stockoutNum!}
             </p>
             <#if childOrder.haveGoodsTime??>
-            <div class="pa haveGoodsTime">
-                ${childOrder.haveGoodsTime!} 有货
-            </div>
+            <p>${childOrder.haveGoodsTime!} 有货</p>
             </#if>
         </div>
         </#if>
@@ -528,6 +532,7 @@
 </#list>
 </#list>
 </div>
+<#include "/common/xz__fixedBox.ftl">
             </div>
     </div>
 </div>
