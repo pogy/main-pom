@@ -225,6 +225,7 @@
 </#list>
 </#list>
 </div>
+<#include "/common/xz__fixedBox.ftl">
             </div>
     </div>
 </div>
