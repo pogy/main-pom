@@ -21,6 +21,8 @@ public class PrintPostVO implements Serializable {
     private String packageName;//集包地
     private String packageCode;//集包地编码
 
+    private String courierTypeText;
+
     public String getReceiverName() {
         return receiverName;
     }
@@ -147,5 +149,13 @@ public class PrintPostVO implements Serializable {
 
     public void setPackageCode (String packageCode) {
         this.packageCode = packageCode;
+    }
+
+    public String getCourierTypeText() {
+        return this.courierTypeText;
+    }
+
+    public void setCourierTypeText(String courierTypeText) {
+        this.courierTypeText = courierTypeText;
     }
 }

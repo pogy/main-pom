@@ -11,6 +11,7 @@ public class SendBean implements Serializable {
 	private String receiverCity;//收货人城市
 	private String receiverArea;//收货人区域
 	private String receiverAddress;//收化人地址
+    private String receiverZipCode;//收件人邮编
 	private List<String> titles;//商家编码集合
 	private String sendName;//发件人
 	private String sendPhone;//发件人手机号
@@ -18,6 +19,7 @@ public class SendBean implements Serializable {
 	private String sendCity;//发件人城市
 	private String sendArea;//发件人区域
 	private String sendAddress;//发件人地址
+    private String sendZipCode;//发件人邮编
 	private String expressName;//快递名
 	private Integer payType;//邮费支付方式:1-现付，2-到付，3-月结，4-第三方支付
 	private Integer isNotice;//是否通知快递员上门揽件：0-通知；1-不通知；不填则默认为0
@@ -157,4 +159,20 @@ public class SendBean implements Serializable {
 	public void setIsNotice (Integer isNotice) {
 		this.isNotice = isNotice;
 	}
+
+    public String getReceiverZipCode() {
+        return this.receiverZipCode;
+    }
+
+    public void setReceiverZipCode(String receiverZipCode) {
+        this.receiverZipCode = receiverZipCode;
+    }
+
+    public String getSendZipCode() {
+        return this.sendZipCode;
+    }
+
+    public void setSendZipCode(String sendZipCode) {
+        this.sendZipCode = sendZipCode;
+    }
 }

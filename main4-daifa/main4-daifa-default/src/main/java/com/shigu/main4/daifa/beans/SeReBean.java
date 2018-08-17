@@ -10,6 +10,7 @@ public class SeReBean implements Serializable {
 	private String CityName;//城市
 	private String Address;//地址
 	private String ExpAreaName;//区域名
+    private String postCode;//邮编
 
 	public String getExpAreaName() {
 		return ExpAreaName;
@@ -49,5 +50,12 @@ public class SeReBean implements Serializable {
 	public void setAddress(String address) {
 		Address = address;
 	}
-	
+
+    public String getPostCode() {
+        return this.postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
 }
