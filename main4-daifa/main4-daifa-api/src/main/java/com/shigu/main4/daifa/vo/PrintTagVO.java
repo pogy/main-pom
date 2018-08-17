@@ -23,7 +23,7 @@ public class PrintTagVO implements Serializable {
     private String priceAndBarCode;//批发价和条形码内容
     private String postName;//快递名称
     private String buyerNick;//下单人昵称
-
+    private String daifaName;
 
     public String getDateIncBatch() {
         return dateIncBatch;
@@ -143,5 +143,13 @@ public class PrintTagVO implements Serializable {
 
     public void setPriceAndBarCode(String priceAndBarCode) {
         this.priceAndBarCode = priceAndBarCode;
+    }
+
+    public String getDaifaName() {
+        return this.daifaName;
+    }
+
+    public void setDaifaName(String daifaName) {
+        this.daifaName = daifaName;
     }
 }
