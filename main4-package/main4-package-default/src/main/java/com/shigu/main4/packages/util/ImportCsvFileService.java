@@ -131,6 +131,8 @@ public class ImportCsvFileService {
                         case "input_custom_cpv":
                         case "propAlias":
                         case "picture":
+                        case "inputPids":
+                        case "inputValues":
                         case "cateProps":
                         case "cid": {
                             codeMap.put(tt, k);
@@ -158,10 +160,15 @@ public class ImportCsvFileService {
                             .filter(StringUtils::isNotBlank).collect(Collectors.toList());
                     List<String> inputList = Arrays.stream(((String) codeValueMap.get("input_custom_cpv")).split(";"))
                             .filter(StringUtils::isNotBlank).collect(Collectors.toList());
-                    List<String> hasProps = Arrays.stream(((String) codeValueMap.get("cateProps")).split(";"))
-                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
-                    List<String> imgs = Arrays.stream(((String) codeValueMap.get("picture")).split(";"))
-                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    String cateProps=((String) codeValueMap.get("cateProps"));
+                    String picture=((String) codeValueMap.get("picture"));
+                    String inputPids1= (String) codeValueMap.get("inputPids");
+                    String inputValues1 = (String) codeValueMap.get("inputValues");
+                    inputPids1=inputPids1==null?"":inputPids1;
+                    inputValues1=inputValues1==null?"":inputValues1;
+                    List<String> inputPids=Arrays.stream(inputPids1.split(",")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> inputValues= Arrays.stream(inputValues1.split(",")).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+
                     List<Long> hasInputVid = new ArrayList<>();
                     for (String anInputList : inputList) {
                         String[] inputs = anInputList.split(":");
@@ -189,8 +196,16 @@ public class ImportCsvFileService {
                             inputList.set(iv, input);
                             singSkus=singSkus.replace(":"+inputs[0] + ":" + inputs[1]+";",":"+inputs[0] + ":" + newVid+";");
                             singSkus=singSkus.replace(";"+inputs[0] + ":" + inputs[1]+";",";"+inputs[0] + ":" + newVid+";");
+                            cateProps=cateProps.replace(";"+inputs[0] + ":" + inputs[1]+";",";"+inputs[0] + ":" + newVid+";");
+                            picture=picture.replace(":"+inputs[0] + ":" + inputs[1]+"|",":"+inputs[0] + ":" + newVid+"|");
                         }
                     }
+                    List<String> hasProps = Arrays.stream(cateProps.split(";"))
+                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
+                    List<String> imgs = Arrays.stream(picture.split(";"))
+                            .filter(StringUtils::isNotBlank).collect(Collectors.toList());
+
+
 
                     for (TaobaoItemProp prop : taobaoItemProps) {
                         TaobaoPropValueExample taobaoPropValueExample = new TaobaoPropValueExample();
@@ -210,6 +225,17 @@ public class ImportCsvFileService {
                             }
                         }
                         List<InputBean> inputBeans = new ArrayList<>();
+                        int inputIndex=-1;
+                        for(int tinputIndex=0;tinputIndex<inputPids.size();tinputIndex++){
+                            if(inputPids.get(tinputIndex).equals(prop.getPid()+"")){
+                                inputIndex=tinputIndex;
+                                break;
+                            }
+                        }
+                        List<String> inputValuePropValues=new ArrayList<>();
+                        if(inputIndex!=-1){
+                            inputValuePropValues=new ArrayList<>(Arrays.asList(inputValues.get(inputIndex).split(";"+prop.getName()+";")));
+                        }
                         for (int inpi = 0; inpi < inputList.size(); inpi++) {
                             String inp = inputList.get(inpi);
                             if (inp.startsWith(prop.getPid() + ":")) {
@@ -217,6 +243,7 @@ public class ImportCsvFileService {
                                 inpi--;
 
                                 String[] ssx = inp.split(":");
+                                inputValuePropValues.removeIf(ssx[2]::equals);
                                 String key = ssx[0] + ":" + ssx[1];
                                 InputBean inputBean = new InputBean();
                                 //准备图片
@@ -245,6 +272,18 @@ public class ImportCsvFileService {
                                 inputBeans.add(inputBean);
                             }
                         }
+                        if(inputIndex!=-1){
+                            if(inputValuePropValues.size()==0){
+                                inputValues.remove(inputIndex);
+                            }else{
+                                inputValues.set(inputIndex,StringUtils.join(inputValuePropValues,";"+prop.getName()+";"));
+                            }
+                            if(inputValuePropValues.size()==0){
+                                inputPids.remove(inputIndex);
+                            }
+                        }
+
+
                         for (InputBean inputBean : inputBeans) {
                             if (pvMap.size() > 0) {
                                 TaobaoPropValue taobaoPropValue = pvMap.values().stream().findFirst().get();
@@ -271,10 +310,14 @@ public class ImportCsvFileService {
                     String prop = StringUtils.join(hasProps, ";");
                     String input = StringUtils.join(inputList, ";");
                     String al = StringUtils.join(als, ";");
+                    String ip=StringUtils.join(inputPids, ",");
+                    String iv=StringUtils.join(inputValues, ",");
                     v11.set(codeMap.get("input_custom_cpv"), input);
                     v11.set(codeMap.get("cateProps"), prop);
                     v11.set(codeMap.get("propAlias"), al);
                     v11.set(codeMap.get("picture"), img);
+                    v11.set(codeMap.get("inputPids"), ip);
+                    v11.set(codeMap.get("inputValues"), iv);
                 }
 
 
