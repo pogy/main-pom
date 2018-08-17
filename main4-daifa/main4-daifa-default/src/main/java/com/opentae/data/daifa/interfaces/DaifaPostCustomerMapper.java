@@ -1,6 +1,8 @@
 package com.opentae.data.daifa.interfaces;
 
 import com.opentae.data.daifa.beans.DaifaPostCustomer;
+import com.opentae.data.daifa.cust.beans.ZipCodeBean;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
 import com.opentae.core.mybatis.mapper.Mapper;
@@ -23,5 +25,17 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @Scope("singleton")
 @Lazy(true)
 public interface DaifaPostCustomerMapper extends Mapper<DaifaPostCustomer>{
+    /**
+     * 读取市级邮编
+     * @param cityName
+     * @return
+     */
+    ZipCodeBean selectPostCodeByCity(@Param("cityName")String cityName);
 
+    /**
+     * 读取区级邮编
+     * @param townName
+     * @return
+     */
+    ZipCodeBean selectPostCodeByTown(@Param("townName")String townName,@Param("cityId")Long cityId);
 }

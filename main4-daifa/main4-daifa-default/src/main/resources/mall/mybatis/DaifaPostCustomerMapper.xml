@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.daifa.interfaces.DaifaPostCustomerMapper" >
+
+    <select id="selectPostCodeByCity" resultType="com.opentae.data.daifa.cust.beans.ZipCodeBean" >
+        select city_id addressId,zip_code zipCode from shigu_mall.order_city where city_name=#{cityName}
+    </select>
+    <select id="selectPostCodeByTown" resultType="com.opentae.data.daifa.cust.beans.ZipCodeBean">
+        select town_id addressId,zip_code zipCode from shigu_mall.order_town where town_name=#{townName} and city_id=#{cityId}
+    </select>
+</mapper>
