@@ -92,6 +92,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         memberUser.setUserNick(user.getTelephone());
         memberUser.setUserName(user.getTelephone());
         memberUser.setLoginPhone(user.getTelephone());
+        memberUser.setRegisterSource(user.getRegistSource());
         memberUser.setRegTime(new Date());
         int result = memberUserMapper.insertSelective(memberUser);
         if(result == 0){
@@ -351,6 +352,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         if(bindOuterRdUser != null){
             bindOuterRdUser.bindShop(phone,tempUser,userId);
         }
+
         return true;
     }
 
