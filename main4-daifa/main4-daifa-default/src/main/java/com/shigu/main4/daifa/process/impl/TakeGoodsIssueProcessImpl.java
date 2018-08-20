@@ -78,6 +78,8 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     private DaifaWorkerMapper daifaWorkerMapper;
     @Autowired
     PackDeliveryProcess packDeliveryProcess;
+    @Autowired
+    DaifaSellerMapper daifaSellerMapper;
     @Override
     public String distributionTask(Long wholeId, List<Long> waitIssueIds) throws DaifaException {
         CargoManModel cargoManModel = SpringBeanFactory.getBean(CargoManModel.class, wholeId);
@@ -230,8 +232,14 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         }
         DecimalFormat df = new DecimalFormat("0.00");
         List<Long> unPrints = new ArrayList<>();
+        String daifaName=null;
+        if(ggoodsForPrints.size()>0){
+            DaifaSeller daifaSeller = daifaSellerMapper.selectByPrimaryKey(ggoodsForPrints.get(0).getDfSellerId());
+            daifaName=daifaSeller.getName();
+        }
         for (GgoodsForPrint ggoodsForPrint : ggoodsForPrints) {
             PrintTagVO vo = new PrintTagVO();
+            vo.setDaifaName(daifaName);
             vo.setOrderSort(ggoodsForPrint.getBarCodeKeyNum());
             vo.setSpecialStr(ggoodsForPrint.getBarCodeKey());
             vo.setPackages(ggoodsForPrint.getGoodsNum());

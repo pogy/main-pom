@@ -200,7 +200,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setPackageName(send.getPackageName());
         print.setPackageCode (send.getPackageCode ());
         print.setSendNum(orderSize>=1?goodsnum:null);
-
+        if(trade.getExpressName().toLowerCase().contains("ems")){
+            print.setCourierTypeText("经济快递");
+        }
         DaifaSend senduex=new DaifaSend();
         senduex.setPrintStatus(1);
         senduex.setSendId(send.getSendId());

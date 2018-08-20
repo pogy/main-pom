@@ -119,6 +119,12 @@
         资讯
     </a>
 </li>
+<li
+>
+    <a href="//hz.571xz.com" target="_blank">
+        服装
+    </a>
+</li>
     <#elseif webSite == 'zl'>
 <li
         <#if 'market' == $pageid>class="actived"</#if>
