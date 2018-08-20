@@ -105,6 +105,7 @@ public class ExpressModelImpl implements ExpressModel {
                 express.setKdPassword(dpc.getCustomerPwd());//电子面单账户密码
                 express.setKdSite(dpc.getSendSite());//快递网点名
                 express.setKdType(dpc.getExpressCompanyCode());//快递简称
+                express.setExpType(dpc.getExpType());
             }
 
             DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(sellerId);
@@ -249,7 +250,7 @@ public class ExpressModelImpl implements ExpressModel {
         eoinfo.setMonthCode(express.getKdMonth());//电子面单账户秘钥,和电子面单账户密码至少有一个,具体是哪个,参照文档
         eoinfo.setSendSite(express.getKdSite());//快递网点名
         eoinfo.setPayType(send.getPayType());//结算方式
-        eoinfo.setExpType(1);//
+        eoinfo.setExpType(express.getExpType());//
 
         //收货人姓名
         SeReBean receiver = new SeReBean();
