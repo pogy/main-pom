@@ -299,6 +299,8 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             registerUser.setTelephone(phone);
             String password = EncryptUtil.genRandomPwd(8);
             registerUser.setPassword(password);
+            registerUser.setRegistSource(tempUser.getFormResource());
+
             Long registerPanss = registerByPhone(registerUser);
             if (registerPanss == null) {
                 return false;
