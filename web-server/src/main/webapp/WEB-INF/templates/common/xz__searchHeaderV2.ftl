@@ -30,9 +30,12 @@
             <button type="submit" class="searchBtn fs14">搜索</button>
             <div class="myOrderBox fl">
             <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop>
-<#list [{}] as $it>
-    <a href="undefined/order/myOrder.htm"
-        target="_blank"
+<#list [{"href":mainHost+"/order/myOrder.htm"}] as $it>
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <button type="button"
+    </#if>
     class="fmButton
          fmButton-white-o
          myOrderBtn"
@@ -48,7 +51,11 @@
         </#if>
 >
         我的代发
+    <#if $it.href??>
     </a>
+    <#else>
+    </button>
+    </#if>
 </#list>
             </#if>
             </div>
