@@ -20,6 +20,8 @@
                 泉州
             <#elseif webSite == 'zl'>
                 织里
+            <#elseif webSite == 'cz'>
+                沧州
             <#else>
                 杭州
             </#if>

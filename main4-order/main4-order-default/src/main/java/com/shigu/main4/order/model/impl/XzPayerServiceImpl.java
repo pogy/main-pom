@@ -17,6 +17,7 @@ import com.shigu.main4.order.model.able.PayerServiceAble;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +88,7 @@ public class XzPayerServiceImpl extends PayerServiceAble {
 
         RefundResponse res = xzSdkClient.getPcOpenClient().execute(req);
         if (res==null || !res.isSuccess()) {
-            throw new PayerException("星座支付退款失败：payid=" + orderPay.getPayId());
+            throw new PayerException("星座支付退款失败：payid=" + orderPay.getPayId()+"!返回值:"+ JSONObject.fromObject(res));
         }
     }
 }

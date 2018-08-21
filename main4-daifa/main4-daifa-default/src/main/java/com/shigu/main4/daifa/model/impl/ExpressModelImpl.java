@@ -148,7 +148,7 @@ public class ExpressModelImpl implements ExpressModel {
             send.setSendArea(ses[2]);
             send.setSendAddress(ses[3]);
 
-            if("YZPY".equals(express.getKdType())){
+            if("EMS".equals(express.getKdType())){
                 String receiverZipCode;
                 ZipCodeBean reCityCodeBean=daifaPostCustomerMapper.selectPostCodeByCity(send.getReceiverCity());
                 if(reCityCodeBean==null){
@@ -309,7 +309,7 @@ public class ExpressModelImpl implements ExpressModel {
 
         if (obj.containsKey("Success")) {
             QueryPostCodeVO queryPostCodeVO = jsonToPostResult(obj);
-            if ("YZPY".equals(express.getKdType())) {
+            if ("EMS".equals(express.getKdType())) {
                 queryPostCodeVO.setMarkDestination(send.getReceiverArea());
                 queryPostCodeVO.setPackageName(send.getReceiverProv() + " " + send.getReceiverCity());
             }
@@ -319,7 +319,7 @@ public class ExpressModelImpl implements ExpressModel {
                 throw new KdApiException(KdApiException.KdApiExceptionEnum.API_ERROR, obj.getString("Reason"));
             } else {
                 QueryPostCodeVO queryPostCodeVO = jsonToPostResult(obj);
-                if ("YZPY".equals(express.getKdType())) {
+                if ("EMS".equals(express.getKdType())) {
                     queryPostCodeVO.setMarkDestination(send.getReceiverArea());
                     queryPostCodeVO.setPackageName(send.getReceiverProv() + " " + send.getReceiverCity());
                 }

@@ -161,6 +161,21 @@ public class GoodsSearchService {
     }
 
     /**
+     * 获取沧州商品库底部广告
+     * @param webSite
+     * @return
+     */
+    public List<BottomGoodsGoat> selCzBottomGoat(String webSite) {
+        List<ItemSpreadVO> list = spreadService.selItemSpreads(webSite, SpreadEnum.CZ_WOMAN_GOODS_BOTTOM).selObj();
+        Collections.shuffle(list);
+        return list.stream().map(o -> {
+            BottomGoodsGoat result = BeanMapper.map(o, BottomGoodsGoat.class);
+            result.setFullStoreName(o.getStoreText());
+            return result;
+        }).collect(Collectors.toList());
+    }
+
+    /**
      * 取广告类别
      *
      * @param webSite
@@ -199,6 +214,19 @@ public class GoodsSearchService {
                 pEnum = SpreadEnum.QZ_MAN_GOODS_RIGHT;
                 break;
             }
+            case "cz":{
+                if (type == 0) {//商品库
+                    if (pid != null && (pid == 50006843L || pid == 16L)) {
+                        pEnum = SpreadEnum.CZ_WOMAN_GOODS_RIGHT;
+                    } else {
+                        pEnum = SpreadEnum.CZ_MAN_GOODS_RIGHT;
+                    }
+                } else {
+                    pEnum = SpreadEnum.CZ_SEARCH_RIGHT;
+                }
+                break;
+            }
+            default:
         }
         return pEnum;
     }

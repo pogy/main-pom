@@ -6,19 +6,18 @@ import com.opentae.core.mybatis.example.EntityTable;
 import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.mall.beans.ShiguYesterdayStyleHot;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 public class ShiguYesterdayStyleHotExample extends SgExample<ShiguYesterdayStyleHotExample.Criteria> {
     public static final Class<ShiguYesterdayStyleHot> beanClass = ShiguYesterdayStyleHot.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn picPath;
+    public static EntityColumn webSite;
     public static EntityColumn marketName;
     public static EntityColumn piPrice;
     public static EntityColumn parentStyleId;
     public static EntityColumn shopNum;
     public static EntityColumn goodsId;
+    public static EntityColumn sex;
     public static EntityColumn showDay;
     public static EntityColumn shopId;
     public static EntityColumn id;
@@ -29,11 +28,13 @@ public class ShiguYesterdayStyleHotExample extends SgExample<ShiguYesterdayStyle
             listMap.put(column.getProperty(), column);
         }
         picPath = listMap.get("picPath");
+        webSite = listMap.get("webSite");
         marketName = listMap.get("marketName");
         piPrice = listMap.get("piPrice");
         parentStyleId = listMap.get("parentStyleId");
         shopNum = listMap.get("shopNum");
         goodsId = listMap.get("goodsId");
+        sex = listMap.get("sex");
         showDay = listMap.get("showDay");
         shopId = listMap.get("shopId");
         id = listMap.get("id");
@@ -112,6 +113,61 @@ public class ShiguYesterdayStyleHotExample extends SgExample<ShiguYesterdayStyle
 
         public ShiguYesterdayStyleHotExample.Criteria andPicPathNotBetween(String value1, String value2) {
             return notBetween(picPath, value1, value2);
+        }
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteIsNull() {
+            return isNull(webSite);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteIsNotNull() {
+            return isNotNull(webSite);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteEqualTo(String value) {
+            return equalTo(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteNotEqualTo(String value) {
+            return notEqualTo(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteGreaterThan(String value) {
+            return greaterThan(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteLessThan(String value) {
+            return lessThan(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteLike(String value) {
+            return like(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteNotLike(String value) {
+            return notLike(webSite, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteNotIn(List<String> values) {
+            return notIn(webSite, values);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteBetween(String value1, String value2) {
+            return between(webSite, value1, value2);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            return notBetween(webSite, value1, value2);
         }
         public ShiguYesterdayStyleHotExample.Criteria andMarketNameIsNull() {
             return isNull(marketName);
@@ -371,6 +427,53 @@ public class ShiguYesterdayStyleHotExample extends SgExample<ShiguYesterdayStyle
 
         public ShiguYesterdayStyleHotExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
             return notBetween(goodsId, value1, value2);
+        }
+        public ShiguYesterdayStyleHotExample.Criteria andSexIsNull() {
+            return isNull(sex);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexIsNotNull() {
+            return isNotNull(sex);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexEqualTo(Integer value) {
+            return equalTo(sex, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexNotEqualTo(Integer value) {
+            return notEqualTo(sex, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexGreaterThan(Integer value) {
+            return greaterThan(sex, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(sex, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexLessThan(Integer value) {
+            return lessThan(sex, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(sex, value);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexIn(List<Integer> values) {
+            return in(sex, values);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexNotIn(List<Integer> values) {
+            return notIn(sex, values);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexBetween(Integer value1, Integer value2) {
+            return between(sex, value1, value2);
+        }
+
+        public ShiguYesterdayStyleHotExample.Criteria andSexNotBetween(Integer value1, Integer value2) {
+            return notBetween(sex, value1, value2);
         }
         public ShiguYesterdayStyleHotExample.Criteria andShowDayIsNull() {
             return isNull(showDay);

@@ -104,8 +104,9 @@ public class SpreadService {
                 }
                 //按顺序搞进去
                 for(Long gid:sortIds){
-                    if(spreadMap.get(gid)!=null)
+                    if(spreadMap.get(gid)!=null) {
                         vos.add(spreadMap.get(gid));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -203,13 +204,14 @@ public class SpreadService {
      * @param tag
      * @return
      */
-    public ObjFromCache<HzManIndexHotItemsVO> castedHotItemGoatList(Long parentStyleId,String parentStyleName,String tag){
-        return new ObjFromCache<HzManIndexHotItemsVO>(redisForIndexPage,tag,HzManIndexHotItemsVO.class){
+    public ObjFromCache<HzManIndexHotItemsVO> castedHotItemGoatList(Long parentStyleId,String parentStyleName,String tag,String webSite,int sex){
+        return new ObjFromCache<HzManIndexHotItemsVO>(redisForIndexPage,tag+"_"+webSite+"_"+sex,HzManIndexHotItemsVO.class){
             @Override
             public HzManIndexHotItemsVO selReal() {
                 ShiguYesterdayStyleHotExample shiguYesterdayStyleHotExample=new ShiguYesterdayStyleHotExample();
                 shiguYesterdayStyleHotExample.createCriteria().andParentStyleIdEqualTo(parentStyleId)
-                        .andShowDayEqualTo(DateUtil.dateToString(new Date(),DateUtil.patternB));
+                        .andShowDayEqualTo(DateUtil.dateToString(new Date(),DateUtil.patternB))
+                        .andWebSiteEqualTo(webSite).andSexEqualTo(sex);
                 shiguYesterdayStyleHotExample.setEndIndex(10);
                 shiguYesterdayStyleHotExample.setStartIndex(0);
                 shiguYesterdayStyleHotExample.setOrderByClause("id asc");

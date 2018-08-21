@@ -1,8 +1,9 @@
-<ul class="nav yahei">
-    <#if !disabledIndexNav>
-    <li class="first"><a href="//${webSite!}.571xz.com" target="_blank">首页</a></li>
-    </#if>
-    <#if webSite == 'hz'>
+<div class="navV2 yahei clearfix">
+    <ul>
+        <#if !disabledIndexNav>
+        <li class="actived"><a href="//${webSite!}.571xz.com" target="_blank">首页</a></li>
+        </#if>
+        <#if webSite == 'hz'>
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
@@ -60,45 +61,11 @@
         <i class="new"></i>
     </a>
 </li>
-    <#elseif webSite == 'cs'>
-<li
-        <#if 'market' == $pageid>class="actived"</#if>
->
-    <a href="//cs.571xz.com/market.htm?mid=43" target="_blank">
-        逛市场
-    </a>
-</li>
-<li
-        <#if 'goods' == $pageid>class="actived"</#if>
->
-    <a href="//so.571xz.com/csgoods.htm" target="_blank">
-        商品库
-    </a>
-</li>
-<li
-        <#if 'photoPics' == $pageid>class="actived"</#if>
->
-    <a href="//www.571xz.com/photoPics.htm?webSite=cs" target="_blank">
-        图片库
-    </a>
-</li>
-<li
-        <#if 'newgoods' == $pageid>class="actived"</#if>
->
-    <a href="//so.571xz.com/newgoods.htm?webSite=cs" target="_blank">
-        今日新品
-    </a>
-</li>
-<li
->
-    <a href="//zixun.571xz.com/index" target="_blank">
-        资讯
-    </a>
-</li>
-    <#elseif webSite == 'ss'>
-    <#elseif webSite == 'bj'>
-    <#elseif webSite == 'gz'>
-    <#elseif webSite == 'qz'>
+        <#elseif webSite == 'cs'>
+        <#elseif webSite == 'ss'>
+        <#elseif webSite == 'bj'>
+        <#elseif webSite == 'gz'>
+        <#elseif webSite == 'qz'>
 <li
         <#if 'goods' == $pageid>class="actived"</#if>
 >
@@ -125,7 +92,7 @@
         服装
     </a>
 </li>
-    <#elseif webSite == 'zl'>
+        <#elseif webSite == 'zl'>
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
@@ -153,7 +120,7 @@
         资讯
     </a>
 </li>
-    <#elseif webSite == 'cz'>
+        <#elseif webSite == 'cz'>
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
@@ -175,5 +142,6 @@
         今日新品
     </a>
 </li>
-    </#if>
-</ul>
+        </#if>
+    </ul>
+</div>
