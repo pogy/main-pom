@@ -250,6 +250,8 @@ public class GoodsSearchAction {
                 bo.setPid(1625L);
             }else if("qz".equalsIgnoreCase(website)){
                 bo.setPid(50011740L);
+            }else if("cz".equalsIgnoreCase(website)){
+                bo.setPid(16L);
             }else{
                 bo.setPid(30L);
             }
