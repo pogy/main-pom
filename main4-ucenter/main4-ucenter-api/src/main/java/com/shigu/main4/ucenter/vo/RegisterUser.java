@@ -20,7 +20,7 @@ public class RegisterUser implements Serializable{
      */
     private String password;
     /**
-     *  注册用户来源 1 PC 2 APP 3 H5 4 WX
+     *  注册用户来源 1:PC 2:IOS 3:Android 4:H5  5:WX公众号  6:WX小程序
      */
     private Integer registSource;
     /**
