@@ -124,7 +124,7 @@
 <li
         <#if 'market' == $pageid>class="actived"</#if>
 >
-    <a href="" target="_blank">
+    <a href="//cz.571xz.com/market.htm?mid=92" target="_blank">
         逛市场
     </a>
 </li>
