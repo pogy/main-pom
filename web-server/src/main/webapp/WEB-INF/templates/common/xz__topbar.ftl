@@ -37,7 +37,6 @@
                     <li><a href="//gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
                     <li><a href="//jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
                     <li><a href="//qz.571xz.com" <#if webSite == 'qz'>class="select"</#if>>泉州</a></li>
-                    <li><a href="//cz.571xz.com" <#if webSite == 'cz'>class="select"</#if>>沧州</a></li>
                 </ul>
             </div>
             </#if>
