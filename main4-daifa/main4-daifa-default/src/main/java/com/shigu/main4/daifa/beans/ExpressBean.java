@@ -8,6 +8,7 @@ public class ExpressBean implements Serializable {
 	private String kdName;//电子面单账户名
 	private String kdPassword;//电子面单账户密码
 	private String kdMonth;//电子面单账户秘钥,和电子面单账户密码至少有一个,具体是哪个,参照文档
+    private int expType;
 	public String getKdMonth() {
 		return kdMonth;
 	}
@@ -38,4 +39,12 @@ public class ExpressBean implements Serializable {
 	public void setKdPassword(String kdPassword) {
 		this.kdPassword = kdPassword;
 	}
+
+    public int getExpType() {
+        return this.expType;
+    }
+
+    public void setExpType(int expType) {
+        this.expType = expType;
+    }
 }
