@@ -35,6 +35,8 @@ if(pageType == 'W'){
     $('body').addClass('pageWoman')
 }
 </script>
+<#assign pid="16">
+<#assign newGoodsCid="3">
 <#include "/common/xz__searchHeaderV2.ftl">
 <#include "/common/xz__navV2.ftl">
 <#include "/common/xz__choosePageType.ftl">

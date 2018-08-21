@@ -122,27 +122,24 @@
 </li>
         <#elseif webSite == 'cz'>
 <li
+        <#if 'market' == $pageid>class="actived"</#if>
 >
     <a href="" target="_blank">
         逛市场
     </a>
 </li>
 <li
+        <#if 'goods' == $pageid>class="actived"</#if>
 >
-    <a href="" target="_blank">
+    <a href="//so.571xz.com/czgoods.htm?pid=${pid}" target="_blank">
         商品库
     </a>
 </li>
 <li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
 >
-    <a href="" target="_blank">
+    <a href="//so.571xz.com/newgoods.htm?cid=${newGoodsCid}&amp;webSite=cz" target="_blank">
         今日新品
-    </a>
-</li>
-<li
->
-    <a href="" target="_blank">
-        资讯
     </a>
 </li>
         </#if>
