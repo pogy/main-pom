@@ -2,13 +2,10 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 
 public class MemberUser implements Serializable {
-
-	private static final long serialVersionUID = 7469958078155472372L;
     /**
      * 用户ID
      */
@@ -54,17 +51,17 @@ public class MemberUser implements Serializable {
     /**
      * 买家等级：0普通用户1大客户，2，3vip客户
      */
-	private Long buyerGrade;
+	private Integer buyerGrade;
 
     /**
      * 卖家等级
      */
-	private Long sellerGrade;
+	private Integer sellerGrade;
 
     /**
      * 卖家VIP等级@付费等级
      */
-	private Long sellerVipGrade;
+	private Integer sellerVipGrade;
 
     /**
      * 生日
@@ -139,7 +136,7 @@ public class MemberUser implements Serializable {
     /**
      * 登录次数
      */
-	private Long logins;
+	private Integer logins;
 
     /**
      * 最后一次登陆所使用的账号类型
@@ -169,7 +166,7 @@ public class MemberUser implements Serializable {
     /**
      * 状态@0待审核1审核通过2审核不通过
      */
-	private Long useStatus;
+	private Integer useStatus;
 
     /**
      * 是否已经开店@0未开店1已开店@在后台里在页面上店铺管理还是我要开店的按钮
@@ -312,9 +309,9 @@ public class MemberUser implements Serializable {
 	private String idCardImg;
 
     /**
-     * 注册来源@1页面2手机端
+     * 注册用户来源 1:PC 2:IOS 3:Android 4:H5  5:WX公众号  6:WX小程序
      */
-	private Long registerSource;
+	private Integer registerSource;
 
     /**
      * 代发退款默认支付宝账号
@@ -326,8 +323,10 @@ public class MemberUser implements Serializable {
      */
 	private String payPassword;
 
-	@Transient
-	private String subUserNameGroups;
+    /**
+     * app登陆临时密钥
+     */
+	private String appToken;
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
@@ -393,6 +392,29 @@ public class MemberUser implements Serializable {
 		return this.realName;
 	}
 
+	public void setBuyerGrade(Integer buyerGrade) {
+		this.buyerGrade = buyerGrade;
+	}
+
+	public Integer getBuyerGrade() {
+		return this.buyerGrade;
+	}
+
+	public void setSellerGrade(Integer sellerGrade) {
+		this.sellerGrade = sellerGrade;
+	}
+
+	public Integer getSellerGrade() {
+		return this.sellerGrade;
+	}
+
+	public void setSellerVipGrade(Integer sellerVipGrade) {
+		this.sellerVipGrade = sellerVipGrade;
+	}
+
+	public Integer getSellerVipGrade() {
+		return this.sellerVipGrade;
+	}
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
@@ -506,6 +528,14 @@ public class MemberUser implements Serializable {
 		return this.lastIp;
 	}
 
+	public void setLogins(Integer logins) {
+		this.logins = logins;
+	}
+
+	public Integer getLogins() {
+		return this.logins;
+	}
+
 	public void setAccountType(Integer accountType) {
 		this.accountType = accountType;
 	}
@@ -546,6 +576,13 @@ public class MemberUser implements Serializable {
 		return this.portraitUrl;
 	}
 
+	public void setUseStatus(Integer useStatus) {
+		this.useStatus = useStatus;
+	}
+
+	public Integer getUseStatus() {
+		return this.useStatus;
+	}
 
 	public void setIsOpenStore(Integer isOpenStore) {
 		this.isOpenStore = isOpenStore;
@@ -771,7 +808,13 @@ public class MemberUser implements Serializable {
 		return this.idCardImg;
 	}
 
+	public void setRegisterSource(Integer registerSource) {
+		this.registerSource = registerSource;
+	}
 
+	public Integer getRegisterSource() {
+		return this.registerSource;
+	}
 
 	public void setZfbAccount(String zfbAccount) {
 		this.zfbAccount = zfbAccount;
@@ -789,59 +832,12 @@ public class MemberUser implements Serializable {
 		return this.payPassword;
 	}
 
-	public Long getBuyerGrade() {
-		return buyerGrade;
+	public void setAppToken(String appToken) {
+		this.appToken = appToken;
 	}
 
-	public void setBuyerGrade(Long buyerGrade) {
-		this.buyerGrade = buyerGrade;
+	public String getAppToken() {
+		return this.appToken;
 	}
 
-	public Long getSellerGrade() {
-		return sellerGrade;
-	}
-
-	public void setSellerGrade(Long sellerGrade) {
-		this.sellerGrade = sellerGrade;
-	}
-
-	public Long getSellerVipGrade() {
-		return sellerVipGrade;
-	}
-
-	public void setSellerVipGrade(Long sellerVipGrade) {
-		this.sellerVipGrade = sellerVipGrade;
-	}
-
-	public Long getLogins() {
-		return logins;
-	}
-
-	public void setLogins(Long logins) {
-		this.logins = logins;
-	}
-
-	public Long getUseStatus() {
-		return useStatus;
-	}
-
-	public void setUseStatus(Long useStatus) {
-		this.useStatus = useStatus;
-	}
-
-	public Long getRegisterSource() {
-		return registerSource;
-	}
-
-	public void setRegisterSource(Long registerSource) {
-		this.registerSource = registerSource;
-	}
-
-	public String getSubUserNameGroups() {
-		return subUserNameGroups;
-	}
-
-	public void setSubUserNameGroups(String subUserNameGroups) {
-		this.subUserNameGroups = subUserNameGroups;
-	}
 }
