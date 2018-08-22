@@ -9,6 +9,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
@@ -23,6 +24,7 @@ import com.shigu.main4.daifa.utils.MQUtil;
 import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 import com.shigu.main4.daifa.vo.UnComleteAllVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,11 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     private DaifaWorkerMapper daifaWorkerMapper;
     @Autowired
     PackDeliveryProcess packDeliveryProcess;
+    @Autowired
+    RedisIO redisIO;
+
+    @Autowired
+    DaifaSellerMapper daifaSellerMapper;
     @Override
     public String distributionTask(Long wholeId, List<Long> waitIssueIds) throws DaifaException {
         CargoManModel cargoManModel = SpringBeanFactory.getBean(CargoManModel.class, wholeId);
@@ -230,8 +237,14 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         }
         DecimalFormat df = new DecimalFormat("0.00");
         List<Long> unPrints = new ArrayList<>();
+        String daifaName=null;
+        if(ggoodsForPrints.size()>0){
+            DaifaSeller daifaSeller = daifaSellerMapper.selectByPrimaryKey(ggoodsForPrints.get(0).getDfSellerId());
+            daifaName=daifaSeller.getName();
+        }
         for (GgoodsForPrint ggoodsForPrint : ggoodsForPrints) {
             PrintTagVO vo = new PrintTagVO();
+            vo.setDaifaName(daifaName);
             vo.setOrderSort(ggoodsForPrint.getBarCodeKeyNum());
             vo.setSpecialStr(ggoodsForPrint.getBarCodeKey());
             vo.setPackages(ggoodsForPrint.getGoodsNum());
@@ -692,7 +705,13 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public UnComleteAllVO tabIsTakeGoods(Long wholeId, List<Long> issueIds, Boolean idIsCheck) throws DaifaException {
+        String daifa = redisIO.get("daifa_IsTakeGoods_tab");
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(daifa)) {
+            throw new DaifaException("操作过于频繁",DaifaException.ERROR);
+        }
+        redisIO.putTemp("daifa_tabIsTakeGoods",System.currentTimeMillis(),60);
         String date = DateUtil.dateToString(new Date(), DateUtil.patternB);
         DaifaGgoodsExample ge = new DaifaGgoodsExample();
         ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId);

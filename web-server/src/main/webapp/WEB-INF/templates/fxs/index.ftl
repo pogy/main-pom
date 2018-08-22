@@ -202,6 +202,7 @@
 var imgsrc = '${imgsrc!}';
 var tHref = '${tHref!}';
 </script>
+<#include "/common/xz__fixedBox.ftl">
             </div>
     </div>
 </div>

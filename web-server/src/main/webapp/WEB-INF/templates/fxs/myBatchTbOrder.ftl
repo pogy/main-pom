@@ -866,6 +866,7 @@
 </#if>
 </#list>
 </#list>
+<#include "/common/xz__fixedBox.ftl">
             </div>
     </div>
 </div>
