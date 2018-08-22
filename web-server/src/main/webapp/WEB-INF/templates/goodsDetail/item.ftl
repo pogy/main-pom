@@ -14,7 +14,7 @@
 <#include "/__style_torrent__/goodsDetail__item_css.ftl">
     <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <script src="//style.571xz.com/v6/common/js/plugin/jq.lazyload.js"></script>
-<script src="//style.571xz.com/v6/goodsDetail/js/clipboard/jquery.zeroclipboard.min.js"></script>
+<script src="//style.571xz.com/v6/goodsDetail/js/clipboard.min.js"></script>
 <script src="//style.571xz.com/v6/common/js/plugin/jq.qrcode.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
@@ -495,7 +495,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
         </#list>
     </ul>
 </div>
-<div class="goodsDetail">
+<div class="goodsDetail"  id="detailText">
     ${goodsInfo.descHtml}
 </div>
         </div>
@@ -512,9 +512,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
                 <li class="wxContainer"><b id="showGoodsWxCode" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox" data-goodsid="${goodsInfo.goodsId!}"></div></li>
                 <li class="addData"><b xzclick="addGoodsPkg" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 <li class="imgDownload" jhand="downloadPic" data-goodsid="${goodsInfo.goodsId!}"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
-                <li class="copyCode" id="copyCodeBtn">
-                    <b><i class="ii"></i><span>复制详情HTML代码</span></b>
-                </li>
+                <li class="copyCode"><button id="copyCodeBtn" class="copyBtn"><i class="ii"></i><span>复制详情HTML代码</span></button></li>
         </ul>
         <p class="copyCodeSuccess"><em>宝贝描述复制完成</em></p>
         <div class="grewLine"></div>
