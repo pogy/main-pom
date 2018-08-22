@@ -1,1 +1,1 @@
-<link href="//style.571xz.com/v6/xzPage/css/qtdsMerchants_v20180822_181847.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/xzPage/css/qtdsMerchants_v20180822_182442.css" rel="stylesheet">
