@@ -59,7 +59,7 @@
 </#list>
 </#list>
 </div>
-<#list [{"fields":[{"name":"id","value":""+cid},{"name":"keyword","value":""+query.keyword}]}] as $it>
+<#list [{"fields":[{"name":"cid","value":""+query.cid},{"name":"keyword","value":""+query.keyword}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>

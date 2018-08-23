@@ -6,20 +6,19 @@ package com.shigu.spread.enums;
  */
 public enum SpreadEnum {
     QZGG("全站公告", "QZGG"), QZRULE("全站规则", "QZRULE"),
+
+
+
+
+    //杭州
+    // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
     MAN_STYLE_PICS("杭州男装风格图","MAN_STYLE_PICS"),
     NEW_HZ_HomeCateMenu("杭州首页左侧导航","NEW_HZ_HomeCateMenu"),
-
-
-    // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
     MAN_DT_NEW("男装大图新版2018-04","MAN-DT-NEW-201804"),MAN_XT_NEW("男装小图新版2018-04","MAN-XT-NEW-201804"),
-
-
     MAN_DT("男装大图", "MAN-DT"), MAN_XT("男装小图", "MAN-XT"),
     MAN_RM("热卖广告", "MAN-RM"), MAN_FG("风格", "MAN-FG"), MAN_YS("元素", "MAN-YS"),
     MAN_TJDK("推荐档口", "MAN-TJDK"), MAN_XHTX("喜欢T恤", "MAN-XHTX"), MAN_XHNZ("喜欢牛仔", "MAN-XHNZ"),
     MAN_XHXZ("喜欢鞋子", "MAN-XHXZ"), MAN_HOTBOT("热卖下方条形广告", "MAN-HOTBOT"), MAN_STYLEBOT("风格下方条形广告", "MAN-STYLEBOT"),
-
-
     WOMAN_DT("男装大图", "WOMAN-DT"), WOMAN_XT("男装小图", "WOMAN-XT"),
     WOMAN_RM("热卖广告", "WOMAN-RM"), WOMAN_FG("风格", "WOMAN-FG"), WOMAN_YS("元素", "WOMAN-YS"),
     WOMAN_TJDK("推荐档口", "WOMAN-TJDK"), WOMAN_XHTX("喜欢T恤", "WOMAN-XHTX"), WOMAN_XHNZ("喜欢牛仔", "WOMAN-XHNZ"),
@@ -27,14 +26,31 @@ public enum SpreadEnum {
     MAN_GOODS_RIGHT("男装商品库右侧", "MAN-GOODS-RIGHT"),
     MAN_GOODS_BOTTOM("男装商品库下侧","MAN-GOODS-BOTTOM"),
     WOMAN_GOODS_RIGHT("女装商品库右侧", "WOMAN-GOODS-RIGHT"),
-
-
     SEARCH_RIGHT("搜索右侧", "SEARCH-RIGHT"),
-
     INDEX_TOP("首页顶部男装广告", "INDEX-TOP"),
     INDEX_TOP_WOMAN("首页顶部女装广告", "INDEX-TOP-WOMAN"),
     SHOP_DETAIL_TOP_MAN("男装店铺和详情页顶部广告","SHOP_DETAIL_TOP_MAN"),
     SHOP_DETAIL_TOP_WOMAN("女装店铺和详情页顶部广告","SHOP_DETAIL_TOP_WOMAN"),
+
+    //沧州
+    CZ_WOMAN_HomeCateMenu("沧州女装首页左侧导航","NEW_CZ_WOMAN_HomeCateMenu"),
+    CZ_WOMAN_DT("沧州女装大图", "CZ-WOMAN-DT"), CZ_WOMAN_XT("沧州女装小图", "CZ-WOMAN-XT"),
+    CZ_WOMAN_RM("沧州热卖广告", "CZ-WOMAN-RM"),
+
+    CZ_MAN_HomeCateMenu("沧州男装首页左侧导航","NEW_CZ_MAN_HomeCateMenu"),
+    CZ_MAN_DT("沧州男装大图", "CZ-MAN-DT"), CZ_MAN_XT("沧州男装小图", "CZ-MAN-XT"),
+    CZ_MAN_RM("沧州热卖广告", "CZ-MAN-RM"),
+
+    CZ_WOMAN_GOODS_RIGHT("沧州女装商品库右侧", "CZ-WOMAN-GOODS-RIGHT"),
+    CZ_WOMAN_GOODS_BOTTOM("沧州女装商品库下侧","CZ-WOMAN-GOODS-BOTTOM"),
+    CZ_MAN_GOODS_RIGHT("沧州男装商品库右侧", "CZ-MAN-GOODS-RIGHT"),
+    CZ_SEARCH_RIGHT("沧州搜索右侧", "CZ-SEARCH-RIGHT"),
+    CZ_INDEX_TOP("沧州首页顶部男装广告", "CZ-INDEX-TOP"),
+    CZ_INDEX_TOP_WOMAN("沧州首页顶部女装广告", "CZ-INDEX-TOP-WOMAN"),
+    CZ_SHOP_DETAIL_TOP_MAN("沧州男装店铺和详情页顶部广告","CZ-SHOP_DETAIL_TOP_MAN"),
+    CZ_SHOP_DETAIL_TOP_WOMAN("沧州女装店铺和详情页顶部广告","CZ-SHOP_DETAIL_TOP_WOMAN"),
+
+
 
 
     LOGIN_GT("登录页", "LOGIN_GT"),
