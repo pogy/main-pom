@@ -492,8 +492,8 @@
             <#if order.mainState == 1>
             <p><a href="javascript:;" onclick="cancelOrder(${order.orderId!})" class="fc9">取消订单</a></p>
             <#elseif order.mainState == 2>
-                <#if childOrder.expressName??>
-                    <p class="fcBlue expressShow">${childOrder.expressName!} 单号已生成 <br/><span class="arial">${childOrder.expressCode!}</span></p>
+                <#if order.expressName??>
+                    <p class="fcBlue expressShow">${order.expressName!} 单号已生成 <br/><span class="arial">${order.expressCode!}</span></p>
                 </#if>
             <#elseif order.mainState == 3>
             <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
