@@ -65,7 +65,7 @@
                 <label>订单编号：</label>
                 <p class="fs14 arail">${orderId!}</p>
             </li>
-            <#if orderStateNum == 2 && express??>
+            <#if orderStateNum == 2 && express?? && express.id??>
                 <li><label>快递单号已生成：</label>${express.name!}<span class="arial">（${express.id!}）</span></li>
             </#if>
             <#if orderDealTime??>
