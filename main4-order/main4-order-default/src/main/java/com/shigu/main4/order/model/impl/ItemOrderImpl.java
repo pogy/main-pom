@@ -357,6 +357,17 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
+    public void updateExpressCode(String courierNumber){
+        List<LogisticsVO> logisticsVOS = selLogisticses();
+        if (logisticsVOS.size() == 1) {
+            ItemOrderLogistics logistics = new ItemOrderLogistics();
+            logistics.setId(logisticsVOS.get(0).getId());
+            logistics.setCourierNumber(courierNumber);
+            itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
+        }
+    }
+
+    @Override
     public void sendPart(Long logisticsId, List<Long> soids, String courierNumber) {
 
     }

@@ -76,6 +76,8 @@ public class DfMessageListener implements MessageListener {
 
         mark_down(MarkDownMessage.class),
 
+        update_express_code(UpdateExpressCodeMessage.class),
+
         ;
         public final Class<?> clazz;
 
@@ -113,6 +115,9 @@ public class DfMessageListener implements MessageListener {
                 break;
             case send_all:
                 sendAll(baseMessage);
+                break;
+            case update_express_code:
+                updateExpressCode(baseMessage);
                 break;
             case stop_trade:
                 stopTrade(baseMessage);
@@ -175,6 +180,11 @@ public class DfMessageListener implements MessageListener {
     public void sendAll(BaseMessage<SendAllMessage> msg) {
         SendAllMessage sendAllMessage = msg.getData();
         SpringBeanFactory.getBean(ItemOrder.class, sendAllMessage.getOrderId()).sended(sendAllMessage.getExpressCode());
+    }
+
+    public void updateExpressCode(BaseMessage<UpdateExpressCodeMessage> msg) {
+        UpdateExpressCodeMessage updateExpressCodeMessage = msg.getData();
+        SpringBeanFactory.getBean(ItemOrder.class, updateExpressCodeMessage.getOrderId()).updateExpressCode(updateExpressCodeMessage.getExpressCode());
     }
 
     public void stopTrade(BaseMessage<StopTradeMessage> msg) {
