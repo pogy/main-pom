@@ -287,8 +287,7 @@ public class UserLoginAction {
                 e.put("state", "wx591514a902a6280d__snsapi_userinfo");
                 e.put("date", TypeConvert.formatDate(new Date()));
                 String sign = MD5Attestation.signParamString(e);
-                url = "http://wx.571xz.com/shigu_weixin/wxoauth2toOauth2WzPage.action?state=wx591514a902a6280d__snsapi_userinfo&date="
-                        + TypeConvert.formatDate(new Date()) + "&sign=" + sign;
+                url = "http://wx.571xz.com/wxoauth2toOauth2WzPage?state=wx591514a902a6280d__snsapi_userinfo&sign=" + sign;
                 break;
             }
             case 5: {
@@ -814,7 +813,7 @@ public class UserLoginAction {
                 PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
                 Long outUid = registerAndLoginService.selOutUidByUid(ps.getUserId());
                 if (outUid != null) {
-                    jsonObject.element("id",outUid.toString());
+                    jsonObject.element("id", outUid.toString());
                 }
             }
 
@@ -924,11 +923,11 @@ public class UserLoginAction {
         }
         HashMap<String, String> map = new HashMap<>();
         try {
-            map.put("userName", URLEncoder.encode(tbUserNick,"UTF-8"));
+            map.put("userName", URLEncoder.encode(tbUserNick, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error("未支持UTF-8字符集，检查环境");
         }
-        map.put("token",token);
+        map.put("token", token);
         if (MD5Attestation.unsignParamString(map, bo.getSign())) {
             Subject subject = SecurityUtils.getSubject();
             CaptchaUsernamePasswordToken shiroToken = new CaptchaUsernamePasswordToken(
