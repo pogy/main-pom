@@ -5,28 +5,37 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.MemberUserSub;
 import com.opentae.data.mall.beans.SubOrderSoidps;
+import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.examples.SubOrderSoidpsExample;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.*;
 import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
+import com.shigu.main4.order.process.QimenTradeProcess;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -37,7 +46,8 @@ import java.util.Objects;
 public class DfMessageListener implements MessageListener {
 
     private static final Logger logger = LoggerFactory.getLogger(DfMessageListener.class);
-
+    private static final com.alibaba.dubbo.common.logger.Logger dubbologger = com.alibaba.dubbo.common.logger.LoggerFactory
+            .getLogger(DfMessageListener.class);
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
@@ -55,7 +65,8 @@ public class DfMessageListener implements MessageListener {
 
     @Autowired
     private OrderMessageProducter orderMessageProducter;
-
+    @Autowired
+    QimenTradeProcess qimenTradeProcess;
 
     public enum DfMqTag {
         refund_agree(RefundMessage.class),
@@ -175,6 +186,11 @@ public class DfMessageListener implements MessageListener {
     public void sendAll(BaseMessage<SendAllMessage> msg) {
         SendAllMessage sendAllMessage = msg.getData();
         SpringBeanFactory.getBean(ItemOrder.class, sendAllMessage.getOrderId()).sended(sendAllMessage.getExpressCode());
+        try {
+            qimenTradeProcess.toOut(sendAllMessage.getOrderId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopTrade(BaseMessage<StopTradeMessage> msg) {
