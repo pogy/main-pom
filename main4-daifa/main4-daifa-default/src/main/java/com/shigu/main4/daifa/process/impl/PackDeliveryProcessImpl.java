@@ -56,6 +56,8 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     private DaifaWaitSendMapper daifaWaitSendMapper;//
     @Autowired
     private DaifaGoodsWeightMapper daifaGoodsWeightMapper;
+    @Autowired
+    DaifaPostCustomerMapper daifaPostCustomerMapper;
 
     @Autowired
     private DaifaCallExpressMapper daifaCallExpressMapper;
@@ -145,7 +147,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         PackResultVO print = new PackResultVO();
         print.setSendId(send.getSendId());
         print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
-        print.setExpressName(send.getExpressName());
+        print.setExpressName(daifaPostCustomerMapper.selectByPrimaryKey(send.getExpressId()).getCustomerName());
         print.setExpressCode(send.getExpressCode());
 
         print.setPackageCode(exvo.getPackageCode ());
