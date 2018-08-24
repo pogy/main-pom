@@ -147,7 +147,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         PackResultVO print = new PackResultVO();
         print.setSendId(send.getSendId());
         print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
-        print.setExpressName(daifaPostCustomerMapper.selectByPrimaryKey(send.getExpressId()).getCustomerName());
+        print.setExpressName(send.getExpressName());
         print.setExpressCode(send.getExpressCode());
 
         print.setPackageCode(exvo.getPackageCode ());
@@ -197,7 +197,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
         print.setGoodsMs(goodsMs);
         print.setSpecialStr(trade.getBarCodeKey());
-        print.setPostName(send.getExpressName());
+        DaifaPostCustomer poc=new DaifaPostCustomer();
+        poc.setExpressId(send.getExpressId());
+        print.setPostName(daifaPostCustomerMapper.selectOne(poc).getExpress());
         print.setMarkDestination(send.getMarkDestination()+(trade.getExpressName().contains("百世")&&daifaCallExpress.getSortingCode()!=null?(" "+daifaCallExpress.getSortingCode()):""));
         print.setPackageName(send.getPackageName());
         print.setPackageCode (send.getPackageCode ());
