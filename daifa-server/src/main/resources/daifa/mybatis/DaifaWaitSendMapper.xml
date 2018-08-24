@@ -44,10 +44,7 @@
         f.dws_id,
         f.df_trade_id,
         f.send_status,
-        DATE_FORMAT(
-        f.create_time,
-        '%Y-%m-%d %H:%i:%s'
-        ) create_time,
+        DATE_FORMAT(f.create_time,'%Y-%m-%d %H:%i:%s')create_time,
         f.buyer_ww,
         f.buyer_qq,
         f.buyer_telephone,
@@ -58,11 +55,8 @@
         f.express_fee,
         f.express_name,
         f.express_code,
-        t.trade_discount_fee,
-        t.services_fee,
         f.receiver_address,
-        t.daifa_type = 2 is_tb_order,
-        t.bar_code_key,
+        d.cdkey,
         d.df_order_id,
         d.pic_path,
         d.title,
@@ -74,133 +68,176 @@
         d.take_goods_status,
         d.refund_status,
         d.store_goods_code
-        FROM
-            daifa_wait_send f,
-            daifa_wait_send_order d,
-            (
-            SELECT DISTINCT
-            a.df_trade_id,
-            a.dws_id
+        FROM(
+            select
+                *
+            from
+                daifa_wait_send
+            where
+                dws_id in (${dwsIds})
+        )f
+        LEFT JOIN(
+            select
+                dws_id,
+                cdkey,
+                df_order_id,
+                pic_path,
+                title,
+                prop_str,
+                goods_code,
+                single_price,
+                single_pi_price,
+                goods_num,
+                take_goods_status,
+                refund_status,
+                store_goods_code
+            from
+                daifa_wait_send_order
+            where
+                dws_id in (${dwsIds})
+        )d ON f.DWS_ID = d.DWS_ID
+    </select>
+
+    <select id="selectWaitSendsIds" resultType="com.opentae.data.daifa.beans.DaifaWaitSendSimple">
+        SELECT
+            t1.df_trade_id orderId,
+            t1.dws_id dwsId
+        FROM(
+            SELECT
+                t1.df_trade_id,
+                t1.dws_id,
+                t1.receiver_phone,
+                t1.buyer_id
             FROM
-            daifa_wait_send a,
-            daifa_wait_send_order b
-            <if test="status==1">
-                LEFT JOIN (
-                SELECT DISTINCT
+                daifa_wait_send t1,
+                daifa_wait_send_order t2
+            WHERE
+                <if test="stId!=null">
+                    AND t1.df_trade_id &gt;=#{stId}
+                    AND t2.df_trade_id &gt;=#{stId}
+                </if>
+                <if test="etId!=null">
+                    AND t1.df_trade_id &lt;=#{etId}
+                    AND t2.df_trade_id &lt;=#{etId}
+                </if>
+                and t1.df_trade_id = t2.df_trade_id and t2.refund_status = 0 and t1.SEND_STATUS = 1 AND t1.order_display = 1
+                AND t1.seller_id = ${sellerId}
+            GROUP BY
+                t1.df_trade_id
+        ) t1
+        LEFT JOIN (
+            SELECT
                 a.df_trade_id,
                 a.dws_id
-                FROM
+            FROM
                 daifa_wait_send a,
                 daifa_wait_send_order b
-                WHERE
-                a.SELLER_ID = ${dfSellerId}
+            WHERE
+                a.SELLER_ID = ${sellerId}
+                <if test="stId!=null">
+                    AND a.df_trade_id &gt;=#{stId}
+                    AND b.df_trade_id &gt;=#{stId}
+                </if>
+                <if test="etId!=null">
+                    AND a.df_trade_id &lt;=#{etId}
+                    AND b.df_trade_id &lt;=#{etId}
+                </if>
                 AND a.SEND_STATUS = 1
                 AND a.order_display = 1
-                AND a.DWS_ID = b.DWS_ID
+                AND a.df_trade_id = b.df_trade_id
                 AND b.take_goods_status != 1
                 AND b.refund_status = 0
-                ) t2 ON b.dws_id = t2.dws_id
-            </if>
-            WHERE
-            a.dws_id = b.dws_id
-            AND a.SELLER_ID = ${dfSellerId}
-            AND a.SEND_STATUS = 1
-            AND a.order_display = 1
-            AND a.DWS_ID = b.DWS_ID
-            AND b.refund_status = 0
+            GROUP BY
+                df_trade_id
+        ) t2 ON t1.dws_id = t2.dws_id
+        WHERE 1=1
         <if test="status==1">
             AND t2.df_trade_id IS NULL
         </if>
         <if test="status==2">
-            AND b.take_goods_status != 1
+            AND t2.df_trade_id IS NOT NULL
         </if>
         <if test="lastTradeId!=null">
-            AND a.df_trade_id like("%${lastTradeId}")
+            AND t1.df_trade_id like("%${lastTradeId}")
         </if>
         <if test="phone!=null">
-            AND a.receiver_phone = #{phone}
+            AND t1.receiver_phone = #{phone}
         </if>
         <if test="buyerId!=null">
-            AND a.buyer_id = ${buyerId}
+            AND t1.buyer_id = ${buyerId}
         </if>
-            ) v,
-            daifa_trade t
-            WHERE
-            f.dws_id = d.dws_id
-            AND f.dws_id = v.dws_id
-            AND v.df_trade_id = t.df_trade_id
-            AND t.df_trade_id > 0
-            <if test="startTime!=null">
-                AND t.create_time &gt; #{startTime}
-            </if>
-            <if test="endTime!=null">
-                AND t.create_time &lt; #{endTime}
-            </if>
-        ORDER BY
-        f.dws_id DESC
         limit ${start},${end}
-
     </select>
+
+
+
 
     <select id="selectWaitSendsCount" resultType="java.lang.Integer">
         SELECT
-        count(*)
+            count(*)
         FROM(
-        SELECT DISTINCT
-        a.df_trade_id,
-        a.dws_id
-        FROM
-        daifa_wait_send a,
-        daifa_wait_send_order b
-        <if test="status==1">
-            LEFT JOIN (
-            SELECT DISTINCT
-            a.df_trade_id,
-            a.dws_id
+            SELECT
+                t1.df_trade_id,
+                t1.dws_id,
+                t1.receiver_phone,
+                t1.buyer_id
             FROM
-            daifa_wait_send a,
-            daifa_wait_send_order b
+                daifa_wait_send t1,
+                daifa_wait_send_order t2
             WHERE
-            a.SELLER_ID = ${dfSellerId}
-            AND a.SEND_STATUS = 1
-            AND a.order_display = 1
-            AND a.DWS_ID = b.DWS_ID
-            AND b.take_goods_status != 1
-            AND b.refund_status = 0
-            ) t2 ON b.dws_id = t2.dws_id
-        </if>
-        WHERE
-        a.dws_id = b.dws_id
-        AND a.SELLER_ID = ${dfSellerId}
-        AND a.SEND_STATUS = 1
-        AND a.order_display = 1
-        AND a.DWS_ID = b.DWS_ID
-        AND b.refund_status = 0
-        <if test="status==1">
-            AND t2.df_trade_id IS NULL
-        </if>
-        <if test="status==2">
-            AND b.take_goods_status != 1
-        </if>
-        <if test="lastTradeId!=null">
-            AND a.df_trade_id like("%${lastTradeId}")
-        </if>
-        <if test="phone!=null">
-            AND a.receiver_phone = #{phone}
-        </if>
-        <if test="buyerId!=null">
-            AND a.buyer_id = ${buyerId}
-        </if>
-        ) v,
-        daifa_trade t
-        WHERE
-        v.df_trade_id = t.df_trade_id
-        AND t.df_trade_id > 0
-        <if test="startTime!=null">
-            AND t.create_time &gt; #{startTime}
-        </if>
-        <if test="endTime!=null">
-            AND t.create_time &lt; #{endTime}
-        </if>
+                <if test="stId!=null">
+                    AND t1.df_trade_id &gt;=#{stId}
+                    AND t2.df_trade_id &gt;=#{stId}
+                </if>
+                <if test="etId!=null">
+                    AND t1.df_trade_id &lt;=#{etId}
+                    AND t2.df_trade_id &lt;=#{etId}
+                </if>
+                and t1.df_trade_id = t2.df_trade_id and t2.refund_status = 0 and t1.SEND_STATUS = 1 AND t1.order_display = 1
+                AND t1.seller_id = ${sellerId}
+            GROUP BY
+                t1.df_trade_id
+        ) t1
+        LEFT JOIN (
+            SELECT
+                a.df_trade_id,
+                a.dws_id
+            FROM
+                daifa_wait_send a,
+                daifa_wait_send_order b
+            WHERE
+                a.SELLER_ID = ${sellerId}
+                <if test="stId!=null">
+                    AND a.df_trade_id &gt;=#{stId}
+                    AND b.df_trade_id &gt;=#{stId}
+                </if>
+                <if test="etId!=null">
+                    AND a.df_trade_id &lt;=#{etId}
+                    AND b.df_trade_id &lt;=#{etId}
+                </if>
+                AND a.SEND_STATUS = 1
+                AND a.order_display = 1
+                AND a.df_trade_id = b.df_trade_id
+                AND b.take_goods_status != 1
+                AND b.refund_status = 0
+            GROUP BY
+                df_trade_id
+        ) t2 ON t1.dws_id = t2.dws_id
+        WHERE 1=1
+            <if test="status==1">
+                AND t2.df_trade_id IS NULL
+            </if>
+            <if test="status==2">
+                AND t2.df_trade_id IS NOT NULL
+            </if>
+            <if test="lastTradeId!=null">
+                AND t1.df_trade_id like("%${lastTradeId}")
+            </if>
+            <if test="phone!=null">
+                AND t1.receiver_phone = #{phone}
+            </if>
+            <if test="buyerId!=null">
+                AND t1.buyer_id = ${buyerId}
+            </if>
     </select>
 </mapper>
