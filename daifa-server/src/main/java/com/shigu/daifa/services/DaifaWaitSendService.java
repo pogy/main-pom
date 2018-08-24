@@ -62,7 +62,7 @@ public class DaifaWaitSendService {
         Long stId=null;
         Long etId=null;
         if(StringUtils.isBlank(bo.getStartTime())&&StringUtils.isBlank(bo.getEndTime())){
-            st=DateUtil.getdate(-90);
+            st=DateUtil.getdate(-30);
         }else{
             st=StringUtils.isNotBlank(bo.getStartTime())?DateUtil.stringToDate(bo.getStartTime()+" 00:00:00"):null;
             et=StringUtils.isNotBlank(bo.getEndTime())?DateUtil.stringToDate(bo.getEndTime()+" 23:59:59"):null;
