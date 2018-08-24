@@ -1,11 +1,14 @@
 package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
 import com.opentae.data.daifa.beans.DaifaTrade;
 import com.opentae.data.daifa.beans.GgoodsByStore;
+import com.opentae.data.daifa.examples.DaifaGgoodsExample;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
+import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
 import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.component.shiro.AuthorityUser;
@@ -17,6 +20,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.order.process.QimenTradeProcess;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -25,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by pc on 2017-08-15.
@@ -38,8 +43,12 @@ import java.util.*;
 public class DaifaAllocateService {
     private static List<GgoodsByStore> allocateHouse;
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
+    @Autowired
+    private DaifaGgoodsMapper daifaGgoodsMapper;
 
     private DaifaTradeMapper daifaTradeMapper;
+    @Autowired
+    QimenTradeProcess qimenTradeProcess;
 
     @Autowired
     public void setDaifaTradeMapper(DaifaTradeMapper daifaTradeMapper) {
@@ -231,23 +240,23 @@ public class DaifaAllocateService {
 
     public JSONObject submitAllocation(Long userId, String type, String ids) throws DaifaException {
         String[] idsArray = ids.split(",");
+        List<String> codes=new ArrayList<>();
         switch (type) {
             case "market": {
-
                 for (String s : idsArray) {
-                    takeGoodsIssueProcess.distributionTaskWithMarket(userId, Long.parseLong(s));
+                    codes.add(takeGoodsIssueProcess.distributionTaskWithMarket(userId, Long.parseLong(s)));
                 }
                 break;
             }
             case "floor": {
                 for (String s : idsArray) {
-                    takeGoodsIssueProcess.distributionTaskWithFloor(userId,Long.parseLong(s));
+                    codes.add(takeGoodsIssueProcess.distributionTaskWithFloor(userId,Long.parseLong(s)));
                 }
                 break;
             }
             case "shop":{
                 for (String s : idsArray) {
-                    takeGoodsIssueProcess.distributionTaskWithShop(userId,Long.parseLong(s));
+                    codes.add(takeGoodsIssueProcess.distributionTaskWithShop(userId,Long.parseLong(s)));
                 }
                 break;
             }
@@ -272,13 +281,34 @@ public class DaifaAllocateService {
                 for (DaifaGgoodsTasks ggoodsTask : ggoodsTasks) {
                     tasksId.add(ggoodsTask.getTasksId());
                 }
-                takeGoodsIssueProcess.distributionTask(userId,tasksId);
+                codes.add(takeGoodsIssueProcess.distributionTask(userId,tasksId));
                 break;
             }
             default:{
                 break;
             }
         }
+        if(codes.size()>0){
+            DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
+            daifaGgoodsExample.createCriteria().andGgoodsCodeIn(codes);
+            List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(daifaGgoodsExample,FieldUtil.codeFields("take_goods_id,df_trade_id"));
+            if(gs.size()>0){
+                List<Long> tids=gs.stream().map(DaifaGgoods::getDfTradeId).collect(Collectors.toList());
+                DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
+                daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
+                List<DaifaTrade> daifaTrades = daifaTradeMapper
+                        .selectFieldsByExample(daifaTradeExample, FieldUtil.codeFields("df_trade_id,trade_code"));
+                daifaTrades.forEach(daifaTrade -> {
+                    try {
+                        qimenTradeProcess.toNotify(new Long(daifaTrade.getTradeCode()));
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }
+
+
         return JsonResponseUtil.success("分配成功");
     }
 }
