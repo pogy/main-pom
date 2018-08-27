@@ -195,62 +195,70 @@ public class ThirdIssuingService {
         return response;
     }
 
-    public void selTagHaveGgoods(Long daifaWorkerId, Integer bostatus, List<Long> orderIds) throws SystemInterfaceException, DaifaException {
+    public void selTagHaveGgoods(Long daifaWorkerId, Integer bostatus, List<Long> orderIds,Long haveGoodsTime) throws SystemInterfaceException, DaifaException {
         if (daifaWorkerId == null || bostatus == null || orderIds == null || orderIds.size() == 0) {
             throw new SystemInterfaceException("缺少参数");
         }
-        DaifaGgoodsExample example = new DaifaGgoodsExample();
-        example.createCriteria().andUseStatusEqualTo(1).andDfOrderIdIn(orderIds)
-                .andDaifaWorkerIdEqualTo(daifaWorkerId)
-                .andOperateIsEqualTo(0);
-        List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
-
-        List<Long> takeIds = BeanMapper.getFieldList(daifaGgoods, "takeGoodsId", Long.class);
-        UnComleteAllVO vo =takeGoodsIssueProcess.tabIsTakeGoods(daifaWorkerId,  takeIds, bostatus == 1);
-
-        if (vo.getNotTakeIds() != null && vo.getNotTakeIds().size() > 0) {
-            //发送缺货信息到order-server
-            for (Long notTakeDfOrderId : vo.getNotTakeIds()) {
-                daifaAllocatedService.orderServerNotTake(notTakeDfOrderId);
+        if (bostatus == 3 && haveGoodsTime == null)
+            throw new SystemInterfaceException("缺少参数");
+        if (bostatus == 3){
+            Date haveGoodsdate = new Date(haveGoodsTime);
+            for (Long oid : orderIds) {
+                orderManageProcess.haveGoodsTime(oid,haveGoodsdate);
             }
-        }
-        if(vo.getTakeIds()!=null&&vo.getTakeIds().size()>0){
-            for(Long takeDfOrderId:vo.getTakeIds()){
-                daifaAllocatedService.orderServerTake(takeDfOrderId);
+        }else {
+            DaifaGgoodsExample example = new DaifaGgoodsExample();
+            example.createCriteria().andUseStatusEqualTo(1).andDfOrderIdIn(orderIds)
+                    .andDaifaWorkerIdEqualTo(daifaWorkerId)
+                    .andOperateIsEqualTo(0);
+            List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
+
+            List<Long> takeIds = BeanMapper.getFieldList(daifaGgoods, "takeGoodsId", Long.class);
+            UnComleteAllVO vo =takeGoodsIssueProcess.tabIsTakeGoods(daifaWorkerId,  takeIds, bostatus == 1);
+
+            if (vo.getNotTakeIds() != null && vo.getNotTakeIds().size() > 0) {
+                //发送缺货信息到order-server
+                for (Long notTakeDfOrderId : vo.getNotTakeIds()) {
+                    daifaAllocatedService.orderServerNotTake(notTakeDfOrderId);
+                }
             }
-            //获取已拿到的主单ID集合
-            DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
-            daifaOrderExample.createCriteria().andDfOrderIdIn(vo.getTakeIds());
-            List<DaifaOrder> hasOrders=daifaOrderMapper.selectFieldsByExample(daifaOrderExample,FieldUtil.codeFields("df_order_id,df_trade_id"));
-            if(hasOrders.size()>0){
-                Set<Long> dfTradeIds=BeanMapper.getFieldSet(hasOrders,"dfTradeId",Long.class);
-                List<Long> tids=new ArrayList<>(dfTradeIds);
-                DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
-                daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
-                List<DaifaTrade> trades=daifaTradeMapper.selectFieldsByExample(daifaTradeExample,FieldUtil.codeFields("df_trade_id,express_id,express_name"));
-                Map<Long,List<DaifaTrade>> tradeMap=BeanMapper.groupBy(trades,"expressId",Long.class);
-                Set<String> expressNames=new HashSet<>();
-                for(List<DaifaTrade> ts:tradeMap.values()){
-                    for(DaifaTrade t:ts){
-                        try {
-                            packDeliveryProcess.queryExpressCode(t.getDfTradeId());
-                        } catch (DaifaException e) {
-                            expressNames.add(t.getExpressName());
-                            break;
+            if(vo.getTakeIds()!=null&&vo.getTakeIds().size()>0){
+                for(Long takeDfOrderId:vo.getTakeIds()){
+                    daifaAllocatedService.orderServerTake(takeDfOrderId);
+                }
+                //获取已拿到的主单ID集合
+                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(vo.getTakeIds());
+                List<DaifaOrder> hasOrders=daifaOrderMapper.selectFieldsByExample(daifaOrderExample,FieldUtil.codeFields("df_order_id,df_trade_id"));
+                if(hasOrders.size()>0){
+                    Set<Long> dfTradeIds=BeanMapper.getFieldSet(hasOrders,"dfTradeId",Long.class);
+                    List<Long> tids=new ArrayList<>(dfTradeIds);
+                    DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
+                    daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
+                    List<DaifaTrade> trades=daifaTradeMapper.selectFieldsByExample(daifaTradeExample,FieldUtil.codeFields("df_trade_id,express_id,express_name"));
+                    Map<Long,List<DaifaTrade>> tradeMap=BeanMapper.groupBy(trades,"expressId",Long.class);
+                    Set<String> expressNames=new HashSet<>();
+                    for(List<DaifaTrade> ts:tradeMap.values()){
+                        for(DaifaTrade t:ts){
+                            try {
+                                packDeliveryProcess.queryExpressCode(t.getDfTradeId());
+                            } catch (DaifaException e) {
+                                expressNames.add(t.getExpressName());
+                                break;
+                            }
+                        }
+                    }
+                    if(expressNames.size()>0){
+                        for(String expressName:expressNames){
+                            String str=expressName+"可用单号不足,请及时联系快递补充单号.";
+                            SmsJsoup u=new SmsJsoup();
+                            String phones=errorSendPhone;//接收号码集合
+                            Date sendTime=new Date();//定时发送时间
+                            u.sendHySms(phones,str,sendTime);
                         }
                     }
                 }
-                if(expressNames.size()>0){
-                    for(String expressName:expressNames){
-                        String str=expressName+"可用单号不足,请及时联系快递补充单号.";
-                        SmsJsoup u=new SmsJsoup();
-                        String phones=errorSendPhone;//接收号码集合
-                        Date sendTime=new Date();//定时发送时间
-                        u.sendHySms(phones,str,sendTime);
-                    }
-                }
             }
         }
-
     }
 }
