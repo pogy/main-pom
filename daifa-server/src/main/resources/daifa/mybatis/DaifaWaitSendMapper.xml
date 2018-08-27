@@ -56,7 +56,6 @@
         f.express_name,
         f.express_code,
         f.receiver_address,
-        f.bar_code_key,
         d.df_order_id,
         d.pic_path,
         d.title,
