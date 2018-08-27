@@ -56,6 +56,8 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     private DaifaWaitSendMapper daifaWaitSendMapper;//
     @Autowired
     private DaifaGoodsWeightMapper daifaGoodsWeightMapper;
+    @Autowired
+    DaifaPostCustomerMapper daifaPostCustomerMapper;
 
     @Autowired
     private DaifaCallExpressMapper daifaCallExpressMapper;
@@ -195,7 +197,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
         print.setGoodsMs(goodsMs);
         print.setSpecialStr(trade.getBarCodeKey());
-        print.setPostName(send.getExpressName());
+        DaifaPostCustomer poc=new DaifaPostCustomer();
+        poc.setExpressId(send.getExpressId());
+        print.setPostName(daifaPostCustomerMapper.selectOne(poc).getExpress());
         print.setMarkDestination(send.getMarkDestination()+(trade.getExpressName().contains("百世")&&daifaCallExpress.getSortingCode()!=null?(" "+daifaCallExpress.getSortingCode()):""));
         print.setPackageName(send.getPackageName());
         print.setPackageCode (send.getPackageCode ());
