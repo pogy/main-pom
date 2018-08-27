@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=1300">
-    <title>四季星座网</title>
+    <title>APP下载介绍页 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <link rel=stylesheet href="//style.571xz.com/v6/xzSearch/temp/css/animate.css">
 <#include "/__style_torrent__/common__base_css.ftl">
@@ -36,7 +36,7 @@ if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
 </script>
 <div class="dfBanner">
 	<div class="dfBigBox layout">
-        <a href="//app.qq.com/#id=detail&appid=1104582113" target="_blank" class="androidBtn pa"></a>
+        <a href="//style.571xz.com/other/apk/SJXZ_Purchaser_V2.5.3_253_jiagu_sign.apk" target="_blank" class="androidBtn pa"></a>
         <a href="https://itunes.apple.com/cn/app/xing-zuo-jin-huo-bao/id965751969?mt=8" target="_blank" class="iosBtn pa"></a>
     </div>
     <div class="dfSmall"></div>
