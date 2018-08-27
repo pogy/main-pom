@@ -1,9 +1,12 @@
 package com.shigu.order.orderQuery;
 
+import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemOrderServiceExample;
+import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
@@ -14,12 +17,10 @@ import com.shigu.order.vo.AfterSaleVO;
 import com.shigu.order.vo.AfterSalingVO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.order.vo.SubMyOrderVO;
+import org.apache.commons.beanutils.BeanMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +36,9 @@ public abstract class OrderQuery {
     protected abstract ItemOrderRefundMapper getItemOrderRefundMapper();
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
     /**
      * 获取订单记录数量
      * @return
@@ -82,6 +86,14 @@ public abstract class OrderQuery {
      */
     public void packageMyOrderVO(List<MyOrderVO> myOrderVOS) {
 
+        List<Long> companyIds = BeanMapper.getFieldList(myOrderVOS, "companyId", Long.class);
+        Set<Long> companySets = new HashSet<>(companyIds);
+        companyIds = new ArrayList<>(companySets);
+        ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
+        expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
+        List<ExpressCompany> companyList = expressCompanyMapper.selectByExample(expressCompanyExample);
+        Map<Long, ExpressCompany> companyMap = BeanMapper.list2Map(companyList, "expressCompanyId", Long.class);
+
         for (MyOrderVO myOrderVO : myOrderVOS) {
             myOrderVO.setTradeTime(myOrderVO.getTradeTime().replace(".0",""));
 
@@ -95,6 +107,7 @@ public abstract class OrderQuery {
             List<ItemOrderRefund> afters = getItemOrderRefundMapper().selectByExample(itemOrderRefundExample);
             Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
             myOrderVOS.forEach(myOrderVO -> {//主单
+                myOrderVO.setCompanyName(companyMap.get(myOrderVO.getCompanyId()).getExpressName());
                 myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
                     ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subMyOrderVO.getChildOrderId());
                     subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());

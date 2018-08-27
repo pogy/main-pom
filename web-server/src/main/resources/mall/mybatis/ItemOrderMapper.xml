@@ -59,7 +59,7 @@
         SELECT
         item_order.oid as orderId,
         item_order.courier_number as expressCode,
-        item_order.express_name as expressName,
+        item_order.company_id as companyId,
         item_order.tradeTime as tradeTime,
         item_order.tradePay as tradePay,
         item_order.postPay as postPay,
@@ -100,11 +100,11 @@
         item_order.tb_send isTbShipments,
         item_order.WEB_SITE webSite,
         item_order_logistics.courier_number,
-        item_order_logistics.express_name,
+        item_order_logistics.company_id,
         item_order.pay_time payTime
         FROM
         `item_order` item_order
-        INNER JOIN ( SELECT courier_number, money, oid, express_name FROM item_order_logistics LEFT JOIN express_company AS ec ON item_order_logistics.company_id = ec.express_company_id ) item_order_logistics ON item_order.oid = item_order_logistics.oid
+        INNER JOIN `item_order_logistics` item_order_logistics ON item_order.oid = item_order_logistics.oid
         AND item_order.USER_ID = #{userId}
         AND item_order.DISENABLE = 0
         <if test="bo.orderId!=null">
@@ -146,7 +146,7 @@
         <id column="orderId" property="orderId"/>
         <result column="tradeTime" property="tradeTime"/>
         <result column="expressCode" property="expressCode"/>
-        <result column="expressName" property="expressName"/>
+        <result column="companyId" property="companyId"/>
         <result column="tradePay" property="tradePay"/>
         <result column="postPay" property="postPay"/>
         <result column="mainState" property="mainState"/>

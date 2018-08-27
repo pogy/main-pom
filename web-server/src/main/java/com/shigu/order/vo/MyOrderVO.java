@@ -29,8 +29,8 @@ public class MyOrderVO {
     /**
      * 快递名
      */
-    @Column("item_order.express_name")
-    private String expressName;
+    @Column("item_order.company_id")
+    private Long companyId;
     /**
      * 交易总金额
      */
@@ -74,6 +74,11 @@ public class MyOrderVO {
      * 子单数据
      */
     private List<SubMyOrderVO> childOrders;
+
+    /**
+     * 子单数据
+     */
+    private String companyName;
 
     /**
      * 获取 订单id
@@ -247,11 +252,19 @@ public class MyOrderVO {
         this.expressCode = expressCode;
     }
 
-    public String getExpressName() {
-        return expressName;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setExpressName(String expressName) {
-        this.expressName = expressName;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
