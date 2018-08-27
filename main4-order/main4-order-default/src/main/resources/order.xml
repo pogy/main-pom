@@ -89,9 +89,10 @@
     <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="aliPayerService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="aliPayerQzService" retries="0" timeout="10000"/>
     <dubbo:service interface="com.shigu.main4.order.process.PayProcess" ref="payProcess" retries="0" timeout="20000" />
-
     <dubbo:service interface="com.shigu.main4.order.process.TemplateProcess" ref="templateProcess" retries="0" timeout="20000" />
 
+
     <dubbo:service interface="com.shigu.main4.order.process.ItemOrderProcess" ref="itemOrderProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.process.QimenTradeProcess" ref="qimenTradeProcess" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.services.SellerMsgService" ref="sellerMsgService" retries="0" timeout="20000" />
 </beans>
