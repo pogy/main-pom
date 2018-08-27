@@ -18,6 +18,7 @@ import com.shigu.order.vo.AfterSalingVO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.order.vo.SubMyOrderVO;
 import org.apache.commons.beanutils.BeanMap;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -87,12 +88,17 @@ public abstract class OrderQuery {
     public void packageMyOrderVO(List<MyOrderVO> myOrderVOS) {
 
         List<Long> companyIds = BeanMapper.getFieldList(myOrderVOS, "companyId", Long.class);
-        Set<Long> companySets = new HashSet<>(companyIds);
-        companyIds = new ArrayList<>(companySets);
-        ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
-        expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
-        List<ExpressCompany> companyList = expressCompanyMapper.selectByExample(expressCompanyExample);
-        Map<Long, ExpressCompany> companyMap = BeanMapper.list2Map(companyList, "expressCompanyId", Long.class);
+        Map<Long, String> companyMap = new HashMap<>();
+        if (companyIds != null && companyIds.size() > 0) {
+            Set<Long> companySets = new HashSet<>(companyIds);
+            companyIds = new ArrayList<>(companySets);
+            ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
+            expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
+            List<ExpressCompany> companyList = expressCompanyMapper.selectByExample(expressCompanyExample);
+            for (int i = 0; i <companyList.size() ; i++) {
+                companyMap.put(companyList.get(i).getExpressCompanyId(),companyList.get(i).getExpressName());
+            }
+        }
 
         for (MyOrderVO myOrderVO : myOrderVOS) {
             myOrderVO.setTradeTime(myOrderVO.getTradeTime().replace(".0",""));
@@ -107,7 +113,10 @@ public abstract class OrderQuery {
             List<ItemOrderRefund> afters = getItemOrderRefundMapper().selectByExample(itemOrderRefundExample);
             Map<Long, ItemOrderRefund> afterGroup = BeanMapper.list2Map(afters, "refundId", Long.class);
             myOrderVOS.forEach(myOrderVO -> {//主单
-                myOrderVO.setCompanyName(companyMap.get(myOrderVO.getCompanyId()).getExpressName());
+                String companyName = companyMap.get(myOrderVO.getCompanyId());
+                    if (StringUtils.isNotBlank(companyName)) {
+                        myOrderVO.setCompanyName(companyName);
+                    }
                 myOrderVO.getChildOrders().forEach(subMyOrderVO -> {//子单
                     ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subMyOrderVO.getChildOrderId());
                     subMyOrderVO.setHaveTakeGoodsNum(itemOrderSub.getInStok());
