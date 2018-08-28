@@ -28,6 +28,9 @@ public class WorkerMan {
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
     private RedisIO redisIO;
+    @Autowired
+    private MQUtil mqUtil;
+
     /**
      * 不可创建
      */
@@ -46,7 +49,7 @@ public class WorkerMan {
         }
         isRun=true;
         try {
-            DoQueryExpressCodeTask task=new DoQueryExpressCodeTask(packDeliveryProcess,redisIO,daifaTradeMapper);
+            DoQueryExpressCodeTask task=new DoQueryExpressCodeTask(packDeliveryProcess,redisIO,daifaTradeMapper,mqUtil);
             getPool().submit(task);
         } catch (Exception ignored) {
         }finally {
