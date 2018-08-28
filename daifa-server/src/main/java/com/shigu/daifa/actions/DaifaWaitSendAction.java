@@ -52,11 +52,10 @@ public class DaifaWaitSendAction {
      */
     @RequestMapping("daifa/notYetSipped")
     public String daifaWaitSendIndex(WaitSendBO bo , Model model){
-
         AuthorityUser auth = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         ShiguPager<DaifaWaitSendVO> pager = daifaWaitSendService.selPageData(bo,auth.getDaifaSellerId());
-        List<DaifaPostCustomer> postCustomers=daifaWaitSendService.selPost();
-        model.addAttribute("postCustomers",postCustomers);
+        List<DaifaPostCustomer> expressList=daifaWaitSendService.selPost();
+        model.addAttribute("expressList",expressList);
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);

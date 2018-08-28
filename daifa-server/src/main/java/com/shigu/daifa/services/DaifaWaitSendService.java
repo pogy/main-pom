@@ -57,8 +57,12 @@ public class DaifaWaitSendService {
 
 
     public List<DaifaPostCustomer> selPost(){
-        DaifaPostCustomer postCustomer=new DaifaPostCustomer();
-        return daifaPostCustomerMapper.select(postCustomer);
+        DaifaPostCustomerExample example=new DaifaPostCustomerExample();
+        example.setOrderByClause("express_id desc");
+        example.setStartIndex(0);
+        example.setEndIndex(20);
+        List<DaifaPostCustomer> list=daifaPostCustomerMapper.selectFieldsByConditionList(example,"express_id,express");
+        return list;
     }
 
 

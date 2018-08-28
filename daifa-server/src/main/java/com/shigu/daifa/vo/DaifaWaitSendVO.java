@@ -34,6 +34,16 @@ public class DaifaWaitSendVO {
     private String imTel;
     private Boolean isTbOrder;
     private Integer manual;
+    private  boolean enableSendBtn;
+
+    public boolean isEnableSendBtn() {
+        return enableSendBtn;
+    }
+
+    public void setEnableSendBtn(boolean enableSendBtn) {
+        this.enableSendBtn = enableSendBtn;
+    }
+
     private List<WaitSendOrderVO> childOrders;
 
     public Integer getManual() {

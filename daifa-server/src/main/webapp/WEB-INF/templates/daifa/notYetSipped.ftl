@@ -54,7 +54,7 @@
 <div class="orderSearch orderSearchBox">
     <ul>
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
-        <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
+        <li><label>手机：</label><input type="text"  class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
         <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
         <li>
             <label>可发状态：</label>
@@ -69,7 +69,8 @@
             <select class="fmInput" name="expressId">
                 <option value="">请选择快递</option>
                 <#list expressList as express>
-                <option value="${express.expressId!}" <#if query.expressId == express.expressId>selected</#if>>${express.expressText!}</option>
+                <#--<option value="${express.expressId!}">${express.expressText!}</option>-->
+                <option value="${express.expressId!} <#if query.expressId == express.expressId>selected</#if>">${express.express!}</option>
                 </#list>
             </select>
         </li>
