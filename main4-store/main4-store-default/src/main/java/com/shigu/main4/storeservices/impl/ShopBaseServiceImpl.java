@@ -207,13 +207,24 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         if(shopId != null){
             return shopId;
         }
+        ShiguShop shiguShop;
         ShiguShopExample shiguShopExample = new ShiguShopExample();
         shiguShopExample.createCriteria().andDomainEqualTo(domain).andShopStatusEqualTo(0);
         List<ShiguShop> shiguShopList = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id"));
-        if(shiguShopList.size() == 0){
-            return null;
+        if(shiguShopList.size() > 0){
+            shiguShop = shiguShopList.get(0);
+        }else {
+            ShiguShopExample example=new ShiguShopExample();
+            example.setOrderByClause(" last_modify_time desc");
+            example.createCriteria().andDomainEqualTo(domain).andShopStatusEqualTo(1);
+            List<ShiguShop> shopList = shiguShopMapper.selectFieldsByExample(example, FieldUtil.codeFields("shop_id"));
+            if (shopList.size()>0){
+                shiguShop = shopList.get(0);
+            }else {
+                return null;
+            }
         }
-        ShiguShop shiguShop = shiguShopList.get(0);
+
         // 加入缓存
         cache.put(domain, shiguShop.getShopId());
         return shiguShop.getShopId();
