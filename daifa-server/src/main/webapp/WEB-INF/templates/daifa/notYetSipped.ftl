@@ -66,10 +66,10 @@
         </li>
         <li>
             <label>快递：</label>
-            <select class="fmInput" name="">
+            <select class="fmInput" name="expressId">
                 <option value="">请选择快递</option>
                 <#list expressList as express>
-                <option value="${express.expressId!}">${express.expressText!}</option>
+                <option value="${express.expressId!}" <#if query.expressId == express.expressId>selected</#if>>${express.expressText!}</option>
                 </#list>
             </select>
         </li>
