@@ -84,6 +84,11 @@ public interface ItemOrder extends Order{
     void sended(String courierNumber);
 
     /**
+     * 更新快递单号
+     */
+    void updateExpressCode(String courierNumber);
+
+    /**
      * 部分发货
      * @param logisticsId
      * @param courierNumber
