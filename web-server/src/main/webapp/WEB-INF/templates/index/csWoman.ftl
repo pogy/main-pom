@@ -47,9 +47,7 @@
                         <li><a href="//hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
                         <li><a href="//cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
                         <li><a href="//ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="//bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
                         <li><a href="//gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="//wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
                         <li><a href="//jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
                         <li><a href="//qz.571xz.com" <#if webSite == "qz">class="select"</#if>>泉州</a></li>
                     </ul>
@@ -897,11 +895,9 @@ $(".imgBox img").lazyload({
         <p class="sitemap" style="width:650px;">
             <a href="/" target="_blank">首页</a>
             <a href="//hz.571xz.com" target="_blank">杭州站</a>
-            <a href="//bj.571xz.com" target="_blank">北京站</a>
             <a href="//gz.571xz.com" target="_blank">广州站</a>
             <a href="//ss.571xz.com" target="_blank">石狮站</a>
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
-            <a href="//wa.571xz.com" target="_blank">辽源站</a>
             <a href="//jx.571xz.com" target="_blank">濮院站</a>
             <a href="//qz.571xz.com" target="_blank">泉州站</a>
             

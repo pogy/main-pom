@@ -1514,6 +1514,11 @@ public class CdnAction {
         return "login/loginWindow";
     }
 
+    /**
+     * 一件代发
+     * @param model
+     * @return
+     */
     @RequestMapping("daifaIndex")
     public String daifaIndex(Model model) {
         model.addAttribute("webSite", "hz");
@@ -1525,5 +1530,17 @@ public class CdnAction {
     @RequestMapping("bonus")
     public String bonusPage(Model model) {
         return "xzPage/bonus";
+    }
+
+    /**
+     * app下载
+     * @return
+     */
+    @RequestMapping("appDownIntro")
+    public String appDownIntro(Model model){
+        model.addAttribute("webSite", "hz");
+        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
+        model.addAttribute("daifaTelphone",cdnService.selDaifaPhoneNo());
+        return "xzSearch/appDownIntro";
     }
 }

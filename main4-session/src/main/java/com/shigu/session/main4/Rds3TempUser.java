@@ -20,6 +20,11 @@ public class Rds3TempUser implements Serializable{
 
     private LoginFromType loginFromType;
 
+    /**
+     * 终端来源 参见 com.shigu.main4.ucenter.enums.RegistSourceEnum
+     */
+    private Integer formResource;
+
     public LoginFromType getLoginFromType() {
         return loginFromType;
     }
@@ -42,5 +47,13 @@ public class Rds3TempUser implements Serializable{
 
     public void setSubUserName(String subUserName) {
         this.subUserName = subUserName;
+    }
+
+    public Integer getFormResource() {
+        return formResource;
+    }
+
+    public void setFormResource(Integer formResource) {
+        this.formResource = formResource;
     }
 }
