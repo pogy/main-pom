@@ -683,28 +683,6 @@ public class CdnService {
             ShiguGoodsTinyCreatedQz tinyCreated = shiguGoodsTinyCreatedQzMapper.selectByPrimaryKey(shiguGoodsTinyCreatedQz);
             String nowTime = DateParseUtil.parseDate("yyyy-MM-dd", new Date());
             String[] nowTimes = nowTime.split("-");
-            if (tinyCreated == null) {
-                shiguGoodsTinyMapper.saveCreated(shiguGoodsTinyCreatedQz);
-            }else{
-                String modifTime = DateParseUtil.parseDate("yyyy-MM-dd", tinyCreated.getGmtModif());
-                String[] modif = modifTime.split("-");
-                if(modif[2].equals(nowTimes[2])){
-                    if(modif[1].equals(nowTimes[1])){
-                        if(modif[0].equals(nowTimes[0])){
-                            return 4;
-                        }else{
-                            tinyCreated.setGmtModif(new Date());
-                            shiguGoodsTinyMapper.update(tinyCreated);
-                        }
-                    }else{
-                        tinyCreated.setGmtModif(new Date());
-                        shiguGoodsTinyMapper.update(tinyCreated);
-                    }
-                }else{
-                    tinyCreated.setGmtModif(new Date());
-                    shiguGoodsTinyMapper.update(tinyCreated);
-                }
-            }
             ShiguShopExample shiguShopExample = new ShiguShopExample();
             shiguShopExample.createCriteria().andShopIdEqualTo(tiny.getStoreId());
             List<ShiguShop> list = shiguShopMapper.selectByExample(shiguShopExample);
@@ -739,6 +717,28 @@ public class CdnService {
                         shiguGoodsTodayMapper.update(shiguGoodsToday1);
                     } else {
                         return 1;
+                    }
+                }
+                if (tinyCreated == null) {
+                    shiguGoodsTinyMapper.saveCreated(shiguGoodsTinyCreatedQz);
+                }else{
+                    String modifTime = DateParseUtil.parseDate("yyyy-MM-dd", tinyCreated.getGmtModif());
+                    String[] modif = modifTime.split("-");
+                    if(modif[2].equals(nowTimes[2])){
+                        if(modif[1].equals(nowTimes[1])){
+                            if(modif[0].equals(nowTimes[0])){
+                                return 4;
+                            }else{
+                                tinyCreated.setGmtModif(new Date());
+                                shiguGoodsTinyMapper.update(tinyCreated);
+                            }
+                        }else{
+                            tinyCreated.setGmtModif(new Date());
+                            shiguGoodsTinyMapper.update(tinyCreated);
+                        }
+                    }else{
+                        tinyCreated.setGmtModif(new Date());
+                        shiguGoodsTinyMapper.update(tinyCreated);
                     }
                 }
                 tiny.setWebSite("qz");
