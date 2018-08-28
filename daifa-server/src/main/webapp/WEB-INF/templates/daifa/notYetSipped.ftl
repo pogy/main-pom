@@ -1,10 +1,10 @@
-<#assign $pageid>notYetSipped</#assign>
+<#assign $pageid="notYetSipped">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>未发货订单 - 星帮后台管理 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -12,7 +12,7 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/daifa__common_css.ftl">
 <#include "/__style_torrent__/daifa__notYetSipped_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
     <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -26,9 +26,7 @@
 <#include "/__ftl_links__/daifa__common__sidebar.ftl">
     </div>
     <div class="contentBox">
-<#assign text>{"fields":[{"name":"orderId","value":""+query.orderId},{"name":"telephone","value":""+query.telephone},{"name":"startTime","value":""+query.startTime},{"name":"endTime","value":""+query.endTime},{"name":"canSendState","value":""+query.canSendState}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"orderId","value":""+query.orderId},{"name":"telephone","value":""+query.telephone},{"name":"startTime","value":""+query.startTime},{"name":"endTime","value":""+query.endTime},{"name":"canSendState","value":""+query.canSendState},{"name":"expressId","value":""+query.expressId}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -67,9 +65,16 @@
             </select>
         </li>
         <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+            <label>快递：</label>
+            <select class="fmInput" name="">
+                <option value="">请选择快递</option>
+                <#list expressList as express>
+                <option value="${express.expressId!}">${express.expressText!}</option>
+                </#list>
+            </select>
+        </li>
+        <li>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -99,9 +104,7 @@
 </#list></li>
     </ul>
 </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -134,18 +137,14 @@
             </div>
             <div class="buyerInfo fl">
                 <span>下单人：${order.imTel!}
-<#assign text>{"id":order.imWw}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":order.imWw}] as $it>
 <#if $it.id != ''>
 <a class="imAliww" href="https://amos.alicdn.com/getcid.aw?v=3&groupid=0&s=1&charset=utf-8&site=cntaobao&groupid=0&s=1&uid=${$it.id!}" target="_blank"></a>
 </#if>
 </#list>
-<#assign text>{"id":order.imQq}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"id":order.imQq}] as $it>
 <#if $it.id != ''>
-<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+<a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
 </#list></span>
             </div>
@@ -216,6 +215,12 @@
                     获得的快递号
                     <p>（${order.expressCode!}）</p>
                 </#if>
+                <#if order.enableSendBtn == true>
+                <p>
+                    <input type="text" placeholder="快递单号" class="expressCodeInput fmInput fmInput-sm">
+                    <b class="manualSendBtn fcBlue" data-orderid="${order.orderId!}">手动发货</b>
+                </p>
+                </#if>
             </#if>
         </li>
     </ul>
@@ -224,9 +229,7 @@
     </div>
     </#list>
 </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -235,9 +238,7 @@
 </form>
 </#if>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -245,9 +246,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
