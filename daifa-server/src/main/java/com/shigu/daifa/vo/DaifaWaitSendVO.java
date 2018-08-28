@@ -33,7 +33,16 @@ public class DaifaWaitSendVO {
     private String imQq;
     private String imTel;
     private Boolean isTbOrder;
+    private Integer manual;
     private List<WaitSendOrderVO> childOrders;
+
+    public Integer getManual() {
+        return manual;
+    }
+
+    public void setManual(Integer manual) {
+        this.manual = manual;
+    }
 
     public Long getDwsId() {
         return dwsId;

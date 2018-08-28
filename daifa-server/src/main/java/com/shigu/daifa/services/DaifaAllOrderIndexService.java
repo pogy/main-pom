@@ -85,6 +85,11 @@ public class DaifaAllOrderIndexService {
         if (StringUtils.hasText(bo.getEndTime())) {
             Date endDate = DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
+        }else {
+            String de=DateUtil.dateToString(new Date(),"yyyy-MM-dd");
+            Date endDate =DateUtil.getIsStartTime (DateUtil.stringToDate(de,"yyyy-MM-dd")) ;
+            ce.andCreateTimeLessThanOrEqualTo(endDate);
+            bo.setEndTime(de);
         }
         if(StringUtils.hasText(bo.getTelephone())){
             ce.andReceiverPhoneEqualTo(bo.getTelephone());
@@ -92,6 +97,14 @@ public class DaifaAllOrderIndexService {
         if (StringUtils.hasText(bo.getStartTime())) {
             Date startDate =DateUtil.getIsStartTime (DateUtil.stringToDate(bo.getStartTime(),"yyyy-MM-dd")) ;
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
+        }else {
+            Calendar calendar=Calendar.getInstance();
+            calendar.add(Calendar.MONTH,-3);
+            Date date=calendar.getTime();
+            String de=DateUtil.dateToString(date,"yyyy-MM-dd");
+            Date startDate = DateUtil.getIsEndTime (DateUtil.stringToDate(de,"yyyy-MM-dd"));
+            ce.andCreateTimeGreaterThanOrEqualTo(startDate);
+            bo.setStartTime(de);
         }
         if (StringUtils.hasText(bo.getOrderId())) {
             ce.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%"+bo.getOrderId());

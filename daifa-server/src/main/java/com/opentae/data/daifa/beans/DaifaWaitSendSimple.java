@@ -1,7 +1,5 @@
 package com.opentae.data.daifa.beans;
 
-import com.opentae.core.mybatis.config.Column;
-
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.List;

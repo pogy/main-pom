@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
+import com.opentae.data.daifa.examples.DaifaPostCustomerExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.bo.WaitSendBO;
@@ -51,6 +52,14 @@ public class DaifaWaitSendService {
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired
     private DaifaTradeMapper daifaTradeMapper;
+    @Autowired
+    private DaifaPostCustomerMapper daifaPostCustomerMapper;
+
+
+    public List<DaifaPostCustomer> selPost(){
+        DaifaPostCustomer postCustomer=new DaifaPostCustomer();
+        return daifaPostCustomerMapper.select(postCustomer);
+    }
 
 
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
@@ -61,9 +70,12 @@ public class DaifaWaitSendService {
         Date et=null;
         Long stId=null;
         Long etId=null;
+
+        //查询时间间隔，没有则查一月内
         if(StringUtils.isBlank(bo.getStartTime())&&StringUtils.isBlank(bo.getEndTime())){
             st=DateUtil.getdate(-30);
         }else{
+            //查询时间间隔，有则按时间查
             st=StringUtils.isNotBlank(bo.getStartTime())?DateUtil.stringToDate(bo.getStartTime()+" 00:00:00"):null;
             et=StringUtils.isNotBlank(bo.getEndTime())?DateUtil.stringToDate(bo.getEndTime()+" 23:59:59"):null;
         }
@@ -75,6 +87,7 @@ public class DaifaWaitSendService {
         daifaTradeExample.setOrderByClause("df_trade_id asc");
         daifaTradeExample.setStartIndex(0);
         daifaTradeExample.setEndIndex(1);
+        //查DaifaTrade 表中订单id
         List<DaifaTrade> ts1 = daifaTradeMapper
                 .selectFieldsByConditionList(daifaTradeExample, FieldUtil.codeFields("df_trade_id"));
         List<DaifaWaitSendVO> sends = new ArrayList<>();
@@ -88,6 +101,7 @@ public class DaifaWaitSendService {
                         .selectFieldsByConditionList(daifaTradeExample, FieldUtil.codeFields("df_trade_id"));
                 etId=ts1.get(0).getDfTradeId();
             }
+            //按条件查询
             count = daifaWaitSendMapper.selectWaitSendsCount(daifaSellerId,
                     bo.getOrderId(),
                     StringUtils.isNotBlank(bo.getTelephone())?bo.getTelephone():null,
@@ -123,6 +137,11 @@ public class DaifaWaitSendService {
                 List<Long> oids=new ArrayList<>();
                 for (DaifaWaitSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
                     DaifaWaitSendVO vo = new DaifaWaitSendVO();
+                    String exprName=daifaWaitSendSimple.getExpressName();
+                    DaifaPostCustomer customer=new DaifaPostCustomer();
+                    customer.setExpress(exprName);
+                    DaifaPostCustomer cs=daifaPostCustomerMapper.selectOne(customer);
+                    vo.setManual(cs.getManual());
                     sends.add(vo);
                     BeanUtils.copyProperties(daifaWaitSendSimple, vo, "childOrders");
                     if("无".equals(vo.getImWw())){

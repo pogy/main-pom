@@ -1,5 +1,6 @@
 package com.shigu.daifa.actions;
 
+import com.opentae.data.daifa.beans.DaifaPostCustomer;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.WaitSendBO;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by pc on 2017-09-05.
@@ -52,7 +55,8 @@ public class DaifaWaitSendAction {
 
         AuthorityUser auth = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         ShiguPager<DaifaWaitSendVO> pager = daifaWaitSendService.selPageData(bo,auth.getDaifaSellerId());
-
+        List<DaifaPostCustomer> postCustomers=daifaWaitSendService.selPost();
+        model.addAttribute("postCustomers",postCustomers);
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);
@@ -88,5 +92,19 @@ public class DaifaWaitSendAction {
         jsonObject=daifaWaitSendService.noPostRefund(childOrderId,refundMoney);
         return jsonObject;
     }
+
+    @RequestMapping("setExpressCode")
+    public String setExpressCode(String expressCode,String orderId,Model model){
+        model.addAttribute("expressCode",expressCode);
+        model.addAttribute("orderId",orderId);
+        return "";
+    }
+    @RequestMapping("getExpressCode")
+    public String getExpressCode(String expressCode,String orderId,Model model){
+        model.addAttribute("expressCode",expressCode);
+        model.addAttribute("orderId",orderId);
+        return "";
+    }
+
 
 }
