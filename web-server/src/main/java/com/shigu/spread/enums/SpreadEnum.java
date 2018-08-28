@@ -31,6 +31,11 @@ public enum SpreadEnum {
     INDEX_TOP_WOMAN("首页顶部女装广告", "INDEX-TOP-WOMAN"),
     SHOP_DETAIL_TOP_MAN("男装店铺和详情页顶部广告","SHOP_DETAIL_TOP_MAN"),
     SHOP_DETAIL_TOP_WOMAN("女装店铺和详情页顶部广告","SHOP_DETAIL_TOP_WOMAN"),
+    ITEM_GOAT_MAN("商品详情页左侧男装广告","ITEM_GOAT_MAN"),
+    ITEM_GOAT_WOMAN("商品详情页左侧女装广告","ITEM_GOAT_WOMAN"),
+    ITEM_BOTTOM_GOAT_MAN("商品详情页底部男装广告","ITEM_BOTTOM_GOAT_MAN"),
+    ITEM_BOTTOM_GOAT_WOMAN("商品详情页底部女装广告","ITEM_BOTTOM_GOAT_WOMAN"),
+
 
     //沧州
     CZ_WOMAN_HomeCateMenu("沧州女装首页左侧导航","NEW_CZ_WOMAN_HomeCateMenu"),
@@ -49,7 +54,10 @@ public enum SpreadEnum {
     CZ_INDEX_TOP_WOMAN("沧州首页顶部女装广告", "CZ-INDEX-TOP-WOMAN"),
     CZ_SHOP_DETAIL_TOP_MAN("沧州男装店铺和详情页顶部广告","CZ-SHOP_DETAIL_TOP_MAN"),
     CZ_SHOP_DETAIL_TOP_WOMAN("沧州女装店铺和详情页顶部广告","CZ-SHOP_DETAIL_TOP_WOMAN"),
-
+    CZ_ITEM_GOAT_MAN("沧州商品详情页左侧男装广告","CZ_ITEM_GOAT_MAN"),
+    CZ_ITEM_GOAT_WOMAN("沧州商品详情页左侧女装广告","CZ_ITEM_GOAT_WOMAN"),
+    CZ_ITEM_BOTTOM_GOAT_MAN("沧州商品详情页底部男装广告","CZ_ITEM_BOTTOM_GOAT_MAN"),
+    CZ_ITEM_BOTTOM_GOAT_WOMAN("沧州商品详情页底部女装广告","CZ_ITEM_BOTTOM_GOAT_WOMAN"),
 
 
 
@@ -127,10 +135,7 @@ public enum SpreadEnum {
     HZ_APP_WOMAN_DT("APP首页轮播女装大图", "HZ-APP-WOMAN-DT"),HZ_APP_WOMAN_RM("APP女装热卖广告", "HZ-APP-WOMAN-RM"),HZ_APP_WOMAN_TJDK("APP女装推荐档口", "HZ-APP-WOMAN-TJDK"),
 
 
-    ITEM_GOAT_MAN("商品详情页左侧男装广告","ITEM_GOAT_MAN"),
-    ITEM_GOAT_WOMAN("商品详情页左侧女装广告","ITEM_GOAT_WOMAN"),
-    ITEM_BOTTOM_GOAT_MAN("商品详情页底部男装广告","ITEM_BOTTOM_GOAT_MAN"),
-    ITEM_BOTTOM_GOAT_WOMAN("商品详情页底部女装广告","ITEM_BOTTOM_GOAT_WOMAN");
+
     ;
     SpreadEnum(String title, String code) {
         this.title = title;

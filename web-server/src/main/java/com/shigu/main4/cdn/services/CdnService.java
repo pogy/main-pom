@@ -631,10 +631,17 @@ public class CdnService {
      * @return
      */
     public SpreadEnum getGoodsDetailSpreadSpreadEnum(Long cid,String webSite,int type){
-        if("qz".equalsIgnoreCase(webSite)){
+        if("qz".equals(webSite)){
             return type==1?SpreadEnum.QZ_ITEM_GOAT:SpreadEnum.QZ_BOTTOM_ITEM_GOAT;
         }
         boolean instanOfWoman = itemCatService.instanOfWoman(cid);
+        if("cz".equals(webSite)){
+            if (instanOfWoman) {//父级或父父级cid=16的为女装
+                return type==1?SpreadEnum.CZ_ITEM_GOAT_WOMAN:SpreadEnum.CZ_ITEM_BOTTOM_GOAT_WOMAN;
+            } else {
+                return type==1?SpreadEnum.CZ_ITEM_GOAT_MAN:SpreadEnum.CZ_ITEM_BOTTOM_GOAT_MAN;
+            }
+        }
         if (instanOfWoman) {//父级或父父级cid=16的为女装
             return type==1?SpreadEnum.ITEM_GOAT_WOMAN:SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN;
         } else {
