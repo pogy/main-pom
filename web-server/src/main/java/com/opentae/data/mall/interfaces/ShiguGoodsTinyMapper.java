@@ -5,6 +5,7 @@ import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ItemForList;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguGoodsTinyCreatedQz;
+import com.opentae.data.mall.beans.ShiguGoodsToday;
 import com.opentae.data.mall.multibeans.GoodsStyleInfoBean;
 import com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean;
 import org.apache.ibatis.annotations.Param;
@@ -66,4 +67,6 @@ public interface ShiguGoodsTinyMapper extends Mapper<ShiguGoodsTiny> {
     int saveCreated(ShiguGoodsTinyCreatedQz shiguGoodsTinyCreatedQz);
 
     int updateCreated(ShiguGoodsTiny shiguGoodsTiny);
+
+    int update(ShiguGoodsTinyCreatedQz shiguGoodsTinyCreatedQz);
 }

@@ -1508,11 +1508,13 @@ public class CdnAction {
         if (i==0) {
             return JsonResponseUtil.success();
         } else if(i==1){
-            return JsonResponseUtil.error("今日达到设置上限");
+            return JsonResponseUtil.error("每日仅限三款设为新品");
         }else if(i==2){
             return JsonResponseUtil.error("档口不存在");
         }else if(i==3){
             return JsonResponseUtil.error("商品不存在");
+        }else if(i==4){
+            return JsonResponseUtil.error("今日已设置");
         }else{
             return JsonResponseUtil.error("系统异常");
         }

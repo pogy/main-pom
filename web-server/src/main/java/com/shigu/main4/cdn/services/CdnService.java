@@ -681,8 +681,29 @@ public class CdnService {
             shiguGoodsTinyCreatedQz.setGoodsId(goodsId);
             shiguGoodsTinyCreatedQz.setOldCreated(tiny.getCreated());
             ShiguGoodsTinyCreatedQz tinyCreated = shiguGoodsTinyCreatedQzMapper.selectByPrimaryKey(shiguGoodsTinyCreatedQz);
+            String nowTime = DateParseUtil.parseDate("yyyy-MM-dd", new Date());
+            String[] nowTimes = nowTime.split("-");
             if (tinyCreated == null) {
                 shiguGoodsTinyMapper.saveCreated(shiguGoodsTinyCreatedQz);
+            }else{
+                String modifTime = DateParseUtil.parseDate("yyyy-MM-dd", tinyCreated.getGmtModif());
+                String[] modif = modifTime.split("-");
+                if(modif[2].equals(nowTimes[2])){
+                    if(modif[1].equals(nowTimes[1])){
+                        if(modif[0].equals(nowTimes[0])){
+                            return 4;
+                        }else{
+                            tinyCreated.setGmtModif(new Date());
+                            shiguGoodsTinyMapper.update(tinyCreated);
+                        }
+                    }else{
+                        tinyCreated.setGmtModif(new Date());
+                        shiguGoodsTinyMapper.update(tinyCreated);
+                    }
+                }else{
+                    tinyCreated.setGmtModif(new Date());
+                    shiguGoodsTinyMapper.update(tinyCreated);
+                }
             }
             ShiguShopExample shiguShopExample = new ShiguShopExample();
             shiguShopExample.createCriteria().andShopIdEqualTo(tiny.getStoreId());
@@ -702,9 +723,7 @@ public class CdnService {
                     ShiguGoodsToday shiguGoodsToday1 = shiguGoodsTodays.get(0);
                     int num = shiguGoodsToday1.getNum();
                     String time = shiguGoodsToday1.getCreated();
-                    String nowTime = DateParseUtil.parseDate("yyyy-MM-dd", new Date());
                     String[] times = time.split("-");
-                    String[] nowTimes = nowTime.split("-");
                     if (!times[2].equals(nowTimes[2])) {
                         num = 0;
                         shiguGoodsToday1.setCreated(nowTime);
@@ -715,7 +734,7 @@ public class CdnService {
                         num =0;
                         shiguGoodsToday1.setCreated(nowTime);
                     }
-                    if (num < 5) {
+                    if (num < 3) {
                         shiguGoodsToday1.setNum(num + 1);
                         shiguGoodsTodayMapper.update(shiguGoodsToday1);
                     } else {

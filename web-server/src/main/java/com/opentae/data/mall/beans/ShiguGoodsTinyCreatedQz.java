@@ -23,6 +23,15 @@ public class ShiguGoodsTinyCreatedQz implements Serializable {
      */
 	private Date gmtCreate;
 
+	private Date gmtModif;
+
+	public Date getGmtModif() {
+		return gmtModif;
+	}
+
+	public void setGmtModif(Date gmtModif) {
+		this.gmtModif = gmtModif;
+	}
 
 	public void setGoodsId(Long goodsId) {
 		this.goodsId = goodsId;

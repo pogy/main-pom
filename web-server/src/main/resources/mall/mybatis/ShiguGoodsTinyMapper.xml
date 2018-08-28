@@ -68,4 +68,8 @@
     <update id="updateCreated">
         UPDATE shigu_goods_tiny_${webSite} SET created=#{created} WHERE goods_id=#{goodsId}
     </update>
+
+    <update id="update">
+        UPDATE shigu_goods_tiny_created_qz SET gmt_modif=#{gmtModif} WHERE goods_id=#{goods_id}
+    </update>
 </mapper>
