@@ -504,7 +504,7 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
     <div class="innerbox">
          <ul class="keybox">
                 <li><a href="//upload.571xz.com/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
-                <li><a href="//upload.571xz.com/tmall/changeCate.htm?goodsId=43131" target="_blank"><i class="ii"></i><span>上传到天猫</span></a></li>
+                <li><a href="//upload.571xz.com/tmall/changeCate.htm?goodsId=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到天猫</span></a></li>
                 <li><a href="//1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
                 <li><a href="//www.571xz.com/jd/publish.htm?itemId=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到京东</span></a></li>
                 <li><a href="//www.571xz.com/pdd/publish.htm?goodsId=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到拼多多</span></a></li>
