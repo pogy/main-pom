@@ -122,6 +122,7 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         long authId = getUserModel(userId).getAuthId();
         ShiguPhotoUserPraise praise = new ShiguPhotoUserPraise();
         praise.setAuthorId(authId);
+
         praise.setWorksId(worksId);
         ShiguPhotoUserPraise record = shiguPhotoUserPraiseMapper.selectOne(praise);
         if (record != null) {
