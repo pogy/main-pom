@@ -632,6 +632,11 @@
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>shigu_tb_redirect</groupId>
+            <artifactId>resolver_tools</artifactId>
+            <version>${shigu-taobao-redirect-agent-tools.version}</version>
+        </dependency>
     </dependencies>
 
     <repositories>
