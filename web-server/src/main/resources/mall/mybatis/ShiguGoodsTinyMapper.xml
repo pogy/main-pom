@@ -70,6 +70,6 @@
     </update>
 
     <update id="update">
-        UPDATE shigu_goods_tiny_created_qz SET gmt_modif=#{gmtModif} WHERE goods_id=#{goods_id}
+        UPDATE shigu_goods_tiny_created_qz SET gmt_modif=#{gmtModif} WHERE goods_id=#{goodsId}
     </update>
 </mapper>
