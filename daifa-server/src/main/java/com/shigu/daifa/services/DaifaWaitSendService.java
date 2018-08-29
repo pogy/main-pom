@@ -14,7 +14,9 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.tools.JsonResponseUtil;
@@ -54,8 +56,14 @@ public class DaifaWaitSendService {
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
     private DaifaPostCustomerMapper daifaPostCustomerMapper;
+    @Autowired
+    private PackDeliveryProcess packDeliveryProcess;
 
 
+    /**
+     * 快递列表
+     * @return
+     */
     public List<DaifaPostCustomer> selPost(){
         DaifaPostCustomerExample example=new DaifaPostCustomerExample();
         example.setOrderByClause("express_id desc");
@@ -87,6 +95,9 @@ public class DaifaWaitSendService {
         DaifaTradeExample.Criteria criteria = daifaTradeExample.createCriteria();
         if(st!=null){
             criteria.andCreateTimeGreaterThanOrEqualTo(st);
+        }
+        if (bo.getExpressId() != null){
+            criteria.andExpressIdEqualTo(Long.valueOf(bo.getExpressId()));
         }
         daifaTradeExample.setOrderByClause("df_trade_id asc");
         daifaTradeExample.setStartIndex(0);
@@ -144,8 +155,17 @@ public class DaifaWaitSendService {
                     String exprName=daifaWaitSendSimple.getExpressName();
                     DaifaPostCustomer customer=new DaifaPostCustomer();
                     customer.setExpress(exprName);
-                    DaifaPostCustomer cs=daifaPostCustomerMapper.selectOne(customer);
-                    vo.setManual(cs.getManual());
+                    List<DaifaPostCustomer> cs=daifaPostCustomerMapper.select(customer);
+                    Long orderid=daifaWaitSendSimple.getOrderId();
+                    try {
+                        List<SubOrderExpressBO> bos=packDeliveryProcess.cheackeSend(orderid);
+                        int csc=cs.get(0).getManual();
+                        if (bos != null && csc == 1){
+                            vo.setEnableSendBtn(true);
+                        }
+                    } catch (DaifaException e) {
+                        e.printStackTrace();
+                    }
                     sends.add(vo);
                     BeanUtils.copyProperties(daifaWaitSendSimple, vo, "childOrders");
                     if("无".equals(vo.getImWw())){
@@ -202,6 +222,7 @@ public class DaifaWaitSendService {
         pager.setNumber(bo.getPage());
         return pager;
     }
+
 
     public synchronized JSONObject noPostRefund(Long childOrderId, String refundMoney) throws DaifaException {
         if(MoneyUtil.StringToLong(refundMoney)<0){

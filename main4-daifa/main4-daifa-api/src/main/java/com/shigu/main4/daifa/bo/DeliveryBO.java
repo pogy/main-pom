@@ -77,6 +77,16 @@ public class DeliveryBO implements Serializable {
     /**买家旺旺*/
     private String buyerWw;
 
+    private Long manual;
+
+    public Long getManual() {
+        return manual;
+    }
+
+    public void setManual(Long manual) {
+        this.manual = manual;
+    }
+
     public Long getDfTradeId() {
         return dfTradeId;
     }
