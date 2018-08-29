@@ -7,6 +7,7 @@ import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.shigu.main4.item.tools.ItemCache;
+import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public class ItemPicRelationServiceImpl implements ItemPicRelationService{
     GoodsCountForsearchMapper goodsCountForsearchMapper;
     @Autowired
     ItemCache itemCache;
+
+    @Autowired
+    RedisIO redisIO;
+
 
     @Override
     public boolean removeFileRelation(String fileId, Long goodsId) {

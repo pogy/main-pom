@@ -4,14 +4,17 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.model.ItemSkuModel;
 import com.shigu.main4.item.services.utils.SkuCheckUtil;
+import com.shigu.main4.item.tools.CacheUtil;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -63,9 +66,14 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
     @Autowired
     private ShiguPropImgsMapper shiguPropImgsMapper;
 
+    @Autowired
+    private RedisIO redisIO;
+
     private TinyItemSelector tinyItemSelector = new TinyItemSelector();
 
     private SoldoutItemSelector soldoutItemSelector = new SoldoutItemSelector();
+
+    private static final String ITEM_DUBBO_CACHE_SYNCHRONIZED = "item_dubbo_cache_synchronized";
 
     /**
      * 按商品ID查商品
@@ -76,7 +84,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
      */
     @Override
     public CdnItem selItemById(Long id) {
-        return tinyItemSelector.selectItemById(id);
+        return tinyItemSelector.selectItemById(id,null);
     }
 
     /**
@@ -101,7 +109,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
      */
     @Override
     public CdnItem selItemInstockById(Long id) {
-        return soldoutItemSelector.selectItemById(id);
+        return soldoutItemSelector.selectItemById(id,null);
     }
 
     /**
@@ -127,7 +135,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
     @Override
     @SuppressWarnings("unchecked")
     public List<String> selItemLicenses(Long id) {
-        CdnItem item = tinyItemSelector.selectItemById(id);
+        CdnItem item = tinyItemSelector.selectItemById(id,null);
         if (item != null)
             return selItemLicenses(id, item.getShopId());
         return Collections.EMPTY_LIST;
@@ -243,20 +251,20 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
          */
         protected abstract E getItemSource(Long id, String webSite);
 
-        NewCdnItem selectItemById(Long id) {
-            if (id == null)
-                return null;
-
-            Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
-            NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
-            if (cdnItem == null) {
-                ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(id);
-                if (shiguGoodsIdGenerator != null) {
-                    cdnItem = selectItemById(id, shiguGoodsIdGenerator.getWebSite());
-                }
-            }
-            return cdnItem;
-        }
+//        NewCdnItem selectItemById(Long id) {
+//            if (id == null)
+//                return null;
+//
+//            Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
+//            NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
+//            if (cdnItem == null ) {
+//                ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(id);
+//                if (shiguGoodsIdGenerator != null) {
+//                    cdnItem = selectItemById(id, shiguGoodsIdGenerator.getWebSite());
+//                }
+//            }
+//            return cdnItem;
+//        }
 
         /**
          * 默认规则：
@@ -324,12 +332,20 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
         }
 
         NewCdnItem selectItemById(Long id, String webSite) {
-            if (id == null || StringUtils.isEmpty(webSite))
+            if (id == null)
                 return null;
 
+            String redisTimestamp = redisIO.hget(ITEM_DUBBO_CACHE_SYNCHRONIZED, id.toString());
             Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
             NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
-            if (cdnItem == null) {
+            Integer cacheChang = CacheUtil.comparisonTimestamp(cdnItem.getTimestamp(),Long.valueOf(redisTimestamp));
+            if (cdnItem == null || cacheChang > 0) {
+                if (StringUtils.isEmpty(webSite)) {
+                    ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(id);
+                    if (shiguGoodsIdGenerator == null || StringUtils.isEmpty(shiguGoodsIdGenerator.getWebSite()))
+                        return null;
+                    webSite = shiguGoodsIdGenerator.getWebSite();
+                }
                 E e = getItemSource(id, webSite);
 
                 if (e == null || !allowType(e))
@@ -472,9 +488,19 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                 }
                 //补充独立sku
                 cdnItem.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, id).pull());
+                //时间戳
+                if (redisTimestamp == null) {
+                    Long timestamp = System.currentTimeMillis();
+                    cdnItem.setTimestamp(timestamp);
+                    redisIO.hset(ITEM_DUBBO_CACHE_SYNCHRONIZED,id.toString(),timestamp);
+                }else {
+                    cdnItem.setTimestamp(Long.valueOf(redisTimestamp));
+                }
                 // cache this item
                 cdnItemCache.put(id, cdnItem);
-            } // 缓存未命中处理 end
+            }else if (cdnItem != null && cacheChang < 0){
+                redisIO.hset(ITEM_DUBBO_CACHE_SYNCHRONIZED,id.toString(),cdnItem.getTimestamp());
+            }// 缓存未命中处理 end
             return cdnItem;
         }
     }
