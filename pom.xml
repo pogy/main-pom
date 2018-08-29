@@ -65,8 +65,8 @@
 
         <!-- 新版sdk-->
         <pinduoduo-sdk.version>0.0.1-SNAPSHOT</pinduoduo-sdk.version>
-
-
+        <!--淘宝请求代理-->
+        <shigu-taobao-redirect-agent-tools.version>1.0-SNAPSHOT</shigu-taobao-redirect-agent-tools.version>
 
         <spring.version>4.3.9.RELEASE</spring.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>

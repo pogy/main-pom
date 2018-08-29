@@ -245,5 +245,11 @@
             <artifactId>zkclient</artifactId>
             <version>0.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>shigu_tb_redirect</groupId>
+            <artifactId>resolver_tools</artifactId>
+            <version>${shigu-taobao-redirect-agent-tools.version}</version>
+        </dependency>
     </dependencies>
 </project>

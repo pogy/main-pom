@@ -16,6 +16,7 @@ import com.shigu.main4.order.model.SoidsModel;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.shigu.tools.TbClient;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -45,6 +46,9 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
 
     @Autowired
     private TbClient tbClient;
+
+    @Autowired
+    private ShiguTaobaoClient shiguTaobaoClient;
 
     @Override
     public void finish(Long oid) {
@@ -95,8 +99,8 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         Long userId=order.getUserId();
         String session=myTbSessionKey(userId);
 
-        TaobaoClient client = new DefaultTaobaoClient(tbClient.getUrl(), tbClient.getAppkey(),
-                tbClient.getSecret());
+        //TaobaoClient client = new DefaultTaobaoClient(tbClient.getUrl(), tbClient.getAppkey(),
+        //        tbClient.getSecret());
         LogisticsOfflineSendRequest req = new LogisticsOfflineSendRequest();
         req.setTid(new Long(order.getOuterId()));
         req.setIsSplit(0L);//这边没有拆单的
@@ -104,9 +108,11 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
         req.setCompanyCode(expressCompanyMapper.selectByPrimaryKey(logistics.getCompanyId()).getRemark2());
         LogisticsOfflineSendResponse rsp;
         try {
-            rsp = client.execute(req,session);
+            rsp = shiguTaobaoClient.execute(req,session);
         } catch (ApiException e) {
             throw new TbSendException(TbSendException.TbSendExceptionEnum.IO_ERROR.toString());
+        } catch (ClassNotFoundException e) {
+            throw new TbSendException(TbSendException.TbSendExceptionEnum.IO_ERROR.toString()+" not find class");
         }
         if (StringUtils.isNotBlank(rsp.getSubCode())) {
             if (rsp.getSubCode().contains("CD08")) {//卖家未设置发货地址
