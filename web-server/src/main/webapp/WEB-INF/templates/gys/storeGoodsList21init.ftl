@@ -414,14 +414,23 @@ $$.domready('#goodsStyle', function(){
                 <#if session_user_redis__.logshop.type == 1>
                     <#if item.goodsSource == 1>
                     <p><b class="tbGoods" jhand="syncTbGoods" data-goodsid="${item.id!}">同步商品</b></p>
+                        <#if session_user_redis__.logshop.webSite == 'qz'>
+                        <p><b jhand="setNewGoodsToday">设为新品</b></p>
+                        </#if>
                     <#elseif item.goodsSource == 2>
                     <p><em class="xjgoods" jhand="downGoods">下架</em></p>
                     <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
+                        <#if session_user_redis__.logshop.webSite == 'qz'>
+                        <p><b jhand="setNewGoodsToday">设为新品</b></p>
+                        </#if>
                     </#if>
                 <#else>
                     <p><em class="xjgoods" jhand="downGoods">下架</em></p>
                     <#if item.goodsSource == 2>
                     <p><a href="editGoodsInfo.htm?goodsId=${item.id!}" target="_blank" class="fcBlue">编辑商品</a></p>
+                    </#if>
+                    <#if session_user_redis__.logshop.webSite == 'qz'>
+                    <p><b jhand="setNewGoodsToday">设为新品</b></p>
                     </#if>
                 </#if>
             </li>

@@ -2,9 +2,7 @@ package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ItemTradeForbidExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguTempExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
@@ -41,6 +39,7 @@ import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.ModuleVO;
 import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.KeyWordsUtil;
 import freemarker.template.TemplateException;
@@ -48,6 +47,7 @@ import net.sf.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
@@ -59,31 +59,33 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CdnService {
-    private final static Map<String,Integer> SIZE_SORT;
-    static{
-        SIZE_SORT =new HashMap<>();
-        SIZE_SORT.put("XXS",-1);
-        SIZE_SORT.put("2XS",-1);
-        SIZE_SORT.put("XS",0);
-        SIZE_SORT.put("S",1);
-        SIZE_SORT.put("M",2);
-        SIZE_SORT.put("L",3);
-        SIZE_SORT.put("XL",4);
-        SIZE_SORT.put("XXL",5);
-        SIZE_SORT.put("2XL",5);
-        SIZE_SORT.put("XXXL",6);
-        SIZE_SORT.put("3XL",6);
-        SIZE_SORT.put("XXXL",7);
-        SIZE_SORT.put("4XL",7);
-        SIZE_SORT.put("XXXXL",8);
-        SIZE_SORT.put("5XL",8);
-        SIZE_SORT.put("XXXXXL",9);
-        SIZE_SORT.put("6XL",9);
-        SIZE_SORT.put("XXXXXXL",10);
-        SIZE_SORT.put("7XL",10);
-        SIZE_SORT.put("XXXXXXXL",11);
-        SIZE_SORT.put("8XL",11);
+    private final static Map<String, Integer> SIZE_SORT;
+
+    static {
+        SIZE_SORT = new HashMap<>();
+        SIZE_SORT.put("XXS", -1);
+        SIZE_SORT.put("2XS", -1);
+        SIZE_SORT.put("XS", 0);
+        SIZE_SORT.put("S", 1);
+        SIZE_SORT.put("M", 2);
+        SIZE_SORT.put("L", 3);
+        SIZE_SORT.put("XL", 4);
+        SIZE_SORT.put("XXL", 5);
+        SIZE_SORT.put("2XL", 5);
+        SIZE_SORT.put("XXXL", 6);
+        SIZE_SORT.put("3XL", 6);
+        SIZE_SORT.put("XXXL", 7);
+        SIZE_SORT.put("4XL", 7);
+        SIZE_SORT.put("XXXXL", 8);
+        SIZE_SORT.put("5XL", 8);
+        SIZE_SORT.put("XXXXXL", 9);
+        SIZE_SORT.put("6XL", 9);
+        SIZE_SORT.put("XXXXXXL", 10);
+        SIZE_SORT.put("7XL", 10);
+        SIZE_SORT.put("XXXXXXXL", 11);
+        SIZE_SORT.put("8XL", 11);
     }
+
     @Autowired
     UserCollectService userCollectService;
 
@@ -124,11 +126,16 @@ public class CdnService {
     ShopsItemService shopsItemService;
 
     @Autowired
+    ShiguGoodsTodayMapper shiguGoodsTodayMapper;
+
+    @Autowired
     ShiguTempMapper shiguTempMapper;
     @Autowired
     ItemCatService itemCatService;
     @Autowired
     NewShowForCdnService newShowForCdnService;
+    @Autowired
+    ShiguGoodsTinyCreatedQzMapper shiguGoodsTinyCreatedQzMapper;
 
 
     /**
@@ -141,10 +148,11 @@ public class CdnService {
 
     /**
      * banner部分的html
+     *
      * @param shopId
      * @return
      */
-    public String bannerHtml(Long shopId,String webSite) throws IOException, TemplateException {
+    public String bannerHtml(Long shopId, String webSite) throws IOException, TemplateException {
         ModuleVO moduleVO = shopDesignService.selHeadModuleWithData(shopId, webSite, false);
         if (moduleVO == null) {
             return "";
@@ -154,41 +162,42 @@ public class CdnService {
 
     /**
      * 重组聚合数据
+     *
      * @param shopId
      * @return
      */
-    public List<CatPolymerization> formatCatPoly(Long shopId){
+    public List<CatPolymerization> formatCatPoly(Long shopId) {
         List<CatPolymerization> cats = shopForCdnService.selCatRolymerizations(shopId);
         if (cats == null || 0 == cats.size()) {
             cats = new ArrayList<>();
         }
-        List<CatPolyFormatVO> polys=new ArrayList<>();
-        for(CatPolymerization c:cats){
+        List<CatPolyFormatVO> polys = new ArrayList<>();
+        for (CatPolymerization c : cats) {
             polys.add(new CatPolyFormatVO(c));
         }
         Collections.sort(polys);
-        List<CatPolymerization> result=new ArrayList<>();
-        CatPolymerization other=new CatPolymerization();
+        List<CatPolymerization> result = new ArrayList<>();
+        CatPolymerization other = new CatPolymerization();
         other.setCid(404L);
         other.setName("其它");
         other.setSubPolymerizations(new ArrayList<CatPolymerization>());
-        for(int i=0;i<polys.size();i++){
-            if(i>1){
-                List<CatPolymerization> sub=other.getSubPolymerizations();
-                if(sub.size()<10){
-                    CatPolymerization me=polys.get(i).getCatpoly();
-                    if(me.getSubPolymerizations()==null){
+        for (int i = 0; i < polys.size(); i++) {
+            if (i > 1) {
+                List<CatPolymerization> sub = other.getSubPolymerizations();
+                if (sub.size() < 10) {
+                    CatPolymerization me = polys.get(i).getCatpoly();
+                    if (me.getSubPolymerizations() == null) {
                         sub.add(me);
-                    }else{
-                        List<CatPolymerization> mesub=me.getSubPolymerizations();
+                    } else {
+                        List<CatPolymerization> mesub = me.getSubPolymerizations();
                         sub.addAll(mesub);
                     }
                 }
-            }else{
+            } else {
                 result.add(polys.get(i).getCatpoly());
             }
         }
-        if(polys.size()>2){
+        if (polys.size() > 2) {
             result.add(other);
         }
         return result;
@@ -197,24 +206,25 @@ public class CdnService {
 
     /**
      * 添加到收藏/数据包
+     *
      * @param userId
      * @param bo
-     * @param type 类型：1.数据包，2.收藏
+     * @param type   类型：1.数据包，2.收藏
      * @return
      */
-    public String addItemCollect(Long userId,ScGoodsBO bo,int type){
-        ItemCollect itemCollect=new ItemCollect();
+    public String addItemCollect(Long userId, ScGoodsBO bo, int type) {
+        ItemCollect itemCollect = new ItemCollect();
         itemCollect.setUserId(userId);
         //查出店、webSite
-        ShiguGoodsIdGenerator sgig=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(bo.getGoodsId());
-        if(sgig==null){
+        ShiguGoodsIdGenerator sgig = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(bo.getGoodsId());
+        if (sgig == null) {
             return "商品不存在";
         }
-        ShiguGoodsTiny sgt=new ShiguGoodsTiny();
+        ShiguGoodsTiny sgt = new ShiguGoodsTiny();
         sgt.setGoodsId(bo.getGoodsId());
         sgt.setWebSite(sgig.getWebSite());
-        sgt=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id,title,type"));
-        if(sgt==null){
+        sgt = shiguGoodsTinyMapper.selectFieldsByPrimaryKey(sgt, FieldUtil.codeFields("goods_id,store_id,title,type"));
+        if (sgt == null) {
             return "商品不存在";
         }
         itemCollect.setItemId(bo.getGoodsId());
@@ -235,15 +245,16 @@ public class CdnService {
 
     /**
      * 收藏店铺
+     *
      * @param userId
      * @param bo
      * @return
      */
-    public boolean addShopCollect(Long userId, ScStoreBO bo){
-        ShopCollect shopCollect=new ShopCollect();
-        ShiguShop shop=shiguShopMapper.selectFieldsByPrimaryKey(bo.getStore_id(),
+    public boolean addShopCollect(Long userId, ScStoreBO bo) {
+        ShopCollect shopCollect = new ShopCollect();
+        ShiguShop shop = shiguShopMapper.selectFieldsByPrimaryKey(bo.getStore_id(),
                 FieldUtil.codeFields("shop_id,web_site"));
-        if(shop==null){
+        if (shop == null) {
             return false;
         }
         shopCollect.setWebsite(shop.getWebSite());
@@ -259,11 +270,12 @@ public class CdnService {
 
     /**
      * 店铺页面基本信息
+     *
      * @param shopId
      * @return
      */
-    public ShopShowVO shopSimpleVo(Long shopId){
-        ShopShowVO shopShowVO=new ShopShowVO();
+    public ShopShowVO shopSimpleVo(Long shopId) {
+        ShopShowVO shopShowVO = new ShopShowVO();
         if (shopId == null) {
             return shopShowVO;
         }
@@ -290,28 +302,29 @@ public class CdnService {
 
     /**
      * 查询店内最新几件商品
+     *
      * @param shopId
      * @param number
      * @return
      */
-    public List<ItemShowBlock> selShopNew(Long shopId,String webSite,Integer number){
-        ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
+    public List<ItemShowBlock> selShopNew(Long shopId, String webSite, Integer number) {
+        ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
         example.createCriteria().andStoreIdEqualTo(shopId).andIsClosedEqualTo(0L);
         example.setStartIndex(0);
         example.setEndIndex(number);
         example.setWebSite(webSite);
         example.setOrderByClause("created desc");
-        List<ShiguGoodsTiny> tinyList=shiguGoodsTinyMapper.selectFieldsByConditionList(example,
+        List<ShiguGoodsTiny> tinyList = shiguGoodsTinyMapper.selectFieldsByConditionList(example,
                 FieldUtil.codeFields("pic_url,title,goods_id,pi_price,web_site,goods_no"));
-        List<ItemShowBlock> blocks=new ArrayList<>();
-        for(ShiguGoodsTiny tiny:tinyList){
-            ItemShowBlock isb=new ItemShowBlock();
+        List<ItemShowBlock> blocks = new ArrayList<>();
+        for (ShiguGoodsTiny tiny : tinyList) {
+            ItemShowBlock isb = new ItemShowBlock();
             isb.setWebSite(tiny.getWebSite());
             isb.setShopId(tiny.getStoreId());
             isb.setGoodsNo(tiny.getGoodsNo());
             isb.setItemId(tiny.getGoodsId());
             isb.setImgUrl(tiny.getPicUrl());
-            isb.setPrice(isb.parsePrice(tiny.getPiPrice()==null?null:tiny.getPiPrice()));
+            isb.setPrice(isb.parsePrice(tiny.getPiPrice() == null ? null : tiny.getPiPrice()));
             isb.setTitle(tiny.getTitle());
             blocks.add(isb);
         }
@@ -319,46 +332,45 @@ public class CdnService {
     }
 
 
-
-
-
 //===================================================20170725张峰=======================================================
 
     /**
      * 检测是否可销售
+     *
      * @param marketId
      * @param storeId
      * @param goodsId
      * @param webSite
      * @return
      */
-    public boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite){
-        if (!webSite.equals("hz")){
+    public boolean canSale(Long marketId, Long storeId, Long goodsId, String webSite) {
+        if (!webSite.equals("hz")) {
             return false;
         }
-        ItemTradeForbidExample example=new ItemTradeForbidExample();
+        ItemTradeForbidExample example = new ItemTradeForbidExample();
         example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
         example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
         example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
 //        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
-        return itemTradeForbidMapper.countByExample(example)==0;
+        return itemTradeForbidMapper.countByExample(example) == 0;
     }
 
 
     /**
      * 商品详情页,商品数据
+     *
      * @param goodsId
      * @return
      * @throws CdnException
      */
     public CdnGoodsInfoVO cdnGoodsInfo(Long goodsId) throws Main4Exception {
-        CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
-        NewCdnItem cdnItem=newShowForCdnService.selItemById(goodsId);
-        vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
-        if(cdnItem==null){//已经下架
-            cdnItem=newShowForCdnService.selItemInstockById(goodsId);
+        CdnGoodsInfoVO vo = new CdnGoodsInfoVO();
+        NewCdnItem cdnItem = newShowForCdnService.selItemById(goodsId);
+        vo.setOnSale(cdnItem != null && cdnItem.getOnsale());
+        if (cdnItem == null) {//已经下架
+            cdnItem = newShowForCdnService.selItemInstockById(goodsId);
         }
-        if(cdnItem==null){//商品不存在
+        if (cdnItem == null) {//商品不存在
             throw new CdnException("商品不存在");
         }
         vo.setOnlineSale(itemProductProcess
@@ -380,17 +392,17 @@ public class CdnService {
         vo.setInFabric(cdnItem.getInFabric());
 
         String cdnItemDescription = cdnItem.getDescription();
-        if(StringUtils.isNotBlank(cdnItemDescription)){
-            cdnItemDescription= KeyWordsUtil.duleKeyWords(cdnItemDescription);
-            vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItemDescription).replace("<script ","")
-                    .replace("<script>","")
-                    .replace("</script>",""));
+        if (StringUtils.isNotBlank(cdnItemDescription)) {
+            cdnItemDescription = KeyWordsUtil.duleKeyWords(cdnItemDescription);
+            vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItemDescription).replace("<script ", "")
+                    .replace("<script>", "")
+                    .replace("</script>", ""));
         }
-        List<NormalProp> nps=cdnItem.getNormalProps();
-        List<CdnGoodsPropVO> props=new ArrayList<>();
+        List<NormalProp> nps = cdnItem.getNormalProps();
+        List<CdnGoodsPropVO> props = new ArrayList<>();
         if (nps != null && !nps.isEmpty()) {
-            for(NormalProp np:nps){
-                CdnGoodsPropVO prop=new CdnGoodsPropVO();
+            for (NormalProp np : nps) {
+                CdnGoodsPropVO prop = new CdnGoodsPropVO();
                 prop.setName(np.getPname());
                 prop.setValue(np.getValue());
                 props.add(prop);
@@ -401,31 +413,31 @@ public class CdnService {
         if (shopsItemService.checkHasLowestLiPriceSet(goodsId)) {
             vo.setLowestLiPrice(vo.getLiPrice());
         }
-        List<String> qys=showForCdnService.selItemLicenses(goodsId,cdnItem.getShopId());
+        List<String> qys = showForCdnService.selItemLicenses(goodsId, cdnItem.getShopId());
         vo.setServices(qys);
-        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
+        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId) + "");
 
         List<SingleSkuVO> singleSkus = cdnItem.getSingleSkus();
-        Map<String,List<SingleSkuVO>> skus=singleSkus.stream().collect(Collectors.groupingBy(SingleSkuVO::getThisColor));
-        List<SaleProp> colors=cdnItem.getColors();
-        if(colors==null){
-            colors=new ArrayList<>();
+        Map<String, List<SingleSkuVO>> skus = singleSkus.stream().collect(Collectors.groupingBy(SingleSkuVO::getThisColor));
+        List<SaleProp> colors = cdnItem.getColors();
+        if (colors == null) {
+            colors = new ArrayList<>();
         }
         Map<String, String> propImgMap = colors.stream().collect(Collectors
                 .toMap(SaleProp::getValue, saleProp -> StringUtils.isNotBlank(saleProp.getImgUrl()) ? saleProp
                         .getImgUrl() : ""));
 
-        List<String> colorMetas=new ArrayList<>(skus.keySet());
+        List<String> colorMetas = new ArrayList<>(skus.keySet());
         colorMetas.sort(Comparator.comparing(o -> o));
-        List<String> priceSort=new ArrayList<>();
+        List<String> priceSort = new ArrayList<>();
         List<SkuMetaVO> skuMetaVOS = colorMetas.stream().map(s -> {
             SkuMetaVO skuMetaVO = new SkuMetaVO();
             skuMetaVO.setText(s);
             skuMetaVO.setImgSrc(propImgMap.get(s));
-            List<SingleSkuVO> sizes=skus.get(s);
-            List<SingleSkuVO> hasSizes=sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase())!=null).collect(Collectors.toList());
+            List<SingleSkuVO> sizes = skus.get(s);
+            List<SingleSkuVO> hasSizes = sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase()) != null).collect(Collectors.toList());
             hasSizes.sort(Comparator.comparingInt(o -> SIZE_SORT.get(o.getThisSize().toUpperCase())));
-            List<SingleSkuVO> notSizes=sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase())==null).collect(Collectors.toList());
+            List<SingleSkuVO> notSizes = sizes.stream().filter(singleSkuVO -> SIZE_SORT.get(singleSkuVO.getThisSize().toUpperCase()) == null).collect(Collectors.toList());
             notSizes.sort(Comparator.comparing(SingleSkuVO::getThisSize));
             sizes.clear();
             sizes.addAll(hasSizes);
@@ -435,7 +447,7 @@ public class CdnService {
                 skuSizeMetaVO.setNum(singleSkuVO.getStockNum());
                 skuSizeMetaVO.setPrice(singleSkuVO.getPriceString());
                 skuSizeMetaVO.setText(singleSkuVO.getThisSize());
-                if(skuSizeMetaVO.getNum()!=0){
+                if (skuSizeMetaVO.getNum() != 0) {
                     priceSort.add(singleSkuVO.getPriceString());
                 }
                 return skuSizeMetaVO;
@@ -443,10 +455,10 @@ public class CdnService {
             return skuMetaVO;
         }).collect(Collectors.toList());
         vo.setSkusMeta(JSONArray.fromObject(skuMetaVOS).toString());
-        if(priceSort.size()>0){
+        if (priceSort.size() > 0) {
             priceSort.sort(Comparator.comparingLong(MoneyUtil::StringToLong));
-            if(!priceSort.get(0).equals(priceSort.get(priceSort.size()-1))){
-                vo.setPiPrice(priceSort.get(0)+"-"+priceSort.get(priceSort.size()-1));
+            if (!priceSort.get(0).equals(priceSort.get(priceSort.size() - 1))) {
+                vo.setPiPrice(priceSort.get(0) + "-" + priceSort.get(priceSort.size() - 1));
             }
         }
         return vo;
@@ -454,15 +466,16 @@ public class CdnService {
 
     /**
      * 商品详情页,档口数据
+     *
      * @param shopId
      * @return
      * @throws IOException
      * @throws TemplateException
      */
     public CdnShopInfoVO cdnShopInfo(Long shopId) throws IOException, TemplateException {
-        CdnShopInfoVO vo=new CdnShopInfoVO();
-        StoreRelation shop=storeRelationService.selRelationById(shopId);
-        if(shop==null){
+        CdnShopInfoVO vo = new CdnShopInfoVO();
+        StoreRelation shop = storeRelationService.selRelationById(shopId);
+        if (shop == null) {
             return null;
         }
         vo.setMarketId(shop.getMarketId());
@@ -480,8 +493,8 @@ public class CdnService {
         }
         vo.setStarNum(starNum);
         //其他信息
-        ShopBaseForCdn other=shopForCdnService.selShopBase(shopId);
-        if(other!=null){
+        ShopBaseForCdn other = shopForCdnService.selShopBase(shopId);
+        if (other != null) {
             vo.setOpenTime(other.getOpenTime());
             vo.setMainBus(other.getMainBus());
             vo.setTbUrl(other.getTaobaoUrl());
@@ -494,31 +507,35 @@ public class CdnService {
         license.setLicenseFailure(0);//有效
         license.setLicenseType(3);
         int count = shiguShopLicenseMapper.selectCount(license);
-        vo.setIsStrz(count>0);
+        vo.setIsStrz(count > 0);
         //授权状态
         vo.setTbAuthState(shopBaseService.shopAuthState(shopId));
         //二级域名
         vo.setDomain(shopBaseService.selDomain(shopId));
         return vo;
     }
+
     /**
      * 店内类目
+     *
      * @param shopId
      * @return
      */
-    public List<CdnShopCatVO> cdnShopCat(Long shopId){
-        List<ShopCat> cats=shopForCdnService.selShopCatsById(shopId);
-        List<CdnShopCatVO> cdnCats= BeanMapper.mapList(cats,CdnShopCatVO.class);
+    public List<CdnShopCatVO> cdnShopCat(Long shopId) {
+        List<ShopCat> cats = shopForCdnService.selShopCatsById(shopId);
+        List<CdnShopCatVO> cdnCats = BeanMapper.mapList(cats, CdnShopCatVO.class);
         return cdnCats;
     }
+
     /**
      * 看了有看
+     *
      * @param shopId
      * @return
      */
-    public List<CdnSimpleGoodsVO> cdnSimpleGoods(Long shopId, String webSite){
-        return shiguGoodsTinyMapper.selForSee(webSite,shopId).stream().map(o -> {
-            CdnSimpleGoodsVO v=new CdnSimpleGoodsVO();
+    public List<CdnSimpleGoodsVO> cdnSimpleGoods(Long shopId, String webSite) {
+        return shiguGoodsTinyMapper.selForSee(webSite, shopId).stream().map(o -> {
+            CdnSimpleGoodsVO v = new CdnSimpleGoodsVO();
             v.setGoodsId(o.getGoodsId());
             v.setImgSrc(o.getPicUrl());
             v.setPrice(o.getPiPriceString());
@@ -529,20 +546,21 @@ public class CdnService {
 
     /**
      * 商品详情页,我收藏的店铺
+     *
      * @param userId
      * @param webSite
      * @return
      */
-    public List<CdnCollectShopVO> colloectShop(Long userId,String webSite){
+    public List<CdnCollectShopVO> colloectShop(Long userId, String webSite) {
         if (webSite == null) {
             webSite = "hz";
         }
-        ShiguPager<ShopCollectVO> pager=userCollectService.selShopCollections(userId,webSite,1,6);
-        List<CdnCollectShopVO> vos=new ArrayList<>();
-        for(ShopCollectVO p:pager.getContent()){
-            CdnCollectShopVO vo=new CdnCollectShopVO();
+        ShiguPager<ShopCollectVO> pager = userCollectService.selShopCollections(userId, webSite, 1, 6);
+        List<CdnCollectShopVO> vos = new ArrayList<>();
+        for (ShopCollectVO p : pager.getContent()) {
+            CdnCollectShopVO vo = new CdnCollectShopVO();
             vo.setId(p.getShopId());
-            vo.setName(p.getMarketName()+p.getShopNum());
+            vo.setName(p.getMarketName() + p.getShopNum());
             vos.add(vo);
         }
         return vos;
@@ -550,44 +568,45 @@ public class CdnService {
 
     /**
      * 店铺权益信息获取
+     *
      * @param page 页数
      * @param size 每页条数
      * @return
      */
-    public ShiguPager<ShopIconCopyrightVO> shopCopyrights(Integer page, Integer size){
-        final String FLAG="shop_copyright";//shigu_temp表中的flag，key1=图片链接，key2=店铺ID
+    public ShiguPager<ShopIconCopyrightVO> shopCopyrights(Integer page, Integer size) {
+        final String FLAG = "shop_copyright";//shigu_temp表中的flag，key1=图片链接，key2=店铺ID
         if (page == null) {
-            page=1;
+            page = 1;
         }
         if (size == null) {
-            size=100;
+            size = 100;
         }
-        ShiguTempExample example=new ShiguTempExample();
+        ShiguTempExample example = new ShiguTempExample();
         example.createCriteria().andFlagEqualTo(FLAG);
-        example.setStartIndex((page-1)*size);
+        example.setStartIndex((page - 1) * size);
         example.setEndIndex(size);
         example.setOrderByClause(" id DESC");
-        List<ShiguTemp> copyrights=shiguTempMapper.selectByConditionList(example);
-        List<Long> shopIds=new ArrayList<>();
-        for(ShiguTemp temp:copyrights){
+        List<ShiguTemp> copyrights = shiguTempMapper.selectByConditionList(example);
+        List<Long> shopIds = new ArrayList<>();
+        for (ShiguTemp temp : copyrights) {
             shopIds.add(Long.valueOf(temp.getKey2()));
         }
-        final Map<Long,ShopNumAndMarket> shopMap=new HashMap<>();
-        if (shopIds.size()>0) {
+        final Map<Long, ShopNumAndMarket> shopMap = new HashMap<>();
+        if (shopIds.size() > 0) {
             List<ShopNumAndMarket> shops = shiguShopMapper.selShopNumAndMarkets(shopIds);
-            shopMap.putAll(BeanMapper.list2Map(shops,"shopId",Long.class));
+            shopMap.putAll(BeanMapper.list2Map(shops, "shopId", Long.class));
         }
-        ShiguPager<ShopIconCopyrightVO> pager=new ShiguPager<>();
+        ShiguPager<ShopIconCopyrightVO> pager = new ShiguPager<>();
         pager.setNumber(page);
         pager.setTotalCount(shiguTempMapper.countByExample(example));
-        List<ShopIconCopyrightVO> content=new ArrayList<>();
+        List<ShopIconCopyrightVO> content = new ArrayList<>();
         pager.setContent(content);
-        copyrights.forEach(cr ->{
-            ShopIconCopyrightVO vo=new ShopIconCopyrightVO();
+        copyrights.forEach(cr -> {
+            ShopIconCopyrightVO vo = new ShopIconCopyrightVO();
             vo.setImgSrc(cr.getKey1());
-            Long shopId=Long.valueOf(cr.getKey2());
+            Long shopId = Long.valueOf(cr.getKey2());
             vo.setShopId(shopId);
-            vo.setShopName(shopMap.get(shopId).getMarket()+" "+shopMap.get(shopId).getShopNum());
+            vo.setShopName(shopMap.get(shopId).getMarket() + " " + shopMap.get(shopId).getShopNum());
             content.add(vo);
         });
         return pager;
@@ -595,9 +614,10 @@ public class CdnService {
 
     /**
      * 根据goodsId获取对应站点信息
+     *
      * @return
      */
-    public String getWebsite(Long goodsId){
+    public String getWebsite(Long goodsId) {
         ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
         if (shiguGoodsIdGenerator == null) {
             return null;
@@ -607,38 +627,38 @@ public class CdnService {
 
     /**
      * 按商品ID查cid
+     *
      * @param goodsId
      * @param webSite
      * @return
      */
-    public Long getCid(Long goodsId,String webSite){
-        ShiguGoodsTiny tiny=new ShiguGoodsTiny();
+    public Long getCid(Long goodsId, String webSite) {
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
         tiny.setGoodsId(goodsId);
         tiny.setWebSite(webSite);
-        tiny=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny,FieldUtil.codeFields("goods_id,cid"));
+        tiny = shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny, FieldUtil.codeFields("goods_id,cid"));
         if (tiny != null) {
             return tiny.getCid();
-        }else{
+        } else {
             return null;
         }
     }
 
     /**
-     *
      * @param cid
      * @param webSite
-     * @param type 1:商品详情左侧,2:下方
+     * @param type    1:商品详情左侧,2:下方
      * @return
      */
-    public SpreadEnum getGoodsDetailSpreadSpreadEnum(Long cid,String webSite,int type){
-        if("qz".equalsIgnoreCase(webSite)){
-            return type==1?SpreadEnum.QZ_ITEM_GOAT:SpreadEnum.QZ_BOTTOM_ITEM_GOAT;
+    public SpreadEnum getGoodsDetailSpreadSpreadEnum(Long cid, String webSite, int type) {
+        if ("qz".equalsIgnoreCase(webSite)) {
+            return type == 1 ? SpreadEnum.QZ_ITEM_GOAT : SpreadEnum.QZ_BOTTOM_ITEM_GOAT;
         }
         boolean instanOfWoman = itemCatService.instanOfWoman(cid);
         if (instanOfWoman) {//父级或父父级cid=16的为女装
-            return type==1?SpreadEnum.ITEM_GOAT_WOMAN:SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN;
+            return type == 1 ? SpreadEnum.ITEM_GOAT_WOMAN : SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN;
         } else {
-            return type==1?SpreadEnum.ITEM_GOAT_MAN:SpreadEnum.ITEM_BOTTOM_GOAT_MAN;
+            return type == 1 ? SpreadEnum.ITEM_GOAT_MAN : SpreadEnum.ITEM_BOTTOM_GOAT_MAN;
         }
     }
 
@@ -648,5 +668,89 @@ public class CdnService {
     public String selDaifaPhoneNo() {
         ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(999999990L);
         return itemOrderSender == null ? null : itemOrderSender.getTelephone();
+    }
+
+    @Transactional
+    public int setNewGoods(Long goodsId) {
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite("qz");
+        tiny = shiguGoodsTinyMapper.selectFieldsByPrimaryKey(tiny, FieldUtil.codeFields("goods_id,created,store_id"));
+        if (tiny != null) {
+            ShiguGoodsTinyCreatedQz shiguGoodsTinyCreatedQz = new ShiguGoodsTinyCreatedQz();
+            shiguGoodsTinyCreatedQz.setGoodsId(goodsId);
+            shiguGoodsTinyCreatedQz.setOldCreated(tiny.getCreated());
+            ShiguGoodsTinyCreatedQz tinyCreated = shiguGoodsTinyCreatedQzMapper.selectByPrimaryKey(shiguGoodsTinyCreatedQz);
+            String nowTime = DateParseUtil.parseDate("yyyy-MM-dd", new Date());
+            String[] nowTimes = nowTime.split("-");
+            ShiguShopExample shiguShopExample = new ShiguShopExample();
+            shiguShopExample.createCriteria().andShopIdEqualTo(tiny.getStoreId());
+            List<ShiguShop> list = shiguShopMapper.selectByExample(shiguShopExample);
+            if (list.size() != 0) {
+                Long userId = list.get(0).getUserId();
+                ShiguGoodsToday shiguGoodsToday = new ShiguGoodsToday();
+                ShiguGoodsTodayExample shiguGoodsTodayExample = new ShiguGoodsTodayExample();
+                shiguGoodsTodayExample.createCriteria().andUserIdEqualTo(userId);
+                List<ShiguGoodsToday> shiguGoodsTodays = shiguGoodsTodayMapper.selectByExample(shiguGoodsTodayExample);
+                ShiguGoodsToday shiguGoodsToday1=new ShiguGoodsToday();
+                if (shiguGoodsTodays.size() == 0) {
+                    shiguGoodsToday.setUserId(userId);
+                    shiguGoodsToday.setNum(1);
+                    shiguGoodsToday.setCreated(DateParseUtil.parseDate("yyyy-MM-dd", new Date()));
+                    shiguGoodsTodayMapper.save(shiguGoodsToday);
+                } else {
+                    shiguGoodsToday1 = shiguGoodsTodays.get(0);
+                    int num = shiguGoodsToday1.getNum();
+                    String time = shiguGoodsToday1.getCreated();
+                    String[] times = time.split("-");
+                    if (!times[2].equals(nowTimes[2])) {
+                        num = 0;
+                        shiguGoodsToday1.setCreated(nowTime);
+                    } else if (!times[1].equals(nowTimes[1])) {
+                        num = 0;
+                        shiguGoodsToday1.setCreated(nowTime);
+                    }else if(!times[0].equals(nowTimes[0])){
+                        num =0;
+                        shiguGoodsToday1.setCreated(nowTime);
+                    }
+                    if (num < 3) {
+                        shiguGoodsToday1.setNum(num + 1);
+                    } else {
+                        return 1;
+                    }
+                }
+                if (tinyCreated == null) {
+                    shiguGoodsTinyMapper.saveCreated(shiguGoodsTinyCreatedQz);
+                }else{
+                    String modifTime = DateParseUtil.parseDate("yyyy-MM-dd", tinyCreated.getGmtModif());
+                    String[] modif = modifTime.split("-");
+                    if(modif[2].equals(nowTimes[2])){
+                        if(modif[1].equals(nowTimes[1])){
+                            if(modif[0].equals(nowTimes[0])){
+                                return 4;
+                            }else{
+                                tinyCreated.setGmtModif(new Date());
+                                shiguGoodsTinyMapper.update(tinyCreated);
+                            }
+                        }else{
+                            tinyCreated.setGmtModif(new Date());
+                            shiguGoodsTinyMapper.update(tinyCreated);
+                        }
+                    }else{
+                        tinyCreated.setGmtModif(new Date());
+                        shiguGoodsTinyMapper.update(tinyCreated);
+                    }
+                    shiguGoodsTodayMapper.update(shiguGoodsToday1);
+                }
+                tiny.setWebSite("qz");
+                tiny.setCreated(new Date());
+                shiguGoodsTinyMapper.updateCreated(tiny);
+                return 0;
+            } else {
+                return 2;
+            }
+        } else {
+            return 3;
+        }
     }
 }
