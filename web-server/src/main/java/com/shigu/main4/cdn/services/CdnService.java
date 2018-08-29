@@ -699,13 +699,14 @@ public class CdnService {
                 ShiguGoodsTodayExample shiguGoodsTodayExample = new ShiguGoodsTodayExample();
                 shiguGoodsTodayExample.createCriteria().andUserIdEqualTo(userId);
                 List<ShiguGoodsToday> shiguGoodsTodays = shiguGoodsTodayMapper.selectByExample(shiguGoodsTodayExample);
+                ShiguGoodsToday shiguGoodsToday1=new ShiguGoodsToday();
                 if (shiguGoodsTodays.size() == 0) {
                     shiguGoodsToday.setUserId(userId);
                     shiguGoodsToday.setNum(1);
                     shiguGoodsToday.setCreated(DateParseUtil.parseDate("yyyy-MM-dd", new Date()));
                     shiguGoodsTodayMapper.save(shiguGoodsToday);
                 } else {
-                    ShiguGoodsToday shiguGoodsToday1 = shiguGoodsTodays.get(0);
+                    shiguGoodsToday1 = shiguGoodsTodays.get(0);
                     int num = shiguGoodsToday1.getNum();
                     String time = shiguGoodsToday1.getCreated();
                     String[] times = time.split("-");
@@ -721,7 +722,6 @@ public class CdnService {
                     }
                     if (num < 3) {
                         shiguGoodsToday1.setNum(num + 1);
-                        shiguGoodsTodayMapper.update(shiguGoodsToday1);
                     } else {
                         return 1;
                     }
@@ -747,6 +747,7 @@ public class CdnService {
                         tinyCreated.setGmtModif(new Date());
                         shiguGoodsTinyMapper.update(tinyCreated);
                     }
+                    shiguGoodsTodayMapper.update(shiguGoodsToday1);
                 }
                 tiny.setWebSite("qz");
                 tiny.setCreated(new Date());
