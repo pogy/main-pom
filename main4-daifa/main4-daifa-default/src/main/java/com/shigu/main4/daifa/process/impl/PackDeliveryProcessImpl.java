@@ -19,6 +19,7 @@ import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.utils.MQUtil;
+import com.shigu.main4.daifa.utils.WorkerMan;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.OrderSendErrorDealVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
@@ -64,8 +65,8 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
 
     @Autowired
     RedisIO redisIO;
-//    @Autowired
-//    WorkerMan workerMan;
+    @Autowired
+    WorkerMan workerMan;
     @Autowired
     private DaifaPostCustomerMapper daifaPostCustomerMapper;
 
@@ -325,7 +326,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         customer = daifaPostCustomerMapper.selectOne(customer);
         if (customer.getManual() != 1) {
             redisIO.rpush("QueryExpressCodeThread", dfTradeId);
-            //workerMan.start();
+            workerMan.start();
         }else {
             throw new DaifaException("手动订单，不能获取快递单号！",DaifaException.DEBUG);
         }
