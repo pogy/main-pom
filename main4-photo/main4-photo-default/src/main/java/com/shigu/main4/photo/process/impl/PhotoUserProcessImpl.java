@@ -197,10 +197,11 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
 
         ShiguPhotoUserExample shiguPhotoUserExample = new ShiguPhotoUserExample();
         ShiguPhotoUserExample.Criteria criteria = shiguPhotoUserExample.createCriteria();
+        List<ShiguPhotoUserSelectedStyleRelation> list=new ArrayList<>();
         if (bo.getStyleId() != null) {
             ShiguPhotoUserSelectedStyleRelationExample shiguPhotoUserSelectedStyleRelationExample = new ShiguPhotoUserSelectedStyleRelationExample();
             shiguPhotoUserSelectedStyleRelationExample.createCriteria().andEffectedEqualTo(1).andStyleIdEqualTo(bo.getStyleId());
-            List<ShiguPhotoUserSelectedStyleRelation> list = shiguPhotoUserSelectedStyleRelationMapper.selectByExample(shiguPhotoUserSelectedStyleRelationExample);
+            list = shiguPhotoUserSelectedStyleRelationMapper.selectByExample(shiguPhotoUserSelectedStyleRelationExample);
             if (list.size() == 0) {
                 pager.calPages(0, bo.getPageSize());
                 return pager;
@@ -219,10 +220,12 @@ public class PhotoUserProcessImpl implements PhotoUserProcess {
         int count = shiguPhotoUserMapper.countByExample(shiguPhotoUserExample);
         if (count > 0) {
             List<Long> aids=new ArrayList<>();
-            shiguPhotoUserExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
-            shiguPhotoUserExample.setEndIndex(bo.getPageSize());
-            shiguPhotoUserExample.setOrderByClause("author_id desc");
-            List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectByConditionList(shiguPhotoUserExample);
+//            shiguPhotoUserExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
+//            shiguPhotoUserExample.setEndIndex(bo.getPageSize());
+//            shiguPhotoUserExample.setOrderByClause("author_id desc");
+//            List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectByConditionList(shiguPhotoUserExample);
+            int start = (bo.getPage() - 1) * bo.getPageSize();
+            List<ShiguPhotoUser> shiguPhotoUsers = shiguPhotoUserMapper.selectOderByTime(bo,BeanMapper.getFieldList(list, "authId", Long.class),start);
             List<PhotoAuthorVO> photoAuthorVOS = shiguPhotoUsers.stream().map(shiguPhotoUser -> {
                 PhotoAuthorVO vo = new PhotoAuthorVO();
                 vo.setAddress(shiguPhotoUser.getAddress());
