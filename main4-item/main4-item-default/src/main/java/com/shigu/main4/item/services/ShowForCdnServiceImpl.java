@@ -338,7 +338,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
             String redisTimestamp = redisIO.hget(ITEM_DUBBO_CACHE_SYNCHRONIZED, id.toString());
             Cache cdnItemCache = cacheManager.getCache("cdnItemCache");
             NewCdnItem cdnItem = cdnItemCache.get(id, NewCdnItem.class);
-            Integer cacheChang = CacheUtil.comparisonTimestamp(cdnItem.getTimestamp(),Long.valueOf(redisTimestamp));
+            Integer cacheChang = CacheUtil.comparisonTimestamp(cdnItem==null?null:cdnItem.getTimestamp(),redisTimestamp==null?null:Long.valueOf(redisTimestamp));
             if (cdnItem == null || cacheChang > 0) {
                 if (StringUtils.isEmpty(webSite)) {
                     ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(id);

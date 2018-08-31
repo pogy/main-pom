@@ -46,7 +46,8 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-tools</artifactId>
-            <version>4.2.0-SNAPSHOT</version>
+            <!--<version>4.2.0-SNAPSHOT</version>-->
+            <version>${main4-tools.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
