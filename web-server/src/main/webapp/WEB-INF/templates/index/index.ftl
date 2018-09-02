@@ -27,6 +27,7 @@ var hreflocation = window.location.href;
 if(/^https?:\/\/(www\.)?571xz\.com/.test(hreflocation)){//仅首页
     jQuery.getScript("//ip.ws.126.net/ipquery",function(){  //新浪废弃接口int.dpool.sina.com.cn/iplookup/iplookup.php?format=js
         var city = localAddress["city"];
+        var prov = localAddress["province"];
         if(city == '石狮市'){
             window.location.href = "//ss.571xz.com";
         }else if(city == '常熟市'){
@@ -35,7 +36,7 @@ if(/^https?:\/\/(www\.)?571xz\.com/.test(hreflocation)){//仅首页
             window.location.href = "//gz.571xz.com";
         }else if(city == '泉州市'){
             window.location.href = "//qz.571xz.com";
-        }else if(city == '沧州市'){
+        }else if(prov == '河北省'){
             window.location.href = "//cz.571xz.com";
         }
     }) ;
