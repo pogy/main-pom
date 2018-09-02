@@ -1,19 +1,19 @@
 package com.shigu.mq.services;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.daifa.bo.*;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.daifa.process.SaleAfterProcess;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.order.process.QimenTradeProcess;
 import com.shigu.mq.beans.*;
 import com.shigu.mq.receives.SendMessageListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,8 @@ public class OrderConsumerService {
     private SaleAfterProcess saleAfterProcess;
     @Autowired
     private TakeGoodsIssueProcess takeGoodsIssueProcess;
-
+    @Autowired
+    QimenTradeProcess qimenTradeProcess;
 
     public void orderConvertTrade(String body){
         ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
@@ -46,7 +47,11 @@ public class OrderConsumerService {
             synchronized (orderBean.getOid().toString().intern()) {
                 orderManageProcess.newOrder(orderBean);
             }
-
+            try {
+                qimenTradeProcess.toCheck(orderBean.getOid());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -48,12 +48,8 @@ if(/^https?:\/\/(www\.)?571xz\.com/.test(hreflocation)){//仅首页
             window.location.href = "//cs.571xz.com";
         }else if(city == '广州市'){
             window.location.href = "//gz.571xz.com";
-        }else if(city == '辽源市'){
-            window.location.href = "//wa.571xz.com";
         }else if(city == '泉州市'){
             window.location.href = "//qz.571xz.com";
-        }else if(city == '北京市'){
-            window.location.href = "//bj.571xz.com";
         }else if(city == '沧州市'){
             window.location.href = "//cz.571xz.com";
         }

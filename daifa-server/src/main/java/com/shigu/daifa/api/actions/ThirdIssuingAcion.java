@@ -84,13 +84,12 @@ public class ThirdIssuingAcion {
     /**
      * 根据条码标记成以拿到或缺货（根据status值确定）
      * @param request
-     * @param result
      * @return
      * @throws OpenException
      */
     @RequestMapping("selTagHaveGgoods")
     @ResponseBody
-    public JSONObject selTagHaveGgoods(SelTagHaveGgoodsRequest request, BindingResult result) throws OpenException {
+    public JSONObject selTagHaveGgoods(SelTagHaveGgoodsRequest request) throws OpenException {
         List<Long> orderIds = new ArrayList<>();
         String[] codes = request.getBarCodeMore().split(",");
         Set<Long> setO = new HashSet<>();
@@ -105,7 +104,7 @@ public class ThirdIssuingAcion {
         }
         orderIds.addAll(setO);
         try {
-            thirdIssuingService.selTagHaveGgoods(request.getDaifaNahuoId(), request.getStatus(), orderIds);
+            thirdIssuingService.selTagHaveGgoods(request.getDaifaNahuoId(), request.getStatus(), orderIds,request.getHaveGoodsTime());
         } catch (DaifaException e) {
             throw new SystemInterfaceException(e.getMessage());
         }

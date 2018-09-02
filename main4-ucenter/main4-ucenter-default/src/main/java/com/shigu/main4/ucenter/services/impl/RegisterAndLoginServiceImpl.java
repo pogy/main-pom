@@ -92,6 +92,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         memberUser.setUserNick(user.getTelephone());
         memberUser.setUserName(user.getTelephone());
         memberUser.setLoginPhone(user.getTelephone());
+        memberUser.setRegisterSource(user.getRegistSource());
         memberUser.setRegTime(new Date());
         int result = memberUserMapper.insertSelective(memberUser);
         if(result == 0){
@@ -298,6 +299,8 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             registerUser.setTelephone(phone);
             String password = EncryptUtil.genRandomPwd(8);
             registerUser.setPassword(password);
+            registerUser.setRegistSource(tempUser.getFormResource());
+
             Long registerPanss = registerByPhone(registerUser);
             if (registerPanss == null) {
                 return false;
@@ -351,6 +354,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         if(bindOuterRdUser != null){
             bindOuterRdUser.bindShop(phone,tempUser,userId);
         }
+
         return true;
     }
 

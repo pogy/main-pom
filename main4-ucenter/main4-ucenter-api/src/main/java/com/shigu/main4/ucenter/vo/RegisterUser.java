@@ -20,6 +20,10 @@ public class RegisterUser implements Serializable{
      */
     private String password;
     /**
+     *  注册用户来源 1:PC 2:IOS 3:Android 4:H5  5:WX公众号  6:WX小程序
+     */
+    private Integer registSource;
+    /**
      * 邀请人用户Id
      */
     private Long inviteUserId;
@@ -54,5 +58,13 @@ public class RegisterUser implements Serializable{
 
     public void setInviteUserId(Long inviteUserId) {
         this.inviteUserId = inviteUserId;
+    }
+
+    public Integer getRegistSource() {
+        return registSource;
+    }
+
+    public void setRegistSource(Integer registSource) {
+        this.registSource = registSource;
     }
 }
