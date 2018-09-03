@@ -30,22 +30,23 @@ public class MarketShopListComparator implements Comparator<ShopShow> {
         if (o1.getFloorId().equals(o2.getFloorId())) {
             String shopNumo1 = o1.getSortOrderKey().trim();
             String shopNumo2 = o2.getSortOrderKey().trim();
-            if (StringUtils.equals(shopNumo1, shopNumo2)) {
-                return 0;
-            }
-            try {
-                double shopNumd1=shopnumNumber(shopNumo1);
-                double shopNumd2=shopnumNumber(shopNumo2);
-                if (shopNumd1>shopNumd2) {
-                    return 1;
-                }else if(shopNumd1 == shopNumd2){
-                    return compareByChar(shopNumo1,shopNumo2);
-                }else{
-                    return -1;
-                }
-            } catch (Exception e) {//没有数字可比
-                return compareByChar(shopNumo1,shopNumo2);
-            }
+            return shopNumo1.compareTo(shopNumo2);`
+//            if (StringUtils.equals(shopNumo1, shopNumo2)) {
+//                return 0;
+//            }
+//            try {
+//                double shopNumd1=shopnumNumber(shopNumo1);
+//                double shopNumd2=shopnumNumber(shopNumo2);
+//                if (shopNumd1>shopNumd2) {
+//                    return 1;
+//                }else if(shopNumd1 == shopNumd2){
+//                    return compareByChar(shopNumo1,shopNumo2);
+//                }else{
+//                    return -1;
+//                }
+//            } catch (Exception e) {//没有数字可比
+//                return compareByChar(shopNumo1,shopNumo2);
+//            }
         } else {
             int floor1 = floorNumber(o1.getFloor());
             int floor2 = floorNumber(o2.getFloor());
