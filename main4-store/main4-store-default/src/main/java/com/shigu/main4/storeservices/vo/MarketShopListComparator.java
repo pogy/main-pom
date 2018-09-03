@@ -30,7 +30,7 @@ public class MarketShopListComparator implements Comparator<ShopShow> {
         if (o1.getFloorId().equals(o2.getFloorId())) {
             String shopNumo1 = o1.getSortOrderKey().trim();
             String shopNumo2 = o2.getSortOrderKey().trim();
-            return shopNumo1.compareTo(shopNumo2);`
+            return shopNumo1.compareTo(shopNumo2);
 //            if (StringUtils.equals(shopNumo1, shopNumo2)) {
 //                return 0;
 //            }
