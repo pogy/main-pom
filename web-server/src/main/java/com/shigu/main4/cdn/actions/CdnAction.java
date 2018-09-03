@@ -254,26 +254,29 @@ public class CdnAction {
             //热卖
             ObjFromCache<List<ItemSpreadVO>> itemSpreadRms = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_RM);
             model.addAttribute("hotsaleGoodslist", selFromCache(itemSpreadRms));
-            //风格类目
-            model.addAttribute("styleCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
-            // 风格商品
-            ObjFromCache<List<ItemSpreadVO>> itemSpreadFgs = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_FG);
-            model.addAttribute("styleGoodslist", selFromCache(itemSpreadFgs));
-            //元素类目
-            model.addAttribute("elementCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.ELEMENT, "hz"));
-            //元素商品
-            ObjFromCache<List<ItemSpreadVO>> itemSpreadYss = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_YS);
-            model.addAttribute("elementGoodslist", selFromCache(itemSpreadYss));
-            //推荐档口
-            ObjFromCache<List<ItemSpreadVO>> itemSpreadTjdks = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_TJDK);
-            model.addAttribute("recommendShoplist", selFromCache(itemSpreadTjdks));
-            //猜喜欢
-            List<LoveGoodsList> loves = new ArrayList<>();
-            ObjFromCache<LoveGoodsList> sz = indexShowService.loveGoods(5, "上装", webSite, indexShowService.womanUp());
-            ObjFromCache<LoveGoodsList> xz = indexShowService.loveGoods(5, "下装", webSite, indexShowService.womanBottom());
-            loves.add((LoveGoodsList) selFromCache(sz));
-            loves.add((LoveGoodsList) selFromCache(xz));
-            model.addAttribute("loveGoodslist", loves);
+            //类目导航
+            ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, 2, SpreadEnum.NEW_HZ_HomeCateMenu);
+            model.addAttribute("catemenu", selFromCache(catemenu));
+//            //风格类目
+//            model.addAttribute("styleCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
+//            // 风格商品
+//            ObjFromCache<List<ItemSpreadVO>> itemSpreadFgs = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_FG);
+//            model.addAttribute("styleGoodslist", selFromCache(itemSpreadFgs));
+//            //元素类目
+//            model.addAttribute("elementCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.ELEMENT, "hz"));
+//            //元素商品
+//            ObjFromCache<List<ItemSpreadVO>> itemSpreadYss = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_YS);
+//            model.addAttribute("elementGoodslist", selFromCache(itemSpreadYss));
+//            //推荐档口
+//            ObjFromCache<List<ItemSpreadVO>> itemSpreadTjdks = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_TJDK);
+//            model.addAttribute("recommendShoplist", selFromCache(itemSpreadTjdks));
+//            //猜喜欢
+//            List<LoveGoodsList> loves = new ArrayList<>();
+//            ObjFromCache<LoveGoodsList> sz = indexShowService.loveGoods(5, "上装", webSite, indexShowService.womanUp());
+//            ObjFromCache<LoveGoodsList> xz = indexShowService.loveGoods(5, "下装", webSite, indexShowService.womanBottom());
+//            loves.add((LoveGoodsList) selFromCache(sz));
+//            loves.add((LoveGoodsList) selFromCache(xz));
+//            model.addAttribute("loveGoodslist", loves);
             return "index/index";
         }
     }
