@@ -1,1 +1,1 @@
-<link href="//style.571xz.com/v6/index/css/index_v20180511_130142.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/index/css/index_v20180822_104207.css" rel="stylesheet">

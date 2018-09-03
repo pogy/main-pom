@@ -29,7 +29,7 @@
 <div class="banner yahei">
     <div class="layout pr">
         <h2></h2>
-        <a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank" class="consultBtn fs16 tac">立即咨询</a>
+        <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="consultBtn fs16 tac">立即咨询</a>
 <div class="consultForm pa">
     <div class="pr">
 <#list [{"name":"type"}] as $it>
@@ -79,7 +79,7 @@
     <div class="contactBox">
         <h3 class="fs12 tac">有疑问可以点击</h3>
         <ul>
-            <li><a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a></li>
+            <li><a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a></li>
             <li><a href="//wpa.qq.com/msgrd?v=3&uin=1030995998&amp;site=qq&amp;menu=yes" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a></li>
             <li><i class="icon-s-tel"></i><span>400-076-1116</span></li>
         </ul>
@@ -103,7 +103,7 @@
                     <h2>普通注册</h2>
                     <p>专业查询分析，进程实时监控。</p>
                     <div class="price"><em>￥</em>1288</div>
-                    <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.9.6403c6c4dAGPor&amp;id=559970936103" target="_blank" class="contactBtn">立即办理</a>
+                    <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                 </div>
             </div>
             <div class="registItem">
@@ -116,7 +116,7 @@
                     <h2>加急注册</h2>
                     <p>当天提交申报到商标局。</p>
                     <div class="price"><em>￥</em>1398</div>
-                    <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.15.6403c6c4dAGPor&amp;id=560064777629" target="_blank" class="contactBtn">立即办理</a>
+                    <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                 </div>
             </div>
             <div class="registItem">
@@ -129,7 +129,7 @@
                     <h2>担保注册</h2>
                     <p>专业把关通过率，注册不成功全额退款。</p>
                     <div class="price"><em>￥</em>1680</div>
-                    <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.24.6403c6c4dAGPor&amp;id=560127246264" target="_blank" class="contactBtn">立即办理</a>
+                    <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                 </div>
             </div>
             <div class="registItem">
@@ -142,7 +142,7 @@
                     <h2>双享注册</h2>
                     <p>商标注册不成功，可免费提供一次商标普通注册。</p>
                     <div class="price"><em>￥</em>1600</div>
-                    <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.27.6403c6c4dAGPor&amp;id=560127986051" target="_blank" class="contactBtn">立即办理</a>
+                    <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                 </div>
             </div>
     </div>
@@ -164,7 +164,7 @@
                         <h2>普通登记</h2>
                         <p>版权登记，保护你的作品创意。</p>
                         <div class="price"><em>&yen;</em>800</div>
-                        <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.12.6403c6c4dAGPor&amp;id=559975012669" target="_blank" class="contactBtn">立即办理</a>
+                        <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
                 <div class="registItem">
@@ -177,7 +177,7 @@
                         <h2>加急登记</h2>
                         <p>专业顾问分析，高效流程办理。</p>
                         <div class="price"><em>&yen;</em>1000</div>
-                        <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.30.6403c6c4dAGPor&amp;id=560129154701" target="_blank" class="contactBtn">立即办理</a>
+                        <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
                 <div class="registItem">
@@ -190,7 +190,7 @@
                         <h2>外观专利</h2>
                         <p>从有想法到完成申报最晚8个工作日。</p>
                         <div class="price"><em>&yen;</em>1300</div>
-                        <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.21.6403c6c4dAGPor&amp;id=560068845596" target="_blank" class="contactBtn">立即办理</a>
+                        <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
                 <div class="registItem">
@@ -203,7 +203,7 @@
                         <h2>设计稿作品</h2>
                         <p>办理流程简单，专业客服全程服务。</p>
                         <div class="price"><em>&yen;</em>898</div>
-                        <a href="https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-13309679213.18.6403c6c4dAGPor&amp;id=560068557887" target="_blank" class="contactBtn">立即办理</a>
+                        <a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank" class="contactBtn">立即办理</a>
                     </div>
                 </div>
         </div>
@@ -227,7 +227,7 @@
 </div>
 <div class="bottomContact yahei">
     <ul>
-        <li><a href="//www.taobao.com/webww/ww.php?ver=3&amp;touid=百优先生&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a><em></em></li>
+        <li><a href="https://amos.alicdn.com/getcid.aw?v=3&s=1&charset=gbk&site=cntaobao&groupid=159300583&s=1&uid=%BA%BC%D6%DD%CA%AF%B9%C8%CD%F8%C2%E7%BF%C6%BC%BC%D3%D0%CF%DE%B9%AB%CB%BE" target="_blank"><i class="icon-s-aliww"></i><span>阿里旺旺</span></a><em></em></li>
         <li><a href="//wpa.qq.com/msgrd?v=3&uin=1030995998&amp;site=qq&amp;menu=yes" target="_blank"><i class="icon-s-qq"></i><span>QQ在线</span></a><em></em></li>
         <li><i class="icon-s-tel"></i><span>400-076-1116</span></li>
     </ul>

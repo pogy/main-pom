@@ -71,6 +71,8 @@
                     濮院
                 <#elseif webSite == "qz">
                     泉州
+                <#elseif webSite == "cz">
+                    沧州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
@@ -128,6 +130,8 @@
                     濮院
                 <#elseif webSite == "qz">
                     泉州
+                <#elseif webSite == "cz">
+                    沧州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
@@ -421,6 +425,8 @@ var hasOriginalPic = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图�
                     濮院
                 <#elseif webSite == "qz">
                     泉州
+                <#elseif webSite == "cz">
+                    沧州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
