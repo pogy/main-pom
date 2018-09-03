@@ -11,7 +11,7 @@
                 #{userTypes}
             </foreach>
             <if test="authIds !=null and authIds.size>0">
-            and su.auth_id IN
+            and su.author_id IN
           <foreach collection="authIds" item="authId" index="index" open="(" close=")" separator=",">
               #{authId}
           </foreach>
