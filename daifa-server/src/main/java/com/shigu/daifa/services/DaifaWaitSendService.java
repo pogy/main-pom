@@ -70,7 +70,13 @@ public class DaifaWaitSendService {
         example.setStartIndex(0);
         example.setEndIndex(20);
         List<DaifaPostCustomer> list=daifaPostCustomerMapper.selectFieldsByConditionList(example,"express_id,express");
-        return list;
+        Map<Long, DaifaPostCustomer> customerMap = BeanMapper.list2Map(list, "expressId", Long.class);
+        List<DaifaPostCustomer> postCustomerList=new ArrayList<>();
+        for (Long key:customerMap.keySet()){
+            DaifaPostCustomer s=customerMap.get(key);
+            postCustomerList.add(s);
+        }
+        return postCustomerList;
     }
     
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
