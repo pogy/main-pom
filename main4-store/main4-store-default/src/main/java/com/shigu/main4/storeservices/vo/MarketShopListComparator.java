@@ -52,7 +52,16 @@ public class MarketShopListComparator implements Comparator<ShopShow> {
             return floor1-floor2;
         }
     }
-
+    private int floorNumber(String floor) {
+        String regex = "\\d*";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(floor);
+        if (m.find() && !"".equals(m.group())) {
+            return Integer.valueOf(m.group());
+        } else {
+            return 100;
+        }
+    }
     public int compareByChar(String s1,String s2){
         int sortInt = s1.compareTo(s2);
         if (sortInt == 2) {
@@ -102,24 +111,12 @@ public class MarketShopListComparator implements Comparator<ShopShow> {
         }
         return Double.valueOf(result);
     }
-
     private String bunumber(String number){
         int max=5-number.length();
         for(int i=0;i<max;i++){
             number="0"+number;
         }
         return number;
-    }
-
-    private int floorNumber(String floor) {
-        String regex = "\\d*";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(floor);
-        if (m.find() && !"".equals(m.group())) {
-            return Integer.valueOf(m.group());
-        } else {
-            return 100;
-        }
     }
 
 }
