@@ -13,7 +13,8 @@ public enum SpreadEnum {
     //杭州
     // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
     MAN_STYLE_PICS("杭州男装风格图","MAN_STYLE_PICS"),
-    NEW_HZ_HomeCateMenu("杭州首页左侧导航","NEW_HZ_HomeCateMenu"),
+    NEW_HZ_HomeCateMenu("杭州男装首页左侧导航","NEW_HZ_HomeCateMenu"),
+    NEW_HZ_Woman_HomeCateMenu("杭州男装首页左侧导航","NEW_HZ_Woman_HomeCateMenu"),
     MAN_DT_NEW("男装大图新版2018-04","MAN-DT-NEW-201804"),MAN_XT_NEW("男装小图新版2018-04","MAN-XT-NEW-201804"),
     MAN_DT("男装大图", "MAN-DT"), MAN_XT("男装小图", "MAN-XT"),
     MAN_RM("热卖广告", "MAN-RM"), MAN_FG("风格", "MAN-FG"), MAN_YS("元素", "MAN-YS"),
