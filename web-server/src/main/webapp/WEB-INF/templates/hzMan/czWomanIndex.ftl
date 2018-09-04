@@ -156,7 +156,7 @@ if(pageType == 'W'){
         </#list>
     </div>
 </div>
-<div class="popularGoods layout">
+<div class="popularGoods layout" style="display:none">
 <div class="commonTitle">
     <a class="sideNavbarDot" name="popularGoods" data-text="人气"></a>
     <h3><span class="yahei">人气商品</span>人气爆款 0点更新</h3>

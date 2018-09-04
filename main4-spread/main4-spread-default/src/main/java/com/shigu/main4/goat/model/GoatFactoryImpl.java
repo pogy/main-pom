@@ -4,12 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.GoatItemDataExample;
-import com.opentae.data.mall.examples.GoatOneItemExample;
-import com.opentae.data.mall.examples.GoatOneLocationExample;
-import com.opentae.data.mall.examples.GoodsupNorealExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
-import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.goat.beans.GoatLocation;
@@ -20,12 +16,6 @@ import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.vo.*;
 import com.shigu.main4.tools.RedisIO;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +45,18 @@ public class GoatFactoryImpl implements GoatFactory {
     @Resource(name = "tae_mall_goatItemDataMapper")
     GoatItemDataMapper goatItemDataMapper;
 
-    @Resource(name="tae_mall_goodsupNorealMapper")
-    GoodsupNorealMapper goodsupNorealMapper;
+//    @Resource(name="tae_mall_goodsupNorealMapper")
+//    GoodsupNorealMapper goodsupNorealMapper;
+    @Autowired
+    VirtualFlowMapper virtualFlowMapper;
+    @Autowired
+    ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+    @Autowired
+    GoodsBogusUploadRecordsMapper goodsBogusUploadRecordsMapper;
+    @Autowired
+    ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
+
+
 
     @Autowired
     RedisIO redisIO;
@@ -309,48 +309,60 @@ public class GoatFactoryImpl implements GoatFactory {
 
             @Override
             public ItemUpVO selUp() {
-                //查询真实值
-                SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
-                BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-
-                QueryBuilder qb1 = QueryBuilders.termQuery("supperGoodsId", this.getItemId());//可能有微信上传的//所以直接用用户ID
-                boleanQueryBuilder.must(qb1);
-                srb.setQuery(boleanQueryBuilder);
-                srb.setSearchType(SearchType.COUNT);
-                SearchResponse response = srb.execute().actionGet();
-                Long total = response.getHits().getTotalHits();
-
-                //查询虚假值
-                GoodsupNorealExample gnex=new GoodsupNorealExample();
-                gnex.createCriteria().andItemIdEqualTo(this.getItemId());
-                List<GoodsupNoreal> gunlist=goodsupNorealMapper.selectFieldsByExample(gnex
-                        ,FieldUtil.codeFields("add_num "));
-                GoodsupNoreal gun=null;
-                if(gunlist.size()>0)
-                    gun=gunlist.get(0);
                 ItemUpVO iUVo=new ItemUpVO();
-                iUVo.setRealNum(total==0?null:total);
-                iUVo.setUnRealNum(gun==null?null:gun.getAddNum().longValue());
+                //查询真实值
+//                SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+//                BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+//
+//                QueryBuilder qb1 = QueryBuilders.termQuery("supperGoodsId", this.getItemId());//可能有微信上传的//所以直接用用户ID
+//                boleanQueryBuilder.must(qb1);
+//                srb.setQuery(boleanQueryBuilder);
+//                srb.setSearchType(SearchType.COUNT);
+//                SearchResponse response = srb.execute().actionGet();
+//                Long total = response.getHits().getTotalHits();
+                GoodsCountForsearchExample example = new GoodsCountForsearchExample();
+                example.createCriteria().andGoodsIdEqualTo(this.getItemId());
+                List<GoodsCountForsearch> goodsCountForsearches=goodsCountForsearchMapper.selectByExample(example);
+                iUVo.setRealNum(goodsCountForsearches.size()==0?null:goodsCountForsearches.get(0).getUp());
+
+                //查询虚拟量(新)
+                VirtualFlow v=virtualFlowMapper.selectByPrimaryKey(this.getItemId());
+                iUVo.setUnRealNum(v==null?null: v.getVirtualUploadNum()+v.getVirtualDownNum());
+
+                //查询虚假值(作废)
+//                GoodsupNorealExample gnex=new GoodsupNorealExample();
+//                gnex.createCriteria().andItemIdEqualTo(this.getItemId());
+//                List<GoodsupNoreal> gunlist=goodsupNorealMapper.selectFieldsByExample(gnex
+//                        ,FieldUtil.codeFields("add_num "));
+//                GoodsupNoreal gun=null;
+//                if(gunlist.size()>0)
+//                    gun=gunlist.get(0);
+//                iUVo.setUnRealNum(gun==null?null:gun.getAddNum().longValue());
+
+
+
+
                 return iUVo;
 
             }
 
             @Override
             public void modifyUp(Integer num) {
-                GoodsupNoreal gn=new GoodsupNoreal();
-                gn.setItemId(this.getItemId());
-                gn=goodsupNorealMapper.selectOne(gn);
-                if(gn==null){
-                    gn=new GoodsupNoreal();
-                    gn.setItemId(this.getItemId());
-                    gn.setAddNum(num);
-                    goodsupNorealMapper.insertSelective(gn);
-                }else{
-                    GoodsupNoreal g=new GoodsupNoreal();
-                    g.setNorealId(gn.getNorealId());
-                    g.setAddNum(gn.getAddNum()+num);
-                    goodsupNorealMapper.updateByPrimaryKeySelective(g);
-                }
+                updateNoRealV2(this.getItemId(),num.longValue());
+//                GoodsupNoreal gn=new GoodsupNoreal();
+//                gn.setItemId(this.getItemId());
+//                gn=goodsupNorealMapper.selectOne(gn);
+//                if(gn==null){
+//                    gn=new GoodsupNoreal();
+//                    gn.setItemId(this.getItemId());
+//                    gn.setAddNum(num);
+//                    goodsupNorealMapper.insertSelective(gn);
+//                }else{
+//                    GoodsupNoreal g=new GoodsupNoreal();
+//                    g.setNorealId(gn.getNorealId());
+//                    g.setAddNum(gn.getAddNum()+num);
+//                    goodsupNorealMapper.updateByPrimaryKeySelective(g);
+//                }
             }
 
             @Override
@@ -361,6 +373,85 @@ public class GoatFactoryImpl implements GoatFactory {
             @Override
             public void updateWeight(Double weight) {
 
+            }
+            private void updateNoRealV2(Long goodsId, Long addNum) {
+                if(addNum==null){
+                    addNum=0L;
+                }
+                VirtualFlow v=virtualFlowMapper.selectByPrimaryKey(goodsId);
+                if(v==null){
+                    insertVirtualFlow(goodsId,addNum);
+                }else{
+                    VirtualFlow v1=new VirtualFlow();
+                    v1.setGoodsId(goodsId);
+                    v1.setVirtualUploadNum(v.getVirtualUploadNum()+addNum);
+                    virtualFlowMapper.updateByPrimaryKeySelective(v1);
+                }
+                if(addNum>0){
+                    insertBogusUploadRecords(goodsId,addNum.intValue());
+                }
+            }
+            private void insertVirtualFlow(Long goodsId, Long addNum){
+                VirtualFlow v=new VirtualFlow();
+                v.setGoodsId(goodsId);
+                v.setClicksScale(1L);
+                v.setGmtCreate(new Date());
+                v.setVirtualUploadNum(addNum);
+                v.setVirtualClicks(0L);
+                v.setVirtualDownNum(0L);
+                v.setGmtModif(new Date());
+                virtualFlowMapper.insertSelective(v);
+            }
+            private void insertBogusUploadRecords(Long itemId, int num){
+                Date startTime=null;
+                GoodsBogusUploadRecordsExample goodsBogusUploadRecordsExample=new GoodsBogusUploadRecordsExample();
+                goodsBogusUploadRecordsExample.createCriteria().andGoodsIdEqualTo(itemId);
+                goodsBogusUploadRecordsExample.setStartIndex(0);
+                goodsBogusUploadRecordsExample.setEndIndex(1);
+                goodsBogusUploadRecordsExample.setOrderByClause("time desc");
+                List<GoodsBogusUploadRecords> goodsBogusUploadRecords = goodsBogusUploadRecordsMapper
+                        .selectByConditionList(goodsBogusUploadRecordsExample);
+                if(goodsBogusUploadRecords.size()==1){
+                    startTime=goodsBogusUploadRecords.get(0).getTime();
+                }
+                if(startTime==null){
+                    startTime=selFakeStartTime(itemId);
+                }
+                HashSet<Long> timeSet=new HashSet<>();
+                randomSet(startTime.getTime(),System.currentTimeMillis(),num,timeSet);
+                List<Long> times=new ArrayList<>(timeSet);
+                times.sort(Comparator.comparingLong(o -> o));
+                List<GoodsBogusUploadRecords> rs=new ArrayList<>();
+                times.forEach(time -> {
+                    GoodsBogusUploadRecords r=new GoodsBogusUploadRecords();
+                    r.setGoodsId(itemId);
+                    r.setTime(new Date(time));
+                    r.setDay(DateUtil.dateToString(r.getTime(),DateUtil.patternB));
+                    r.setType(1);
+                    rs.add(r);
+                });
+                goodsBogusUploadRecordsMapper.insertListNoId(rs);
+            }
+            private Date selFakeStartTime(Long itemId){
+                ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(itemId);
+                ShiguGoodsTiny shiguGoodsTiny=new ShiguGoodsTiny();
+                shiguGoodsTiny.setWebSite(shiguGoodsIdGenerator.getWebSite());
+                shiguGoodsTiny.setGoodsId(itemId);
+                shiguGoodsTiny=shiguGoodsTinyMapper.selectFieldsByPrimaryKey(shiguGoodsTiny,FieldUtil.codeFields("goods_id,created"));
+                return shiguGoodsTiny.getCreated();
+            }
+            private void randomSet(long min, long max, int n, HashSet<Long> set) {
+                if (n > (max - min + 1) || max < min) {
+                    return;
+                }
+                for (int i = 0; i < n; i++) {
+                    long num = (long) (Math.random() * (max - min)) + min;
+                    set.add(num);
+                }
+                int setSize = set.size();
+                if (setSize < n) {
+                    randomSet(min, max, n - setSize, set);// 递归
+                }
             }
         };
         return BeanMapper.mapAbstact(itemGoatVO, goat);
