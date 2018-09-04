@@ -61,4 +61,15 @@
         LIMIT #{startIndex},#{endIndex}
     </select>
 
+    <insert id="saveCreated" parameterType="com.opentae.data.mall.beans.ShiguGoodsTinyCreatedQz">
+        INSERT INTO shigu_goods_tiny_created_qz(goods_id,old_created) VALUES (#{goodsId},#{oldCreated})
+    </insert>
+
+    <update id="updateCreated">
+        UPDATE shigu_goods_tiny_${webSite} SET created=#{created} WHERE goods_id=#{goodsId}
+    </update>
+
+    <update id="update">
+        UPDATE shigu_goods_tiny_created_qz SET gmt_modif=#{gmtModif} WHERE goods_id=#{goodsId}
+    </update>
 </mapper>
