@@ -57,6 +57,8 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     @Autowired
     MQUtil mqUtil;
 
+    @Autowired
+    private DaifaTradeMapper daifaTradeMapper;
     private final static Integer EZINT = 7; //截取长度
     @Autowired
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
@@ -262,6 +264,21 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             vo.setPriceAndBarCode(n + "N" + barcode);
             vo.setBuyerNick(ggoodsForPrint.getBuyerNick());
             vo.setReceiverName(ggoodsForPrint.getRecieverName());
+
+            //查询下单用户是否被标记
+            Long dfTradeId=ggoodsForPrint.getDfTradeId();
+            DaifaTrade daifaTrade=new DaifaTrade();
+            daifaTrade.setDfTradeId(dfTradeId);
+            daifaTrade=daifaTradeMapper.selectByPrimaryKey(daifaTrade);
+            String phone=daifaTrade.getBuyerNick();
+            String remark7=daifaTradeMapper.getMember(phone);
+            System.out.println(remark7);
+            if ("tab".equals(remark7)){
+                vo.setDpUserIs(true);
+            }else {
+                vo.setDpUserIs(false);
+            }
+
 
             if (ggoodsForPrint.getPrintBarcodeStatus() != null && ggoodsForPrint.getPrintBarcodeStatus() == 1) {
                 vo.setDateIncBatch(ca.get(Calendar.MONTH) + 1 + "." + ca.get(Calendar.DAY_OF_MONTH) + "-"

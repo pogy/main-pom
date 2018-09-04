@@ -324,12 +324,13 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaPostCustomer customer = new DaifaPostCustomer();
         customer.setExpressId(trade.getExpressId());
         customer = daifaPostCustomerMapper.selectOne(customer);
-        if (customer.getManual() != 1) {
+        if (customer.getManual() ==0) {//不需手动发货的
             redisIO.rpush("QueryExpressCodeThread", dfTradeId);
             workerMan.start();
-        }else {
-            throw new DaifaException("手动订单，不能获取快递单号！",DaifaException.DEBUG);
         }
+//        }else {
+//            throw new DaifaException("手动订单，不能获取快递单号！",DaifaException.DEBUG);
+//        }
     }
 
     /**

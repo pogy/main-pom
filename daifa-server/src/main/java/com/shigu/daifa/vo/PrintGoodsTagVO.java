@@ -16,6 +16,15 @@ public class PrintGoodsTagVO implements Serializable {
     private String specialStr;
     private String queNum;//缺货天数（先用这个字段）
     private String daifaName;
+    private boolean dpUserIs;
+
+    public boolean isDpUserIs() {
+        return dpUserIs;
+    }
+
+    public void setDpUserIs(boolean dpUserIs) {
+        this.dpUserIs = dpUserIs;
+    }
 
     public String getDateIncBatch() {
         return this.dateIncBatch;

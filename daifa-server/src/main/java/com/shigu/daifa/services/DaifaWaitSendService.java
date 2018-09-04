@@ -72,8 +72,7 @@ public class DaifaWaitSendService {
         List<DaifaPostCustomer> list=daifaPostCustomerMapper.selectFieldsByConditionList(example,"express_id,express");
         return list;
     }
-
-
+    
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
         if(bo.getPage()<1){
             bo.setPage(1);
@@ -121,7 +120,7 @@ public class DaifaWaitSendService {
                     bo.getOrderId(),
                     StringUtils.isNotBlank(bo.getTelephone())?bo.getTelephone():null,
                     bo.getBuyerId(),
-                    stId,
+                    stId,bo.getExpressId(),
                     etId,
                     bo.getCanSendState());
             if (count > 0) {
@@ -129,7 +128,7 @@ public class DaifaWaitSendService {
                         bo.getOrderId(),
                         StringUtils.isNotBlank(bo.getTelephone())?bo.getTelephone():null,
                         bo.getBuyerId(),
-                        stId,
+                        stId,bo.getExpressId(),
                         etId,
                         bo.getCanSendState(),
                         (bo.getPage() - 1) * 10,

@@ -125,6 +125,9 @@
                     AND t1.df_trade_id &lt;=#{etId}
                     AND t2.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND t1.express_id = #{ExpressId}
+        </if>
                 and t2.refund_status = 0 and t1.SEND_STATUS = 1 AND t1.order_display = 1
                 AND t1.seller_id = ${dfSellerId}
             GROUP BY
@@ -151,6 +154,9 @@
                     AND a.df_trade_id &lt;=#{etId}
                     AND b.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND a.express_id = #{ExpressId}
+        </if>
                 AND a.SEND_STATUS = 1
                 AND a.order_display = 1
                 AND a.df_trade_id = b.df_trade_id
@@ -204,6 +210,9 @@
                     AND t1.df_trade_id &lt;=#{etId}
                     AND t2.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND t1.express_id = #{ExpressId}
+        </if>
                 and t2.refund_status = 0 and t1.SEND_STATUS = 1 AND t1.order_display = 1
                 AND t1.seller_id = ${dfSellerId}
             GROUP BY
@@ -230,6 +239,9 @@
                     AND a.df_trade_id &lt;=#{etId}
                     AND b.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND a.express_id = #{ExpressId}
+        </if>
                 AND a.SEND_STATUS = 1
                 AND a.order_display = 1
                 AND a.df_trade_id = b.df_trade_id

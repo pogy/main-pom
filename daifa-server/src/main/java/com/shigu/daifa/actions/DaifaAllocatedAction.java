@@ -129,7 +129,7 @@ public class DaifaAllocatedAction {
             throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
         Session session = SecurityUtils.getSubject().getSession();
-        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION)    ;
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=daifaUser.getDaifaSellerId();
 
         List<PrintGoodsTagVO> vos=daifaAllocatedService.printGoodsTab(sellerId,bo.getType()==1?null:bo.getIds());
