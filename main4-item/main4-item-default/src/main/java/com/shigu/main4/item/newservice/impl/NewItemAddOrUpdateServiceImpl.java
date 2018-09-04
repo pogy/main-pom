@@ -56,6 +56,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Autowired
     ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long systemAddItem(NewPushSynItemBO item) throws ItemModifyException {
