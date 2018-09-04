@@ -6,6 +6,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.TaobaoPropValue;
 import com.opentae.data.mall.examples.TaobaoPropValueExample;
 import com.opentae.data.mall.interfaces.TaobaoPropValueMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.item.exceptions.TbException;
 import com.shigu.main4.item.vo.*;
 import com.taobao.api.ApiException;
@@ -43,7 +44,7 @@ public class PropsService {
      * @return
      */
 //    @Cacheable(value = "yj2prop.cache",key = "#cid")
-    public PropsVO selProps(Long cid) throws ApiException, TbException {
+    public PropsVO selProps(Long cid) throws ApiException, TbException, Main4Exception {
         PropsVO propsVO=new PropsVO();
         propsVO.setCid(cid);
         //开始处理品牌
@@ -101,7 +102,7 @@ public class PropsService {
      * @return
      */
     public PropsVO importValue(PropsVO propsVO, String prop, List<PropImg> propImgs, String alias, String inputStr, String inputIds)
-            throws IOException, ClassNotFoundException, ApiException, CloneNotSupportedException {
+            throws IOException, ApiException, CloneNotSupportedException, ClassNotFoundException, Main4Exception {
         //**************先把propsVO克隆一把,以免破坏缓存
         PropsVO psv=propsVO.deepClone();
         //把所有属性key\value化
@@ -498,7 +499,7 @@ public class PropsService {
      * @return
      */
     @Cacheable(value = "yj2subprop.cache",key = "#cid+ 'and'+ #path")
-    public PropertyItemVO selItemVoBySub(Long cid, String path) throws ApiException {
+    public PropertyItemVO selItemVoBySub(Long cid, String path) throws ApiException, Main4Exception {
         List<ItemProp> itemProps=taobaoUtil.selItemPropByPath(cid,path);
         if(itemProps!=null&&itemProps.size()>0){
             ItemProp ip=itemProps.get(0);

@@ -63,7 +63,7 @@ public class QimenTrade{
                 redisIO.putTemp("QIMEN_ERP_" + nick,"1",604800);
             } catch (ApiException e) {
                 throw new Main4Exception("添加监控用户失败");
-            } catch (ClassNotFoundException e) {
+            } catch (Main4Exception e) {
                 throw new Main4Exception("添加监控用户失败 未找到淘宝接口");
             }
         }
@@ -80,7 +80,7 @@ public class QimenTrade{
             shiguTaobaoClient.execute(req,selSessionKey(nick)).getBody();
         } catch (ApiException e) {
             throw new Main4Exception("全链路监控推送失败:Transfer");
-        } catch (ClassNotFoundException e) {
+        } catch (Main4Exception e) {
             throw new Main4Exception("全链路监控推送失败:Transfer 未找到淘宝接口");
         }
     }
@@ -95,7 +95,7 @@ public class QimenTrade{
             shiguTaobaoClient.execute(req,selSessionKey(nick)).getBody();
         } catch (ApiException e) {
             throw new Main4Exception("全链路监控推送失败:Cheack");
-        } catch (ClassNotFoundException e) {
+        } catch (Main4Exception e) {
             throw new Main4Exception("全链路监控推送失败:Cheack 未找到淘宝接口");
         }
     }
@@ -110,7 +110,7 @@ public class QimenTrade{
             shiguTaobaoClient.execute(req,selSessionKey(nick)).getBody();
         } catch (ApiException e) {
             throw new Main4Exception("全链路监控推送失败:Notify");
-        } catch (ClassNotFoundException e) {
+        } catch (Main4Exception e) {
             throw new Main4Exception("全链路监控推送失败:Notify 未找到淘宝接口");
         }
     }
@@ -125,7 +125,7 @@ public class QimenTrade{
             shiguTaobaoClient.execute(req,selSessionKey(nick)).getBody();
         } catch (ApiException e) {
             throw new Main4Exception("全链路监控推送失败:Out");
-        } catch (ClassNotFoundException e) {
+        } catch (Main4Exception e) {
             throw new Main4Exception("全链路监控推送失败:Out 未找到淘宝接口");
         }
     }

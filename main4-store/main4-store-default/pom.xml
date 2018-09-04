@@ -176,9 +176,9 @@
         </dependency>
         <!--淘宝接口-->
         <dependency>
-            <groupId>com.taobao</groupId>
-            <artifactId>taobao-sdk-java-21720662</artifactId>
-            <version>20160607</version>
+            <groupId>${taobao-sdk.groupId}</groupId>
+            <artifactId>${taobao-sdk.artifactId}</artifactId>
+            <version>${taobao-sdk.version}</version>
         </dependency>
 
         <dependency>

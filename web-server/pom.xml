@@ -429,9 +429,9 @@
         <!--自己放的包-->
         <!--淘宝接口-->
         <dependency>
-            <groupId>taobao-sdk-java-auto</groupId>
-            <artifactId>taobao-sdk-java-auto</artifactId>
-            <version>1487931282132</version>
+            <groupId>${taobao-sdk.groupId}</groupId>
+            <artifactId>${taobao-sdk.artifactId}</artifactId>
+            <version>${taobao-sdk.version}</version>
         </dependency>
         <!-- 支付宝接口 -->
         <dependency>

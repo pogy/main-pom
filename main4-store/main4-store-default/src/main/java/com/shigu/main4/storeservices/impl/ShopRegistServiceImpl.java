@@ -20,7 +20,6 @@ import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.storeservices.ShopToEsService;
 import com.shigu.main4.vo.*;
 import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.ShopGetRequest;
 import com.taobao.api.response.ShopGetResponse;
 import org.apache.commons.lang3.StringUtils;

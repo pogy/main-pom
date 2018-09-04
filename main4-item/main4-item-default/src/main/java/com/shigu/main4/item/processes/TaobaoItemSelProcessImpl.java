@@ -19,9 +19,8 @@ import com.shigu.main4.item.vo.PropertyItemVO;
 import com.shigu.main4.item.vo.PropertyValueVO;
 import com.shigu.main4.item.vo.PropsVO;
 import com.shigu.main4.item.vo.TbOnsale;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.Trade;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
@@ -49,14 +48,17 @@ public class TaobaoItemSelProcessImpl implements TaobaoItemSelProcess {
     @Autowired
     private TaobaoExecutor taobaoExecutor;
 
+    @Autowired
+    private ShiguTaobaoClient shiguTaobaoClient;
+
     @Value("${taobao.app.key}")
     private String APPKEY;
 
-    @Value("${taobao.app.secret}")
-    private String SECRET;
-
-    @Value("${taobao.app.server.url}")
-    private String TOP_SERVER_URL;
+    //@Value("${taobao.app.secret}")
+    //private String SECRET;
+    //
+    //@Value("${taobao.app.server.url}")
+    //private String TOP_SERVER_URL;
 
     @Autowired
     PropsService propsService;
@@ -81,8 +83,6 @@ public class TaobaoItemSelProcessImpl implements TaobaoItemSelProcess {
         if(list.size()==0){
             throw new TbOnsaleException("no session to "+shop.getTbNick());
         }
-        TaobaoClient client = new DefaultTaobaoClient(TOP_SERVER_URL,
-                APPKEY, SECRET);
         ItemsOnsaleGetRequest req = new ItemsOnsaleGetRequest();
         req.setFields("num_iid,title,price,pic_url");
         req.setQ(keyword);
@@ -90,7 +90,7 @@ public class TaobaoItemSelProcessImpl implements TaobaoItemSelProcess {
         req.setPageSize(new Long(pageSize));
         ItemsOnsaleGetResponse rsp = null;
         try {
-            rsp = client.execute(req, list.get(0).getSession());
+            rsp = shiguTaobaoClient.execute(req, list.get(0).getSession());
             if(!rsp.isSuccess()){
                 throw new TbOnsaleException("tb open_error "+rsp.getBody());
             }
@@ -129,6 +129,8 @@ public class TaobaoItemSelProcessImpl implements TaobaoItemSelProcess {
             return pager;
         } catch (ApiException e) {
             throw new TbOnsaleException("tb open_api_error "+e.getErrCode());
+        } catch (Main4Exception e) {
+            throw new TbOnsaleException("invoke failed not find tb request class" + e.getMessage());
         }
     }
 
@@ -189,7 +191,7 @@ public class TaobaoItemSelProcessImpl implements TaobaoItemSelProcess {
     public PropertyItemVO selItemVoBySub(Long cid, String path) throws TbPropException {
         try {
             return propsService.selItemVoBySub(cid,path);
-        } catch (ApiException e) {
+        } catch (ApiException|Main4Exception e) {
             throw new TbPropException(e.getMessage());
         }
     }

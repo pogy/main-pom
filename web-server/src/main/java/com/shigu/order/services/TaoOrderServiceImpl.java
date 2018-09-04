@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -23,16 +24,13 @@ import com.shigu.order.vo.TinyVO;
 import com.shigu.taobaoredirect.api.ShiguTaobaoSecurityClientAgent;
 import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.SecretException;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Order;
 import com.taobao.api.domain.Trade;
 import com.taobao.api.request.TradeFullinfoGetRequest;
 import com.taobao.api.request.TradesSoldGetRequest;
 import com.taobao.api.response.TradeFullinfoGetResponse;
 import com.taobao.api.response.TradesSoldGetResponse;
-import com.taobao.api.security.SecurityClient;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -162,7 +160,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             e.printStackTrace();
         } catch (SecretException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (Main4Exception e) {
             e.printStackTrace();
         }
 
@@ -187,7 +185,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             e.printStackTrace();
         } catch (SecretException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (Main4Exception e) {
             e.printStackTrace();
         }
         return tbOrderVO;

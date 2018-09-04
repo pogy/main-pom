@@ -19,8 +19,6 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.shigu.tools.TbClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.LogisticsOfflineSendRequest;
 import com.taobao.api.response.LogisticsOfflineSendResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -111,7 +109,7 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
             rsp = shiguTaobaoClient.execute(req,session);
         } catch (ApiException e) {
             throw new TbSendException(TbSendException.TbSendExceptionEnum.IO_ERROR.toString());
-        } catch (ClassNotFoundException e) {
+        } catch (Main4Exception e) {
             throw new TbSendException(TbSendException.TbSendExceptionEnum.IO_ERROR.toString()+" not find class");
         }
         if (StringUtils.isNotBlank(rsp.getSubCode())) {
