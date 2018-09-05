@@ -783,9 +783,9 @@ public class CdnAction {
         //规则
         model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
         if ("Man".equals(manOrWoman)) {
-            return "hzMan/zlIndex";
+            return "hzMan/ssManIndex";
         } else {
-            return "index/index";
+            return "hzMan/ssWomanIndex";
         }
     }
 
