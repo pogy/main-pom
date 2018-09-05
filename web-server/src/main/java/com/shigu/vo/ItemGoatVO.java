@@ -119,10 +119,10 @@ public class ItemGoatVO implements Serializable {
         if (itemSpreadVO == null)return null;
         ItemGoatVO itemGoatVO = new ItemGoatVO();
         itemGoatVO.setGoodsId(itemSpreadVO.getId());
-        itemGoatVO.setImgSrc(itemSpreadVO.getImgsrc());
+        itemGoatVO.setImgSrc(itemSpreadVO.getImgSrc());
         itemGoatVO.setPrice(itemSpreadVO.getPiprice());
-        itemGoatVO.setShopId(itemSpreadVO.getStoreId());
-        itemGoatVO.setMarketName(itemSpreadVO.getMarketText());
+        itemGoatVO.setShopId(itemSpreadVO.getShopId());
+        itemGoatVO.setMarketName(itemSpreadVO.getMarketName());
         itemGoatVO.setShopNum(itemSpreadVO.getStoreNum());
         itemGoatVO.setTitle(itemSpreadVO.getTitle());
         return itemGoatVO;
