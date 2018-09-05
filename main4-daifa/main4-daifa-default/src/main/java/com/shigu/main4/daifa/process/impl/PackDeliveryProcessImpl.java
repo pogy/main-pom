@@ -56,6 +56,8 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     private DaifaWaitSendMapper daifaWaitSendMapper;//
     @Autowired
     private DaifaGoodsWeightMapper daifaGoodsWeightMapper;
+    @Autowired
+    DaifaPostCustomerMapper daifaPostCustomerMapper;
 
     @Autowired
     private DaifaCallExpressMapper daifaCallExpressMapper;
@@ -205,8 +207,10 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
         print.setGoodsMs(goodsMs);
         print.setSpecialStr(trade.getBarCodeKey());
-        print.setPostName(send.getExpressName());
-        print.setMarkDestination(send.getMarkDestination() + (trade.getExpressName().contains("百世") && daifaCallExpress.getSortingCode() != null ? (" " + daifaCallExpress.getSortingCode()) : ""));
+        DaifaPostCustomer poc=new DaifaPostCustomer();
+        poc.setExpressId(send.getExpressId());
+        print.setPostName(daifaPostCustomerMapper.selectOne(poc).getExpress());
+        print.setMarkDestination(send.getMarkDestination()+(trade.getExpressName().contains("百世")&&daifaCallExpress.getSortingCode()!=null?(" "+daifaCallExpress.getSortingCode()):""));
         print.setPackageName(send.getPackageName());
         print.setPackageCode(send.getPackageCode());
         print.setSendNum(orderSize >= 1 ? goodsnum : null);
@@ -241,14 +245,17 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         return vo;
     }
 
+
     /**
      * ====================================================================================
+     *
      *
      * @方法名： dealSubOrderError
      * @user gzy 2017/11/9 11:14
      * @功能：修改子单的商品属性，商品货号，商家编码
      * @param: [dfOrderId, propStr, goodsCode, storeGoodsCode]
      * @return: int
+     * @exception: ====================================================================================
      * @exception: ====================================================================================
      */
     @Override
@@ -277,7 +284,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaOrderExample example1 = new DaifaOrderExample();
         example1.createCriteria().andGoodsIdEqualTo(order.getGoodsId());
 
-
+        daifaOrderMapper.updateByExampleSelective(order1, example1);
         daifaOrderMapper.updateByExampleSelective(order1, example1);
 
         DaifaWaitSendOrder worder1 = new DaifaWaitSendOrder();
@@ -319,6 +326,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
 
     }
 
+
     @Override
     public void queryExpressCode(Long dfTradeId) throws DaifaException {
         DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(dfTradeId);
@@ -334,6 +342,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     /**
      * 校验是否可发货
      * 如果可发,则返回因拿到的商品信息
+     *
      *
      * @param dfTradeId
      */
@@ -374,11 +383,13 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     /**
      * ====================================================================================
      *
+     *
      * @方法名： dealSendTest
      * @user gzy 2017/10/27 17:31
      * @功能：
      * @param: [dfTradeId]
      * @return: com.shigu.main4.daifa.vo.ExpressVO
+     * @exception: ====================================================================================
      * @exception: ====================================================================================
      */
     public ExpressVO dealSendTest(Long dfTradeId) throws DaifaException {
@@ -455,7 +466,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
                     sendExample.createCriteria().andDfTradeIdEqualTo(dfTradeId);
                     daifaWaitSendMapper.updateByExampleSelective(send, sendExample);
                 }
-
 
             } catch (DaifaException e) {
                 // //System.out.println("11111@@@"+e.getMessage ());

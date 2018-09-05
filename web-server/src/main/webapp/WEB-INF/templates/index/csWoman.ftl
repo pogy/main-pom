@@ -41,7 +41,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院<#elseif webSite == "cz">沧州</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="//hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
@@ -50,6 +50,7 @@
                         <li><a href="//gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
                         <li><a href="//jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
                         <li><a href="//qz.571xz.com" <#if webSite == "qz">class="select"</#if>>泉州</a></li>
+                        <li><a href="//cz.571xz.com" <#if webSite == "qz">class="select"</#if>>沧州</a></li>
                     </ul>
                 </div>
             </div>
@@ -900,6 +901,7 @@ $(".imgBox img").lazyload({
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
             <a href="//jx.571xz.com" target="_blank">濮院站</a>
             <a href="//qz.571xz.com" target="_blank">泉州站</a>
+            <a href="//cz.571xz.com" target="_blank">沧州站</a>
             
             
             <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>

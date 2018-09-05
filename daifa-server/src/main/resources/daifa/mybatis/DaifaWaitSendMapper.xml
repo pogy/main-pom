@@ -58,7 +58,6 @@
         f.express_id,
         f.express_code,
         f.receiver_address,
-        d.cdkey,
         d.df_order_id,
         d.pic_path,
         d.title,

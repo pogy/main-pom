@@ -146,13 +146,15 @@ public class DaifaWaitSendService {
                 DaifaTradeExample te=new DaifaTradeExample();
                 te.createCriteria().andDfTradeIdIn(tids);
                 List<DaifaTrade> trades=daifaTradeMapper.selectFieldsByExample(te,
-                        FieldUtil.codeFields("df_trade_id,trade_discount_fee,services_fee,daifa_type"));
+                        FieldUtil.codeFields("df_trade_id,trade_discount_fee,services_fee,daifa_type,bar_code_key"));
                 Map<Long,DaifaTrade> tradeMap=trades.stream().collect(Collectors.toMap(DaifaTrade::getDfTradeId,daifaTrade -> daifaTrade));
                 daifaWaitSendSimples.forEach(daifaWaitSendSimple -> {
-                    DaifaTrade trade=tradeMap.get(daifaWaitSendSimple.getOrderId());
+                    DaifaTrade trade = tradeMap.get(daifaWaitSendSimple.getOrderId());
                     daifaWaitSendSimple.setDiscountFee(trade.getTradeDiscountFee());
                     daifaWaitSendSimple.setServersFee(trade.getServicesFee());
-                    daifaWaitSendSimple.setIsTbOrder(trade.getDaifaType()==2);
+                    daifaWaitSendSimple.getChildOrders().forEach(daifaWaitSendOrderSimple -> daifaWaitSendOrderSimple
+                            .setBarCodeKey(trade.getBarCodeKey()));
+                    daifaWaitSendSimple.setIsTbOrder(trade.getDaifaType() == 2);
                 });
 
                 //List<Long> expressIds=daifaWaitSendSimples.stream().map(DaifaWaitSendSimple::getExpressId).collect(Collectors.toList());

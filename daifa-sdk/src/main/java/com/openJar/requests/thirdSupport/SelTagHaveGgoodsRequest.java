@@ -11,8 +11,9 @@ import com.openJar.responses.thirdSupport.SelTagHaveGgoodsResponse;
 public class SelTagHaveGgoodsRequest extends Request<SelTagHaveGgoodsResponse> {
 
     private Long daifaNahuoId;//拿货人id
-    private Integer status;//1：拿货，2：缺货
+    private Integer status;//1：拿货，2：缺货，3：标记有货时间
     private String barCodeMore;//条形码以（英文）逗号分开
+    private Long haveGoodsTime;//有货时间（单位秒）
 
     
 
@@ -46,5 +47,13 @@ public class SelTagHaveGgoodsRequest extends Request<SelTagHaveGgoodsResponse> {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getHaveGoodsTime() {
+        return haveGoodsTime;
+    }
+
+    public void setHaveGoodsTime(Long haveGoodsTime) {
+        this.haveGoodsTime = haveGoodsTime;
     }
 }

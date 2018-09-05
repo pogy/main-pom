@@ -1,0 +1,208 @@
+package com.opentae.data.mall.examples;
+
+import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class ShiguGoodsIdGeneratorExample extends SgExample<ShiguGoodsIdGeneratorExample.Criteria> {
+    public static final Class<ShiguGoodsIdGenerator> beanClass = ShiguGoodsIdGenerator.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn webSite;
+    public static EntityColumn remark;
+    public static EntityColumn goodId;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        webSite = listMap.get("webSite");
+        remark = listMap.get("remark");
+        goodId = listMap.get("goodId");
+        }
+
+    public ShiguGoodsIdGeneratorExample() {
+        this.setTableAlias(entityTable.getName());
+    }
+
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
+    }
+
+    @Override
+    protected Criteria createCriteriaInternal() {
+        return new Criteria(this);
+    }
+
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
+        }
+
+        public Criteria andWebSiteIsNull() {
+            return isNull(webSite);
+        }
+
+        public Criteria andWebSiteIsNotNull() {
+            return isNotNull(webSite);
+        }
+
+        public Criteria andWebSiteEqualTo(String value) {
+            return equalTo(webSite, value);
+        }
+
+        public Criteria andWebSiteNotEqualTo(String value) {
+            return notEqualTo(webSite, value);
+        }
+
+        public Criteria andWebSiteGreaterThan(String value) {
+            return greaterThan(webSite, value);
+        }
+
+        public Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(webSite, value);
+        }
+
+        public Criteria andWebSiteLessThan(String value) {
+            return lessThan(webSite, value);
+        }
+
+        public Criteria andWebSiteLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(webSite, value);
+        }
+
+        public Criteria andWebSiteLike(String value) {
+            return like(webSite, value);
+        }
+
+        public Criteria andWebSiteNotLike(String value) {
+            return notLike(webSite, value);
+        }
+
+        public Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
+        }
+
+        public Criteria andWebSiteNotIn(List<String> values) {
+            return notIn(webSite, values);
+        }
+
+        public Criteria andWebSiteBetween(String value1, String value2) {
+            return between(webSite, value1, value2);
+        }
+
+        public Criteria andWebSiteNotBetween(String value1, String value2) {
+            return notBetween(webSite, value1, value2);
+        }
+        public Criteria andRemarkIsNull() {
+            return isNull(remark);
+        }
+
+        public Criteria andRemarkIsNotNull() {
+            return isNotNull(remark);
+        }
+
+        public Criteria andRemarkEqualTo(String value) {
+            return equalTo(remark, value);
+        }
+
+        public Criteria andRemarkNotEqualTo(String value) {
+            return notEqualTo(remark, value);
+        }
+
+        public Criteria andRemarkGreaterThan(String value) {
+            return greaterThan(remark, value);
+        }
+
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark, value);
+        }
+
+        public Criteria andRemarkLessThan(String value) {
+            return lessThan(remark, value);
+        }
+
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark, value);
+        }
+
+        public Criteria andRemarkLike(String value) {
+            return like(remark, value);
+        }
+
+        public Criteria andRemarkNotLike(String value) {
+            return notLike(remark, value);
+        }
+
+        public Criteria andRemarkIn(List<String> values) {
+            return in(remark, values);
+        }
+
+        public Criteria andRemarkNotIn(List<String> values) {
+            return notIn(remark, values);
+        }
+
+        public Criteria andRemarkBetween(String value1, String value2) {
+            return between(remark, value1, value2);
+        }
+
+        public Criteria andRemarkNotBetween(String value1, String value2) {
+            return notBetween(remark, value1, value2);
+        }
+        public Criteria andGoodIdIsNull() {
+            return isNull(goodId);
+        }
+
+        public Criteria andGoodIdIsNotNull() {
+            return isNotNull(goodId);
+        }
+
+        public Criteria andGoodIdEqualTo(Long value) {
+            return equalTo(goodId, value);
+        }
+
+        public Criteria andGoodIdNotEqualTo(Long value) {
+            return notEqualTo(goodId, value);
+        }
+
+        public Criteria andGoodIdGreaterThan(Long value) {
+            return greaterThan(goodId, value);
+        }
+
+        public Criteria andGoodIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(goodId, value);
+        }
+
+        public Criteria andGoodIdLessThan(Long value) {
+            return lessThan(goodId, value);
+        }
+
+        public Criteria andGoodIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(goodId, value);
+        }
+
+        public Criteria andGoodIdIn(List<Long> values) {
+            return in(goodId, values);
+        }
+
+        public Criteria andGoodIdNotIn(List<Long> values) {
+            return notIn(goodId, values);
+        }
+
+        public Criteria andGoodIdBetween(Long value1, Long value2) {
+            return between(goodId, value1, value2);
+        }
+
+        public Criteria andGoodIdNotBetween(Long value1, Long value2) {
+            return notBetween(goodId, value1, value2);
+        }
+    }
+}

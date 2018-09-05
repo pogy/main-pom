@@ -315,7 +315,7 @@ public class GoodsSearchAction {
         if(website.equals("hz")&&bo.getPid().equals(30L)){
             model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
         }else if(website.equals("cz")&&bo.getPid().equals(16L)){
-            model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
+            model.addAttribute("goodsGoats", goodsSearchService.selCzBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
         }
 
         if ("kx".equalsIgnoreCase(website)) {
