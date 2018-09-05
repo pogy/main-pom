@@ -55,6 +55,16 @@ public class GgoodsForPrint implements Serializable{
     private String expressName;
     @Column("daifa_trade.seller_id")
     private Long dfSellerId;
+    @Column("daifa_trade.buyer_id")
+    private Long buyerId;
+
+    public Long getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerId(Long buyerId) {
+        this.buyerId = buyerId;
+    }
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
