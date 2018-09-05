@@ -28,13 +28,13 @@ public class DaifaFinanceService {
     public FinanceVO selFinace(String time, Long sellerId){
         String day = DateUtil.dateToString(DateUtil.stringToDate(time,DateUtil.patternA),DateUtil.patternB);
 
-        //拿货费用
+        //拿货费用   今日已拿
         String takeFee=toDouble(daifaSelFinaceMapper.selectTodayTakeFee(day,sellerId));
 
-        //商品费用
+        //商品费用  今日应拿
         String goodsFee=toDouble(daifaSelFinaceMapper.selectTodayGoodsFee(day,sellerId));
 
-        //代发费
+        //代发费   服务费
         String serverFee=toDouble(daifaSelFinaceMapper.selectTodayServerFee(day,sellerId));
 
         //快递费

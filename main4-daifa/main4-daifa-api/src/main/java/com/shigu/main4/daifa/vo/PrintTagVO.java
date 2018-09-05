@@ -24,6 +24,15 @@ public class PrintTagVO implements Serializable {
     private String postName;//快递名称
     private String buyerNick;//下单人昵称
     private String daifaName;
+    private boolean dpUserIs;//是否吊牌
+
+    public boolean isDpUserIs() {
+        return dpUserIs;
+    }
+
+    public void setDpUserIs(boolean dpUserIs) {
+        this.dpUserIs = dpUserIs;
+    }
 
     public String getDateIncBatch() {
         return dateIncBatch;
