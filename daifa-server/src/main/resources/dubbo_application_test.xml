@@ -6,7 +6,7 @@
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 
-    <dubbo:reference interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" id="takeGoodsIssueProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" id="takeGoodsIssueProcess" group="${DAIFA_GROUP}" timeout="40000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.PackDeliveryProcess" id="packDeliveryProcess" group="${DAIFA_GROUP}" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.daifa.process.OrderManageProcess" id="orderManageProcess" group="${DAIFA_GROUP}" timeout="10000" >
         <dubbo:method name="orderTimeout" timeout="300000"/>
@@ -23,7 +23,7 @@
 
     <dubbo:reference interface="com.shigu.main4.order.process.TemplateProcess" id="templateProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.QimenTradeProcess" id="qimenTradeProcess" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderModelProcess" id="orderModelProcess" group="${DAIFA_GROUP}" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.daifa.process.OrderModelProcess" id="orderModelProcess" group="${DAIFA_GROUP}" timeout="40000"/>
 
 
 </beans>

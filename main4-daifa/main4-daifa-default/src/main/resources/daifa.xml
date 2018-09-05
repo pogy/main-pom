@@ -25,7 +25,7 @@
         <dubbo:method name="getMessage" timeout="300000"/>
     </dubbo:service>
     <dubbo:service interface="com.shigu.main4.daifa.process.PackDeliveryProcess" ref="packDeliveryProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" ref="takeGoodsIssueProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" ref="takeGoodsIssueProcess" group="${DAIFA_GROUP}" retries="0" timeout="40000" />
     <dubbo:service interface="com.shigu.main4.daifa.process.SaleAfterProcess" ref="saleAfterProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess" ref="scanSaleAfterExpressProcess" group="${DAIFA_GROUP}" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.daifa.process.SysDealProcess" ref="sysDealProcess" retries="0" group="${DAIFA_GROUP}" timeout="20000" />

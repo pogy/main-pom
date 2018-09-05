@@ -28,6 +28,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/*/submitAllocation.*"/><!--分配-->
+            <mvc:mapping path="/*/printGoodsTabJson.*"/><!--打印全部标签-->
             <mvc:mapping path="/*/setIsGetGoodsJson.*"/><!--网页端已拿或缺货-->
             <mvc:mapping path="/*/setTimeJson.*"/><!--拿货时间-->
             <mvc:mapping path="/*/setTallyJson.*"/><!--标记下架-->
