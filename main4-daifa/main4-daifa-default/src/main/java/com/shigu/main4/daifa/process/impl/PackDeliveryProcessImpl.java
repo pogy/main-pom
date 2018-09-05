@@ -144,6 +144,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         bo.setMarkDestination(exvo.getMarkDestination());
         bo.setPackageName(exvo.getPackageName());
         bo.setDfOrderIds(oids);
+        bo.setManual(0L);
         OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, order.getDfTradeId());
         orderModel.send(bo);
 
@@ -328,9 +329,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             redisIO.rpush("QueryExpressCodeThread", dfTradeId);
             workerMan.start();
         }
-//        }else {
-//            throw new DaifaException("手动订单，不能获取快递单号！",DaifaException.DEBUG);
-//        }
     }
 
     /**
