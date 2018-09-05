@@ -28,6 +28,7 @@ public class DaifaWaitSendSimple implements Serializable{
     private String totalFee;//总费用
     private String expressFee;//快递费用
     private String expressName;//快递名
+    private Long expressId;//快递id
     private String expressCode;//快递单号
     private String discountFee;//减免费用
     private String serversFee;//服务费用
@@ -40,6 +41,13 @@ public class DaifaWaitSendSimple implements Serializable{
     }
 
 
+    public Long getExpressId() {
+        return expressId;
+    }
+
+    public void setExpressId(Long expressId) {
+        this.expressId = expressId;
+    }
 
     public Integer getTradeState() {
         return tradeState;

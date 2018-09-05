@@ -16,6 +16,7 @@
         <result column="money" property="totalFee" jdbcType="VARCHAR"/>
         <result column="express_fee" property="expressFee" jdbcType="VARCHAR"/>
         <result column="express_name" property="expressName" jdbcType="VARCHAR"/>
+        <result column="express_id" property="expressId" jdbcType="DECIMAL"/>
         <result column="express_code" property="expressCode" jdbcType="VARCHAR"/>
         <result column="trade_discount_fee" property="discountFee" jdbcType="VARCHAR"/>
         <result column="is_tb_order" property="isTbOrder" jdbcType="BOOLEAN"/>
@@ -54,6 +55,7 @@
         f.money,
         f.express_fee,
         f.express_name,
+        f.express_id,
         f.express_code,
         f.receiver_address,
         d.cdkey,

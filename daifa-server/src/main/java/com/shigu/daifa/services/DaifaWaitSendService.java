@@ -154,12 +154,14 @@ public class DaifaWaitSendService {
                     daifaWaitSendSimple.setServersFee(trade.getServicesFee());
                     daifaWaitSendSimple.setIsTbOrder(trade.getDaifaType()==2);
                 });
+
+                //List<Long> expressIds=daifaWaitSendSimples.stream().map(DaifaWaitSendSimple::getExpressId).collect(Collectors.toList());
                 List<Long> oids=new ArrayList<>();
                 for (DaifaWaitSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
                     DaifaWaitSendVO vo = new DaifaWaitSendVO();
-                    String exprName=daifaWaitSendSimple.getExpressName();
+                    Long expressId=daifaWaitSendSimple.getExpressId();
                     DaifaPostCustomer customer=new DaifaPostCustomer();
-                    customer.setExpress(exprName);
+                    customer.setExpressId(expressId);
                     List<DaifaPostCustomer> cs=daifaPostCustomerMapper.select(customer);
                     Long orderid=daifaWaitSendSimple.getOrderId();
                     try {
