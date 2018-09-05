@@ -270,7 +270,10 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             DaifaTrade daifaTrade=new DaifaTrade();
             daifaTrade.setDfTradeId(dfTradeId);
             daifaTrade=daifaTradeMapper.selectByPrimaryKey(daifaTrade);
-            String phone=daifaTrade.getBuyerNick();
+            String phone=daifaTrade.getBuyerTelephone();
+            if (phone == null){
+                continue;
+            }
             String remark7=daifaTradeMapper.getMember(phone);
             System.out.println(remark7);
             if ("tab".equals(remark7)){
