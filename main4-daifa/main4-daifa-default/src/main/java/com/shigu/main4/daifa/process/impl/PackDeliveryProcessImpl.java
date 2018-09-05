@@ -57,9 +57,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     @Autowired
     private DaifaGoodsWeightMapper daifaGoodsWeightMapper;
     @Autowired
-    DaifaPostCustomerMapper daifaPostCustomerMapper;
-
-    @Autowired
     private DaifaCallExpressMapper daifaCallExpressMapper;
 
     @Autowired
