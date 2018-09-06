@@ -63,6 +63,27 @@
 </li>
         <#elseif webSite == 'cs'>
         <#elseif webSite == 'ss'>
+<li
+        <#if 'market' == $pageid>class="actived"</#if>
+>
+    <a href="//ss.571xz.com/market.htm?mid=90" target="_blank">
+        逛市场
+    </a>
+</li>
+<li
+        <#if 'goods' == $pageid>class="actived"</#if>
+>
+    <a href="//so.571xz.com/ssgoods.htm?pid=${pid}" target="_blank">
+        商品库
+    </a>
+</li>
+<li
+        <#if 'newgoods' == $pageid>class="actived"</#if>
+>
+    <a href="//so.571xz.com/newgoods.htm?cid=${newGoodsCid}&amp;webSite=ss" target="_blank">
+        今日新品
+    </a>
+</li>
         <#elseif webSite == 'bj'>
         <#elseif webSite == 'gz'>
         <#elseif webSite == 'qz'>
