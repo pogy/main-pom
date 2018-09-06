@@ -36,7 +36,7 @@ if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
 </script>
 <div class="dfBanner">
 	<div class="dfBigBox layout">
-        <a href="//style.571xz.com/other/apk/SJXZ_Purchaser_V2.5.3_253_jiagu_sign.apk" target="_blank" class="androidBtn pa"></a>
+        <a href="http://sj.qq.com/myapp/detail.htm?apkName=com.alidao.sjxz" target="_blank" class="androidBtn pa"></a>
         <a href="https://itunes.apple.com/cn/app/xing-zuo-jin-huo-bao/id965751969?mt=8" target="_blank" class="iosBtn pa"></a>
     </div>
     <div class="dfSmall"></div>
