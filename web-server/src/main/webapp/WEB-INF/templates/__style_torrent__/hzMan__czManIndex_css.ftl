@@ -1,1 +1,1 @@
-<link href="//style.571xz.com/v6/hzMan/css/czManIndex_v20180821_094408.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/hzMan/css/czManIndex_v20180904_125248.css" rel="stylesheet">

@@ -13,18 +13,21 @@ public class ItemSpreadVO implements Serializable{
 
     private String id;
 
-    private String imgsrc;
+    private String imgSrc;
 
     private String piprice;
 
-    private String storeId;
+    private String shopId;
 
-    private String storeText;
+    private String shopNo;
+
+    //发布时间
+    private String time;
 
     /**
      * 市场
      */
-    private String marketText;
+    private String marketName;
     /**
      * 档口
      */
@@ -37,7 +40,7 @@ public class ItemSpreadVO implements Serializable{
      * 店铺小标题
      */
     private String userText;
-
+//
     private String title;
 
     public ItemSpreadVO() {
@@ -45,30 +48,16 @@ public class ItemSpreadVO implements Serializable{
 
     public ItemSpreadVO(ItemForList item) {
         setId(item.getGoodsId()+"");
-        setImgsrc(item.getPicUrl());
+        setImgSrc(item.getPicUrl());
         setPiprice(item.getPiPriceString());
-        setStoreId(item.getStoreId()+"");
-        setStoreNum(item.getStoreNum());
-        setMarketText(item.getMarket());
-        setStoreText(getMarketText()+" "+getStoreNum());
+        setShopId(item.getStoreId()+"");
+        setShopNo(item.getStoreNum());
+        setMarketName(item.getMarket());
+
         setTitle(KeyWordsUtil.duleKeyWords(item.getTitle()));
     }
 
-    public String getMarketText() {
-        return marketText;
-    }
 
-    public void setMarketText(String marketText) {
-        this.marketText = marketText;
-    }
-
-    public String getStoreNum() {
-        return storeNum;
-    }
-
-    public void setStoreNum(String storeNum) {
-        this.storeNum = storeNum;
-    }
 
     public String getId() {
         return id;
@@ -78,13 +67,7 @@ public class ItemSpreadVO implements Serializable{
         this.id = id;
     }
 
-    public String getImgsrc() {
-        return imgsrc;
-    }
 
-    public void setImgsrc(String imgsrc) {
-        this.imgsrc = imgsrc;
-    }
 
     public String getPiprice() {
         return piprice;
@@ -94,20 +77,60 @@ public class ItemSpreadVO implements Serializable{
         this.piprice = piprice;
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getImgSrc() {
+        return imgSrc;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
-    public String getStoreText() {
-        return storeText;
+    public String getShopId() {
+        return shopId;
     }
 
-    public void setStoreText(String storeText) {
-        this.storeText = storeText;
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getShopNo() {
+        return shopNo;
+    }
+
+    public void setShopNo(String shopNo) {
+        this.shopNo = shopNo;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getStoreNum() {
+        return storeNum;
+    }
+
+    public void setStoreNum(String storeNum) {
+        this.storeNum = storeNum;
     }
 
     public String getStyleText() {
@@ -132,13 +155,5 @@ public class ItemSpreadVO implements Serializable{
 
     public void setUserText(String userText) {
         this.userText = userText;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 }
