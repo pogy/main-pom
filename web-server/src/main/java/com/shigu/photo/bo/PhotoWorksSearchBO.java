@@ -39,9 +39,6 @@ public class PhotoWorksSearchBO {
      * 获取 排序
      */
     public String getSort() {
-        if (StringUtils.isBlank(this.sort)) {
-            this.sort = "def";
-        }
         return this.sort;
     }
 
@@ -85,7 +82,7 @@ public class PhotoWorksSearchBO {
         if(getSort()!=null){
             photoWorksBO.setSort("def".equals(getSort())?WorksListSortEnum.defaults:WorksListSortEnum.create_desc);
         }else{
-            photoWorksBO.setSort(WorksListSortEnum.defaults);
+            photoWorksBO.setSort(WorksListSortEnum.create_desc);
         }
         return photoWorksBO;
     }

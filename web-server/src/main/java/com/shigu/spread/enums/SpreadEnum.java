@@ -131,6 +131,18 @@ public enum SpreadEnum {
     WOMAN_ZL_TOP_BANNER("顶部公告","WOMAN-ZL-TOP-BANNER"),
 
 
+    //石狮
+    NEW_SS_Man_HomeCateMenu("石狮首页左侧导航","NEW_SS_HomeCateMenu"),
+    MAN_SS_DT("首页轮播图","MAN-SS-DT"),MAN_SS_XT("首页轮播图下方小图","MAN-SS-XT"),
+    MAN_SS_RM("首页热卖","MAN-SS-RM"),MAN_SS_TJ("首页推荐商品","MAN-SS-TJ"),
+    MAN_SS_TOP_BANNER("顶部公告","MAN-SS-TOP-BANNER"),
+
+    NEW_SS_Woman_HomeCateMenu("石狮首页左侧导航","NEW_SS_HomeCateMenu"),
+    WOMAN_SS_DT("首页轮播图","WOMAN-SS-DT"),WOMAN_SS_XT("首页轮播图下方小图","WOMAN-SS-XT"),
+    WOMAN_SS_RM("首页热卖","WOMAN-SS-RM"),WOMAN_SS_TJ("首页推荐商品","WOMAN-SS-TJ"),
+    WOMAN_SS_TOP_BANNER("顶部公告","WOMAN-SS-TOP-BANNER"),
+
+
     //新增app端广告位
     HZ_APP_MAN_DT("APP首页轮播男装大图", "HZ-APP-MAN-DT"),HZ_APP_MAN_RM("APP男装热卖广告", "HZ-APP-MAN-RM"),HZ_APP_MAN_TJDK("APP男装推荐档口", "HZ-APP-MAN-TJDK"),
     HZ_APP_WOMAN_DT("APP首页轮播女装大图", "HZ-APP-WOMAN-DT"),HZ_APP_WOMAN_RM("APP女装热卖广告", "HZ-APP-WOMAN-RM"),HZ_APP_WOMAN_TJDK("APP女装推荐档口", "HZ-APP-WOMAN-TJDK"),
