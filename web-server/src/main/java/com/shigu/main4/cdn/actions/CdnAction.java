@@ -253,9 +253,9 @@ public class CdnAction {
             //****女装首页数据
             //热卖
             ObjFromCache<List<ItemSpreadVO>> itemSpreadRms = spreadService.selItemSpreads(webSite, SpreadEnum.WOMAN_RM);
-            model.addAttribute("hotsaleGoodslist", selFromCache(itemSpreadRms));
+            model.addAttribute("hotSaleGoodsList", selFromCache(itemSpreadRms));
             //类目导航
-            ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, 2, SpreadEnum.NEW_HZ_HomeCateMenu);
+            ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, 2, SpreadEnum.NEW_HZ_Woman_HomeCateMenu);
             model.addAttribute("catemenu", selFromCache(catemenu));
 //            //风格类目
 //            model.addAttribute("styleCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
@@ -277,7 +277,7 @@ public class CdnAction {
 //            loves.add((LoveGoodsList) selFromCache(sz));
 //            loves.add((LoveGoodsList) selFromCache(xz));
 //            model.addAttribute("loveGoodslist", loves);
-            return "index/index";
+            return "hzMan/hzWomanIndex";
         }
     }
 
@@ -515,7 +515,7 @@ public class CdnAction {
             if (indexGoodsVo == null) {
                 continue;
             }
-            indexGoodsVo.setParentMarketName(itemSpreadVO.getMarketText());
+            indexGoodsVo.setParentMarketName(itemSpreadVO.getMarketName());
             indexGoodsVoList.add(indexGoodsVo);
         }
         return indexGoodsVoList;
