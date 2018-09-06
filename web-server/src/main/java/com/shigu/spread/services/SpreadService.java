@@ -188,7 +188,7 @@ public class SpreadService {
                     vo.setPiprice(itemSpreadVO.getPiprice());
                     vo.setImgSrc(itemSpreadVO.getImgSrc());
                     vo.setShopId(itemSpreadVO.getShopId());
-                    vo.setShopNo(itemSpreadVO.getStoreNum());
+                    vo.setShopNo(itemSpreadVO.getShopNo());
                     vo.setMarketName(itemSpreadVO.getMarketName());
                     vos.add(vo);
                 }
