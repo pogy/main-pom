@@ -360,13 +360,23 @@ public class CdnAction {
     @ResponseBody
     public JSONObject getIntimeGoodsList(String webSite, String pageType) {
         if ("zl".equalsIgnoreCase(webSite)) {
-            return JsonResponseUtil.success().element("intimeGoodsList", indexShowService.realTimeItems(50008165L, "zl"));
+            List<Long> list = new ArrayList<>();
+            list.add(50008165L);
+            return JsonResponseUtil.success().element("intimeGoodsList", indexShowService.realTimeItems(list, "zl"));
+        }
+        if ("qz".equalsIgnoreCase(webSite)) {
+            List<Long> list = new ArrayList<>();
+            list.add(50011740L);
+            list.add(50006843L);
+            return JsonResponseUtil.success().element("intimeGoodsList", indexShowService.realTimeItems(list, "qz"));
         }
         Long cid = 30L;
         if ("W".equals(pageType)) {
             cid = 16L;
         }
-        return JsonResponseUtil.success().element("intimeGoodsList", indexShowService.realTimeItems(cid, webSite));
+        List<Long> list = new ArrayList<>();
+        list.add(cid);
+        return JsonResponseUtil.success().element("intimeGoodsList", indexShowService.realTimeItems(list, webSite));
     }
 
     /**
