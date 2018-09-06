@@ -639,7 +639,7 @@ if(session_shopId != ""){
             <#list hotsaleGoodslist as item>
             <li class="item1">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
@@ -674,7 +674,7 @@ if(session_shopId != ""){
             <#list styleGoodslist as item>
             <li class="item1">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
@@ -708,7 +708,7 @@ if(session_shopId != ""){
             <#list elementGoodslist as item>
             <li class="item1">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
@@ -738,7 +738,7 @@ if(session_shopId != ""){
             
             <li class="item2">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 <div class="gsOtInfo">
                     <div class="inSell">
@@ -772,7 +772,7 @@ if(session_shopId != ""){
                 <#list pitem.items as item>
                 <li class="item1">
                     <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                        <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                        <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                     </a>
                     
                     <div class="gsOtInfo">

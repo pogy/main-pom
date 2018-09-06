@@ -12,7 +12,7 @@ public class BottomGoodsGoat {
 
     private String id;
 
-    private String imgsrc;
+    private String imgSrc;
 
     private String piprice;
 
@@ -30,13 +30,6 @@ public class BottomGoodsGoat {
         this.id = id;
     }
 
-    public String getImgsrc() {
-        return imgsrc;
-    }
-
-    public void setImgsrc(String imgsrc) {
-        this.imgsrc = imgsrc;
-    }
 
     public String getPiprice() {
         return piprice;
@@ -68,5 +61,13 @@ public class BottomGoodsGoat {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImgSrc() {
+        return this.imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 }

@@ -122,7 +122,7 @@
         <ul>
             <#list tjGoodsList as goods>
             <li>
-                <a class="imgbox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank"><img src="${goods.imgsrc!}_240x240.jpg"></a>
+                <a class="imgbox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank"><img src="${goods.imgSrc!}_240x240.jpg"></a>
                 <p>
                     <em class="money yahei">&yen;${goods.piprice!}</em>
                     <a class="storename" href="${mainHost!}/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
@@ -142,7 +142,7 @@
             <#list goodsGoats as goods>
             <li>
                 <a href="//www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="imgBox">
-                    <img src="${goods.imgsrc!}_220x220.jpg" alt>
+                    <img src="${goods.imgSrc!}_220x220.jpg" alt>
                 </a>
                 <a href="//www.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
                 <p>
