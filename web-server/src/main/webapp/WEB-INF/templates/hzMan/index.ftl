@@ -68,7 +68,7 @@ if(/^https?:\/\/(www\.)?571xz\.com/.test(hreflocation)){//仅首页
 </div>
     <div class="styleList yahei">
         <#list styleList as item>
-            <div class="styleItem pr">
+            <div class="styleItem pr<#if (item_index+1) % 6 == 0> last</#if>">
                 <div class="line pa"></div>
                 <h4 class="fc3"><a href="/styleIndex.htm?spid=${item.spid!}" target="_blank">${item.sname!}</a></h4>
                 <ul>

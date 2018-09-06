@@ -15,7 +15,7 @@
             <#list popularGoodsList as tabs>
                 <div class="goodsList">
                     <#list tabs.goodsList as goods>
-<div class="goodsItem">
+<div class="goodsItem<#if (goods_index+1) % 5 == 0> last</#if>">
     <a class="imgBox" href="${mainHost!}/item.htm?id=${goods.id!}" target="_blank">
         <img src="${goods.imgSrc!}_300x300.jpg">
     </a>
