@@ -13,7 +13,8 @@ public enum SpreadEnum {
     //杭州
     // TODO: 18-3-30 新版男装首页样式更换期间切换使用,使用新enum
     MAN_STYLE_PICS("杭州男装风格图","MAN_STYLE_PICS"),
-    NEW_HZ_HomeCateMenu("杭州首页左侧导航","NEW_HZ_HomeCateMenu"),
+    NEW_HZ_HomeCateMenu("杭州男装首页左侧导航","NEW_HZ_HomeCateMenu"),
+    NEW_HZ_Woman_HomeCateMenu("杭州男装首页左侧导航","NEW_HZ_Woman_HomeCateMenu"),
     MAN_DT_NEW("男装大图新版2018-04","MAN-DT-NEW-201804"),MAN_XT_NEW("男装小图新版2018-04","MAN-XT-NEW-201804"),
     MAN_DT("男装大图", "MAN-DT"), MAN_XT("男装小图", "MAN-XT"),
     MAN_RM("热卖广告", "MAN-RM"), MAN_FG("风格", "MAN-FG"), MAN_YS("元素", "MAN-YS"),
@@ -128,6 +129,18 @@ public enum SpreadEnum {
     WOMAN_ZL_DT("首页轮播图","WOMAN-DT-ZL"),WOMAN_ZL_XT("首页轮播图下方小图","WOMAN-ZL-XT"),
     WOMAN_ZL_RM("首页热卖","WOMAN-ZL-RM"),WOMAN_ZL_TJ("首页推荐商品","WOMAN-ZL-TJ"),
     WOMAN_ZL_TOP_BANNER("顶部公告","WOMAN-ZL-TOP-BANNER"),
+
+
+    //石狮
+    NEW_SS_Man_HomeCateMenu("石狮男首页左侧导航","NEW_SS_Man_HomeCateMenu"),
+    MAN_SS_DT("首页轮播图","MAN-SS-DT"),MAN_SS_XT("首页轮播图下方小图","MAN-SS-XT"),
+    MAN_SS_RM("首页热卖","MAN-SS-RM"),MAN_SS_TJ("首页推荐商品","MAN-SS-TJ"),
+    MAN_SS_TOP_BANNER("顶部公告","MAN-SS-TOP-BANNER"),
+
+    NEW_SS_Woman_HomeCateMenu("石狮女首页左侧导航","NEW_SS_Woman_HomeCateMenu"),
+    WOMAN_SS_DT("首页轮播图","WOMAN-SS-DT"),WOMAN_SS_XT("首页轮播图下方小图","WOMAN-SS-XT"),
+    WOMAN_SS_RM("首页热卖","WOMAN-SS-RM"),WOMAN_SS_TJ("首页推荐商品","WOMAN-SS-TJ"),
+    WOMAN_SS_TOP_BANNER("顶部公告","WOMAN-SS-TOP-BANNER"),
 
 
     //新增app端广告位

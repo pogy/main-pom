@@ -3,10 +3,7 @@
         <p class="sitemap">
             <a href="${mainHost!}/" target="_blank">首页</a>
             <a href="//hz.571xz.com" target="_blank">杭州站</a>
-            <a href="//gz.571xz.com" target="_blank">广州站</a>
-            <a href="//ss.571xz.com" target="_blank">石狮站</a>
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
-            <a href="//jx.571xz.com" target="_blank">濮院站</a>
             <a href="//qz.571xz.com" target="_blank">泉州站</a>
             <a href="//cz.571xz.com" target="_blank">沧州站</a>
             <a href="//zixun.571xz.com" target="_blank">资讯</a>
