@@ -186,10 +186,10 @@ public class SpreadService {
                     NewHzManIndexItemGoatVO vo = new NewHzManIndexItemGoatVO();
                     vo.setId(itemSpreadVO.getId());
                     vo.setPiprice(itemSpreadVO.getPiprice());
-                    vo.setImgSrc(itemSpreadVO.getImgsrc());
-                    vo.setShopId(itemSpreadVO.getStoreId());
-                    vo.setShopNo(itemSpreadVO.getStoreNum());
-                    vo.setMarketName(itemSpreadVO.getMarketText());
+                    vo.setImgSrc(itemSpreadVO.getImgSrc());
+                    vo.setShopId(itemSpreadVO.getShopId());
+                    vo.setShopNo(itemSpreadVO.getShopNo());
+                    vo.setMarketName(itemSpreadVO.getMarketName());
                     vos.add(vo);
                 }
                 return vos;

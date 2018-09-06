@@ -46,9 +46,6 @@
                     <ul>
                         <li><a href="//hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
                         <li><a href="//cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="//ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="//gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="//jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
                         <li><a href="//qz.571xz.com" <#if webSite == "qz">class="select"</#if>>泉州</a></li>
                         <li><a href="//cz.571xz.com" <#if webSite == "qz">class="select"</#if>>沧州</a></li>
                     </ul>
@@ -642,7 +639,7 @@ if(session_shopId != ""){
             <#list hotsaleGoodslist as item>
             <li class="item1">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
@@ -677,7 +674,7 @@ if(session_shopId != ""){
             <#list styleGoodslist as item>
             <li class="item1">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
@@ -711,7 +708,7 @@ if(session_shopId != ""){
             <#list elementGoodslist as item>
             <li class="item1">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
@@ -741,7 +738,7 @@ if(session_shopId != ""){
             
             <li class="item2">
                 <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                    <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 <div class="gsOtInfo">
                     <div class="inSell">
@@ -775,7 +772,7 @@ if(session_shopId != ""){
                 <#list pitem.items as item>
                 <li class="item1">
                     <a class="imgBox" href="//${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
-                        <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
+                        <img src="//style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgSrc!}_300x300.jpg" alt width=230 height=230 />
                     </a>
                     
                     <div class="gsOtInfo">
@@ -896,10 +893,7 @@ $(".imgBox img").lazyload({
         <p class="sitemap" style="width:650px;">
             <a href="/" target="_blank">首页</a>
             <a href="//hz.571xz.com" target="_blank">杭州站</a>
-            <a href="//gz.571xz.com" target="_blank">广州站</a>
-            <a href="//ss.571xz.com" target="_blank">石狮站</a>
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
-            <a href="//jx.571xz.com" target="_blank">濮院站</a>
             <a href="//qz.571xz.com" target="_blank">泉州站</a>
             <a href="//cz.571xz.com" target="_blank">沧州站</a>
             
