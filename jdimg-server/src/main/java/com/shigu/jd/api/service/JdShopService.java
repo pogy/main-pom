@@ -147,7 +147,7 @@ public class JdShopService {
         }
         ImgzoneCategoryAddResponse response = jdClientService.execute(request, authedInfo.getAccessToken());
         if (response.getReturnCode() == 0) {
-            throw new OtherCustomException("新增图片分类失败");
+            throw new OtherCustomException("新增图片分类失败:"+response.getDesc());
         }
         return response.getCateId();
     }
