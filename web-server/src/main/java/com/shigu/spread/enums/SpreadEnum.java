@@ -24,6 +24,8 @@ public enum SpreadEnum {
     WOMAN_RM("热卖广告", "WOMAN-RM"), WOMAN_FG("风格", "WOMAN-FG"), WOMAN_YS("元素", "WOMAN-YS"),
     WOMAN_TJDK("推荐档口", "WOMAN-TJDK"), WOMAN_XHTX("喜欢T恤", "WOMAN-XHTX"), WOMAN_XHNZ("喜欢牛仔", "WOMAN-XHNZ"),
     WOMAN_XHXZ("喜欢鞋子", "WOMAN-XHXZ"), WOMAN_HOTBOT("热卖下方条形广告", "WOMAN-HOTBOT"), WOMAN_STYLEBOT("风格下方条形广告", "WOMAN-STYLEBOT"),
+    WOMAN_STYLE_GOODS("新杭州女装风格商品","WOMAN-STYLE-GOODS"),
+
     MAN_GOODS_RIGHT("男装商品库右侧", "MAN-GOODS-RIGHT"),
     MAN_GOODS_BOTTOM("男装商品库下侧","MAN-GOODS-BOTTOM"),
     WOMAN_GOODS_RIGHT("女装商品库右侧", "WOMAN-GOODS-RIGHT"),
