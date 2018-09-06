@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mana.interfaces.UserActionMapper">
+
+    <insert id="insert">
+        INSERT INTO user_action(user_id,action,ip,time,url,params,type) VALUES (#{userId},#{action},#{ip},#{time},#{url},#{params},#{type})
+    </insert>
+
+    <select id="selectAll" resultType="com.opentae.data.mana.beans.UserAction">
+        SELECT * FROM user_action
+        <where>
+            <if test="userId!=null and userId!=''">
+                user_id = #{userId}
+            </if>
+            <if test="url!=null and url!=''">
+                AND url = #{url}
+            </if>
+        </where>
+        ORDER BY id DESC
+        limit #{startRow},#{pageSize}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM user_action
+        <where>
+        <if test="userId!=null and userId!=''">
+            user_id = #{userId}
+        </if>
+            <if test="url!=null and url!=''">
+                AND url = #{url}
+            </if>
+        </where>
+    </select>
+
+</mapper>

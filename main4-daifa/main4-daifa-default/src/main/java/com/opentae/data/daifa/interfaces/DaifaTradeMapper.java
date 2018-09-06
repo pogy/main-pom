@@ -1,10 +1,16 @@
 package com.opentae.data.daifa.interfaces;
 
-import com.opentae.data.daifa.beans.DaifaTrade;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.Lazy;
-import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.core.mybatis.config.MyBatisRepository;
+import com.opentae.core.mybatis.mapper.Mapper;
+import com.opentae.data.daifa.beans.DaifaTrade;
+import com.shigu.main4.daifa.vo.MemberVo;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+
+import java.util.List;
+
+
 /**
  *==========================================================
  *TODO ->这里需要配置 主要是这个类的描述信息
@@ -23,5 +29,5 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @Scope("singleton")
 @Lazy(true)
 public interface DaifaTradeMapper extends Mapper<DaifaTrade>{
-
+    List<MemberVo> getMemberByUserIdIn(@Param("userIds")String userIds);
 }

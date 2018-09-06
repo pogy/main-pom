@@ -58,6 +58,8 @@
     <select id="selectMyOrderList" resultMap="MyOrderVO">
         SELECT
         item_order.oid as orderId,
+        item_order.courier_number as expressCode,
+        item_order.company_id as companyId,
         item_order.tradeTime as tradeTime,
         item_order.tradePay as tradePay,
         item_order.postPay as postPay,
@@ -97,6 +99,8 @@
         item_order.TYPE = 2 isTbOrder,
         item_order.tb_send isTbShipments,
         item_order.WEB_SITE webSite,
+        item_order_logistics.courier_number,
+        item_order_logistics.company_id,
         item_order.pay_time payTime
         FROM
         `item_order` item_order
@@ -141,6 +145,8 @@
     <resultMap id="MyOrderVO" type="com.shigu.order.vo.MyOrderVO">
         <id column="orderId" property="orderId"/>
         <result column="tradeTime" property="tradeTime"/>
+        <result column="expressCode" property="expressCode"/>
+        <result column="companyId" property="companyId"/>
         <result column="tradePay" property="tradePay"/>
         <result column="postPay" property="postPay"/>
         <result column="mainState" property="mainState"/>

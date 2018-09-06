@@ -31,21 +31,24 @@ import java.util.List;
 @Lazy(true)
 public interface DaifaWaitSendMapper extends Mapper<DaifaWaitSend>{
 
-    List<DaifaWaitSendSimple> selectWaitSends(@Param("dfSellerId")Long dfSellerId,
+    List<DaifaWaitSendSimple> selectWaitSends(@Param("dwsIds")String dwsIds);
+
+    List<DaifaWaitSendSimple> selectWaitSendsIds(@Param("dfSellerId")Long dfSellerId,
                                               @Param("lastTradeId")Long lastTradeId,
                                               @Param("phone")String phone,
                                               @Param("buyerId")Long buyerId,
-                                              @Param("startTime")Date startTime,
-                                              @Param("endTime")Date endTime,
+                                              @Param("stId")Long stId,@Param("ExpressId") Integer ExpressId,
+                                              @Param("etId")Long etId,
                                               @Param("status")Integer status,
                                               @Param("start")Integer start,
                                               @Param("end")Integer end);
+
     Integer selectWaitSendsCount(@Param("dfSellerId")Long dfSellerId,
                                  @Param("lastTradeId")Long lastTradeId,
                                  @Param("phone")String phone,
                                  @Param("buyerId")Long buyerId,
-                                 @Param("startTime")Date startTime,
-                                 @Param("endTime")Date endTime,
+                                 @Param("stId")Long stId,@Param("ExpressId") Integer ExpressId,
+                                 @Param("etId")Long etId,
                                  @Param("status")Integer status);
 
 }

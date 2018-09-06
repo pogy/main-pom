@@ -72,7 +72,7 @@
                     daifa_trade
                 WHERE
                     seller_id =${sellerId}
-                AND date_format(create_time, "%Y%m%d") =${day}
+                AND date_format(send_time, "%Y%m%d") =${day}
 
     </select>
 

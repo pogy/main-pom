@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.photo.interfaces.ShiguPhotoUserMapper">
+    <select id="selectOderByTime" resultType="com.opentae.data.photo.beans.ShiguPhotoUser">
+        SELECT * FROM `shigu_photo_user` su
+        LEFT JOIN (SELECT max(sw.create_time) as `time`,sw.author_id FROM shigu_photo_works sw,shigu_photo_user spu WHERE sw.author_id=spu.author_id GROUP BY author_id) st
+        ON su.author_id=st.author_id
+        <where>
+            user_type in
+            <foreach collection="bo.userTypes" item="userTypes" index="index" open="(" close=")" separator=",">
+                #{userTypes}
+            </foreach>
+            <if test="authIds !=null and authIds.size>0">
+            and su.author_id IN
+          <foreach collection="authIds" item="authId" index="index" open="(" close=")" separator=",">
+              #{authId}
+          </foreach>
+            </if>
+            <if test="bo.sex != null and bo.sex !=''">
+                AND sex =#{bo.sex}
+            </if>
+            <if test="bo.title!=null and bo.title!=''">
+                and title LIKE "%"#{bo.title}"%"
+            </if>
+        </where>
+        ORDER BY st.time DESC
+        <if test="start!=null and bo.pageSize !=null">
+            limit #{start},#{bo.pageSize}
+        </if>
+    </select>
+
+</mapper>

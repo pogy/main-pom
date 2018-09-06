@@ -2,6 +2,7 @@ package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaSendExample;
@@ -53,7 +54,7 @@ public class DaifaSendService {
         DaifaSendExample daifaSendExample = new DaifaSendExample();
         daifaSendExample.createCriteria().andSellerIdEqualTo(sellerId)
                 .andSendDateEqualTo(DateUtil.dateToString(new Date(), DateUtil.patternB));
-        List<DaifaSend> sends = daifaSendMapper.selectByExample(daifaSendExample);
+        List<DaifaSend> sends = daifaSendMapper.selectFieldsByExample(daifaSendExample, FieldUtil.codeFields("send_id"));
         SendSumVO sum = new SendSumVO();
         sum.setBeenShippedOrder(sends.size());
         List<DaifaSendOrder> sos=new ArrayList<>();
@@ -61,7 +62,7 @@ public class DaifaSendService {
             List<Long> sendIds = BeanMapper.getFieldList(sends, "sendId", Long.class);
             DaifaSendOrderExample daifaSendOrderExample = new DaifaSendOrderExample();
             daifaSendOrderExample.createCriteria().andSendIdIn(sendIds).andTakeGoodsStatusEqualTo(1);
-            sos = daifaSendOrderMapper.selectByExample(daifaSendOrderExample);
+            sos = daifaSendOrderMapper.selectFieldsByExample(daifaSendOrderExample,FieldUtil.codeFields("sendo_id,goods_num,single_pi_price"));
         }
         sum.setBeenShippedGoods(sos.stream().mapToInt(DaifaSendOrder::getGoodsNum).sum());
         sum.setBeenShippedGoodsFee(MoneyUtil.dealPrice(

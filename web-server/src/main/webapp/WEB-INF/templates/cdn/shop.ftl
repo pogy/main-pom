@@ -37,17 +37,16 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院<#elseif webSite == "qz">泉州</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院<#elseif webSite == "qz">泉州<#elseif webSite == "cz">沧州</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="//hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
                         <li><a href="//cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
                         <li><a href="//ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="//bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
                         <li><a href="//gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="//wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
                         <li><a href="//jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
                         <li><a href="//qz.571xz.com" <#if webSite == "qz">class="select"</#if>>泉州</a></li>
+                        <li><a href="//cz.571xz.com" <#if webSite == "cz">class="select"</#if>>沧州</a></li>
                     </ul>
                 </div>
             </div>
@@ -337,7 +336,7 @@ function openShop(){
             <div class="storeDetailInfobox">
                 <div class="p1 clearfix">
                     <ul class="r1">
-                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == 'jx'>濮院</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
+                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == 'jx'>濮院<#elseif vo.storeRelation.webSite == 'qz'>泉州<#elseif vo.storeRelation.webSite == 'cz'>沧州</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
                         <li><label>电话：</label>${vo.storeRelation.telephone!}</li>
                         <li><label>主营：</label>${vo.other.mainBus!}</li>
                         <li><label>开店时间：</label>${vo.other.openTime!}</li>
@@ -414,13 +413,12 @@ ${container.html!}
         <p class="sitemap" style="width:656px;">
             <a href="/" target="_blank">首页</a>
             <a href="//hz.571xz.com" target="_blank">杭州站</a>
-            <a href="//bj.571xz.com" target="_blank">北京站</a>
             <a href="//gz.571xz.com" target="_blank">广州站</a>
             <a href="//ss.571xz.com" target="_blank">石狮站</a>
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
-            <a href="//wa.571xz.com" target="_blank">辽源站</a>
             <a href="//jx.571xz.com" target="_blank">濮院站</a>
             <a href="//qz.571xz.com" target="_blank">泉州站</a>
+            <a href="//cz.571xz.com" target="_blank">沧州站</a>
             <a href="//zixun.571xz.com" target="_blank">资讯</a>
 
 
@@ -435,7 +433,7 @@ ${container.html!}
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2009-2018 571xz.com 版权所有</span> <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br>
             <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="//style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a>
         </p>

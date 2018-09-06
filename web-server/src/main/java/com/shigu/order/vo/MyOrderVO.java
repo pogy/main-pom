@@ -22,6 +22,16 @@ public class MyOrderVO {
     @Column("item_order.outer_id")
     private String tbOrderId;
     /**
+     * 快递单号
+     */
+    @Column("item_order.courier_number")
+    private String expressCode;
+    /**
+     * 快递名
+     */
+    @Column("item_order.company_id")
+    private Long companyId;
+    /**
      * 交易总金额
      */
     @Column("convert(item_order.total_fee*0.01,decimal(10,2))")
@@ -64,6 +74,11 @@ public class MyOrderVO {
      * 子单数据
      */
     private List<SubMyOrderVO> childOrders;
+
+    /**
+     * 子单数据
+     */
+    private String companyName;
 
     /**
      * 获取 订单id
@@ -227,5 +242,29 @@ public class MyOrderVO {
 
     public void setPayTime(Date payTime) {
         this.payTime = payTime;
+    }
+
+    public String getExpressCode() {
+        return expressCode;
+    }
+
+    public void setExpressCode(String expressCode) {
+        this.expressCode = expressCode;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

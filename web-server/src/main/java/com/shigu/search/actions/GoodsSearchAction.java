@@ -128,8 +128,9 @@ public class GoodsSearchAction {
         if (bo.getWebSite() == null) {
             bo.setWebSite("hz");
         }
-        if (bo.getKeyword() != null)
+        if (bo.getKeyword() != null) {
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
+        }
         model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav(bo.getWebSite()));
         if (bo.getCid() != null) {
             model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE,bo.getWebSite()));
@@ -249,12 +250,15 @@ public class GoodsSearchAction {
                 bo.setPid(1625L);
             }else if("qz".equalsIgnoreCase(website)){
                 bo.setPid(50011740L);
+            }else if("cz".equalsIgnoreCase(website)){
+                bo.setPid(16L);
             }else{
                 bo.setPid(30L);
             }
         }
-        if (bo.getKeyword() != null)
+        if (bo.getKeyword() != null) {
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
+        }
 
         model.addAttribute("query", bo);
         //排序
@@ -308,8 +312,12 @@ public class GoodsSearchAction {
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         model.addAttribute("catemenu",searchCategoryService.getMarketCateShow(bo.getWebSite()));
-        if(website.equals("hz")&&bo.getPid().equals(30L))
-        model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
+        if(website.equals("hz")&&bo.getPid().equals(30L)){
+            model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
+        }else if(website.equals("cz")&&bo.getPid().equals(16L)){
+            model.addAttribute("goodsGoats", goodsSearchService.selCzBottomGoat(website).stream().peek(bottomGoodsGoat -> bottomGoodsGoat.setTitle(KeyWordsUtil.duleKeyWords(bottomGoodsGoat.getTitle()))).collect(Collectors.toList()));
+        }
+
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/goods";
         } else {

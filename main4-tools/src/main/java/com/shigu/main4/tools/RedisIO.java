@@ -13,6 +13,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wxc on 2017/3/8.
@@ -87,6 +88,47 @@ public class RedisIO {
         Jedis jedis = getJedis();
         try {
             return value != null && "OK".equals(jedis.set(key, value));
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+
+    public Boolean hset(String key,String field,Object obj){
+        Jedis jedis = getJedis();
+        try {
+            return obj != null && jedis.hset(key,field, JSON.toJSONString(obj))>0L;
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+    public boolean hmset(String key, Map<String, String> hash) {
+        Jedis jedis = getJedis();
+        try {
+            return hash != null && "OK".equals(jedis.hmset(key,hash));
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+    public String hget(String key, String field) {
+        Jedis jedis = getJedis();
+        try {
+            return jedis.hget(key,field);
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+    public <T> T hget(String key,String field,Class<T> clazz){
+        Jedis jedis = getJedis();
+        try {
+            return JSON.parseObject(jedis.hget(key,field),clazz);
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+    public void hdel(String key, String... fields) {
+        Jedis jedis = getJedis();
+        try {
+            jedis.hdel(key,fields);
         }finally {
             returnJedis(jedis);
         }
@@ -247,23 +289,7 @@ public class RedisIO {
         return JSON.parseArray(get(key),clazz);
     }
 
-    public Boolean hset(String key,String field,Object obj){
-        Jedis jedis = getJedis();
-        try {
-            return obj != null && jedis.hset(key,field, JSON.toJSONString(obj))>0L;
-        }finally {
-            returnJedis(jedis);
-        }
-    }
 
-    public <T> T hget(String key,String field,Class<T> clazz){
-        Jedis jedis = getJedis();
-        try {
-            return JSON.parseObject(jedis.hget(key,field),clazz);
-        }finally {
-            returnJedis(jedis);
-        }
-    }
 
 //    @Override
 //    protected void finalize() throws Throwable {

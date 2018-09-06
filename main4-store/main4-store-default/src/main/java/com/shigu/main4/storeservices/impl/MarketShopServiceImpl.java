@@ -14,6 +14,7 @@ import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.storeservices.MarketShopService;
+import com.shigu.main4.storeservices.vo.HzMarketShopListComparator;
 import com.shigu.main4.storeservices.vo.MarketShopListComparator;
 import com.shigu.main4.vo.FloorShow;
 import com.shigu.main4.vo.MarketNavShow;
@@ -93,6 +94,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         List<MarketShow> marketShowList = new ArrayList<MarketShow>();
         ShiguOuterMarketExample outerMarketExample = new ShiguOuterMarketExample();
         outerMarketExample.createCriteria().andWebSiteEqualTo(shiguOuterMarket.getWebSite()).andMarkerShowEqualTo(1);
+        outerMarketExample.setOrderByClause("sort_order asc");
         List<ShiguOuterMarket> outerMarketList = shiguOuterMarketMapper.selectByExample(outerMarketExample);
         Map<Long, MarketShow> marketShowMap = new HashMap<>(outerMarketList.size());
         List<Long> marketIds = new ArrayList<>(outerMarketList.size());
@@ -167,6 +169,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         floorShow.setOuterFloorId(outerFloor);
         floorShow.setShowName(shiguOuterFloor.getShowName());
         floorShow.setOtherName(shiguOuterFloor.getOtherName());
+        String webSite=null;
         for (String floorIdStr : floorIds) {
             Long floorId = Long.valueOf(floorIdStr);
             List<ShiguShop> shiguShopList = new ArrayList<ShiguShop>();
@@ -174,6 +177,9 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                 shiguShopList = findOpenShopListByFloorIds(floorId);
             }
             for (ShiguShop shiguShop : shiguShopList) {
+                if(webSite==null){
+                    webSite=shiguShop.getWebSite();
+                }
                 ShopShow shopShow = new ShopShow();
                 shopShow.setFloorId(shiguShop.getFloorId());
                 String context = shiguShop.getShopTagsContexts();
@@ -260,7 +266,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
             }
         }
         // shop 排序
-        getShopComparator(shopShowList);
+        getShopComparator(shopShowList,webSite);
         floorShow.setShops(shopShowList);
         cache.put(outerFloor, floorShow);
         return floorShow;
@@ -270,8 +276,8 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         if (!StringUtils.isEmpty(context)) {
             String[] ids = context.split(",");
             List<Integer> integerList = new ArrayList<Integer>();
-            for (int a = 0; a < ids.length; a++) {
-                integerList.add(Integer.parseInt(ids[a]));
+            for (String id : ids) {
+                integerList.add(Integer.parseInt(id));
             }
             return integerList;
         }
@@ -284,14 +290,21 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
      * @param floorId 楼层ID
      * @return
      */
-    public List<ShiguShop> findOpenShopListByFloorIds(Long floorId) {
-        List<ShiguShop> shiguShopList = shiguShopMapper.selectShopForMarketList(floorId);
-        return shiguShopList;
+    private List<ShiguShop> findOpenShopListByFloorIds(Long floorId) {
+        return shiguShopMapper.selectShopForMarketList(floorId);
     }
 
     @Override
-    public void getShopComparator(List<ShopShow> shopShowList) {
-        Collections.sort(shopShowList, new MarketShopListComparator());
+    public void getShopComparator(List<ShopShow> shopShowList){
+        getShopComparator(shopShowList,null);
+    }
+
+    private void getShopComparator(List<ShopShow> shopShowList,String webSite) {
+        if("hz".equals(webSite)){
+            shopShowList.sort(new HzMarketShopListComparator());
+        }else{
+            shopShowList.sort(new MarketShopListComparator());
+        }
     }
 
     /**

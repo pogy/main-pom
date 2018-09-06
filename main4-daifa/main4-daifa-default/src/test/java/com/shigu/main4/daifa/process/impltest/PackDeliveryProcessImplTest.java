@@ -55,9 +55,7 @@ public class PackDeliveryProcessImplTest extends BaseSpringTest {
     }
     @Test
     public void packSubOrder_test(){//OK  Long subOrderId
-        Long subOrderId=new Long(387655L);
-
-
+        Long subOrderId=new Long(475501L);
         packDeliveryProcess = SpringBeanFactory.getBean(PackDeliveryProcess.class);
         try {
             packDeliveryProcess.packSubOrder (subOrderId);
@@ -65,6 +63,16 @@ public class PackDeliveryProcessImplTest extends BaseSpringTest {
             e.printStackTrace ();
         }
 
+    }
+
+    @Test
+    public void queryExpressCode(){
+        Long dfTradeId = 62018082476565L;
+        try {
+            packDeliveryProcess.queryExpressCode(dfTradeId);
+        } catch (DaifaException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

@@ -329,15 +329,19 @@
     <li class="price yahei fs14">&yen;${childOrder.price!}</li>
     <li class="num">
         <p class="fs14">${childOrder.num!}</p>
-        <#if childOrder.stockoutNum??>
+        <#if childOrder.downShelfIs??>
+        <div class="pr downShelfIs">
+            <p class="fcF40">
+                商品已下架
+            </p>
+        </div>
+        <#elseif childOrder.stockoutNum??>
         <div class="pr stockoutNum">
             <p class="fcF40">
                 <#if childOrder.haveGoodsTime??><i class="icon-time"></i></#if>缺货 x${childOrder.stockoutNum!}
             </p>
             <#if childOrder.haveGoodsTime??>
-            <div class="pa haveGoodsTime">
-                ${childOrder.haveGoodsTime!} 有货
-            </div>
+            <p>${childOrder.haveGoodsTime!} 有货</p>
             </#if>
         </div>
         </#if>
@@ -487,6 +491,10 @@
             <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 1>
             <p><a href="javascript:;" onclick="cancelOrder(${order.orderId!})" class="fc9">取消订单</a></p>
+            <#elseif order.mainState == 2>
+                <#if order.expressCode??>
+                    <p class="fcBlue expressShow">${order.expressName!} 单号已生成 <br/><span class="arial">${order.expressCode!}</span></p>
+                </#if>
             <#elseif order.mainState == 3>
             <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
@@ -528,6 +536,7 @@
 </#list>
 </#list>
 </div>
+<#include "/common/xz__fixedBox.ftl">
             </div>
     </div>
 </div>

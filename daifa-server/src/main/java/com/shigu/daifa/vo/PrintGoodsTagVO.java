@@ -15,6 +15,16 @@ public class PrintGoodsTagVO implements Serializable {
     private String buyerNick;//下单人昵称
     private String specialStr;
     private String queNum;//缺货天数（先用这个字段）
+    private String daifaName;
+    private boolean dpUserIs;
+
+    public boolean isDpUserIs() {
+        return dpUserIs;
+    }
+
+    public void setDpUserIs(boolean dpUserIs) {
+        this.dpUserIs = dpUserIs;
+    }
 
     public String getDateIncBatch() {
         return this.dateIncBatch;
@@ -110,5 +120,13 @@ public class PrintGoodsTagVO implements Serializable {
 
     public void setQueNum (String queNum) {
         this.queNum = queNum;
+    }
+
+    public String getDaifaName() {
+        return this.daifaName;
+    }
+
+    public void setDaifaName(String daifaName) {
+        this.daifaName = daifaName;
     }
 }

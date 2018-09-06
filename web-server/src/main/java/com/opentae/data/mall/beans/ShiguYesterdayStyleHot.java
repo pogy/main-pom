@@ -13,7 +13,7 @@ public class ShiguYesterdayStyleHot implements Serializable {
 	private Long id;
 
     /**
-     * 
+     * 顶级风格id
      */
 	private Long parentStyleId;
 
@@ -23,34 +23,44 @@ public class ShiguYesterdayStyleHot implements Serializable {
 	private String showDay;
 
     /**
-     * 
+     * 商品
      */
 	private Long goodsId;
 
     /**
-     * 
+     * 批价
      */
 	private String piPrice;
 
     /**
-     * 
+     * 主图
      */
 	private String picPath;
 
     /**
-     * 
+     * 市场
      */
 	private String marketName;
 
     /**
-     * 
+     * 档口
      */
 	private String shopNum;
 
     /**
-     * 
+     * 档口id
      */
 	private Long shopId;
+
+    /**
+     * hz
+     */
+	private String webSite;
+
+    /**
+     * 
+     */
+	private Integer sex;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -122,6 +132,22 @@ public class ShiguYesterdayStyleHot implements Serializable {
 
 	public Long getShopId() {
 		return this.shopId;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
+
+	public String getWebSite() {
+		return this.webSite;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public Integer getSex() {
+		return this.sex;
 	}
 
 }
