@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
+import com.opentae.data.daifa.examples.DaifaPostCustomerExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.bo.WaitSendBO;
@@ -13,7 +14,9 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.tools.JsonResponseUtil;
@@ -51,8 +54,31 @@ public class DaifaWaitSendService {
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired
     private DaifaTradeMapper daifaTradeMapper;
+    @Autowired
+    private DaifaPostCustomerMapper daifaPostCustomerMapper;
+    @Autowired
+    private PackDeliveryProcess packDeliveryProcess;
 
 
+    /**
+     * 快递列表
+     * @return
+     */
+    public List<DaifaPostCustomer> selPost(){
+        DaifaPostCustomerExample example=new DaifaPostCustomerExample();
+        example.setOrderByClause("express_id desc");
+        example.setStartIndex(0);
+        example.setEndIndex(20);
+        List<DaifaPostCustomer> list=daifaPostCustomerMapper.selectFieldsByConditionList(example,"express_id,express");
+        Map<Long, DaifaPostCustomer> customerMap = BeanMapper.list2Map(list, "expressId", Long.class);
+        List<DaifaPostCustomer> postCustomerList=new ArrayList<>();
+        for (Long key:customerMap.keySet()){
+            DaifaPostCustomer s=customerMap.get(key);
+            postCustomerList.add(s);
+        }
+        return postCustomerList;
+    }
+    
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
         if(bo.getPage()<1){
             bo.setPage(1);
@@ -61,9 +87,12 @@ public class DaifaWaitSendService {
         Date et=null;
         Long stId=null;
         Long etId=null;
+
+        //查询时间间隔，没有则查一月内
         if(StringUtils.isBlank(bo.getStartTime())&&StringUtils.isBlank(bo.getEndTime())){
             st=DateUtil.getdate(-30);
         }else{
+            //查询时间间隔，有则按时间查
             st=StringUtils.isNotBlank(bo.getStartTime())?DateUtil.stringToDate(bo.getStartTime()+" 00:00:00"):null;
             et=StringUtils.isNotBlank(bo.getEndTime())?DateUtil.stringToDate(bo.getEndTime()+" 23:59:59"):null;
         }
@@ -72,9 +101,13 @@ public class DaifaWaitSendService {
         if(st!=null){
             criteria.andCreateTimeGreaterThanOrEqualTo(st);
         }
+        if (bo.getExpressId() != null){
+            criteria.andExpressIdEqualTo(Long.valueOf(bo.getExpressId()));
+        }
         daifaTradeExample.setOrderByClause("df_trade_id asc");
         daifaTradeExample.setStartIndex(0);
         daifaTradeExample.setEndIndex(1);
+        //查DaifaTrade 表中订单id
         List<DaifaTrade> ts1 = daifaTradeMapper
                 .selectFieldsByConditionList(daifaTradeExample, FieldUtil.codeFields("df_trade_id"));
         List<DaifaWaitSendVO> sends = new ArrayList<>();
@@ -88,11 +121,12 @@ public class DaifaWaitSendService {
                         .selectFieldsByConditionList(daifaTradeExample, FieldUtil.codeFields("df_trade_id"));
                 etId=ts1.get(0).getDfTradeId();
             }
+            //按条件查询
             count = daifaWaitSendMapper.selectWaitSendsCount(daifaSellerId,
                     bo.getOrderId(),
                     StringUtils.isNotBlank(bo.getTelephone())?bo.getTelephone():null,
                     bo.getBuyerId(),
-                    stId,
+                    stId,bo.getExpressId(),
                     etId,
                     bo.getCanSendState());
             if (count > 0) {
@@ -100,7 +134,7 @@ public class DaifaWaitSendService {
                         bo.getOrderId(),
                         StringUtils.isNotBlank(bo.getTelephone())?bo.getTelephone():null,
                         bo.getBuyerId(),
-                        stId,
+                        stId,bo.getExpressId(),
                         etId,
                         bo.getCanSendState(),
                         (bo.getPage() - 1) * 10,
@@ -122,9 +156,25 @@ public class DaifaWaitSendService {
                             .setBarCodeKey(trade.getBarCodeKey()));
                     daifaWaitSendSimple.setIsTbOrder(trade.getDaifaType() == 2);
                 });
+
+                //List<Long> expressIds=daifaWaitSendSimples.stream().map(DaifaWaitSendSimple::getExpressId).collect(Collectors.toList());
                 List<Long> oids=new ArrayList<>();
                 for (DaifaWaitSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
                     DaifaWaitSendVO vo = new DaifaWaitSendVO();
+                    Long expressId=daifaWaitSendSimple.getExpressId();
+                    DaifaPostCustomer customer=new DaifaPostCustomer();
+                    customer.setExpressId(expressId);
+                    List<DaifaPostCustomer> cs=daifaPostCustomerMapper.select(customer);
+                    Long orderid=daifaWaitSendSimple.getOrderId();
+                    try {
+                        List<SubOrderExpressBO> bos=packDeliveryProcess.cheackeSend(orderid);
+                        int csc=cs.get(0).getManual();
+                        if (bos != null && csc == 1){
+                            vo.setEnableSendBtn(true);
+                        }
+                    } catch (DaifaException e) {
+                        e.printStackTrace();
+                    }
                     sends.add(vo);
                     BeanUtils.copyProperties(daifaWaitSendSimple, vo, "childOrders");
                     if("无".equals(vo.getImWw())){
@@ -181,6 +231,7 @@ public class DaifaWaitSendService {
         pager.setNumber(bo.getPage());
         return pager;
     }
+
 
     public synchronized JSONObject noPostRefund(Long childOrderId, String refundMoney) throws DaifaException {
         if(MoneyUtil.StringToLong(refundMoney)<0){

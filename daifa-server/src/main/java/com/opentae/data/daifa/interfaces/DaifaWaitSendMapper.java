@@ -37,7 +37,7 @@ public interface DaifaWaitSendMapper extends Mapper<DaifaWaitSend>{
                                               @Param("lastTradeId")Long lastTradeId,
                                               @Param("phone")String phone,
                                               @Param("buyerId")Long buyerId,
-                                              @Param("stId")Long stId,
+                                              @Param("stId")Long stId,@Param("ExpressId") Integer ExpressId,
                                               @Param("etId")Long etId,
                                               @Param("status")Integer status,
                                               @Param("start")Integer start,
@@ -47,7 +47,7 @@ public interface DaifaWaitSendMapper extends Mapper<DaifaWaitSend>{
                                  @Param("lastTradeId")Long lastTradeId,
                                  @Param("phone")String phone,
                                  @Param("buyerId")Long buyerId,
-                                 @Param("stId")Long stId,
+                                 @Param("stId")Long stId,@Param("ExpressId") Integer ExpressId,
                                  @Param("etId")Long etId,
                                  @Param("status")Integer status);
 
