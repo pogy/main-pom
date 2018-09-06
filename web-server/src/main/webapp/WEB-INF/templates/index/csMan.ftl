@@ -26,9 +26,6 @@
                     <ul>
                         <li><a href="//hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
                         <li><a href="//cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="//ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="//gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="//jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
                         <li><a href="//qz.571xz.com" <#if webSite == "qz">class="select"</#if>>泉州</a></li>
                         <li><a href="//cz.571xz.com" <#if webSite == "cz">class="select"</#if>>沧州</a></li>
                     </ul>
@@ -868,10 +865,7 @@ $(".imgBox img").lazyload({
         <p class="sitemap" style="width:650px;">
             <a href="/" target="_blank">首页</a>
             <a href="//hz.571xz.com" target="_blank">杭州站</a>
-            <a href="//gz.571xz.com" target="_blank">广州站</a>
-            <a href="//ss.571xz.com" target="_blank">石狮站</a>
             <a href="//cs.571xz.com" target="_blank">常熟站</a>
-            <a href="//jx.571xz.com" target="_blank">濮院站</a>
             <a href="//qz.571xz.com" target="_blank">泉州站</a>
             <a href="//cz.571xz.com" target="_blank">沧州站</a>
             <a href="//zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
