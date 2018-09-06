@@ -1,1 +1,1 @@
-<script src="//style.571xz.com/v6/hzMan/js/common_v20180821_093252.js"></script>
+<script src="//style.571xz.com/v6/hzMan/js/common_v20180904_130006.js"></script>

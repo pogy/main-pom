@@ -8,14 +8,10 @@
                 常熟
             <#elseif webSite == 'ss'>
                 石狮
-            <#elseif webSite == 'bj'>
-                北京
             <#elseif webSite == 'gz'>
                 广州
             <#elseif webSite == 'jx'>
                 濮院
-            <#elseif webSite == 'wa'>
-                辽源
             <#elseif webSite == 'qz'>
                 泉州
             <#elseif webSite == 'zl'>
@@ -36,6 +32,7 @@
             <li><a href="//ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
             <li><a href="//jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
             <li><a href="//qz.571xz.com" <#if webSite == 'qz'>class="select"</#if>>泉州</a></li>
+            <li><a href="//cz.571xz.com" <#if webSite == 'cz'>class="select"</#if>>沧州</a></li>
         </ul>
     </div>
 </div>
