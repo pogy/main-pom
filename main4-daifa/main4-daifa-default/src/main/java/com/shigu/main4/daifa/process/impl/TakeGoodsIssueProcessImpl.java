@@ -295,7 +295,6 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                     + "-" + ggoodsForPrint.getPropStr());
             vo.setPostName(Pingyin.getPinYinHeadChar(ggoodsForPrint.getExpressName()).toUpperCase());
             boolean bRet ="tab".equals(userMap.get(ggoodsForPrint.getBuyerId()));
-//            System.err.println(bRet);
             vo.setDpUserIs(bRet);
             pvos.add(vo);
         }
