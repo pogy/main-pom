@@ -8,6 +8,7 @@ import com.openJar.responses.imgs.UptoItemImgResponse;
 import com.openJar.responses.imgs.UptoPropImgResponse;
 import com.openJar.tools.OpenClient;
 import com.openJar.tools.PcOpenClient;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.bo.PropImgBO;
 import com.shigu.main4.item.bo.SubmitedPropsBO;
@@ -21,9 +22,8 @@ import com.shigu.main4.item.tools.TimeUtil;
 import com.shigu.main4.item.vo.ItemVO;
 import com.shigu.main4.item.vo.PropsVO;
 import com.shigu.main4.item.vo.SessionVO;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.PropImg;
 import com.taobao.api.internal.util.StringUtils;
 import com.taobao.api.request.ItemAddRequest;
@@ -52,14 +52,17 @@ public class TaobaoAddItemProcessImpl implements TaobaoAddItemProcess {
     @Value("${xz_type}")
     private String OPEN_CLIENT_SERVERTYPE;
 
-    @Value("${taobao.app.key}")
-    private String APPKEY;
+    //@Value("${taobao.app.key}")
+    //private String APPKEY;
+    //
+    //@Value("${taobao.app.secret}")
+    //private String SECRET;
+    //
+    //@Value("${taobao.app.server.url}")
+    //private String TOP_SERVER_URL;
 
-    @Value("${taobao.app.secret}")
-    private String SECRET;
-
-    @Value("${taobao.app.server.url}")
-    private String TOP_SERVER_URL;
+    @Autowired
+    private ShiguTaobaoClient shiguTaobaoClient;
 
     @Autowired
     private TaobaoUtil taobaoUtil;
@@ -69,7 +72,6 @@ public class TaobaoAddItemProcessImpl implements TaobaoAddItemProcess {
 
     @Override
     public ItemVO addItemBase(UptoTbBO bo, SubmitedPropsBO spv, String[] sellerCids, SessionVO session) throws TbApiException {
-        TaobaoClient client = new DefaultTaobaoClient(TOP_SERVER_URL, APPKEY, SECRET);
         ItemAddRequest req = new ItemAddRequest();
         req.setInputStr(spv.getInputStr());
         req.setInputPids(spv.getInputPids());
@@ -149,9 +151,11 @@ public class TaobaoAddItemProcessImpl implements TaobaoAddItemProcess {
         req.setHasShowcase(bo.getHas_showcase());
         ItemAddResponse rsp = null;
         try {
-            rsp = client.execute(req, session.getSession());
+            rsp = shiguTaobaoClient.execute(req, session.getSession());
         } catch (ApiException e) {
             throw new TbApiException(e.getMessage());
+        } catch (Main4Exception e) {
+            throw new TbApiException(String.format("invoke taobao api failed :request %s", req.getClass().getName()));
         }
         if(!rsp.isSuccess()){
             logger.error("addItemError!!!!!"+rsp.getBody());

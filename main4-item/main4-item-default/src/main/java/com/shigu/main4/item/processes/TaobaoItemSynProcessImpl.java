@@ -9,6 +9,7 @@ import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguStorecatExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemModifyException;
@@ -19,7 +20,10 @@ import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.utils.TaobaoItemFetchService;
 import com.shigu.main4.item.vo.*;
 import com.shigu.main4.tools.RedisIO;
-import com.taobao.api.*;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
+import com.taobao.api.ApiException;
+import com.taobao.api.BaseTaobaoRequest;
+import com.taobao.api.TaobaoResponse;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
 import com.taobao.api.request.*;
@@ -42,11 +46,14 @@ public class TaobaoItemSynProcessImpl implements TaobaoItemSynProcess {
     @Value("${taobao.app.key}")
     private String APPKEY;
 
-    @Value("${taobao.app.secret}")
-    private String SECRET;
+    //@Value("${taobao.app.secret}")
+    //private String SECRET;
+    //
+    //@Value("${taobao.app.server.url}")
+    //private String TOP_SERVER_URL;
 
-    @Value("${taobao.app.server.url}")
-    private String TOP_SERVER_URL;
+    @Autowired
+    private ShiguTaobaoClient shiguTaobaoClient;
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
@@ -273,13 +280,13 @@ public class TaobaoItemSynProcessImpl implements TaobaoItemSynProcess {
         SessionVO session = taobaoAuthProcess.getSession(APPKEY, nick);
         if (session == null)
             throw new TbApiException("用户SessionKey不存在");
-        TaobaoClient client = new DefaultTaobaoClient(TOP_SERVER_URL, APPKEY, SECRET);
-
         E response;
         try {
-            response = client.execute(request, session.getSession());
+            response = shiguTaobaoClient.execute(request, session.getSession());
         } catch (ApiException e) {
             throw new TbApiException("淘宝接口调用失败：" + e.getMessage());
+        } catch (Main4Exception e) {
+            throw new TbApiException("淘宝接口调用失败： 找不到请求" + e.getMessage());
         }
         if (response.isSuccess()) {
             return response;
@@ -430,8 +437,6 @@ public class TaobaoItemSynProcessImpl implements TaobaoItemSynProcess {
 
     @Override
     public void addToTmc(String nick) throws TbTmcException {
-        TaobaoClient client = new DefaultTaobaoClient(TOP_SERVER_URL,
-                APPKEY, SECRET);
         TmcUserPermitRequest req = new TmcUserPermitRequest();
         req.setTopics(field);
         TmcUserPermitResponse rsp = null;
@@ -439,27 +444,29 @@ public class TaobaoItemSynProcessImpl implements TaobaoItemSynProcess {
             SessionVO sessionVO=taobaoAuthProcess.getSession(APPKEY,nick);
             if(sessionVO==null)
                 throw new TbTmcException("获取session失败");
-            rsp = client.execute(req, sessionVO.getSession());
+            rsp = shiguTaobaoClient.execute(req, sessionVO.getSession());
             if(!rsp.isSuccess()){
                 throw new TbTmcException(rsp.getBody());
             }
         } catch (ApiException e) {
             throw new TbTmcException(e.getErrMsg());
+        } catch (Main4Exception e) {
+            throw new TbTmcException(e.getMessage());
         }
     }
 
     @Override
     public void removeTmc(String nick) throws TbTmcException {
-        TaobaoClient client = new DefaultTaobaoClient(TOP_SERVER_URL,
-                APPKEY, SECRET);
         TmcUserCancelRequest req = new TmcUserCancelRequest();
         req.setNick(nick);
         req.setUserPlatform("tbUIC");
         TmcUserCancelResponse rsp = null;
         try {
-            rsp = client.execute(req);
+            rsp = shiguTaobaoClient.execute(req);
         } catch (ApiException e) {
             throw new TbTmcException(rsp.getBody());
+        } catch (Main4Exception e) {
+            throw new TbTmcException(e.getMessage());
         }
     }
 
@@ -467,17 +474,15 @@ public class TaobaoItemSynProcessImpl implements TaobaoItemSynProcess {
     public Map<String, TmcUserVO> listTmc(List<String> nicks) {
         Map<String,TmcUserVO> map=new HashMap<String, TmcUserVO>();
         for(String nick:nicks){
-            TaobaoClient client = new DefaultTaobaoClient(TOP_SERVER_URL,
-                    APPKEY, SECRET);
             TmcUserGetRequest req = new TmcUserGetRequest();
             req.setFields("user_platform,user_nick,user_id,is_valid,created,modified,group_name");
             req.setNick(nick);
             req.setUserPlatform("tbUIC");
             TmcUserGetResponse rsp = null;
             try {
-                rsp = client.execute(req);
+                rsp = shiguTaobaoClient.execute(req);
                 map.put(nick, BeanMapper.map(rsp.getTmcUser(),TmcUserVO.class));
-            } catch (ApiException e) {
+            } catch (ApiException|Main4Exception e) {
                 map.put(nick,null);
             }
         }
