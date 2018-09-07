@@ -174,19 +174,6 @@ public class DaifaWaitSendService {
                     if (1==postMap.get(expressId)){
                         vo.setEnableSendBtn(true);
                     }
-//                    DaifaPostCustomer customer = new DaifaPostCustomer();
-//                    customer.setExpressId(expressId);
-//                    List<DaifaPostCustomer> cs = daifaPostCustomerMapper.select(customer);
-//                    Long orderid = daifaWaitSendSimple.getOrderId();
-//                    try {
-//                        List<SubOrderExpressBO> bos = packDeliveryProcess.cheackeSend(orderid);
-//                        int csc = cs.get(0).getManual();
-//                        if (bos != null && csc == 1) {
-//                            vo.setEnableSendBtn(true);
-//                        }
-//                    } catch (DaifaException e) {
-//                        e.printStackTrace();
-//                    }
                     sends.add(vo);
                     BeanUtils.copyProperties(daifaWaitSendSimple, vo, "childOrders");
                     if ("无".equals(vo.getImWw())) {
