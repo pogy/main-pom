@@ -86,5 +86,12 @@
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoWorksProcess" id="photoWorksProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoGoatProcess" id="photoGoatProcess" retries="0" timeout="20000"/>
 
+    <!--淘宝调用使用代理转发-->
+    <dubbo:reference interface="com.shigu.taobaoredirect.api.ShiguTaobaoAgent" id="shiguTaobaoAgent" retries="0" timeout="20000"/>
+    <dubbo:reference interface="com.shigu.taobaoredirect.api.ShiguTaobaoSecurityClientAgent" id="shiguTaobaoSecurityClientAgent" retries="0" timeout="20000"/>
+
+    <bean id="shiguTaobaoClient" class="com.shigu.taobaoredirect.tools.ShiguTaobaoClient">
+        <property name="taobaoAgent" ref="shiguTaobaoAgent"/>
+    </bean>
     <import resource="daifa/dubbo/*"/>
 </beans>

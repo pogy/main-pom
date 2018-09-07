@@ -1,10 +1,10 @@
-<#assign $pageid>orderHasAllocation</#assign>
+<#assign $pageid="orderHasAllocation">
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=1300px">
+    <meta name="viewport" content="width=1300">
     <title>我的任务 - 星帮后台管理 - 四季星座网</title>
 <#include "/common/base__config.ftl">
     <#include "/__style_torrent__/common__base_css.ftl">
@@ -12,8 +12,8 @@
 <#include "/__style_torrent__/common__form_css.ftl">
 <#include "/__style_torrent__/daifa__common_css.ftl">
 <#include "/__style_torrent__/daifa__orderHasAllocation_css.ftl">
-    <script src="http://style.571xz.com/v6/common/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v6/daifa/js/laydate/laydate.js"></script>
+    <script src="//style.571xz.com/v6/common/js/jquery.js"></script>
+    <script src="//style.571xz.com/v6/daifa/js/laydate/laydate.js"></script>
 <#include "/__style_torrent__/common__base_js.ftl">
 <#include "/__style_torrent__/common__xz_js.ftl">
 <#include "/__style_torrent__/common__form_js.ftl">
@@ -27,9 +27,7 @@
 <#include "/__ftl_links__/daifa__common__sidebar.ftl">
     </div>
     <div class="contentBox">
-<#assign text>{"fields":[{"name":"status","value":""+query.status},{"name":"orderId","value":""+query.orderId},{"name":"childOrderId","value":""+query.childOrderId},{"name":"startTime","value":""+query.startTime},{"name":"endTime","value":""+query.endTime}]}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{"fields":[{"name":"status","value":""+query.status},{"name":"orderId","value":""+query.orderId},{"name":"childOrderId","value":""+query.childOrderId},{"name":"startTime","value":""+query.startTime},{"name":"endTime","value":""+query.endTime}]}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -59,9 +57,7 @@
             </select>
         </li>
         <li>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
     <#if $it.href??>
     <a href="${$it.href!}"
     <#else>
@@ -89,11 +85,10 @@
     </button>
     </#if>
 </#list></li>
+        <li><b class="fcBlue openBattleWindowBtn">今日已打印批次</b></li>
     </ul>
 </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -106,9 +101,7 @@
     <div class="theadCon">
         <ul class="">
             <li class="checkBox">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -162,9 +155,7 @@
 <div class="childOrderItem" data-id="${childOrder.childOrderId!}" data-takeGoodsId="${childOrder.takeGoodsId!}">
     <ul class="clearfix">
         <li class="checkBox">
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <label class="fmCheckbox
         <#if $it.checked??>
             checked
@@ -274,9 +265,7 @@
 </div>
     </#list>
     </div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -285,9 +274,7 @@
 </form>
 </#if>
 </#list>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <div class="jqPagination " id="jqPagination0"
     <#if $it.pageOption??>
         data-option="${$it.pageOption!}"
@@ -295,9 +282,7 @@
         data-option="${pageOption!}"
     </#if>
 ></div>
-<#assign text>{}</#assign>
-<#assign moduleJsonStr=text?eval />
-<#list [moduleJsonStr] as $it>
+<#list [{}] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
