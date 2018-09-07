@@ -3,15 +3,9 @@ package com.shigu.daifa.services;
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.daifa.beans.DaifaGgoods;
-import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
-import com.opentae.data.daifa.beans.DaifaOrder;
-import com.opentae.data.daifa.beans.DaifaWorker;
+import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.custom.beans.DaifaGgoodsJoinOrder;
-import com.opentae.data.daifa.examples.DaifaGgoodsExample;
-import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
+import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
@@ -24,6 +18,7 @@ import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 import com.shigu.main4.order.process.ItemOrderProcess;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DaifaAllocatedService {
@@ -48,6 +44,8 @@ public class DaifaAllocatedService {
     private TakeGoodsIssueProcess takeGoodsIssueProcess;
     @Autowired
     private ItemOrderProcess itemOrderProcess;
+    @Autowired
+    CountTransMapper countTransMapper;
 
     public ShiguPager<DaifaAllocatedVO> selectDaifaGgoodsList(Long sellerId,Long workerId,Long searchWorkerId,Integer status, String lastOrderId, String lastSubOrderId,
                                                               String startDate, String endDate, Integer page, Integer size) {
@@ -180,6 +178,26 @@ public class DaifaAllocatedService {
             vos.add(vo);
         });
         return vos;
+    }
+
+    public List<PrintGoodsTagVO> printGoodsTabByTrans(Long sellerId,String key) throws DaifaException {
+        DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
+        daifaGgoodsExample.createCriteria().andPrintBatchEqualTo(key);
+        List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(daifaGgoodsExample,FieldUtil.codeFields("take_goods_id"));
+        if(gs.size()>0){
+            return printGoodsTab(sellerId, gs.stream().map(DaifaGgoods::getTakeGoodsId).collect(Collectors.toList()));
+        }else{
+            return new ArrayList<>();
+        }
+    }
+
+    public List<String> selectTrans(){
+        String day=DateUtil.dateToString(new Date(),DateUtil.patternB);
+        CountTransExample countTransExample=new CountTransExample();
+        countTransExample.createCriteria().andCreateDateEqualTo(day);
+        countTransExample.setOrderByClause("id desc");
+        List<CountTrans> cts=countTransMapper.selectByExample(countTransExample);
+        return cts.stream().map(countTrans -> day+"-"+countTrans.getBatch()).collect(Collectors.toList());
     }
 
     public void orderServerNotTake(Long dfOrderId){
