@@ -159,7 +159,7 @@
                     </li>
 
                     <li class="tddiv">
-                       <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="修改" onclick="editWorker(this,'${list.roleId!}','${list.password!}')">
+                       <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="修改" onclick="editWorker(this,'${list.daifaWorkerId!}','${list.password!}')">
                     </li>
                 </ul>
             </div>
