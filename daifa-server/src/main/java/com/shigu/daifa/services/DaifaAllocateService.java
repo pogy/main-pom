@@ -137,7 +137,6 @@ public class DaifaAllocateService {
     /**
      * 获取市场列表
      * 只有该方法会更新treeTree
-     *
      * @return json
      */
     public JSONObject getMarketList() {
