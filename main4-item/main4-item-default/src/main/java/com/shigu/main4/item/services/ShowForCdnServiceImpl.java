@@ -353,7 +353,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 
                 // 基础数据 处理
                 cdnItem = newCdnItem(e);
-
+                boolean callSkus=true;
                 // 一些特殊的处理
                 if (e instanceof ShiguGoodsTiny) {
                     ShiguGoodsTiny tiny = (ShiguGoodsTiny) e;
@@ -368,6 +368,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     cdnItem.setListTime(DateFormatUtils.format(tiny.getCreated(), "yyyy-MM-dd"));
                     cdnItem.setOnsale(tiny.getIsClosed()!=null&&tiny.getIsClosed()==0L);
                 } else if (e instanceof ShiguGoodsSoldout) {
+                    callSkus=false;
                     ShiguGoodsSoldout soldout = (ShiguGoodsSoldout) e;
                     Integer from = soldout.getIsExcelImp();
                     cdnItem.setItemFrom(from == null ? ItemFrom.NONE : ItemFrom.values()[from]);
@@ -486,8 +487,15 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                     cdnItem.setInFabric(goodsCountForsearch.getInfabric());
                     cdnItem.setGoodsVideoUrl(goodsCountForsearch.getVideoUrl());
                 }
+                cdnItem.setSingleSkus(new ArrayList<>());
                 //补充独立sku
-                cdnItem.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, id).pull());
+                if(callSkus) {
+                    try {
+                        cdnItem.setSingleSkus(SpringBeanFactory.getBean(ItemSkuModel.class, id).pull());
+                    } catch (Exception e1) {
+                        logger.error("商品独立sku失败,id=" + id);
+                    }
+                }
                 //时间戳
                 if (redisTimestamp == null) {
                     Long timestamp = System.currentTimeMillis();
