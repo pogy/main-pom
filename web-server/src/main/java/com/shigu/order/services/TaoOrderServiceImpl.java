@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -20,17 +21,16 @@ import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.order.vo.TinyIdMapVO;
 import com.shigu.order.vo.TinyVO;
+import com.shigu.taobaoredirect.api.ShiguTaobaoSecurityClientAgent;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.SecretException;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Order;
 import com.taobao.api.domain.Trade;
 import com.taobao.api.request.TradeFullinfoGetRequest;
 import com.taobao.api.request.TradesSoldGetRequest;
 import com.taobao.api.response.TradeFullinfoGetResponse;
 import com.taobao.api.response.TradesSoldGetResponse;
-import com.taobao.api.security.SecurityClient;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -78,11 +78,16 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     @Value("${appKey}")
     private String key;
 
-    @Value("${secretKey}")
-    private String secretKey;
+    //@Value("${secretKey}")
+    //private String secretKey;
 
+    @Autowired
+    private ShiguTaobaoClient shiguTaobaoClient;
 
-    private  SecurityClient securityClient;
+    @Autowired
+    private ShiguTaobaoSecurityClientAgent shiguTaobaoSecurityClientAgent;
+
+    //private  SecurityClient securityClient;
 
     @Autowired
     private  ItemOrderMapper itemOrderMapper;
@@ -110,7 +115,6 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     @Override
     public ShiguPager<TbOrderVO> myTbOrders(TbOrderBO bo, String sessionKey) {
         ShiguPager<TbOrderVO> pager = new ShiguPager<>();
-        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", key, secretKey);
         TradesSoldGetRequest req = new TradesSoldGetRequest();
         req.setFields("seller_flag,seller_nick,buyer_nick,title,type,created,sid,tid,seller_rate,buyer_rate,status,payment,discount_fee,adjust_fee,post_fee,total_fee,pay_time,end_time,modified,consign_time,buyer_obtain_point_fee,point_fee,real_point_fee,received_payment,commission_fee,pic_path,num_iid,num_iid,num,price,cod_fee,cod_status,shipping_type,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,orders.title,orders.pic_path,orders.price,orders.num,orders.iid,orders.num_iid,orders.sku_id,orders.refund_status,orders.status,orders.oid,orders.total_fee,orders.payment,orders.discount_fee,orders.adjust_fee,orders.sku_properties_name,orders.item_meal_name,orders.buyer_rate,orders.seller_rate,orders.outer_iid,orders.outer_sku_id,orders.refund_id,orders.seller_type");
         int size;
@@ -140,7 +144,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         req.setPageNo((long) page);
         req.setPageSize((long) size);
         try {
-            TradesSoldGetResponse rsp = client.execute(req,sessionKey);
+            TradesSoldGetResponse rsp = shiguTaobaoClient.execute(req,sessionKey);
             List<TbOrderVO> tbOrderVOList = new ArrayList<>();
             List<Trade> trades = rsp.getTrades();
             if (trades!=null&&trades.size()>0){
@@ -156,6 +160,8 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             e.printStackTrace();
         } catch (SecretException e) {
             e.printStackTrace();
+        } catch (Main4Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -164,14 +170,13 @@ public class TaoOrderServiceImpl implements TaoOrderService {
 
     @Override
     public TbOrderVO myTbOrder(Long tid, TbOrderStatusEnum status, String sessionKey) {
-        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", key, secretKey);
         TradeFullinfoGetRequest req = new TradeFullinfoGetRequest();
         req.setFields("seller_flag,seller_nick,buyer_nick,title,type,created,sid,tid,seller_rate,buyer_rate,status,payment,discount_fee,adjust_fee,post_fee,total_fee,pay_time,end_time,modified,consign_time,buyer_obtain_point_fee,point_fee,real_point_fee,received_payment,commission_fee,pic_path,num_iid,num_iid,num,price,cod_fee,cod_status,shipping_type,receiver_name,receiver_state,receiver_city,receiver_district,receiver_address,receiver_zip,receiver_mobile,receiver_phone,orders.title,orders.pic_path,orders.price,orders.num,orders.iid,orders.num_iid,orders.sku_id,orders.refund_status,orders.status,orders.oid,orders.total_fee,orders.payment,orders.discount_fee,orders.adjust_fee,orders.sku_properties_name,orders.item_meal_name,orders.buyer_rate,orders.seller_rate,orders.outer_iid,orders.outer_sku_id,orders.refund_id,orders.seller_type");
 
         req.setTid(tid);
         TbOrderVO tbOrderVO = null;
         try {
-            TradeFullinfoGetResponse rsp = client.execute(req, sessionKey);
+            TradeFullinfoGetResponse rsp = shiguTaobaoClient.execute(req, sessionKey);
             Trade trade = rsp.getTrade();
             if (trade != null) {
                 tbOrderVO = packing(trade,sessionKey);
@@ -179,6 +184,8 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         } catch (ApiException e) {
             e.printStackTrace();
         } catch (SecretException e) {
+            e.printStackTrace();
+        } catch (Main4Exception e) {
             e.printStackTrace();
         }
         return tbOrderVO;
@@ -209,30 +216,30 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         itemProductProcess.relationTaoGoods(shiguGoodsTaoRelation);
     }
 
-    public  SecurityClient getSecurityClient() {
-        if (securityClient == null) {
-            securityClient=new SecurityClient(new DefaultTaobaoClient("https://eco.taobao.com/router/rest",key, secretKey), "mfy66cL42XjXNkOifNHniJ36NuoNBDnz2TbBIqRgMMc=");
-//            securityClient = new SecurityClient(new DefaultTaobaoClient("https://gw.api.tbsandbox.com/router/rest", "1021720662", "sandboxb87142f81cb85374baeb2f285"), "Hm0Vqe1VmR3x/a7oqaFUHEf0Gu0yv1JwI8j+tau+fDo= ");
-        }
-        return securityClient;
-    }
+//    public  SecurityClient getSecurityClient() {
+//        if (securityClient == null) {
+//            securityClient=new SecurityClient(new DefaultTaobaoClient("https://eco.taobao.com/router/rest",key, secretKey), "mfy66cL42XjXNkOifNHniJ36NuoNBDnz2TbBIqRgMMc=");
+////            securityClient = new SecurityClient(new DefaultTaobaoClient("https://gw.api.tbsandbox.com/router/rest", "1021720662", "sandboxb87142f81cb85374baeb2f285"), "Hm0Vqe1VmR3x/a7oqaFUHEf0Gu0yv1JwI8j+tau+fDo= ");
+//        }
+//        return securityClient;
+//    }
     //解密的方法
     private Trade decrypt(Trade t,String session) throws SecretException {
 
         if (!StringUtils.isEmpty(t.getBuyerNick())) {
-            t.setBuyerNick(getSecurityClient().decrypt(t.getBuyerNick(), "search", session));
+            t.setBuyerNick(shiguTaobaoSecurityClientAgent.decrypt(t.getBuyerNick(), "search", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverAddress())) {
-            t.setReceiverAddress(getSecurityClient().decrypt(t.getReceiverAddress(), "simple", session));
+            t.setReceiverAddress(shiguTaobaoSecurityClientAgent.decrypt(t.getReceiverAddress(), "simple", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverMobile())) {
-            t.setReceiverMobile(getSecurityClient().decrypt(t.getReceiverMobile(), "phone", session));
+            t.setReceiverMobile(shiguTaobaoSecurityClientAgent.decrypt(t.getReceiverMobile(), "phone", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverPhone())) {
-            t.setReceiverPhone(getSecurityClient().decrypt(t.getReceiverPhone(), "search", session));
+            t.setReceiverPhone(shiguTaobaoSecurityClientAgent.decrypt(t.getReceiverPhone(), "search", session));
         }
         if (!StringUtils.isEmpty(t.getReceiverName())) {
-            t.setReceiverName(getSecurityClient().decrypt(t.getReceiverName(), "search", session));
+            t.setReceiverName(shiguTaobaoSecurityClientAgent.decrypt(t.getReceiverName(), "search", session));
         }
 
         return t;

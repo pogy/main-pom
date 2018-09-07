@@ -34,10 +34,16 @@
         <constructor-arg index="2" value="${host}"/>
     </bean>
 
-    <bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
-        <constructor-arg index="0" value="${taobao.app.server.url}"/>
-        <constructor-arg index="1" value="${taobao.app.key}"/>
-        <constructor-arg index="2" value="${taobao.app.secret}"/>
+    <!--<bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">-->
+        <!--<constructor-arg index="0" value="${taobao.app.server.url}"/>-->
+        <!--<constructor-arg index="1" value="${taobao.app.key}"/>-->
+        <!--<constructor-arg index="2" value="${taobao.app.secret}"/>-->
+    <!--</bean>-->
+
+    <dubbo:reference interface="com.shigu.taobaoredirect.api.ShiguTaobaoAgent" id="shiguTaobaoAgent" retries="0" timeout="20000"/>
+
+    <bean id="shiguTaobaoClient" class="com.shigu.taobaoredirect.tools.ShiguTaobaoClient">
+        <property name="taobaoAgent" ref="shiguTaobaoAgent"/>
     </bean>
 
     <dubbo:service interface="com.shigu.main4.storeservices.MarketShopService" ref="marketShopService" retries="0" timeout="20000" />

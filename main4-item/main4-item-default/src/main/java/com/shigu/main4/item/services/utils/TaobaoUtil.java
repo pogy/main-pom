@@ -6,10 +6,10 @@ import com.openJar.requests.imgs.UptoImgsRequest;
 import com.openJar.responses.imgs.UptoImgsResponse;
 import com.openJar.tools.PcOpenClient;
 import com.openJar.utils.WebUtil;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.FileItem;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.ItemProp;
 import com.taobao.api.domain.Shop;
@@ -28,6 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -40,16 +41,16 @@ import java.util.Map;
 @Service
 public class TaobaoUtil {
 	private static final Logger log = LoggerFactory.getLogger(TaobaoUtil.class);
-	private static DefaultTaobaoClient client;
-
-	@Value("${taobao.app.key}")
-	private String APPKEY;
-
-	@Value("${taobao.app.secret}")
-	private String SECRET;
-
-	@Value("${taobao.app.server.url}")
-	private String TOP_SERVER_URL;
+	//private static DefaultTaobaoClient client;
+    //
+	//@Value("${taobao.app.key}")
+	//private String APPKEY;
+    //
+	//@Value("${taobao.app.secret}")
+	//private String SECRET;
+    //
+	//@Value("${taobao.app.server.url}")
+	//private String TOP_SERVER_URL;
 
 	@Value("${xz_appkey}")
 	private String XZAPPKEY;
@@ -59,16 +60,13 @@ public class TaobaoUtil {
 
 	@Value("${xz_type}")
 	private String XZTYPE;
+	
+	@Autowired
+	private ShiguTaobaoClient shiguTaobaoClient;
 
 	private final String SCHEMA_XML="<itemRule><field id=\"descForMobile\" name=\"宝贝无线端描述\" type=\"complex\"><rules><rule name=\"maxTargetSizeRule\" value=\"1536\" exProperty=\"include\" unit=\"kb\"/><rule name=\"maxLengthRule\" value=\"500\" exProperty=\"include\" unit=\"character\"/></rules><fields><field id=\"shortDesc\" name=\"无线宝贝摘要\" type=\"input\"><rules><rule name=\"maxLengthRule\" value=\"140\" exProperty=\"include\"/><rule name=\"valueTypeRule\" value=\"text\"/></rules></field><field id=\"voice\" name=\"无线宝贝音频\" type=\"complex\"><rules><rule name=\"maxTargetSizeRule\" value=\"200\" exProperty=\"include\" unit=\"kb\"/></rules><fields><field id=\"voice_filename\" name=\"无线商品描述音频标题\" type=\"input\"><rules><rule name=\"valueTypeRule\" value=\"text\"/></rules></field><field id=\"voice_fileurl\" name=\"无线商品描述音频文件地址\" type=\"input\"><rules><rule name=\"valueTypeRule\" value=\"url\"/></rules></field></fields></field><field id=\"content\" name=\"无线宝贝描述内容（文本或图片）\" type=\"multiComplex\"><fields><field id=\"type\" name=\"无线商品描述类型\" type=\"singleCheck\"><options><option displayName=\"图片\" value=\"image\"/><option displayName=\"文本\" value=\"text\"/></options></field><field id=\"value\" name=\"无线商品描述内容\" type=\"input\"><rules><rule name=\"valueTypeRule\" value=\"text\"><depend-group operator=\"and\"><depend-express fieldId=\"type\" value=\"text\" symbol=\"==\"/></depend-group></rule><rule name=\"maxLengthRule\" value=\"500\" exProperty=\"include\" unit=\"character\"><depend-group operator=\"and\"><depend-express fieldId=\"type\" value=\"text\" symbol=\"==\"/></depend-group></rule><rule name=\"valueTypeRule\" value=\"url\"><depend-group operator=\"and\"><depend-express fieldId=\"type\" value=\"image\" symbol=\"==\"/></depend-group></rule><rule name=\"tipRule\" value=\"上传时系统将自动调整图片尺寸(宽度480-620之间，高度小于等于960),以适配手机端.\"/></rules></field></fields></field></fields></field><field id=\"update_fields\" name=\"更新字段列表\" type=\"multiCheck\"><default-values><default-value>descForMobile</default-value></default-values></field></itemRule>";
 	
-	private TaobaoClient getClient(){
-		if(client==null){
-			client=new DefaultTaobaoClient(TOP_SERVER_URL,APPKEY, SECRET);
-		}
-		return client;
-	}
-	
+
 	/**
 	 * 提交商品
 	 * @param session
@@ -76,9 +74,8 @@ public class TaobaoUtil {
 	 * @return
 	 * @throws ApiException
 	 */
-	public ItemAddResponse submitItem(String session, ItemAddRequest req) throws ApiException {
-		TaobaoClient client=getClient();
-		return client.execute(req, session);
+	public ItemAddResponse submitItem(String session, ItemAddRequest req) throws ApiException, Main4Exception {
+		return shiguTaobaoClient.execute(req, session);
 	}
 	/**
 	 * 
@@ -91,15 +88,14 @@ public class TaobaoUtil {
 	 *@throws ApiException:List<ItemProp>
 	 *=========================================================
 	 */
-	public List<ItemProp> selItemProp(Long cid, Long parentPid) throws ApiException{
-		TaobaoClient client=getClient();
+	public List<ItemProp> selItemProp(Long cid, Long parentPid) throws ApiException, Main4Exception {
 		ItempropsGetRequest req=new ItempropsGetRequest();
 		req.setFields("pid,parent_pid,parent_vid,is_key_prop,is_sale_prop,is_color_prop,is_enum_prop,is_material,is_item_prop,name,must,multi,prop_values,status,sort_order,child_template,is_allow_alias,is_input_prop,cid");
 		req.setCid(cid);
 		if(parentPid!=null){
 			req.setParentPid(parentPid);
 		}
-		ItempropsGetResponse response = client.execute(req);
+		ItempropsGetResponse response = shiguTaobaoClient.execute(req);
 		if(!response.isSuccess()){
 			log.error("get taobao itemprops error"+response.getBody());
 		}
@@ -117,15 +113,14 @@ public class TaobaoUtil {
 	 *@throws ApiException:List<ItemProp>
 	 *=========================================================
 	 */
-	public List<ItemProp> selItemPropByPid(Long cid,Long pid) throws ApiException{
-		TaobaoClient client=getClient();
+	public List<ItemProp> selItemPropByPid(Long cid,Long pid) throws ApiException, Main4Exception {
 		ItempropsGetRequest req=new ItempropsGetRequest();
 		req.setFields("pid,parent_pid,parent_vid,is_key_prop,is_sale_prop,is_color_prop,is_enum_prop,is_material,is_item_prop,name,must,multi,prop_values,status,sort_order,child_template,is_allow_alias,is_input_prop,cid");
 		req.setCid(cid);
 		if(pid!=null){
 			req.setPid(pid);
 		}
-		ItempropsGetResponse response = client.execute(req);
+		ItempropsGetResponse response = shiguTaobaoClient.execute(req);
 		if(!response.isSuccess()){
 			log.error("get taobao itemprops error"+response.getBody());
 		}
@@ -143,15 +138,14 @@ public class TaobaoUtil {
 	 *@throws ApiException:List<ItemProp>
 	 *=========================================================
 	 */
-	public List<ItemProp> selItemPropByPath(Long cid,String path) throws ApiException{
-		TaobaoClient client=getClient();
+	public List<ItemProp> selItemPropByPath(Long cid,String path) throws ApiException, Main4Exception {
 		ItempropsGetRequest req=new ItempropsGetRequest();
 		req.setFields("pid,parent_pid,parent_vid,is_key_prop,is_sale_prop,is_color_prop,is_enum_prop,is_material,is_item_prop,name,must,multi,prop_values,status,sort_order,child_template,is_allow_alias,is_input_prop,cid");
 		req.setCid(cid);
 		if(path!=null){
 			req.setChildPath(path);
 		}
-		ItempropsGetResponse response = client.execute(req);
+		ItempropsGetResponse response = shiguTaobaoClient.execute(req);
 		if(!response.isSuccess()){
 			log.error("get taobao itemprops error"+response.getBody());
 		}
@@ -164,25 +158,22 @@ public class TaobaoUtil {
 	 * @return
 	 * @throws ApiException
 	 */
-	public Item selItemByNumIid(Long numIid) throws ApiException{
-		TaobaoClient client=getClient();
-		ItemGetRequest req=new ItemGetRequest();
+	public Item selItemByNumIid(Long numIid, String session) throws ApiException, Main4Exception {
+		ItemSellerGetRequest req=new ItemSellerGetRequest();
 		req.setFields("detail_url,num_iid,title,nick,type,desc,sku,props_name,created,is_lightning_consignment,is_fenxiao,auction_point,property_alias,template_id,after_sale_id,is_xinpin,sub_stock,inner_shop_auction_template_id,outer_shop_auction_template_id,features,item_weight,item_size,with_hold_quantity,valid_thru,outer_id,auto_fill,custom_made_type_id,wireless_desc,barcode,cid,seller_cids,props,input_pids,input_str,pic_url,num,list_time,delist_time,stuff_status,location,price,post_fee,express_fee,ems_fee,has_discount,freight_payer,has_invoice,has_warranty,has_showcase,modified,increment,approve_status,postage_id,product_id,item_img,prop_img,is_virtual,is_taobao,is_ex,is_timing,video,is_3D,one_station,second_kill,violation,wap_desc,wap_detail_url,cod_postage_id,sell_promise");
 		req.setNumIid(numIid);
-		ItemGetResponse response = client.execute(req);
+		ItemSellerGetResponse response = shiguTaobaoClient.execute(req);
 		return response.getItem();
 	}
 	
-	public void addSkus(String session,Long numIid,String props,String prices,String nums,String outers) throws ApiException{
-		TaobaoClient client=getClient();
+	public void addSkus(String session,Long numIid,String props,String prices,String nums,String outers) throws ApiException, Main4Exception {
 		ItemUpdateRequest req=new ItemUpdateRequest();
 		req.setNumIid(numIid);
 		req.setSkuProperties(props);
 		req.setSkuPrices(prices);
 		req.setSkuQuantities(nums);
 		req.setSkuOuterIds(outers);
-		ItemUpdateResponse response = client.execute(req , session);
-		//System.out.println(response.getBody());
+		ItemUpdateResponse response = shiguTaobaoClient.execute(req , session);
 	}
 
 	/**
@@ -194,7 +185,6 @@ public class TaobaoUtil {
 	 * @throws ApiException
 	 */
 	public void itemToPicByUpload(Long numIid,String url,String session,boolean ismajor) throws ApiException {
-		TaobaoClient client = getClient();
 		ItemImgUploadRequest req = new ItemImgUploadRequest();
 		req.setNumIid(numIid);
 		//得到图片数据
@@ -206,8 +196,7 @@ public class TaobaoUtil {
 			String fileName=url.substring(url.lastIndexOf("/") + 1);
 			req.setImage(new FileItem(fileName,cr.bodyAsBytes()));
 			req.setIsMajor(ismajor);
-			ItemImgUploadResponse rsp = client.execute(req, session);
-//			System.out.println(rsp.getBody());
+			ItemImgUploadResponse rsp = shiguTaobaoClient.execute(req, session);
 			if(!rsp.isSuccess()&&("isv.pictureServiceClient-service-error:SERVER_IS_BUSY".equals(rsp.getSubCode())
 		||"isv.pictureServiceClient-service-error:PICTURE_SYS_ERROR".equals(rsp.getSubCode())
 			||"isv.pictureServiceClient-service-error:EXECUTE_FAILURE".equals(rsp.getSubCode()))){
@@ -215,11 +204,12 @@ public class TaobaoUtil {
 			}
 		} catch (IOException e) {
 			log.error("上传图片异常",e);
+		} catch (Main4Exception e) {
+			log.error("上传图片，找不到淘宝接口", e);
 		}
 	}
 
 	public void reitemToPicByUpload(Long numIid,String url,String session,boolean ismajor) throws ApiException {
-		TaobaoClient client = getClient();
 		ItemImgUploadRequest req = new ItemImgUploadRequest();
 		req.setNumIid(numIid);
 		//得到图片数据
@@ -231,15 +221,16 @@ public class TaobaoUtil {
 			String fileName=url.substring(url.lastIndexOf("/") + 1);
 			req.setImage(new FileItem(fileName,cr.bodyAsBytes()));
 			req.setIsMajor(ismajor);
-			ItemImgUploadResponse rsp = client.execute(req, session);
+			ItemImgUploadResponse rsp = shiguTaobaoClient.execute(req, session);
 //			System.out.println(rsp.getBody());
 		} catch (IOException e) {
 			log.error("上传商品图片异常",e);
+		} catch (Main4Exception e) {
+			log.error("上传商品图片异常 找不到淘宝接口", e);
 		}
 	}
 
-	public void itemToPic2(Long numIid,String url,String session,boolean ismajor) throws ApiException{
-		TaobaoClient client=getClient();
+	public void itemToPic2(Long numIid,String url,String session,boolean ismajor) throws ApiException, Main4Exception {
 		ItemJointImgRequest req=new ItemJointImgRequest();
 		req.setNumIid(numIid);
 		if(url!=null&&url.contains("imgextra")){
@@ -251,11 +242,10 @@ public class TaobaoUtil {
 		}
 		req.setIsMajor(ismajor);
 		req.setPicPath(url);
-		ItemJointImgResponse response = client.execute(req , session);
+		ItemJointImgResponse response = shiguTaobaoClient.execute(req , session);
 	}
 	
-	public void itemToPic(Long numIid,String url,String session) throws ApiException{
-		TaobaoClient client=getClient();
+	public void itemToPic(Long numIid,String url,String session) throws ApiException, Main4Exception {
 		ItemJointImgRequest req=new ItemJointImgRequest();
 		req.setNumIid(numIid);
 		if(url!=null&&url.contains("imgextra")){
@@ -264,12 +254,10 @@ public class TaobaoUtil {
 			return;
 		}
 		req.setPicPath(url);
-		ItemJointImgResponse response = client.execute(req , session);
+		ItemJointImgResponse response = shiguTaobaoClient.execute(req , session);
 	}
 	
-	public void joinpropImg(String session,String prop,String url,Long numIid) throws ApiException{
-		
-		TaobaoClient client=getClient();
+	public void joinpropImg(String session,String prop,String url,Long numIid) throws ApiException, Main4Exception {
 		ItemJointPropimgRequest req=new ItemJointPropimgRequest();
 		req.setProperties(prop);
 		if(url!=null&&url.contains("imgextra")){
@@ -279,7 +267,7 @@ public class TaobaoUtil {
 		}
 		req.setPicPath(url);
 		req.setNumIid(numIid);
-		ItemJointPropimgResponse response = client.execute(req , session);
+		ItemJointPropimgResponse response = shiguTaobaoClient.execute(req , session);
 	}
 	/**
 	 * 根据numIid调用一件商品信息
@@ -287,12 +275,11 @@ public class TaobaoUtil {
 	 * @return
 	 * @throws ApiException
 	 */
-	public Item selPropNameByNumIid(Long numIid) throws ApiException{
-		TaobaoClient client=getClient();
-		ItemGetRequest req=new ItemGetRequest();
+	public Item selPropNameByNumIid(Long numIid, String session) throws ApiException, Main4Exception {
+		ItemSellerGetRequest req=new ItemSellerGetRequest();
 		req.setFields("props_name");
 		req.setNumIid(numIid);
-		ItemGetResponse response = client.execute(req);
+		ItemSellerGetResponse response = shiguTaobaoClient.execute(req, session);
 		return response.getItem();
 	}
 
@@ -302,12 +289,11 @@ public class TaobaoUtil {
 	 * @return
 	 * @throws ApiException 
 	 */
-	public Shop selShopByNick(String nick) throws ApiException{
-		TaobaoClient client=getClient();
+	public Shop selShopByNick(String nick) throws ApiException, Main4Exception {
 		ShopGetRequest req=new ShopGetRequest();
 		req.setFields("sid,cid,title,nick,desc,bulletin,pic_path,created,modified,remain_count,all_count,used_count");
 		req.setNick(nick);
-		ShopGetResponse response = client.execute(req);
+		ShopGetResponse response = shiguTaobaoClient.execute(req);
 		return response.getShop();
 	}
 
@@ -317,10 +303,9 @@ public class TaobaoUtil {
 	 * @return
 	 * @throws ApiException
 	 */
-	public UserInfo selPicUserInfo(String session) throws ApiException{
-		TaobaoClient client=getClient();
+	public UserInfo selPicUserInfo(String session) throws ApiException, Main4Exception {
 		PictureUserinfoGetRequest req=new PictureUserinfoGetRequest();
-		PictureUserinfoGetResponse response = client.execute(req , session);
+		PictureUserinfoGetResponse response = shiguTaobaoClient.execute(req , session);
 		return response.getUserInfo();
 	}
 	
@@ -392,20 +377,17 @@ public class TaobaoUtil {
 			}
 			SchemaWriter write=new SchemaWriter();
 			String str=write.writeParamXmlString(fieldlist);
-			
-			//System.out.println(str);
-			
-			TaobaoClient client=getClient();
+
 			ItemSchemaIncrementUpdateRequest req=new ItemSchemaIncrementUpdateRequest();
 			req.setItemId(numIid);
 			req.setParameters("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+str);
-			ItemSchemaIncrementUpdateResponse response = client.execute(req , session);
-//			System.out.println(response.getBody());
-			//System.out.println(response.getSubMsg());
+			ItemSchemaIncrementUpdateResponse response = shiguTaobaoClient.execute(req , session);
 			return response.getSubMsg();
 		} catch (TopSchemaException e) {
 			// TODO Auto-generated catch block
 			log.error("手机详情Schema转化异常",e);
+		} catch (Main4Exception e) {
+			log.error("手机详情Schema转化异常 找不到淘宝接口", e);
 		}
 		return null;
 	}
@@ -474,20 +456,17 @@ public class TaobaoUtil {
 			}
 			SchemaWriter write=new SchemaWriter();
 			String str=write.writeParamXmlString(fieldlist);
-			
-			//System.out.println(str);
-			
-			TaobaoClient client=getClient();
+
 			ItemSchemaIncrementUpdateRequest req=new ItemSchemaIncrementUpdateRequest();
 			req.setItemId(numIid);
 			req.setParameters("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+str);
-			ItemSchemaIncrementUpdateResponse response = client.execute(req , session);
-//			System.out.println(response.getBody());
-			//System.out.println(response.getSubMsg());
+			ItemSchemaIncrementUpdateResponse response = shiguTaobaoClient.execute(req , session);
 			return response.getSubMsg();
 		} catch (TopSchemaException e) {
 			// TODO Auto-generated catch block
 			log.error("手机详情处理失败",e);
+		} catch (Main4Exception e) {
+			log.error("手机详情处理失败 找不到淘宝接口",e);
 		}
 		return null;
 	}

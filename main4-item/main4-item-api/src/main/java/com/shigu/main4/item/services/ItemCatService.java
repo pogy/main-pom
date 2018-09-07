@@ -54,5 +54,5 @@ public interface ItemCatService {
      * @return
      throws ItemException
      */
-    public ItemGoatCidAndWebsiteVO getItemCid(Long goodsId) throws ItemException;
+    ItemGoatCidAndWebsiteVO getItemCid(Long goodsId) throws ItemException;
 }

@@ -65,8 +65,8 @@
 
         <!-- 新版sdk-->
         <pinduoduo-sdk.version>0.0.1-SNAPSHOT</pinduoduo-sdk.version>
-
-
+        <!--淘宝请求代理-->
+        <shigu-taobao-redirect-agent-tools.version>1.0-SNAPSHOT</shigu-taobao-redirect-agent-tools.version>
 
         <spring.version>4.3.9.RELEASE</spring.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>
@@ -91,6 +91,10 @@
         <xinzuo-mybatis.version>1.0.4-SNAPSHOT</xinzuo-mybatis.version>
         <xinzuo-mybatis-RO.version>1.0.5.RO-SNAPSHOT</xinzuo-mybatis-RO.version>
         <ons-client.version>1.6.0.Final</ons-client.version>
+
+        <taobao-sdk.groupId>taobao-sdk-java-auto</taobao-sdk.groupId>
+        <taobao-sdk.artifactId>taobao-sdk-java-auto</taobao-sdk.artifactId>
+        <taobao-sdk.version>1535350529614</taobao-sdk.version>
     </properties>
 
     <dependencies>
