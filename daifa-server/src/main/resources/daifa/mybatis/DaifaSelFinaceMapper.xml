@@ -325,11 +325,14 @@
     </select>
 
     <select id="selTodayRefundFee" resultType="java.lang.String">
-        SELECT
-        IFNULL(sum(return_goods_fee), 0)
-        FROM
-        daifa_order
-        WHERE
-        date_format( return_goods_finish_time, "%Y%m%d" ) = ${time}
+    SELECT
+	sum( t2.store_return_money )
+    FROM
+	daifa_order t1,
+	daifa_after_sale_sub t2
+    WHERE
+	t1.return_goods_status = 2
+	AND DATE_FORMAT( return_goods_finish_time, "%Y%m%d" ) = ${time}
+	AND t1.df_order_id = t2.df_order_id
     </select>
 </mapper>
