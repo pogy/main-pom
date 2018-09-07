@@ -21,6 +21,8 @@ public class ItemSpreadVO implements Serializable{
 
     private String shopNo;
 
+    private String storeNum;
+
     //发布时间
     private String time;
 
@@ -28,10 +30,8 @@ public class ItemSpreadVO implements Serializable{
      * 市场
      */
     private String marketName;
-    /**
-     * 档口
-     */
-    private String storeNum;
+
+    private String marketText;
 
     private String styleText;
 
@@ -53,8 +53,9 @@ public class ItemSpreadVO implements Serializable{
         setShopId(item.getStoreId()+"");
         setShopNo(item.getStoreNum());
         setMarketName(item.getMarket());
-
         setTitle(KeyWordsUtil.duleKeyWords(item.getTitle()));
+        setMarketText(item.getMarket());
+        setStoreNum(item.getStoreNum());
     }
 
 
@@ -125,14 +126,6 @@ public class ItemSpreadVO implements Serializable{
         this.title = title;
     }
 
-    public String getStoreNum() {
-        return storeNum;
-    }
-
-    public void setStoreNum(String storeNum) {
-        this.storeNum = storeNum;
-    }
-
     public String getStyleText() {
         return styleText;
     }
@@ -155,5 +148,21 @@ public class ItemSpreadVO implements Serializable{
 
     public void setUserText(String userText) {
         this.userText = userText;
+    }
+
+    public String getMarketText() {
+        return this.marketText;
+    }
+
+    public void setMarketText(String marketText) {
+        this.marketText = marketText;
+    }
+
+    public String getStoreNum() {
+        return this.storeNum;
+    }
+
+    public void setStoreNum(String storeNum) {
+        this.storeNum = storeNum;
     }
 }
