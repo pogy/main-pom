@@ -104,7 +104,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             throw new NotFindSessionException("没有对应的信息");
         }
         TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
-        taobaoSessionMapExample.createCriteria().andAppkeyEqualTo(key).andSubTaobaoUserNickEqualTo(session.get(0).getSubUserName());
+        taobaoSessionMapExample.createCriteria().andAppkeyEqualTo(key).andNickEqualTo(session.get(0).getSubUserName());
         List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
         if (taobaoSessionMaps.size() == 0 ) {
             throw new NotFindSessionException("没有获取到淘宝session");
