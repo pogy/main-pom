@@ -60,6 +60,7 @@ if(/^https?:\/\/(www\.)?571xz\.com/.test(hreflocation)){//仅首页
 <#include "/common/xz__choosePageType.ftl">
 <#include "/__ftl_links__/hzMan__common__firstScreenContent.ftl">
 <#include "/__ftl_links__/hzMan__common__hotSaleGoods.ftl">
+<#include "/__ftl_links__/hzMan__common__styleGoods.ftl">
 <#include "/__ftl_links__/hzMan__common__intimeGoods.ftl">
 <#include "/__ftl_links__/hzMan__common__serviceIntro.ftl">
 <#include "/__ftl_links__/hzMan__common__siteInfo.ftl">
