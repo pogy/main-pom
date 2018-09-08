@@ -26,10 +26,12 @@ public class GlobalInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("activity_order_invite", String.class));
-        HttpSession session = httpServletRequest.getSession();
-        session.setAttribute("inviteRebateActive",inviteRebateActive ? 1 : 0);//邀请有礼活动开关
-
+        try {
+            Boolean inviteRebateActive = Boolean.parseBoolean(redisIO.get("activity_order_invite", String.class));
+            HttpSession session = httpServletRequest.getSession();
+            session.setAttribute("inviteRebateActive",inviteRebateActive ? 1 : 0);//邀请有礼活动开关
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
