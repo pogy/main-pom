@@ -10,9 +10,12 @@ import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
 import com.shigu.daifa.vo.PrintGoodsTagVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,14 +131,35 @@ public class DaifaAllocatedAction {
         if(bo.getType() == 2&&(bo.getIds() == null||bo.getIds().size()==0)){
             throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
+        if(bo.getType() ==3&& StringUtils.isBlank(bo.getBatchesText())){
+            throw new DaifaException("缺少参数",DaifaException.DEBUG);
+        }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=daifaUser.getDaifaSellerId();
-
-        List<PrintGoodsTagVO> vos=daifaAllocatedService.printGoodsTab(sellerId,bo.getType()==1?null:bo.getIds());
+        List<PrintGoodsTagVO> vos;
+        if(bo.getType()==3){
+            vos=daifaAllocatedService.printGoodsTabByTrans(sellerId,bo.getBatchesText());
+        }else{
+            vos=daifaAllocatedService.printGoodsTab(sellerId,bo.getType()==1?null:bo.getIds());
+        }
         JSONObject obj=JsonResponseUtil.success();
         obj.put("tabList",vos);
         return obj;
     }
+
+    /**
+     * 获取打印批号
+     * @return
+     */
+    @RequestMapping("daifa/getTodayPrintBatches")
+    @ResponseBody
+    public JSONObject getTodayPrintBatches(){
+        List<String> strings = daifaAllocatedService.selectTrans();
+        return JsonResponseUtil.success().element("batches",strings);
+    }
+
+
+
 
 }

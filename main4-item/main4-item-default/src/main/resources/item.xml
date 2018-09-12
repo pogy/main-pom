@@ -50,4 +50,11 @@
 
     <dubbo:service interface="com.shigu.main4.item.newservice.NewItemAddOrUpdateService" ref="newItemAddOrUpdateService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.item.newservice.NewShowForCdnService" ref="newShowForCdnService" retries="0" timeout="20000" />
+
+    <!--淘宝调用使用代理转发-->
+    <dubbo:reference interface="com.shigu.taobaoredirect.api.ShiguTaobaoAgent" id="shiguTaobaoAgent" retries="0" timeout="20000"/>
+
+    <bean id="shiguTaobaoClient" class="com.shigu.taobaoredirect.tools.ShiguTaobaoClient">
+        <property name="taobaoAgent" ref="shiguTaobaoAgent"/>
+    </bean>
 </beans>

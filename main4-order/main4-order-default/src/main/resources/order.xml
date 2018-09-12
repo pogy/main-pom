@@ -77,6 +77,13 @@
         <property name="secret" value="${taobao.app.secret}"/>
         <property name="url" value="${taobao.app.server.url}"/>
     </bean>
+
+    <dubbo:reference interface="com.shigu.taobaoredirect.api.ShiguTaobaoAgent" id="shiguTaobaoAgent" retries="0" timeout="20000"/>
+
+    <bean id="shiguTaobaoClient" class="com.shigu.taobaoredirect.tools.ShiguTaobaoClient">
+        <property name="taobaoAgent" ref="shiguTaobaoAgent"/>
+    </bean>
+
     <dubbo:service interface="com.shigu.main4.order.services.LogisticsService" ref="logisticsService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.services.AfterSaleService" ref="afterSaleService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.services.ItemOrderService" ref="itemOrderService" retries="0" timeout="20000" />
