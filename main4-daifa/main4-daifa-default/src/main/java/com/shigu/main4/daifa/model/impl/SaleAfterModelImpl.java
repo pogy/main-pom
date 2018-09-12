@@ -339,7 +339,6 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<Long> entIds = new ArrayList<>();
         Long maxMoney=0L;
         for (DaifaAfterSaleSub sub1 : subs) {
-            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
             if(sub1.getAfterStatus()>4){
                 continue;
             }
@@ -355,6 +354,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                     }
                 } catch (IsOldException ignored) {
                 }
+                maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
                 entIds.add(sub1.getAfterSaleSubId());
             }
         }
