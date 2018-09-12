@@ -1,5 +1,8 @@
 package com.shigu.daifa.actions;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
+import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.OrderAllocateBO;
@@ -7,6 +10,7 @@ import com.shigu.daifa.services.DaifaAllocateService;
 import com.shigu.daifa.vo.OrderAllocateVO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by pc on 2017-08-15.

@@ -1,13 +1,13 @@
 package com.shigu.main4.item.services.utils;
 
 import com.opentae.data.mall.beans.ShiguShop;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.item.exceptions.TbItemSynException;
 import com.shigu.main4.item.processes.TaobaoAuthProcess;
 import com.shigu.main4.item.vo.SessionVO;
 import com.shigu.main4.item.vo.SynItem;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Item;
 import com.taobao.api.request.ItemsSellerListGetRequest;
 import com.taobao.api.response.ItemsSellerListGetResponse;
@@ -41,11 +41,14 @@ public class TaobaoItemFetchService {
     @Value("${taobao.app.key}")
     private String APPKEY;
 
-    @Value("${taobao.app.secret}")
-    private String SECRET;
+    //@Value("${taobao.app.secret}")
+    //private String SECRET;
+    //
+    //@Value("${taobao.app.server.url}")
+    //private String TOP_SERVER_URL;
 
-    @Value("${taobao.app.server.url}")
-    private String TOP_SERVER_URL;
+    @Autowired
+    private ShiguTaobaoClient shiguTaobaoClient;
 
     /**
      * 拉取用户淘宝店内的商品
@@ -59,12 +62,11 @@ public class TaobaoItemFetchService {
         SessionVO session = taobaoAuthProcess.getSession(APPKEY, nick);
         if (session == null)
             throw new TbItemSynException(SESSION_OVERDUE);
-        TaobaoClient client = new DefaultTaobaoClient(TOP_SERVER_URL, APPKEY, SECRET);
         ItemsSellerListGetRequest request = new ItemsSellerListGetRequest();
         request.setFields("detail_url,num_iid,title,nick,type,desc,sku,props_name,created,is_lightning_consignment,is_fenxiao,auction_point,property_alias,template_id,after_sale_id,is_xinpin,sub_stock,inner_shop_auction_template_id,outer_shop_auction_template_id,features,item_weight,item_size,with_hold_quantity,valid_thru,outer_id,auto_fill,custom_made_type_id,wireless_desc,barcode,cid,seller_cids,props,input_pids,input_str,pic_url,num,list_time,delist_time,stuff_status,location,price,post_fee,express_fee,ems_fee,has_discount,freight_payer,has_invoice,has_warranty,has_showcase,modified,increment,approve_status,postage_id,product_id,item_img,prop_img,is_virtual,is_taobao,is_ex,is_timing,video,is_3D,one_station,second_kill,violation,wap_desc,wap_detail_url,cod_postage_id,sell_promise");
         request.setNumIids(numIid.toString());
         try {
-            ItemsSellerListGetResponse response = client.execute(request, session.getSession());
+            ItemsSellerListGetResponse response = shiguTaobaoClient.execute(request, session.getSession());
             if (response.isSuccess()) {
                 List<Item> items = response.getItems();
                 Item item;
@@ -80,7 +82,7 @@ public class TaobaoItemFetchService {
             } else {
                 throw new TbItemSynException("淘宝接口调用失败:" + response.getMsg() + ", " + response.getSubMsg());
             }
-        } catch (ApiException e) {
+        } catch (ApiException | Main4Exception e) {
             throw new TbItemSynException(TAOBAO_CLIENT_ERROR);
         }
     }

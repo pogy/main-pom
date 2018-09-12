@@ -8,13 +8,13 @@ import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.TaobaoSessionMapExample;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.item.exceptions.TbAddSessionException;
 import com.shigu.main4.item.exceptions.TbItemSynException;
 import com.shigu.main4.item.vo.SessionVO;
 import com.shigu.main4.item.vo.TmcUserVO;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.ApiException;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.User;
 import com.taobao.api.request.UserSellerGetRequest;
 import com.taobao.api.response.UserSellerGetResponse;
@@ -47,14 +47,17 @@ public class TaobaoAuthProcessImpl implements TaobaoAuthProcess {
     @Autowired
     protected EhCacheCacheManager cacheManager;
 
+    @Autowired
+    private ShiguTaobaoClient shiguTaobaoClient;
+
     @Value("${taobao.app.key}")
     private String APPKEY;
 
     @Value("${taobao.app.secret}")
     private String SECRET;
 
-    @Value("${taobao.app.server.url}")
-    private String TOP_SERVER_URL;
+    //@Value("${taobao.app.server.url}")
+    //private String TOP_SERVER_URL;
 
     @Override
     public void addSession(Map<?, ?> mapinfo) throws TbAddSessionException {
@@ -93,7 +96,7 @@ public class TaobaoAuthProcessImpl implements TaobaoAuthProcess {
                 User u= null;
                 try {
                     u = synUserLevel(tsm.getSession());
-                } catch (ApiException e) {
+                } catch (ApiException|Main4Exception e) {
                     e.printStackTrace();
                 }
                 if(u!=null&&u.getSellerCredit()!=null){
@@ -125,7 +128,7 @@ public class TaobaoAuthProcessImpl implements TaobaoAuthProcess {
             User u= null;
             try {
                 u = synUserLevel(tsm.getSession());
-            } catch (ApiException e) {
+            } catch (ApiException|Main4Exception e) {
                 e.printStackTrace();
             }
             if(u!=null&&u.getSellerCredit()!=null){
@@ -192,12 +195,10 @@ public class TaobaoAuthProcessImpl implements TaobaoAuthProcess {
     /**
      * 同步用户等级
      */
-    private User synUserLevel(String session) throws ApiException {
-        TaobaoClient client=new DefaultTaobaoClient(TOP_SERVER_URL,
-                APPKEY, SECRET);
+    private User synUserLevel(String session) throws ApiException, Main4Exception {
         UserSellerGetRequest req=new UserSellerGetRequest();
         req.setFields("seller_credit");
-        UserSellerGetResponse response = client.execute(req , session);
+        UserSellerGetResponse response = shiguTaobaoClient.execute(req , session);
         return response.getUser();
     }
 

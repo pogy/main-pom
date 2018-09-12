@@ -66,29 +66,29 @@ public class GoodsStatisticsService {
         }
         int i = daifaOrderMapper.countStatisGoodsbyGoods(example);
         bo.setCount(i);
+        List<StatisGoodsVO> listVO = new ArrayList<> ();
         if(i > 0) {
             int page = Integer.parseInt (bo.getPage ());
             int rows = 10;
             example.setStartIndex ((page - 1) * rows);
             example.setEndIndex (rows);
-        }
-        List<StatisGoodsVO> listVO = new ArrayList<> ();
-        List<DaifaOrder> list_order= daifaOrderMapper.statisGoodsbyGoods (example);
-        if(list_order.size ()>0){
-            for(DaifaOrder order:list_order){
-                StatisGoodsVO vo=new StatisGoodsVO();
-                vo.setMarketId (order.getMarketId ());
-                vo.setMarketName (order.getMarketName ());
-                vo.setFloorName (order.getFloorName ());
-                vo.setStoreId (order.getStoreId ());
-                vo.setStoreNum (order.getStoreNum ());
-                vo.setGoodsId (order.getGoodsId ());
-                vo.setGoodsCode (order.getGoodsCode ());
-                vo.setStoreGoodsCode (order.getStoreGoodsCode ());
-                vo.setGoodsNum (order.getGoodsNum ());
-                vo.setTitle (order.getTitle ());
-                vo.setSinglePiPrice (order.getSinglePiPrice ());
-                listVO.add (vo);
+            List<DaifaOrder> list_order= daifaOrderMapper.statisGoodsbyGoods (example);
+            if(list_order.size ()>0){
+                for(DaifaOrder order:list_order){
+                    StatisGoodsVO vo=new StatisGoodsVO();
+                    vo.setMarketId (order.getMarketId ());
+                    vo.setMarketName (order.getMarketName ());
+                    vo.setFloorName (order.getFloorName ());
+                    vo.setStoreId (order.getStoreId ());
+                    vo.setStoreNum (order.getStoreNum ());
+                    vo.setGoodsId (order.getGoodsId ());
+                    vo.setGoodsCode (order.getGoodsCode ());
+                    vo.setStoreGoodsCode (order.getStoreGoodsCode ());
+                    vo.setGoodsNum (order.getGoodsNum ());
+                    vo.setTitle (order.getTitle ());
+                    vo.setSinglePiPrice (order.getSinglePiPrice ());
+                    listVO.add (vo);
+                }
             }
         }
         return listVO;
@@ -129,24 +129,24 @@ public class GoodsStatisticsService {
         }
         int i = daifaOrderMapper.countStatisGoodsByStoreNum(example);
         bo.setCount(i);
+        List<StatisGoodsVO> listVO = new ArrayList<> ();
         if(i > 0) {
             int page = Integer.parseInt (bo.getPage ());
             int rows = 10;
             example.setStartIndex ((page - 1) * rows);
             example.setEndIndex (rows);
-        }
-        List<StatisGoodsVO> listVO = new ArrayList<> ();
-        List<DaifaOrder> list_order= daifaOrderMapper.statisGoodsByStoreNum (example);
-        if(list_order.size ()>0){
-            for(DaifaOrder order:list_order){
-                StatisGoodsVO vo=new StatisGoodsVO();
-                vo.setMarketId (order.getMarketId ());
-                vo.setMarketName (order.getMarketName ());
-                vo.setFloorName (order.getFloorName ());
-                vo.setStoreId (order.getStoreId ());
-                vo.setStoreNum (order.getStoreNum ());
-                vo.setGoodsNum (order.getGoodsNum ());
-                listVO.add (vo);
+            List<DaifaOrder> list_order= daifaOrderMapper.statisGoodsByStoreNum (example);
+            if(list_order.size ()>0){
+                for(DaifaOrder order:list_order){
+                    StatisGoodsVO vo=new StatisGoodsVO();
+                    vo.setMarketId (order.getMarketId ());
+                    vo.setMarketName (order.getMarketName ());
+                    vo.setFloorName (order.getFloorName ());
+                    vo.setStoreId (order.getStoreId ());
+                    vo.setStoreNum (order.getStoreNum ());
+                    vo.setGoodsNum (order.getGoodsNum ());
+                    listVO.add (vo);
+                }
             }
         }
         return listVO;

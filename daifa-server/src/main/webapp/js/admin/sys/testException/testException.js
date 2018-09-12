@@ -1,13 +1,4 @@
 /*=================左侧菜单的选中===============*/
-$(function(){
-    //左侧菜单的选中
-    $("a[id^='niemenu']").each(function(){
-        if($(this).prop("href").indexOf("sendTest.htm")>0){
-            $(this).prop("class","current");
-        }
-    });
-
-});
 
 
 //保存用户角色

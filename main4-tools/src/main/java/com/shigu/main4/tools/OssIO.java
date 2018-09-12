@@ -332,7 +332,7 @@ public class OssIO {
         OSSClient client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         Map<String, String> respMap = new LinkedHashMap<String, String>();
 
-        long expireTime = 30;
+        long expireTime = 600;
         long expireEndTime = System.currentTimeMillis() + expireTime * 1000;
         Date expiration = new Date(expireEndTime);
         PolicyConditions policyConds = new PolicyConditions();

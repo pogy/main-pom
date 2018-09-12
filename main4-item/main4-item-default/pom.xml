@@ -270,10 +270,15 @@
             <version>${javassist.version}</version>
         </dependency>
         <!--淘宝接口-->
+        <!--<dependency>-->
+            <!--<groupId>taobao-sdk-java-auto</groupId>-->
+            <!--<artifactId>taobao-sdk-java-auto</artifactId>-->
+            <!--<version>1487931282132</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>taobao-sdk-java-auto</groupId>
-            <artifactId>taobao-sdk-java-auto</artifactId>
-            <version>1487931282132</version>
+            <groupId>${taobao-sdk.groupId}</groupId>
+            <artifactId>${taobao-sdk.artifactId}</artifactId>
+            <version>${taobao-sdk.version}</version>
         </dependency>
         <dependency>
             <groupId>com.taobao.top</groupId>
@@ -294,6 +299,10 @@
                     <groupId>data-mall</groupId>
                     <artifactId>daifa_gift_goods</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.taobao</groupId>
+                    <artifactId>taobao-sdk-java-21720662</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -301,6 +310,12 @@
             <groupId>com.opentae.lib</groupId>
             <artifactId>ezmorph</artifactId>
             <version>${ezmorph.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>shigu_tb_redirect</groupId>
+            <artifactId>resolver_tools</artifactId>
+            <version>${shigu-taobao-redirect-agent-tools.version}</version>
         </dependency>
     </dependencies>
 

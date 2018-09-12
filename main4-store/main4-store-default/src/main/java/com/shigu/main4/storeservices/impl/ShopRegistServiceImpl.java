@@ -19,7 +19,7 @@ import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.storeservices.ShopToEsService;
 import com.shigu.main4.vo.*;
-import com.taobao.api.TaobaoClient;
+import com.shigu.taobaoredirect.tools.ShiguTaobaoClient;
 import com.taobao.api.request.ShopGetRequest;
 import com.taobao.api.response.ShopGetResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -79,8 +79,11 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
     @Value("${taobao.app.key}")
     private String appKey;
 
+    //@Autowired
+    //private TaobaoClient taobaoClient;
+
     @Autowired
-    private TaobaoClient taobaoClient;
+    private ShiguTaobaoClient shiguTaobaoClient;
 
     /**
      * 注册用户
@@ -145,7 +148,7 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
             req.setFields("sid");
             req.setNick(apply.getTbNick());
             try {
-                ShopGetResponse response = taobaoClient.execute(req);
+                ShopGetResponse response = shiguTaobaoClient.execute(req);
                 Long taobaoShopId = response.getShop().getSid();
                 apply.setTbshopId(taobaoShopId.toString());
                 apply.setTbUrl("http://shop" + taobaoShopId +".taobao.com");

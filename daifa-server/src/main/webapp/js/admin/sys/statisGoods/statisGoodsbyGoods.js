@@ -16,13 +16,5 @@ $(function(){
     });
 });
 /*=================左侧菜单的选中===============*/
-$(function(){
-
-    $("a[id^='niemenu']").each(function(){
-        if($(this).prop("href").indexOf("statisGoodsbyGoods.htm")>0){
-            $(this).prop("class","current");
-        }
-    });
-});
 
 

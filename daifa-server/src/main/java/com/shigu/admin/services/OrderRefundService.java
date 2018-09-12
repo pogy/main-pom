@@ -42,10 +42,10 @@ public class OrderRefundService {
         if (bo.getDfTradeId()!=null&&StringUtils.hasText(bo.getDfTradeId()+"")) {
             ce.andDfTradeIdLike("%" + bo.getDfTradeId()).or().andTradeCodeLike("%"+bo.getDfTradeId());
         }
-        if (StringUtils.isEmpty(bo.getPage())) {
-            bo.setPage("1");
-        }
         if(bo.getSuborderId()!=null&&StringUtils.hasText(bo.getSuborderId()+"")){
+            if (StringUtils.isEmpty(bo.getPage())) {
+                bo.setPage("1");
+            }
             ce.andDfOrderIdLike ("%"+bo.getSuborderId ()+"").or ().andOrderCodeLike("%"+bo.getSuborderId());
         }
         List<OrderRefundVO> listVO=new ArrayList<> ();
