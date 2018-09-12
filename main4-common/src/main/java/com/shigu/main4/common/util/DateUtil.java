@@ -866,4 +866,17 @@ public static ArrayList getWeekListByMonth(int year, int month) {
         ZonedDateTime  z=localDateTime2.atZone(zone);
         return Date.from(z.toInstant());
     }
+
+    public static Date addDayV1_8(int addDay){
+        LocalDateTime ldt = LocalDateTime.now();
+        LocalDateTime localDateTime2;
+        if(addDay>0){
+            localDateTime2 = ldt.plusDays(addDay);
+        }else{
+            localDateTime2 = ldt.minusDays(-addDay);
+        }
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime  z=localDateTime2.atZone(zone);
+        return Date.from(z.toInstant());
+    }
 }
