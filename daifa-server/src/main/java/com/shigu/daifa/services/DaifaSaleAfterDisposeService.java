@@ -6,10 +6,7 @@ import com.opentae.data.daifa.examples.DaifaAfterSaleExample;
 import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.interfaces.DaifaAfterSaleMapper;
-import com.opentae.data.daifa.interfaces.DaifaAfterSaleSubMapper;
-import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
-import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.bo.SaleAfterBO;
 import com.shigu.daifa.vo.*;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -36,62 +33,66 @@ public class DaifaSaleAfterDisposeService {
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired
     private SaleAfterProcess saleAfterProcess;
+    @Autowired
+    private DaifaStockMapper daifaStockMapper;
+    @Autowired
+    private DaifaStockRecordMapper daifaStockRecordMapper;
 
-    public ShiguPager<DaifaSaleAfterDisposeVO> afterSaleProcess(SaleAfterBO bo,Long sellerId){
-        DaifaAfterSaleSubExample daifaAfterSaleSubExamplex=new DaifaAfterSaleSubExample();
-        DaifaAfterSaleSubExample.Criteria ca=daifaAfterSaleSubExamplex.createCriteria().andSellerIdEqualTo(sellerId).andAfterStatusEqualTo(4);
-        if(!StringUtils.isEmpty(bo.getBackPostCode())){
+    public ShiguPager<DaifaSaleAfterDisposeVO> afterSaleProcess(SaleAfterBO bo, Long sellerId) {
+        DaifaAfterSaleSubExample daifaAfterSaleSubExamplex = new DaifaAfterSaleSubExample();
+        DaifaAfterSaleSubExample.Criteria ca = daifaAfterSaleSubExamplex.createCriteria().andSellerIdEqualTo(sellerId).andAfterStatusEqualTo(4);
+        if (!StringUtils.isEmpty(bo.getBackPostCode())) {
             ca.andApplyExpressCodeEqualTo(bo.getBackPostCode());
         }
-        List<DaifaAfterSaleSub> subsx=daifaAfterSaleSubMapper.selectFieldsByExample(daifaAfterSaleSubExamplex, FieldUtil.codeFields("after_sale_id"));
-        List<DaifaSaleAfterDisposeVO> vos=new ArrayList<>();
-        int count=0;
-        if(subsx.size()>0){
-            List<Long> saleIds= BeanMapper.getFieldList(subsx,"afterSaleId",Long.class);
+        List<DaifaAfterSaleSub> subsx = daifaAfterSaleSubMapper.selectFieldsByExample(daifaAfterSaleSubExamplex, FieldUtil.codeFields("after_sale_id"));
+        List<DaifaSaleAfterDisposeVO> vos = new ArrayList<>();
+        int count = 0;
+        if (subsx.size() > 0) {
+            List<Long> saleIds = BeanMapper.getFieldList(subsx, "afterSaleId", Long.class);
 
-            DaifaAfterSaleExample daifaAfterSaleExample=new DaifaAfterSaleExample();
-            DaifaAfterSaleExample.Criteria ce=daifaAfterSaleExample.createCriteria().andSellerIdEqualTo(sellerId).andAfterSaleIdIn(saleIds);
-            if(!StringUtils.isEmpty(bo.getOrderId())){
-                ce.andDfTradeIdLike("%"+bo.getOrderId());
+            DaifaAfterSaleExample daifaAfterSaleExample = new DaifaAfterSaleExample();
+            DaifaAfterSaleExample.Criteria ce = daifaAfterSaleExample.createCriteria().andSellerIdEqualTo(sellerId).andAfterSaleIdIn(saleIds);
+            if (!StringUtils.isEmpty(bo.getOrderId())) {
+                ce.andDfTradeIdLike("%" + bo.getOrderId());
             }
-            if(!StringUtils.isEmpty(bo.getTelephone())){
+            if (!StringUtils.isEmpty(bo.getTelephone())) {
                 ce.andReceiverMobileEqualTo(bo.getTelephone());
             }
-            if(!StringUtils.isEmpty(bo.getStartTime())){
-                ce.andCreateDateGreaterThanOrEqualTo(DateUtil.dateToString(DateUtil.stringToDate(bo.getStartTime(),DateUtil.patternA),DateUtil.patternB));
+            if (!StringUtils.isEmpty(bo.getStartTime())) {
+                ce.andCreateDateGreaterThanOrEqualTo(DateUtil.dateToString(DateUtil.stringToDate(bo.getStartTime(), DateUtil.patternA), DateUtil.patternB));
             }
-            if(!StringUtils.isEmpty(bo.getEndTime())){
-                ce.andCreateDateLessThanOrEqualTo(DateUtil.dateToString(DateUtil.stringToDate(bo.getEndTime(),DateUtil.patternA),DateUtil.patternB));
+            if (!StringUtils.isEmpty(bo.getEndTime())) {
+                ce.andCreateDateLessThanOrEqualTo(DateUtil.dateToString(DateUtil.stringToDate(bo.getEndTime(), DateUtil.patternA), DateUtil.patternB));
             }
-            count=daifaAfterSaleMapper.countByExample(daifaAfterSaleExample);
-            if(count>0){
-                daifaAfterSaleExample.setStartIndex((bo.getPage()-1)*10);
+            count = daifaAfterSaleMapper.countByExample(daifaAfterSaleExample);
+            if (count > 0) {
+                daifaAfterSaleExample.setStartIndex((bo.getPage() - 1) * 10);
                 daifaAfterSaleExample.setEndIndex(10);
                 daifaAfterSaleExample.setOrderByClause("afterSaleId desc");
-                List<DaifaAfterSale> sales=daifaAfterSaleMapper.selectByConditionList(daifaAfterSaleExample);
+                List<DaifaAfterSale> sales = daifaAfterSaleMapper.selectByConditionList(daifaAfterSaleExample);
 
-                List<Long> tids=BeanMapper.getFieldList(sales,"dfTradeId",Long.class);
-                DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
+                List<Long> tids = BeanMapper.getFieldList(sales, "dfTradeId", Long.class);
+                DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
                 daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
-                List<DaifaTrade> trades=daifaTradeMapper.selectByExample(daifaTradeExample);
-                Map<Long,DaifaTrade> tradeMap=BeanMapper.list2Map(trades,"dfTradeId",Long.class);
+                List<DaifaTrade> trades = daifaTradeMapper.selectByExample(daifaTradeExample);
+                Map<Long, DaifaTrade> tradeMap = BeanMapper.list2Map(trades, "dfTradeId", Long.class);
 
-                saleIds=BeanMapper.getFieldList(sales,"afterSaleId",Long.class);
-                DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
+                saleIds = BeanMapper.getFieldList(sales, "afterSaleId", Long.class);
+                DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
                 daifaAfterSaleSubExample.createCriteria().andAfterSaleIdIn(saleIds);
-                List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
-                Map<Long,List<DaifaAfterSaleSub>> subsGroup=BeanMapper.groupBy(subs,"afterSaleId",Long.class);
+                List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
+                Map<Long, List<DaifaAfterSaleSub>> subsGroup = BeanMapper.groupBy(subs, "afterSaleId", Long.class);
 
-                List<Long> oids=BeanMapper.getFieldList(subs,"dfOrderId",Long.class);
-                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                List<Long> oids = BeanMapper.getFieldList(subs, "dfOrderId", Long.class);
+                DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
                 daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
-                List<DaifaOrder> orders=daifaOrderMapper.selectByExample(daifaOrderExample);
-                Map<Long,DaifaOrder> orderMap=BeanMapper.list2Map(orders,"dfOrderId",Long.class);
-                for(DaifaAfterSale sale:sales){
-                    DaifaTrade t=tradeMap.get(sale.getDfTradeId());
-                    DaifaSaleAfterDisposeVO vo=new DaifaSaleAfterDisposeVO();
+                List<DaifaOrder> orders = daifaOrderMapper.selectByExample(daifaOrderExample);
+                Map<Long, DaifaOrder> orderMap = BeanMapper.list2Map(orders, "dfOrderId", Long.class);
+                for (DaifaAfterSale sale : sales) {
+                    DaifaTrade t = tradeMap.get(sale.getDfTradeId());
+                    DaifaSaleAfterDisposeVO vo = new DaifaSaleAfterDisposeVO();
                     vo.setAllChildRemark(sale.getRemark());
-                    vo.setAfterSaleTime(DateUtil.dateToString(sale.getCreateTime(),DateUtil.patternD));
+                    vo.setAfterSaleTime(DateUtil.dateToString(sale.getCreateTime(), DateUtil.patternD));
                     vo.setBuyerRemark(sale.getBuyerRemark());
                     vo.setDiscountFee(t.getTradeDiscountFee());
                     vo.setExpressCode(t.getExpressCode());
@@ -104,38 +105,38 @@ public class DaifaSaleAfterDisposeService {
                     vo.setReceiverAddress(t.getReceiverAddress());
                     vo.setReceiverName(t.getReceiverName());
                     vo.setReceiverPhone(t.getReceiverPhone());
-                    vo.setSendTime(DateUtil.dateToString(t.getSendTime(),DateUtil.patternD));
+                    vo.setSendTime(DateUtil.dateToString(t.getSendTime(), DateUtil.patternD));
                     vo.setServersFee(t.getServicesFee());
                     vo.setTotalFee(t.getTotalFee());
-                    vo.setIsTbOrder(t.getDaifaType()==2);
-                    Integer num=0;
-                    List<DaifaSaleAfterDisposeRefundVO> refunds=new ArrayList<>();
-                    List<DaifaAfterSaleSub> saleOfSubs=subsGroup.get(sale.getAfterSaleId());
-                    for(DaifaAfterSaleSub s:saleOfSubs){
-                        if(s.getRefundId()==null){
+                    vo.setIsTbOrder(t.getDaifaType() == 2);
+                    Integer num = 0;
+                    List<DaifaSaleAfterDisposeRefundVO> refunds = new ArrayList<>();
+                    List<DaifaAfterSaleSub> saleOfSubs = subsGroup.get(sale.getAfterSaleId());
+                    for (DaifaAfterSaleSub s : saleOfSubs) {
+                        if (s.getRefundId() == null) {
                             s.setRefundId(-1L);
                         }
                     }
-                    Map<Long,List<DaifaAfterSaleSub>> refundGroup=BeanMapper.groupBy(saleOfSubs,"refundId",Long.class);
+                    Map<Long, List<DaifaAfterSaleSub>> refundGroup = BeanMapper.groupBy(saleOfSubs, "refundId", Long.class);
 
-                    Map<Long,Long> tmp=new HashMap<>();
-                    for(DaifaAfterSaleSub s:saleOfSubs){
-                        if(s.getRefundId()!=null&&s.getRefundId()!=-1L&&s.getAfterStatus()!=0){
-                            if(tmp.get(s.getRefundId())!=null){
+                    Map<Long, Long> tmp = new HashMap<>();
+                    for (DaifaAfterSaleSub s : saleOfSubs) {
+                        if (s.getRefundId() != null && s.getRefundId() != -1L && s.getAfterStatus() != 0) {
+                            if (tmp.get(s.getRefundId()) != null) {
                                 continue;
                             }
-                            tmp.put(s.getRefundId(),s.getRefundId());
-                            List<DaifaAfterSaleSub> sublist=refundGroup.get(s.getRefundId());
-                            DaifaSaleAfterDisposeRefundVO refund=new DaifaSaleAfterDisposeRefundVO();
+                            tmp.put(s.getRefundId(), s.getRefundId());
+                            List<DaifaAfterSaleSub> sublist = refundGroup.get(s.getRefundId());
+                            DaifaSaleAfterDisposeRefundVO refund = new DaifaSaleAfterDisposeRefundVO();
                             refund.setRefundId(s.getRefundId());
                             refund.setRefundIs(false);
-                            List<DaifaSaleAfterDisposeSubVO> subvos=new ArrayList<>();
-                            boolean showRefundAll=true;
-                            int errorNum=0;
-                            int waitNum=0;
-                            for(DaifaAfterSaleSub sub:sublist){
-                                DaifaSaleAfterDisposeSubVO subvo=new DaifaSaleAfterDisposeSubVO();
-                                DaifaOrder o=orderMap.get(sub.getDfOrderId());
+                            List<DaifaSaleAfterDisposeSubVO> subvos = new ArrayList<>();
+                            boolean showRefundAll = true;
+                            int errorNum = 0;
+                            int waitNum = 0;
+                            for (DaifaAfterSaleSub sub : sublist) {
+                                DaifaSaleAfterDisposeSubVO subvo = new DaifaSaleAfterDisposeSubVO();
+                                DaifaOrder o = orderMap.get(sub.getDfOrderId());
                                 subvo.setChildOrderId(sub.getDfOrderId());
                                 subvo.setChildRemark(sub.getRemark());
                                 subvo.setChildServersFee(o.getSingleServicesFee());
@@ -146,32 +147,43 @@ public class DaifaSaleAfterDisposeService {
                                 subvo.setPiPrice(o.getSinglePiPrice());
                                 subvo.setTitle(o.getTitle());
                                 subvo.setStoreGoodsCode(o.getStoreGoodsCode());
-                                if(sub.getAfterStatus()>3){
-                                    subvo.setAfterSaleState(sub.getAfterType()==1?5:25);
-                                    if(sub.getAfterType()==2&&sub.getAfterStatus()==6){
+                                if (sub.getAfterStatus() > 3) {
+                                    subvo.setAfterSaleState(sub.getAfterType() == 1 ? 5 : 25);
+                                    if (sub.getAfterType() == 2 && sub.getAfterStatus() == 6) {
                                         subvo.setAfterSaleState(26);
                                     }
-                                }else{
+                                } else {
                                     subvo.setAfterSaleState(0);
                                 }
 
-                                if(sub.getAfterStatus()==4){
-                                    if(sub.getInStock()==null){
-                                        subvo.setPutInStorageType(2);
-                                    }else{
+                                if (sub.getAfterStatus() == 4) {
+
+
+                                    if (sub.getInStock() == null) {
+                                        subvo.setPutInStorageType(2);//收到未入库
+                                    } else {
                                         waitNum++;
-                                        subvo.setPutInStorageType(sub.getInStock()==1?1:3);
+                                        Integer inOutType = getDaifaStock(sub.getDfOrderId());
+                                        subvo.setPutInStorageType(inOutType == 1 ? 1 : 3);
                                     }
-                                }else if(sub.getAfterStatus()>4){
+
+//                                    if (sub.getInStock() == null) {
+//                                        subvo.setPutInStorageType(2);
+//                                    } else {
+//                                        waitNum++;
+//                                        subvo.setPutInStorageType(sub.getInStock() == 1 ? 1 : 3);
+//                                    }
+
+                                } else if (sub.getAfterStatus() > 4) {
                                     errorNum++;
-                                    if(sub.getInStock()!=null&&sub.getInStock()==1){
+                                    if (sub.getInStock() != null && sub.getInStock() == 1) {
                                         subvo.setPutInStorageType(4);
-                                    }else{
+                                    } else {
                                         subvo.setPutInStorageType(3);
                                     }
-                                }else if(sub.getAfterStatus()>0){
+                                } else if (sub.getAfterStatus() > 0) {
                                     subvo.setPutInStorageType(2);
-                                }else{
+                                } else {
                                     subvo.setPutInStorageType(1);
                                 }
                                 subvo.setAfterSalePostCode(sub.getApplyExpressCode());
@@ -179,22 +191,36 @@ public class DaifaSaleAfterDisposeService {
                                 subvos.add(subvo);
                                 num++;
                             }
-                            if(errorNum==sublist.size()){
+                            if (errorNum == sublist.size()) {
                                 refund.setRefundIs(true);
                             }
-                            if(waitNum!=0){
-                                showRefundAll=false;
+
+                            if (s.getAfterStatus() == 4) {
+                                if (s.getInStock() != null) {
+                                    Integer inOutType = getDaifaStock(s.getDfOrderId());
+                                    if (inOutType == 3) {
+                                        refund.setAllNotPutInIs(false);
+                                    }
+                                }else {
+                                    refund.setAllNotPutInIs(true);
+                                }
                             }
-                            refund.setAllNotPutInIs(showRefundAll);
+
+
+//                            if (waitNum != 0) {
+//                                showRefundAll = false;
+//                            }
+//                            refund.setAllNotPutInIs(showRefundAll);
+
                             refund.setChildOrders(subvos);
                             refunds.add(refund);
-                        }else{
+                        } else {
                             num++;
-                            DaifaSaleAfterDisposeRefundVO refund=new DaifaSaleAfterDisposeRefundVO();
+                            DaifaSaleAfterDisposeRefundVO refund = new DaifaSaleAfterDisposeRefundVO();
                             refund.setAllNotPutInIs(true);
-                            List<DaifaSaleAfterDisposeSubVO> subvos=new ArrayList<>();
-                            DaifaSaleAfterDisposeSubVO subvo=new DaifaSaleAfterDisposeSubVO();
-                            DaifaOrder o=orderMap.get(s.getDfOrderId());
+                            List<DaifaSaleAfterDisposeSubVO> subvos = new ArrayList<>();
+                            DaifaSaleAfterDisposeSubVO subvo = new DaifaSaleAfterDisposeSubVO();
+                            DaifaOrder o = orderMap.get(s.getDfOrderId());
                             subvo.setChildOrderId(s.getDfOrderId());
                             subvo.setChildRemark(s.getRemark());
                             subvo.setChildServersFee(o.getSingleServicesFee());
@@ -218,18 +244,28 @@ public class DaifaSaleAfterDisposeService {
                 }
             }
         }
-        ShiguPager<DaifaSaleAfterDisposeVO> pager=new ShiguPager<>();
+        ShiguPager<DaifaSaleAfterDisposeVO> pager = new ShiguPager<>();
         pager.setContent(vos);
         pager.setNumber(bo.getPage());
-        pager.calPages(count,10);
+        pager.calPages(count, 10);
         return pager;
     }
 
     public void writeRefund(Long refundId, String refundMoney) throws DaifaException {
-        saleAfterProcess.storeRefundAgree(refundId,refundMoney);
+        saleAfterProcess.storeRefundAgree(refundId, refundMoney);
     }
 
     public void writeStockCode(Long childOrderId, String stockCode, String reason) throws DaifaException {
-        saleAfterProcess.storeRefundRefuse(childOrderId,reason,stockCode);
+        saleAfterProcess.storeRefundRefuse(childOrderId, reason, stockCode);
+    }
+
+    public Integer getDaifaStock(Long dfOrderId) {
+        DaifaStock stock = new DaifaStock();
+        stock.setDfOrderId(dfOrderId);
+        stock = daifaStockMapper.selectOne(stock);
+        DaifaStockRecord record = new DaifaStockRecord();
+        record.setStockId(stock.getStockId());
+        List<DaifaStockRecord> list = daifaStockRecordMapper.select(record);
+        return list.get(list.size() - 1).getInOutType();
     }
 }
