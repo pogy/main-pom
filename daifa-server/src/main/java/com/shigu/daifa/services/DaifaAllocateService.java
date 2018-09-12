@@ -90,11 +90,12 @@ public class DaifaAllocateService {
         }
         if (StringUtils.hasText(bo.getEndTime())) {
             criteria.andCreateTimeLessThanOrEqualTo(DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd")));
-        }else {
-            Date date=DateUtil.getIsEndTime (new Date());
-            bo.setEndTime(DateUtil.dateToString(date,"yyyy-MM-dd"));
-            criteria.andCreateTimeLessThanOrEqualTo(date);
         }
+//        else {
+//            Date date=DateUtil.getIsEndTime (new Date());
+//            bo.setEndTime(DateUtil.dateToString(date,"yyyy-MM-dd"));
+//            criteria.andCreateTimeLessThanOrEqualTo(date);
+//        }
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
         }
