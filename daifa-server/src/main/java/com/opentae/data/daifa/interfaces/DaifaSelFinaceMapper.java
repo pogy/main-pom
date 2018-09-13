@@ -5,6 +5,7 @@ import com.opentae.data.daifa.custom.beans.RefundedFee;
 import com.opentae.data.daifa.custom.beans.StockGoods;
 import com.opentae.data.daifa.custom.beans.TodayPostDetail;
 import com.opentae.data.daifa.custom.beans.WorkerTakeNum;
+import com.shigu.daifa.vo.NewRefundFeeVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -59,5 +60,5 @@ public interface DaifaSelFinaceMapper{
     //当天发货快递费金额
     String selExpressFee(@Param("time")String time, @Param("sellerId")Long sellerId);
 
-    String selTodayRefundFee(@Param("time")String time);
+    List<NewRefundFeeVo> selTodayRefundFee(@Param("time")String time);
 }

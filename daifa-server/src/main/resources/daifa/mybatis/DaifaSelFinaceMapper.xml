@@ -325,9 +325,10 @@
         AND create_date = ${time}
     </select>
 
-    <select id="selTodayRefundFee" resultType="java.lang.String">
+    <select id="selTodayRefundFee" resultType="com.shigu.daifa.vo.NewRefundFeeVo">
     SELECT
-	sum( t2.store_return_money )
+    t2.refund_id,
+    t2.store_return_money AS money
     FROM
 	daifa_order t1,
 	daifa_after_sale_sub t2
