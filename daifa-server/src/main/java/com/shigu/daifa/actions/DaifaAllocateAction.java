@@ -132,7 +132,4 @@ public class DaifaAllocateAction {
         return daifaAllocateService.submitAllocation(userId,type,ids);
     }
 
-    public static void main(String[] args) {
-
-    }
 }

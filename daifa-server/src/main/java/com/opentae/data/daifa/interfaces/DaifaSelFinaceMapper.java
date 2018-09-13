@@ -60,5 +60,5 @@ public interface DaifaSelFinaceMapper{
     //当天发货快递费金额
     String selExpressFee(@Param("time")String time, @Param("sellerId")Long sellerId);
 
-    List<NewRefundFeeVo> selTodayRefundFee(@Param("time")String time);
+    String selTodayRefundFee(@Param("time")String time);
 }
