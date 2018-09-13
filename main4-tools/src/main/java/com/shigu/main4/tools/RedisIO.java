@@ -1,7 +1,6 @@
 package com.shigu.main4.tools;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -303,6 +303,61 @@ public class RedisIO {
             jedis.del(key);
         }finally {
             returnJedis(jedis);
+        }
+    }
+
+    // redis锁只用来保证互斥
+    /**
+     * 获取一个锁并设置过期时间
+     * @param key 锁的键值
+     * @param requestId 请求id，用于区分对一个锁的操作是否来自同一个请求
+     * @param expireTime 过期时间毫秒数
+     * @return
+     */
+    public boolean tryLock(String key, String requestId, Integer expireTime) {
+        Jedis jedis = getJedis();
+        try {
+            String result = jedis.set(key, requestId, "NX", "PX", expireTime);
+            if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(requestId) && "OK".equals(result)) {
+                return true;
+            }
+            return false;
+        } finally {
+            returnJedis(jedis);
+        }
+    }
+
+    /**
+     * 获取一个500毫秒的锁
+     * @param key
+     * @param requestId
+     * @return
+     */
+    public boolean tryLock(String key, String requestId) {
+        return tryLock(key, requestId, 500);
+    }
+
+    /**
+     * 释放锁
+     * @param key
+     * @param requestId
+     */
+    // 释放锁的操作,使用lua脚本保证操作原子性
+    private static final String RELEASE_LUA_SCRIPT = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+    private static final Long RELEASE_SUCCESS = 1L;
+    public boolean releaseLock(String key, String requestId) {
+        if (StringUtils.isBlank(key) && StringUtils.isBlank(requestId)) {
+            return false;
+        }
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            Object result = jedis.eval(RELEASE_LUA_SCRIPT, Collections.singletonList(key), Collections.singletonList(requestId));
+            return RELEASE_SUCCESS.equals(result);
+        } finally {
+            if (jedis != null) {
+                returnJedis(jedis);
+            }
         }
     }
 
