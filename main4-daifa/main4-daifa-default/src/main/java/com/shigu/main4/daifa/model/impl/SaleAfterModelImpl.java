@@ -673,12 +673,6 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         Long maxMoney=0L;
         List<Long> entIds = new ArrayList<>();
         for (DaifaAfterSaleSub sub1 : subs) {
-            if(sub1.getAfterStatus()>4){
-                continue;
-            }
-            if(sub1.getInStock()==null){
-                continue;
-            }
             if (sub1.getStoreDealStatus() == null || sub1.getStoreDealStatus() != 2) {
                 maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
                 entIds.add(sub1.getAfterSaleSubId());
