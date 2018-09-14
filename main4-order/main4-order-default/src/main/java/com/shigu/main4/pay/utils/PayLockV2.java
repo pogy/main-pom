@@ -26,7 +26,7 @@ public class PayLockV2 {
             return null;
         }
         if (expireTime <= 0) {
-            expireTime = 500;
+            expireTime = 5000;
         }
         return new  PayLockV2(key, expireTime);
     }
@@ -41,7 +41,7 @@ public class PayLockV2 {
     private AtomicInteger useTimes;
 
     public PayLockV2(String key) {
-        this(key, 500);
+        this(key, 5000);
     }
 
     public PayLockV2(String key, int expireTime) {

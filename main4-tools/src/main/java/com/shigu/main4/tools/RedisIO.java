@@ -315,10 +315,13 @@ public class RedisIO {
      * @return
      */
     public boolean tryLock(String key, String requestId, Integer expireTime) {
+        if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(requestId)) {
+            return false;
+        }
         Jedis jedis = getJedis();
         try {
             String result = jedis.set(key, requestId, "NX", "PX", expireTime);
-            if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(requestId) && "OK".equals(result)) {
+            if ("OK".equals(result)) {
                 return true;
             }
             return false;
