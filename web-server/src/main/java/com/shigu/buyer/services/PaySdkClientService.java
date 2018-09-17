@@ -51,6 +51,8 @@ public class PaySdkClientService {
      * 支付系统临时授权码
      * @param userId
      * @return
+     *
+     * todo: 前端把接口改用主站接口后去除
      */
     public String tempcode(Long userId){
             String tempCode;
