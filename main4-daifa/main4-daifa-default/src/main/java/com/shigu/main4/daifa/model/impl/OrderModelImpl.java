@@ -354,11 +354,12 @@ public class OrderModelImpl implements OrderModel {
         if (delivery == null) {
             throw new DaifaException("deliceryBo为空", DaifaException.DEBUG);
         }
-        if (delivery.getManual() == 1L) {
+        //手动发货接口进来的
+        if (delivery.getTag() == 2) {
             if (delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
                 throw new DaifaException("主单id，快递单号都不能为空", DaifaException.DEBUG);
             }
-        } else if (delivery.getMarkDestination() == null || delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
+        }else if (delivery.getMarkDestination() == null || delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
             throw new DaifaException("主单id，三段码，快递单号都不能为空", DaifaException.DEBUG);
         }
         //发货校验：1.有货先发：缺货部分如果没退款就不发货

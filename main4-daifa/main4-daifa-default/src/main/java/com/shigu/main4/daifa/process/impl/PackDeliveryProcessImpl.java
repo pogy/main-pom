@@ -145,6 +145,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         bo.setDfOrderIds(oids);
         bo.setManual(0L);
         OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, order.getDfTradeId());
+        if (bo.getManual() == 2){
+            bo.setTag(1);
+        }
         orderModel.send(bo);
 
         //获取信息
@@ -330,7 +333,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaPostCustomer customer = new DaifaPostCustomer();
         customer.setExpressId(trade.getExpressId());
         customer = daifaPostCustomerMapper.selectOne(customer);
-        if (customer.getManual() ==0) {//不需手动发货的
+        if (customer.getManual() ==0 || customer.getManual() ==2) {//不需手动发货的
             redisIO.rpush("QueryExpressCodeThread", dfTradeId);
             workerMan.start();
         }
