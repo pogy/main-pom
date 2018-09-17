@@ -5,9 +5,7 @@ import com.openJar.requests.sgpay.AlipayMoneyTradeSearch4OldRequest;
 import com.openJar.requests.sgpay.UserTempSecret4OldRequest;
 import com.openJar.responses.sgpay.AlipayMoneyTradeSearch4OldResponse;
 import com.openJar.responses.sgpay.UserTempSecret4OldResponse;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.bo.TixianBO;
-import com.shigu.buyer.vo.DisposeBeanVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.pay.bo.XzbPayTrade;
 import com.shigu.main4.pay.requests.XzbAlipayToCashedRequest;
@@ -17,7 +15,6 @@ import com.shigu.main4.pay.responses.XzbAlipayToCashEdResponse;
 import com.shigu.main4.pay.responses.XzbDisposeLimitResponse;
 import com.shigu.main4.pay.responses.XzbPayResponse;
 import com.shigu.main4.pay.services.XzbService;
-import com.shigu.main4.tools.RedisIO;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONObject;
@@ -37,19 +34,19 @@ public class PaySdkClientService {
     @Autowired
     XzSdkClient xzSdkClient;
     
-    @Autowired
-    private MemberUserMapper memberUserMapper;
+    //@Autowired
+    //private MemberUserMapper memberUserMapper;
     
-    @Autowired
-    private RedisIO redisIO;
+    //@Autowired
+    //private RedisIO redisIO;
     
-    @Autowired
-    private DisposeBeanVO disposeBeanVO;
+    //@Autowired
+    //private DisposeBeanVO disposeBeanVO;
 
     @Autowired
     private XzbService xzbService;
 
-    private final String freeCashInfoPrefix = "user_cash_apply_unprocessed_prifix_";
+    //private final String freeCashInfoPrefix = "user_cash_apply_unprocessed_prifix_";
     /**
      * 支付系统临时授权码
      * @param userId

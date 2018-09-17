@@ -27,6 +27,7 @@ import com.shigu.main4.pay.vos.XzbUserPayTradeRecordVO;
 import com.shigu.main4.tools.RedisIO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -43,6 +44,7 @@ import java.util.Map;
  * 项目： main-pom
  * 描述： 星座包支付服务
  */
+@Service("xzbService")
 public class XzbServiceImpl implements XzbService {
 
     @Autowired

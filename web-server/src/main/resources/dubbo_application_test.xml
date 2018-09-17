@@ -72,6 +72,8 @@
     <dubbo:reference interface="com.shigu.main4.order.process.PayProcess" id="payProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
 
+    <dubbo:reference interface="com.shigu.main4.pay.services.XzbService" id="xzbService" timeout="10000"/>
+
     <dubbo:reference interface="com.shigu.main4.monitor.services.ShopBrowerService" id="shopBrowerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.BrowerMonitorService" id="browerMonitorService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.ItemBrowerService" id="itemBrowerService" timeout="10000"/>

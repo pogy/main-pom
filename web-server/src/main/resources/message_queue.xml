@@ -14,9 +14,9 @@
         </property>
     </bean>
 
-    <bean id="disposeBeanVO" class="com.shigu.buyer.vo.DisposeBeanVO">
-        <property name="maxFreeTimes" value="${cash.maxFreeTimes}"/>
-        <property name="maxCashMoney" value="${cash.maxCashMoney}"/>
-    </bean>
+    <!--<bean id="disposeBeanVO" class="com.shigu.buyer.vo.DisposeBeanVO">-->
+        <!--<property name="maxFreeTimes" value="${cash.maxFreeTimes}"/>-->
+        <!--<property name="maxCashMoney" value="${cash.maxCashMoney}"/>-->
+    <!--</bean>-->
 
 </beans>
