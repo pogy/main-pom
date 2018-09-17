@@ -12,6 +12,7 @@ import com.opentae.data.pays.interfaces.PayXzbMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.pay.bo.XzbPayTrade;
 import com.shigu.main4.pay.configs.DisposeBean;
+import com.shigu.main4.pay.configs.XzbRetryConstant;
 import com.shigu.main4.pay.configs.XzbSystemConstant;
 import com.shigu.main4.pay.enums.XzbAlipayToCashEdError;
 import com.shigu.main4.pay.enums.XzbBaseErrorCodeEnum;
@@ -64,6 +65,9 @@ public class XzbServiceImpl implements XzbService {
 
     @Autowired
     private XzbAlipayHandleService xzbAlipayHandleService;
+
+    @Autowired
+    private XzbRetryConstant xzbRetryConstant;
 
     @Autowired
     private RedisIO redisIO;
@@ -128,19 +132,30 @@ public class XzbServiceImpl implements XzbService {
             resp.setException(new XzbBaseException(XzbBaseErrorCodeEnum.PAY_AMOUNT_IS_NULL.getCode(), XzbBaseErrorCodeEnum.PAY_AMOUNT_IS_NULL.getMsg()));
             return resp;
         }
-        PayLockV2 lock = apiLockUtil.getLock("alipay_" + request.getAlipayNo());
-        PayLockV2 companyLock = apiLockUtil.alipayKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
-        try {
-            apiLockUtil.tryLock(companyLock);
-            apiLockUtil.tryLock(lock);
-            xzbAlipayHandleService.rechargeByAlipay(request.getXzUserId(), request.getAccountId(), request.getAlipayNo(), request.getPayAmount());
-            resp.setSuccess(true);
-        } catch (XzbLockException e) {
-        } catch (XzbBaseException e) {
-            resp.setException(e);
-        } finally {
-            apiLockUtil.destoryLock(lock);
-            apiLockUtil.destoryLock(companyLock);
+        int retryTimes = 0;
+        // 获取锁失败，释放获取锁，休眠后重试
+        while (retryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 lock = apiLockUtil.getLock("alipay_" + request.getAlipayNo());
+            PayLockV2 companyLock = apiLockUtil.alipayKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
+            try {
+                if (apiLockUtil.tryLock(companyLock) && apiLockUtil.tryLock(lock)) {
+                    xzbAlipayHandleService.rechargeByAlipay(request.getXzUserId(), request.getAccountId(), request.getAlipayNo(), request.getPayAmount());
+                    resp.setSuccess(true);
+                    break;
+                }
+            } catch (XzbBaseException e) {
+                resp.setException(e);
+                break;
+            } catch (XzbLockException e) {
+            } finally {
+                apiLockUtil.destoryLock(lock);
+                apiLockUtil.destoryLock(companyLock);
+            }
+            retryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException ignore) {
+            }
         }
         return resp;
     }

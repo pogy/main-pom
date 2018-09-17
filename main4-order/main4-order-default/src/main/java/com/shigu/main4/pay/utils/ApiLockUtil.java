@@ -87,6 +87,9 @@ public class ApiLockUtil {
      * @param lock
      */
     public void destoryLock(PayLockV2 lock) {
+        if (null == lock) {
+            return;
+        }
         int useTimes = lock.decreaseLockNum();
         // 锁在线程中已经完成工作，释放锁
         if (useTimes <= 0) {
@@ -102,6 +105,9 @@ public class ApiLockUtil {
      * @return
      */
     public boolean tryLock(PayLockV2 payLockV2) throws XzbLockException {
+        if (null == payLockV2) {
+            return false;
+        }
         // 原本线程已经成功获取了锁，可以继续使用，并记录锁的使用次数
         if (payLockV2.getUseTimes() > 0) {
             payLockV2.incrementLockNum();

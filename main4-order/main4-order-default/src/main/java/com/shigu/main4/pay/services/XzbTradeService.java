@@ -13,6 +13,7 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.pay.bo.XzbPayTrade;
 import com.shigu.main4.pay.configs.DisposeBean;
+import com.shigu.main4.pay.configs.XzbRetryConstant;
 import com.shigu.main4.pay.configs.XzbSystemConstant;
 import com.shigu.main4.pay.dtos.UserFreeCashInfo;
 import com.shigu.main4.pay.dtos.UserFreeCashInfoMap;
@@ -54,6 +55,9 @@ public class XzbTradeService {
 
     @Autowired
     private DisposeBean disposeBean;
+
+    @Autowired
+    private XzbRetryConstant xzbRetryConstant;
 
     @Autowired
     private ApiLockUtil apiLockUtil;
@@ -124,7 +128,7 @@ public class XzbTradeService {
      * @param payId
      * @param rechargeId
      */
-    public void rechargeMoney(Long accountId, Long money, Integer recordType, Long payId, Long rechargeId) throws XzbBaseException {
+    protected void rechargeMoney(Long accountId, Long money, Integer recordType, Long payId, Long rechargeId) throws XzbBaseException {
         PayXzb payXzb = new PayXzb();
         payXzb.setAccountId(accountId);
         payXzb = payXzbMapper.selectOne(payXzb);
@@ -177,104 +181,128 @@ public class XzbTradeService {
 
     @Transactional(rollbackFor = Exception.class)
     protected Long xzbPay(PayAccount account, XzbPayTrade trade) throws XzbPayException, XzbBaseException, XzbLockException {
-        PayLockV2 orderNolock = apiLockUtil.getLock("xzbPay_" + trade.getOuterId());
-        PayLockV2 accountLock = apiLockUtil.xzbKey(account.getAccountId());
-        PayLockV2 companyAccountLock = apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
-        try {
-            apiLockUtil.tryLock(orderNolock);
-            apiLockUtil.tryLock(accountLock);
-            apiLockUtil.tryLock(companyAccountLock);
-            PayTradeExample payTradeExample = new PayTradeExample();
-            PayTradeExample.Criteria cri = payTradeExample.createCriteria();
-            cri.andOutTradeNoEqualTo(trade.getOuterId());
-            if(trade.getSubOuterId()!=null&&!"".equals(trade.getSubOuterId())){
-                cri.andOutSubTradeNoEqualTo(trade.getSubOuterId());
-            }else{
-                cri.andOutSubTradeNoIsNull();
-            }
-            payTradeExample.setStartIndex(0);
-            payTradeExample.setEndIndex(1);
-            List<PayTrade> payTrades = payTradeMapper.selectFieldsByConditionList(payTradeExample, FieldUtil.codeFields("pay_id,price,pov_ids,type,debit_type"));
-            if (payTrades.size() > 0) {
-                XzbPayException exce=new XzbPayException(XzbPayTradeError.HAS_PAYED);
-                PayTrade oldpt=payTrades.get(0);
-                exce.setTotalFee(oldpt.getPrice());
-                exce.setUseVolumes(oldpt.getPovIds());
-                exce.setTradeType(oldpt.getType());
-                exce.setTradedebitType(oldpt.getDebitType());
-                exce.setPayId(oldpt.getPayId());
-                throw exce;
-            }
-            PayXzb payXzb = new PayXzb();
-            payXzb.setAccountId(account.getAccountId());
-            payXzb = payXzbMapper.selectOne(payXzb);
-            if (payXzb == null) {
-                throw new XzbPayException(XzbPayTradeError.NO_YUER);
-            }
-            if (payXzb.getMoney() < trade.getTotalFee()) {
-                throw new XzbPayException(XzbPayTradeError.NO_MUSH_MONEY);
-            }
-            PayTrade payTrade = new PayTrade();
-            payTrade.setDebitType(2);
-            payTrade.setFromAccountId(account.getAccountId());
-            payTrade.setToAccountId(XzbSystemConstant.COMPANY_ACCOUNT_ID);
-            payTrade.setOutTradeNo(trade.getOuterId());
-            payTrade.setOutSubTradeNo(trade.getSubOuterId());
-            payTrade.setPrice(trade.getTotalFee());
-            payTrade.setCreateTime(new Date());
-            // 添加交易记录
-            changeTrade(payTrade);
+        int retryTimes = 0;
+        while (retryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 orderNolock = apiLockUtil.getLock("xzbPay_" + trade.getOuterId());
+            PayLockV2 accountLock = apiLockUtil.xzbKey(account.getAccountId());
+            PayLockV2 companyAccountLock = apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
+            try {
+                if (apiLockUtil.tryLock(orderNolock) && apiLockUtil.tryLock(accountLock) && apiLockUtil.tryLock(companyAccountLock)) {
+                    PayTradeExample payTradeExample = new PayTradeExample();
+                    PayTradeExample.Criteria cri = payTradeExample.createCriteria();
+                    cri.andOutTradeNoEqualTo(trade.getOuterId());
+                    if(trade.getSubOuterId()!=null&&!"".equals(trade.getSubOuterId())){
+                        cri.andOutSubTradeNoEqualTo(trade.getSubOuterId());
+                    }else{
+                        cri.andOutSubTradeNoIsNull();
+                    }
+                    payTradeExample.setStartIndex(0);
+                    payTradeExample.setEndIndex(1);
+                    List<PayTrade> payTrades = payTradeMapper.selectFieldsByConditionList(payTradeExample, FieldUtil.codeFields("pay_id,price,pov_ids,type,debit_type"));
+                    if (payTrades.size() > 0) {
+                        XzbPayException exce=new XzbPayException(XzbPayTradeError.HAS_PAYED);
+                        PayTrade oldpt=payTrades.get(0);
+                        exce.setTotalFee(oldpt.getPrice());
+                        exce.setUseVolumes(oldpt.getPovIds());
+                        exce.setTradeType(oldpt.getType());
+                        exce.setTradedebitType(oldpt.getDebitType());
+                        exce.setPayId(oldpt.getPayId());
+                        throw exce;
+                    }
+                    PayXzb payXzb = new PayXzb();
+                    payXzb.setAccountId(account.getAccountId());
+                    payXzb = payXzbMapper.selectOne(payXzb);
+                    if (payXzb == null) {
+                        throw new XzbPayException(XzbPayTradeError.NO_YUER);
+                    }
+                    if (payXzb.getMoney() < trade.getTotalFee()) {
+                        throw new XzbPayException(XzbPayTradeError.NO_MUSH_MONEY);
+                    }
+                    PayTrade payTrade = new PayTrade();
+                    payTrade.setDebitType(2);
+                    payTrade.setFromAccountId(account.getAccountId());
+                    payTrade.setToAccountId(XzbSystemConstant.COMPANY_ACCOUNT_ID);
+                    payTrade.setOutTradeNo(trade.getOuterId());
+                    payTrade.setOutSubTradeNo(trade.getSubOuterId());
+                    payTrade.setPrice(trade.getTotalFee());
+                    payTrade.setCreateTime(new Date());
+                    // 添加交易记录
+                    changeTrade(payTrade);
 
-            Long payId = payTrade.getPayId();
-            // 用户星座宝扣款
-            debitMoney(account.getAccountId(), trade.getTotalFee(), XzbSystemConstant.XZB_RECORD_TYPE_PAYMENT, payId);
-            // 公司账户资金记录
-            rechargeMoney(XzbSystemConstant.COMPANY_ACCOUNT_ID, trade.getTotalFee(), XzbSystemConstant.XZB_RECORD_TYPE_PAYMENT, payId, null);
-            return payId;
-        } finally {
-            apiLockUtil.destoryLock(orderNolock);
-            apiLockUtil.destoryLock(accountLock);
-            apiLockUtil.destoryLock(companyAccountLock);
+                    Long payId = payTrade.getPayId();
+                    // 用户星座宝扣款
+                    debitMoney(account.getAccountId(), trade.getTotalFee(), XzbSystemConstant.XZB_RECORD_TYPE_PAYMENT, payId);
+                    // 公司账户资金记录
+                    rechargeMoney(XzbSystemConstant.COMPANY_ACCOUNT_ID, trade.getTotalFee(), XzbSystemConstant.XZB_RECORD_TYPE_PAYMENT, payId, null);
+                    return payId;
+                }
+            } finally {
+                apiLockUtil.destoryLock(orderNolock);
+                apiLockUtil.destoryLock(accountLock);
+                apiLockUtil.destoryLock(companyAccountLock);
+            }
+            retryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException ignore) {
+            }
         }
+        throw new XzbLockException();
     }
 
     @Transactional(rollbackFor = Exception.class)
     public XzbRefundResponse xzbRefund(XzbRefundRequest request) throws XzbLockException, XzbBaseException {
-        PayLockV2 refundLock = apiLockUtil.getLock("refund_outTradeId_" + request.getOutTradeId());
-        try {
-            apiLockUtil.tryLock(refundLock);
-            PayTradeExample payTradeExample = new PayTradeExample();
-            payTradeExample.createCriteria().andOutTradeNoEqualTo(request.getOutTradeId()).andTypeEqualTo(XzbSystemConstant.PAY_TRADE_TYPE_BUYIN);
-            payTradeExample.setStartIndex(0);
-            payTradeExample.setEndIndex(1);
-            List<PayTrade> payList = payTradeMapper.selectFieldsByConditionList(payTradeExample, FieldUtil.codeFields("price,alipay_no,out_trade_no,out_sub_trade_no,pay_id,pov_ids,debit_type,from_account_id,to_account_id"));
-            if (payList.size() == 0) {
-                throw new XzbBaseException(XzbRefundError.NO_SUCH_TRADE.getCode(), request.getOutTradeId());
-            }
-            PayTrade payTrade = payList.get(0);
-            PayLockV2 userLock= apiLockUtil.xzbKey(payTrade.getFromAccountId());
-            PayLockV2 systemLock=apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
-            PayLockV2 systemAliLock=apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ALIPAY_ACCOUNT_ID);
+        int refundTryTimes = 0;
+        // 已经在售后阶段，要使用订单对应星座宝交易信息，加锁
+        while (refundTryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 refundLock = apiLockUtil.getLock("refund_outTradeId_" + request.getOutTradeId());
             try {
-                apiLockUtil.tryLock(userLock);
-                apiLockUtil.tryLock(systemLock);
-                apiLockUtil.tryLock(systemAliLock);
-                if (payTrade.getDebitType().equals(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_ALIPAY)) {
-                    return refundAlipay(request, payTrade);
-                }
-                if (request.getSubOutTradeId() == null) {
-                    return refundXzbTrade(request, payTrade);
-                }
-                return refundXzbOrder(request, payTrade);
-            } finally {
-                apiLockUtil.destoryLock(systemAliLock);
-                apiLockUtil.destoryLock(systemLock);
-                apiLockUtil.destoryLock(userLock);
-            }
-        } finally {
-            apiLockUtil.destoryLock(refundLock);
-        }
+                if (apiLockUtil.tryLock(refundLock)) {
+                    PayTradeExample payTradeExample = new PayTradeExample();
+                    payTradeExample.createCriteria().andOutTradeNoEqualTo(request.getOutTradeId()).andTypeEqualTo(XzbSystemConstant.PAY_TRADE_TYPE_BUYIN);
+                    payTradeExample.setStartIndex(0);
+                    payTradeExample.setEndIndex(1);
+                    List<PayTrade> payList = payTradeMapper.selectFieldsByConditionList(payTradeExample, FieldUtil.codeFields("price,alipay_no,out_trade_no,out_sub_trade_no,pay_id,pov_ids,debit_type,from_account_id,to_account_id"));
+                    if (payList.size() == 0) {
+                        throw new XzbBaseException(XzbRefundError.NO_SUCH_TRADE.getCode(), request.getOutTradeId());
+                    }
+                    PayTrade payTrade = payList.get(0);
+                    int modifiedRetryTimes = 0;
+                    while (modifiedRetryTimes < xzbRetryConstant.getLockRetryTimes()) {
+                        PayLockV2 userLock= apiLockUtil.xzbKey(payTrade.getFromAccountId());
+                        PayLockV2 systemLock=apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
+                        PayLockV2 systemAliLock=apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ALIPAY_ACCOUNT_ID);
+                        try {
+                            if (apiLockUtil.tryLock(userLock) && apiLockUtil.tryLock(systemLock) && apiLockUtil.tryLock(systemAliLock)) {
+                                if (payTrade.getDebitType().equals(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_ALIPAY)) {
+                                    return refundAlipay(request, payTrade);
+                                }
+                                if (request.getSubOutTradeId() == null) {
+                                    return refundXzbTrade(request, payTrade);
+                                }
+                                return refundXzbOrder(request, payTrade);
+                            }
+                        } finally {
+                            apiLockUtil.destoryLock(systemAliLock);
+                            apiLockUtil.destoryLock(systemLock);
+                            apiLockUtil.destoryLock(userLock);
+                        }
+                        modifiedRetryTimes++;
+                        try {
+                            Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+                        } catch (InterruptedException ignore) {}
+                    }
 
+                }
+            } finally {
+                apiLockUtil.destoryLock(refundLock);
+            }
+            refundTryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException ignore) {}
+        }
+        throw new XzbLockException();
     }
 
     protected XzbRefundResponse refundAlipay(XzbRefundRequest req, PayTrade pay) throws XzbBaseException {
@@ -542,79 +570,87 @@ public class XzbTradeService {
         PayAccount payAccount = xzbBaseService.selPayAccount(request.getXzUserId(), request.getAccountId());
         Long accountId = payAccount.getAccountId();
         Long applyCashAmount = request.getCashAmount();
-        PayLockV2 accountCashApplyLock = apiLockUtil.getLock("alipay_cashed_" + account.getAccountId());
-        try {
-            apiLockUtil.tryLock(accountCashApplyLock);
-            // 星座宝冻结金额
-            blockMoney(accountId, applyCashAmount);
-            Calendar instance = Calendar.getInstance();
-            Date now = instance.getTime();
-            PayCash payCash = new PayCash();
-            payCash.setAccountId(accountId);
-            payCash.setXzUserId(request.getXzUserId());
-            payCash.setCashRemark("");// 打款备注
-            payCash.setCashType(XzbSystemConstant.PAY_CASH_APPLY_STATUS);
-            payCash.setCashTime(now);
-            payCash.setCashModifyTime(now);
-            payCash.setCashStatus(XzbSystemConstant.PAY_CASH_NORMAL_STATUS);
-            payCash.setAlipayUserId(request.getAlipayUserId());
-            payCash.setAlipayUserName(request.getAlipayRealName());
-            //需要根据情况决定是否计算结果
-            //用户实际出的手续费值 以分为单位
-            long cashToUser = applyCashAmount;
-            long poundageToUser = 0L;
-            double poundageSet = 0L;
-            double extraIncomePoundage = 0L;
-            //有手续费状况，计算手续费
-            String unprocessedIndex = null;
-            UserFreeCashInfoMap unprocessedMap = null;
-            //是否使用用户提现免手续费次数
-            boolean userCashFreeChanceIs = false;
-            if ( null == request.getAccountId()) {
-                //已经处理的无手续费提现次数
-                unprocessedIndex = String.format("%s%d_%d", XzbSystemConstant.USER_CASH_UNPROCESSED_INDEX_PRIFIX, accountId, now.getMonth());
-                unprocessedMap = redisIO.get(unprocessedIndex, UserFreeCashInfoMap.class);
-                if (unprocessedMap == null) {
-                    unprocessedMap = new UserFreeCashInfoMap();
+        int retryTimes = 0;
+        while (retryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 accountCashApplyLock = apiLockUtil.getLock("alipay_cashed_" + account.getAccountId());
+            try {
+                if (apiLockUtil.tryLock(accountCashApplyLock)) {
+                    // 星座宝冻结金额
+                    blockMoney(accountId, applyCashAmount);
+                    Calendar instance = Calendar.getInstance();
+                    Date now = instance.getTime();
+                    PayCash payCash = new PayCash();
+                    payCash.setAccountId(accountId);
+                    payCash.setXzUserId(request.getXzUserId());
+                    payCash.setCashRemark("");// 打款备注
+                    payCash.setCashType(XzbSystemConstant.PAY_CASH_APPLY_STATUS);
+                    payCash.setCashTime(now);
+                    payCash.setCashModifyTime(now);
+                    payCash.setCashStatus(XzbSystemConstant.PAY_CASH_NORMAL_STATUS);
+                    payCash.setAlipayUserId(request.getAlipayUserId());
+                    payCash.setAlipayUserName(request.getAlipayRealName());
+                    //需要根据情况决定是否计算结果
+                    //用户实际出的手续费值 以分为单位
+                    long cashToUser = applyCashAmount;
+                    long poundageToUser = 0L;
+                    double poundageSet = 0L;
+                    double extraIncomePoundage = 0L;
+                    //有手续费状况，计算手续费
+                    String unprocessedIndex = null;
+                    UserFreeCashInfoMap unprocessedMap = null;
+                    //是否使用用户提现免手续费次数
+                    boolean userCashFreeChanceIs = false;
+                    if ( null == request.getAccountId()) {
+                        //已经处理的无手续费提现次数
+                        unprocessedIndex = String.format("%s%d_%d", XzbSystemConstant.USER_CASH_UNPROCESSED_INDEX_PRIFIX, accountId, now.getMonth());
+                        unprocessedMap = redisIO.get(unprocessedIndex, UserFreeCashInfoMap.class);
+                        if (unprocessedMap == null) {
+                            unprocessedMap = new UserFreeCashInfoMap();
+                        }
+                        if (unprocessedMap.size() < disposeBean.getMaxFreeTimes()) {
+                            userCashFreeChanceIs = true;
+                        } else {
+                            BigDecimal applyDecimal = BigDecimal.valueOf(applyCashAmount);
+                            //扣除0.6%手续费的实际提现金额计算值
+                            BigDecimal cashSet = applyDecimal.multiply(BigDecimal.valueOf(0.994F));
+                            cashToUser = cashSet.longValue();
+                            poundageToUser = applyCashAmount - cashToUser;
+                            BigDecimal poundageSetDecimal = applyDecimal.subtract(cashSet);
+                            poundageSet = poundageSetDecimal.doubleValue();
+                            extraIncomePoundage = BigDecimal.valueOf(poundageToUser).subtract(poundageSetDecimal).doubleValue();
+                        }
+                    }
+                    payCash.setCashMoney(cashToUser);
+                    payCash.setCashTotalApply(applyCashAmount);
+                    payCash.setPoundageSet(String .valueOf(poundageSet));
+                    payCash.setPoundageToUser(poundageToUser);
+                    payCash.setExtraIncomePoundage(String.valueOf(extraIncomePoundage));
+                    payCashMapper.insertSelective(payCash);
+                    Long payCashIndex = payCash.getCashId();
+                    String cashRemark = StringUtil.str10To37Str() + payCashIndex;
+                    payCash.setCashRemark(cashRemark);
+                    payCashMapper.updateByPrimaryKeySelective(payCash);
+                    //用户提现使用免费次数,且完成记录写入
+                    if (userCashFreeChanceIs) {
+                        UserFreeCashInfo userFreeCashInfo = new UserFreeCashInfo();
+                        userFreeCashInfo.setCashId(payCash.getCashId());
+                        userFreeCashInfo.setCashMoney(applyCashAmount);
+                        unprocessedMap.put(payCash.getCashId().intValue(),userFreeCashInfo);
+                        //数据存放35天
+                        redisIO.putFixedTemp(unprocessedIndex,unprocessedMap,3600*24*35);
+                    }
+                    rsp.setSuccess(true);
+                    return rsp;
                 }
-                if (unprocessedMap.size() < disposeBean.getMaxFreeTimes()) {
-                    userCashFreeChanceIs = true;
-                } else {
-                    BigDecimal applyDecimal = BigDecimal.valueOf(applyCashAmount);
-                    //扣除0.6%手续费的实际提现金额计算值
-                    BigDecimal cashSet = applyDecimal.multiply(BigDecimal.valueOf(0.994F));
-                    cashToUser = cashSet.longValue();
-                    poundageToUser = applyCashAmount - cashToUser;
-                    BigDecimal poundageSetDecimal = applyDecimal.subtract(cashSet);
-                    poundageSet = poundageSetDecimal.doubleValue();
-                    extraIncomePoundage = BigDecimal.valueOf(poundageToUser).subtract(poundageSetDecimal).doubleValue();
-                }
+            } finally {
+                apiLockUtil.destoryLock(accountCashApplyLock);
             }
-            payCash.setCashMoney(cashToUser);
-            payCash.setCashTotalApply(applyCashAmount);
-            payCash.setPoundageSet(String .valueOf(poundageSet));
-            payCash.setPoundageToUser(poundageToUser);
-            payCash.setExtraIncomePoundage(String.valueOf(extraIncomePoundage));
-            payCashMapper.insertSelective(payCash);
-            Long payCashIndex = payCash.getCashId();
-            String cashRemark = StringUtil.str10To37Str() + payCashIndex;
-            payCash.setCashRemark(cashRemark);
-            payCashMapper.updateByPrimaryKeySelective(payCash);
-            //用户提现使用免费次数,且完成记录写入
-            if (userCashFreeChanceIs) {
-                UserFreeCashInfo userFreeCashInfo = new UserFreeCashInfo();
-                userFreeCashInfo.setCashId(payCash.getCashId());
-                userFreeCashInfo.setCashMoney(applyCashAmount);
-                unprocessedMap.put(payCash.getCashId().intValue(),userFreeCashInfo);
-                //数据存放35天
-                redisIO.putFixedTemp(unprocessedIndex,unprocessedMap,3600*24*35);
-            }
-            rsp.setSuccess(true);
-            return rsp;
-        } finally {
-            apiLockUtil.destoryLock(accountCashApplyLock);
+            retryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException e) {}
         }
-
+        throw new XzbLockException();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -647,43 +683,51 @@ public class XzbTradeService {
     }
 
     protected void realInviteRebateRecharge(Long accountId, Long orderIfd, Long rebateRechargeAmount) throws XzbBaseException, XzbLockException {
-        PayLockV2 rebateLock = apiLockUtil.getLock("inviteRebateRecharge_" + orderIfd);
-        PayLockV2 accountLock = apiLockUtil.xzbKey(accountId);
-        PayLockV2 companyAccountLock = apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
-        try {
-            apiLockUtil.tryLock(rebateLock);
-            apiLockUtil.tryLock(accountLock);
-            apiLockUtil.tryLock(companyAccountLock);
-            String inviteRebateRechargeTradeNo = inviteRebateRechargePayNoPrefix + orderIfd;
-            PayRecharge payRecharge = new PayRecharge();
-            payRecharge.setAlipayNo(inviteRebateRechargeTradeNo);
-            if (payRechargeMapper.selectCount(payRecharge) > 0) {
-                throw new XzbBaseException("该笔订单已经完成返现>>星座网返现交易号>>" + inviteRebateRechargeTradeNo);
+        int retryTimes = 0;
+        while (retryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 rebateLock = apiLockUtil.getLock("inviteRebateRecharge_" + orderIfd);
+            PayLockV2 accountLock = apiLockUtil.xzbKey(accountId);
+            PayLockV2 companyAccountLock = apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
+            try {
+                if (apiLockUtil.tryLock(rebateLock) && apiLockUtil.tryLock(accountLock) && apiLockUtil.tryLock(companyAccountLock)) {
+                    String inviteRebateRechargeTradeNo = inviteRebateRechargePayNoPrefix + orderIfd;
+                    PayRecharge payRecharge = new PayRecharge();
+                    payRecharge.setAlipayNo(inviteRebateRechargeTradeNo);
+                    if (payRechargeMapper.selectCount(payRecharge) > 0) {
+                        throw new XzbBaseException("该笔订单已经完成返现>>星座网返现交易号>>" + inviteRebateRechargeTradeNo);
+                    }
+                    Date now = new Date();
+                    payRecharge.setAccountId(accountId.toString());
+                    payRecharge.setCreateTime(now);
+                    payRecharge.setPrice(rebateRechargeAmount);
+                    payRecharge.setType(XzbSystemConstant.PAY_RECHARGE_INVITE_REBATE_TYPE);
+                    payRecharge.setStatus(XzbSystemConstant.RECHARGE_SUCCESS);
+                    payRechargeMapper.insertSelective(payRecharge);
+                    PayTrade payTrade = new PayTrade();
+                    payTrade.setType(XzbSystemConstant.PAY_TRADE_TYPE_INVITE_REBATE);
+                    payTrade.setAlipayNo(inviteRebateRechargeTradeNo);
+                    payTrade.setRechargeId(payRecharge.getRechargeId());
+                    payTrade.setFromAccountId(accountId);
+                    payTrade.setToAccountId(accountId);
+                    payTrade.setPrice(rebateRechargeAmount);
+                    payTrade.setCreateTime(now);
+                    payTrade.setOutTradeNo(String .valueOf("invite_rebate_" + payRecharge.getRechargeId()));
+                    payTrade.setDebitType(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_INVITE_REBATE);
+                    payTradeMapper.insertSelective(payTrade);
+                    rechargeMoney(accountId,rebateRechargeAmount, XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE, payTrade.getPayId(), payRecharge.getRechargeId());
+                    break;
+                }
+            } finally {
+                apiLockUtil.destoryLock(companyAccountLock);
+                apiLockUtil.destoryLock(accountLock);
+                apiLockUtil.destoryLock(rebateLock);
             }
-            Date now = new Date();
-            payRecharge.setAccountId(accountId.toString());
-            payRecharge.setCreateTime(now);
-            payRecharge.setPrice(rebateRechargeAmount);
-            payRecharge.setType(XzbSystemConstant.PAY_RECHARGE_INVITE_REBATE_TYPE);
-            payRecharge.setStatus(XzbSystemConstant.RECHARGE_SUCCESS);
-            payRechargeMapper.insertSelective(payRecharge);
-            PayTrade payTrade = new PayTrade();
-            payTrade.setType(XzbSystemConstant.PAY_TRADE_TYPE_INVITE_REBATE);
-            payTrade.setAlipayNo(inviteRebateRechargeTradeNo);
-            payTrade.setRechargeId(payRecharge.getRechargeId());
-            payTrade.setFromAccountId(accountId);
-            payTrade.setToAccountId(accountId);
-            payTrade.setPrice(rebateRechargeAmount);
-            payTrade.setCreateTime(now);
-            payTrade.setOutTradeNo(String .valueOf("invite_rebate_" + payRecharge.getRechargeId()));
-            payTrade.setDebitType(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_INVITE_REBATE);
-            payTradeMapper.insertSelective(payTrade);
-            rechargeMoney(accountId,rebateRechargeAmount, XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE, payTrade.getPayId(), payRecharge.getRechargeId());
-        } finally {
-            apiLockUtil.destoryLock(companyAccountLock);
-            apiLockUtil.destoryLock(accountLock);
-            apiLockUtil.destoryLock(rebateLock);
+            retryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException e) {}
         }
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -758,37 +802,45 @@ public class XzbTradeService {
         if (payRechargeMapper.selectCount(payRecharge) > 0) {
             throw new XzbBaseException("该笔订单已经完成返现>>星座网返现交易号>>"  + orderCashbackTradeNo);
         }
-        PayLockV2 cashBackLock = apiLockUtil.getLock("orderCashBack_" + orderId);
-        PayLockV2 accountLock = apiLockUtil.xzbKey(accountId);
-        PayLockV2 companyAccountLock = apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
-        try {
-            apiLockUtil.tryLock(cashBackLock);
-            apiLockUtil.tryLock(accountLock);
-            apiLockUtil.tryLock(companyAccountLock);
-            payRecharge.setAccountId(accountId.toString());
-            payRecharge.setCreateTime(new Date());
-            payRecharge.setPrice(cashbackAmount);
-            payRecharge.setType(XzbSystemConstant.PAY_RECHARGE_CASHBACK_TYPE);
-            payRecharge.setStatus(XzbSystemConstant.RECHARGE_SUCCESS);
-            payRechargeMapper.insertSelective(payRecharge);
-            PayTrade payTrade = new PayTrade();
-            payTrade.setAlipayNo(orderCashbackTradeNo);
-            payTrade.setRechargeId(payRecharge.getRechargeId());
-            payTrade.setFromAccountId(accountId);
-            payTrade.setToAccountId(accountId);
-            payTrade.setPrice(cashbackAmount);
-            payTrade.setCreateTime(new Date());
-            payTrade.setOutTradeNo(String.valueOf(("order_cashback_" + payRecharge.getRechargeId())));
-            payTrade.setType(XzbSystemConstant.PAY_TRADE_TYPE_RECHARGE);
-            payTrade.setDebitType(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_ORDER_CASHBACK);
-            payTradeMapper.insertSelective(payTrade);
-            rechargeMoney(accountId, cashbackAmount,
-                    XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE, payTrade.getPayId(), payRecharge.getRechargeId());
-        } finally {
-            apiLockUtil.destoryLock(companyAccountLock);
-            apiLockUtil.destoryLock(accountLock);
-            apiLockUtil.destoryLock(cashBackLock);
+        int retryTimes = 0;
+        while (retryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 cashBackLock = apiLockUtil.getLock("orderCashBack_" + orderId);
+            PayLockV2 accountLock = apiLockUtil.xzbKey(accountId);
+            PayLockV2 companyAccountLock = apiLockUtil.xzbKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
+            try {
+                if (apiLockUtil.tryLock(cashBackLock) && apiLockUtil.tryLock(accountLock) && apiLockUtil.tryLock(companyAccountLock)) {
+                    payRecharge.setAccountId(accountId.toString());
+                    payRecharge.setCreateTime(new Date());
+                    payRecharge.setPrice(cashbackAmount);
+                    payRecharge.setType(XzbSystemConstant.PAY_RECHARGE_CASHBACK_TYPE);
+                    payRecharge.setStatus(XzbSystemConstant.RECHARGE_SUCCESS);
+                    payRechargeMapper.insertSelective(payRecharge);
+                    PayTrade payTrade = new PayTrade();
+                    payTrade.setAlipayNo(orderCashbackTradeNo);
+                    payTrade.setRechargeId(payRecharge.getRechargeId());
+                    payTrade.setFromAccountId(accountId);
+                    payTrade.setToAccountId(accountId);
+                    payTrade.setPrice(cashbackAmount);
+                    payTrade.setCreateTime(new Date());
+                    payTrade.setOutTradeNo(String.valueOf(("order_cashback_" + payRecharge.getRechargeId())));
+                    payTrade.setType(XzbSystemConstant.PAY_TRADE_TYPE_RECHARGE);
+                    payTrade.setDebitType(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_ORDER_CASHBACK);
+                    payTradeMapper.insertSelective(payTrade);
+                    rechargeMoney(accountId, cashbackAmount,
+                            XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE, payTrade.getPayId(), payRecharge.getRechargeId());
+                    break;
+                }
+            } finally {
+                apiLockUtil.destoryLock(companyAccountLock);
+                apiLockUtil.destoryLock(accountLock);
+                apiLockUtil.destoryLock(cashBackLock);
+            }
+            retryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException e) {}
         }
+
     }
 
 
@@ -880,53 +932,61 @@ public class XzbTradeService {
 
     public void redPackXzAccountAddMoney(Long accountId,Long payAmount) throws XzbBaseException, XzbLockException {
         Date createDate = new Date();
-        PayLockV2 redPackRechargeLock = apiLockUtil.getLock("redPackpay_" + accountId);
-        PayLockV2 companyLock = apiLockUtil.redPackPayKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
-        try {
-            apiLockUtil.tryLock(redPackRechargeLock);
-            apiLockUtil.tryLock(companyLock);
-            /************ 创建payRecharge ************/
-            PayRecharge payRecharge = new PayRecharge();
-            payRecharge.setType(XzbSystemConstant.PAY_RECHARGE_USER_TYPE);
-            payRecharge.setAccountId(accountId.toString());
-            payRecharge.setCreateTime(createDate);
-            payRecharge.setPrice(payAmount);
-            payRecharge.setStatus(XzbSystemConstant.RECHARGE_SUCCESS);
-            payRechargeMapper.insertSelective(payRecharge);
-            // 创建交易记录
-            PayTrade payTrade = new PayTrade();
-            payTrade.setType(XzbSystemConstant.PAY_TRADE_TYPE_RECHARGE);
-            payTrade.setRechargeId(payRecharge.getRechargeId());
-            payTrade.setFromAccountId(accountId);
-            payTrade.setToAccountId(accountId);
-            payTrade.setPrice(payAmount);
-            payTrade.setCreateTime(createDate);
-            payTrade.setOutTradeNo(String.valueOf((System.nanoTime() + "_" + payRecharge.getRechargeId())));
-            payTrade.setDebitType(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_REDPACKCOUPON);
-            changeTrade(payTrade);
-            /*********** 加用户资金*********/
-            PayXzb query = new PayXzb();
-            query.setAccountId(accountId);
-            List<PayXzb> payXzbs = payXzbMapper.select(query);
-            PayXzb payXzb = payXzbs.get(0);
-            // 变动记录
-            Long fromMoney = payXzb.getMoney();
-            PayXzbRecord payXzbRecord = new PayXzbRecord();
-            payXzbRecord.setAccountId(payXzb.getAccountId());
-            payXzbRecord.setMoney(payAmount);
-            payXzbRecord.setFromMoney(fromMoney);
-            payXzbRecord.setToMoney(payXzb.getMoney());
-            payXzbRecord.setRechargeId(payRecharge.getRechargeId());
-            payXzbRecord.setType(XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE);
-            payXzbRecord.setCreateTime(createDate);
-            payXzbRecord.setPayId(payTrade.getPayId());
-            payXzbRecord.setComments(payXzbRecord.toString());
-            payXzbRecordMapper.insertSelective(payXzbRecord);
-            //充值
-            rechargeMoney(accountId,payAmount, XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE, payTrade.getPayId(), payRecharge.getRechargeId());
-        } finally {
-            apiLockUtil.destoryLock(companyLock);
-            apiLockUtil.destoryLock(redPackRechargeLock);
+        int retryTimes = 0;
+        while (retryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 redPackRechargeLock = apiLockUtil.getLock("redPackpay_" + accountId);
+            PayLockV2 companyLock = apiLockUtil.redPackPayKey(XzbSystemConstant.COMPANY_ACCOUNT_ID);
+            try {
+                if (apiLockUtil.tryLock(redPackRechargeLock) && apiLockUtil.tryLock(companyLock)) {
+                    /************ 创建payRecharge ************/
+                    PayRecharge payRecharge = new PayRecharge();
+                    payRecharge.setType(XzbSystemConstant.PAY_RECHARGE_USER_TYPE);
+                    payRecharge.setAccountId(accountId.toString());
+                    payRecharge.setCreateTime(createDate);
+                    payRecharge.setPrice(payAmount);
+                    payRecharge.setStatus(XzbSystemConstant.RECHARGE_SUCCESS);
+                    payRechargeMapper.insertSelective(payRecharge);
+                    // 创建交易记录
+                    PayTrade payTrade = new PayTrade();
+                    payTrade.setType(XzbSystemConstant.PAY_TRADE_TYPE_RECHARGE);
+                    payTrade.setRechargeId(payRecharge.getRechargeId());
+                    payTrade.setFromAccountId(accountId);
+                    payTrade.setToAccountId(accountId);
+                    payTrade.setPrice(payAmount);
+                    payTrade.setCreateTime(createDate);
+                    payTrade.setOutTradeNo(String.valueOf((System.nanoTime() + "_" + payRecharge.getRechargeId())));
+                    payTrade.setDebitType(XzbSystemConstant.PAY_TRADE_DEBIT_TYPE_REDPACKCOUPON);
+                    changeTrade(payTrade);
+                    /*********** 加用户资金*********/
+                    PayXzb query = new PayXzb();
+                    query.setAccountId(accountId);
+                    List<PayXzb> payXzbs = payXzbMapper.select(query);
+                    PayXzb payXzb = payXzbs.get(0);
+                    // 变动记录
+                    Long fromMoney = payXzb.getMoney();
+                    PayXzbRecord payXzbRecord = new PayXzbRecord();
+                    payXzbRecord.setAccountId(payXzb.getAccountId());
+                    payXzbRecord.setMoney(payAmount);
+                    payXzbRecord.setFromMoney(fromMoney);
+                    payXzbRecord.setToMoney(payXzb.getMoney());
+                    payXzbRecord.setRechargeId(payRecharge.getRechargeId());
+                    payXzbRecord.setType(XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE);
+                    payXzbRecord.setCreateTime(createDate);
+                    payXzbRecord.setPayId(payTrade.getPayId());
+                    payXzbRecord.setComments(payXzbRecord.toString());
+                    payXzbRecordMapper.insertSelective(payXzbRecord);
+                    //充值
+                    rechargeMoney(accountId,payAmount, XzbSystemConstant.XZB_RECORD_TYPE_RECHARGE, payTrade.getPayId(), payRecharge.getRechargeId());
+                    break;
+                }
+            } finally {
+                apiLockUtil.destoryLock(companyLock);
+                apiLockUtil.destoryLock(redPackRechargeLock);
+            }
+            retryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException e) {}
         }
     }
 
@@ -938,24 +998,34 @@ public class XzbTradeService {
      * @throws XzbLockException
      */
     protected void blockMoney(Long accountId, Long blockMoney) throws XzbBaseException, XzbLockException {
-        PayLockV2 accountLock = apiLockUtil.xzbKey(accountId);
-        PayXzb payXzb = new PayXzb();
-        try {
-            apiLockUtil.tryLock(accountLock);
-            payXzb.setAccountId(accountId);
-            payXzb = payXzbMapper.selectOne(payXzb);
-            if (payXzb == null ) {
-                throw new XzbBaseException("未查询到账户信息");
+        int retryTimes = 0;
+        while (retryTimes < xzbRetryConstant.getLockRetryTimes()) {
+            PayLockV2 accountLock = apiLockUtil.xzbKey(accountId);
+            PayXzb payXzb = new PayXzb();
+            try {
+                if (apiLockUtil.tryLock(accountLock)) {
+                    payXzb.setAccountId(accountId);
+                    payXzb = payXzbMapper.selectOne(payXzb);
+                    if (payXzb == null ) {
+                        throw new XzbBaseException("未查询到账户信息");
+                    }
+                    if (payXzb.getMoney() < blockMoney) {
+                        throw new XzbBaseException("余额不足");
+                    }
+                    payXzb.setMoney(payXzb.getMoney() - blockMoney);
+                    payXzb.setBlockMoney(payXzb.getBlockMoney() + blockMoney);
+                    payXzbMapper.updateByPrimaryKeySelective(payXzb);
+                    break;
+                }
+            } finally {
+                apiLockUtil.destoryLock(accountLock);
             }
-            if (payXzb.getMoney() < blockMoney) {
-                throw new XzbBaseException("余额不足");
-            }
-            payXzb.setMoney(payXzb.getMoney() - blockMoney);
-            payXzb.setBlockMoney(payXzb.getBlockMoney() + blockMoney);
-            payXzbMapper.updateByPrimaryKeySelective(payXzb);
-        } finally {
-            apiLockUtil.destoryLock(accountLock);
+            retryTimes++;
+            try {
+                Thread.sleep(xzbRetryConstant.getLockFailedRetryTimeMs());
+            } catch (InterruptedException e) {}
         }
+
     }
 
 
