@@ -288,4 +288,52 @@
             AND t1.df_trade_id = t2.df_trade_id
             AND t2.seller_id = ${sellerId}
     </select>
+
+    <select id="selTodayGoodsFee" resultType="java.lang.String">
+        SELECT
+        SUM( single_pi_price * goods_num )
+        FROM
+        daifa_send_order
+        WHERE
+        send_status = 2
+        AND seller_id = ${sellerId}
+        AND create_date = ${time}
+    </select>
+
+    <select id="selTodayServerFee" resultType="java.lang.String">
+        SELECT
+        SUM( t1.services_fee )
+        FROM
+        daifa_trade t1,
+        daifa_send t2
+        WHERE
+        t1.df_trade_id = t2.df_trade_id
+        AND t2.send_status = 2
+        AND t2.seller_id = ${sellerId}
+        AND t2.create_date = ${time}
+    </select>
+
+
+    <select id="selExpressFee" resultType="java.lang.String">
+        SELECT
+        SUM( express_fee )
+        FROM
+        daifa_send
+        WHERE
+        send_status = 2
+        AND seller_id = ${sellerId}
+        AND create_date = ${time}
+    </select>
+
+    <select id="selTodayRefundFee" resultType="java.lang.String">
+    SELECT
+	sum( t2.store_return_money )
+    FROM
+	daifa_order t1,
+	daifa_after_sale_sub t2
+    WHERE
+	t1.return_goods_status = 2
+	AND DATE_FORMAT( return_goods_finish_time, "%Y%m%d" ) = ${time}
+	AND t1.df_order_id = t2.df_order_id
+    </select>
 </mapper>
