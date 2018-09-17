@@ -36,34 +36,43 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DaifaAllOrderIndexService {
+    @Autowired
+    private DaifaPostCustomerMapper daifaPostCustomerMapper;
+
     private static String LAST_OUT_TIME;//最后一次超时保存的时间yyyyMMdd
     @Autowired
     private DaifaSendService daifaSendService;
 
     private DaifaTradeMapper daifaTradeMapper;
+
     @Autowired
     public void setDaifaTradeMapper(DaifaTradeMapper daifaTradeMapper) {
         this.daifaTradeMapper = daifaTradeMapper;
     }
 
     private DaifaMultipleMapper daifaMultipleMapper;
+
     @Autowired
     public void setDaifaMultipleMapper(DaifaMultipleMapper daifaMultipleMapper) {
         this.daifaMultipleMapper = daifaMultipleMapper;
     }
 
     private DaifaWorkerMapper daifaWorkerMapper;
+
     @Autowired
     public void setDaifaWorkerMapper(DaifaWorkerMapper daifaWorkerMapper) {
         this.daifaWorkerMapper = daifaWorkerMapper;
     }
+
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
+
     @Autowired
     public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
         this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
     }
 
     private OrderManageProcess orderManageProcess;
+
     @Autowired
     public void setOrderManageProcess(OrderManageProcess orderManageProcess) {
         this.orderManageProcess = orderManageProcess;
@@ -71,19 +80,20 @@ public class DaifaAllOrderIndexService {
 
     @Autowired
     private DaifaAllocatedService daifaAllocatedService;
-    public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo,Long sellerId) {
+
+    public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo, Long sellerId) {
 
 
         DaifaTradeExample dtex = new DaifaTradeExample();
         DaifaOrderExample doex = new DaifaOrderExample();
-        if(bo.getStockoutFlag ()!=null&&bo.getStockoutFlag ()==1) {
-            doex.createCriteria ().andTakeGoodsStatusNotEqualTo (1);
+        if (bo.getStockoutFlag() != null && bo.getStockoutFlag() == 1) {
+            doex.createCriteria().andTakeGoodsStatusNotEqualTo(1);
         }
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
         ce.andSellerIdEqualTo(sellerId);
         dtex.setOrderByClause("df_trade_id desc");
         if (StringUtils.hasText(bo.getEndTime())) {
-            Date endDate = DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd"));
+            Date endDate = DateUtil.getIsEndTime(DateUtil.stringToDate(bo.getEndTime(), "yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
         }
 //        else {
@@ -92,11 +102,11 @@ public class DaifaAllOrderIndexService {
 //            ce.andCreateTimeLessThanOrEqualTo(endDate);
 //            bo.setEndTime(de);
 //        }
-        if(StringUtils.hasText(bo.getTelephone())){
+        if (StringUtils.hasText(bo.getTelephone())) {
             ce.andReceiverPhoneEqualTo(bo.getTelephone());
         }
         if (StringUtils.hasText(bo.getStartTime())) {
-            Date startDate =DateUtil.getIsStartTime (DateUtil.stringToDate(bo.getStartTime(),"yyyy-MM-dd")) ;
+            Date startDate = DateUtil.getIsStartTime(DateUtil.stringToDate(bo.getStartTime(), "yyyy-MM-dd"));
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
         }
 //        else {
@@ -109,22 +119,22 @@ public class DaifaAllOrderIndexService {
 //            bo.setStartTime(de);
 //        }
         if (StringUtils.hasText(bo.getOrderId())) {
-            ce.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%"+bo.getOrderId());
+            ce.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%" + bo.getOrderId());
         }
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
         }
-        if(StringUtils.hasText(bo.getPostCode())){
+        if (StringUtils.hasText(bo.getPostCode())) {
             ce.andExpressCodeEqualTo(bo.getPostCode());
         }
-        if(StringUtils.hasText(bo.getBuyerNick ())){
-            ce.andBuyerNickEqualTo (bo.getBuyerNick());
+        if (StringUtils.hasText(bo.getBuyerNick())) {
+            ce.andBuyerNickEqualTo(bo.getBuyerNick());
         }
 
         int i = daifaTradeMapper.countByExample(dtex);
         bo.setCount(i);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();
-        if(i > 0){
+        if (i > 0) {
             int page = Integer.parseInt(bo.getPage());
             int rows = 10;
             dtex.setStartIndex((page - 1) * rows);
@@ -139,10 +149,10 @@ public class DaifaAllOrderIndexService {
                 vo.setChildOrders(allSubOrderVOS);
                 daifaAllOrderVOS.add(vo);
                 BeanUtils.copyProperties(daifaAllOrder, vo, "childOrders");
-                if("无".equals(vo.getImWw())){
+                if ("无".equals(vo.getImWw())) {
                     vo.setImWw(null);
                 }
-                vo.setOldOrder(daifaAllOrder.getIsOld()==1);
+                vo.setOldOrder(daifaAllOrder.getIsOld() == 1);
                 for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
                     AllSubOrderVO subvo = new AllSubOrderVO();
                     subvo.setRefundState(daifaAllSubOrder.getRefundStatus());
@@ -210,25 +220,25 @@ public class DaifaAllOrderIndexService {
     }
 
     public JSONObject addChildRemarkJson(Long childOrderId, String remarkCon) throws DaifaException {
-        orderManageProcess.markSubOrder(childOrderId,remarkCon);
+        orderManageProcess.markSubOrder(childOrderId, remarkCon);
         return JsonResponseUtil.success("备注成功");
     }
 
-    public  List<DaifaWorkerVO> getUserList(Long dfSellerId) {
-        if(dfSellerId==null){
+    public List<DaifaWorkerVO> getUserList(Long dfSellerId) {
+        if (dfSellerId == null) {
             AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
             dfSellerId = user.getDaifaSellerId();
         }
         DaifaWorkerExample daifaWorkerExample = new DaifaWorkerExample();
-        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(dfSellerId).andUseStatusEqualTo(1).andWorkTypeEqualTo (5);
+        daifaWorkerExample.createCriteria().andDaifaSellerIdEqualTo(dfSellerId).andUseStatusEqualTo(1).andWorkTypeEqualTo(5);
         List<DaifaWorker> workers = daifaWorkerMapper.selectFieldsByExample(daifaWorkerExample
                 , FieldUtil.codeFields("daifa_worker_id,daifa_worker,user_name,phone"));
 
         List<DaifaWorkerVO> workerVOS = new ArrayList<>();
-        workers.forEach(worker->{
+        workers.forEach(worker -> {
             DaifaWorkerVO vo = new DaifaWorkerVO();
             vo.setId(worker.getDaifaWorkerId());
-            vo.setName(worker.getUserName ()+"("+worker.getPhone ()+")");
+            vo.setName(worker.getUserName() + "(" + worker.getPhone() + ")");
             workerVOS.add(vo);
         });
 
@@ -236,10 +246,10 @@ public class DaifaAllOrderIndexService {
     }
 
     public JSONObject setTimeJson(Long childOrderId, String timeStr) throws DaifaException {
-        if(!StringUtils.hasText(timeStr)){
+        if (!StringUtils.hasText(timeStr)) {
             return JsonResponseUtil.error("时间不能空");
         }
-        orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternD));
+        orderManageProcess.haveGoodsTime(childOrderId, DateUtil.stringToDate(timeStr, DateUtil.patternD));
         daifaAllocatedService.orderServerNotTake(childOrderId);
         return JsonResponseUtil.success("设置成功");
     }
@@ -252,7 +262,7 @@ public class DaifaAllOrderIndexService {
 
     public void timeOutExcute() {
         String s = DateUtil.dateToString(new Date(), DateUtil.patternB);
-        if(LAST_OUT_TIME ==null|| !s.equals(LAST_OUT_TIME)) {
+        if (LAST_OUT_TIME == null || !s.equals(LAST_OUT_TIME)) {
             new Thread(() -> {
                 LAST_OUT_TIME = s;
                 try {
@@ -265,18 +275,21 @@ public class DaifaAllOrderIndexService {
 
 
     }
-    public Future<OrderStatisticsVO> statisticsToday(Long sellerId){
+
+    public Future<OrderStatisticsVO> statisticsToday(Long sellerId) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<OrderStatisticsVO> future = executorService.submit(new TaskStaticsToday(sellerId));
         executorService.shutdown();
         return future;
     }
 
-    class TaskStaticsToday implements Callable<OrderStatisticsVO>{
+    class TaskStaticsToday implements Callable<OrderStatisticsVO> {
         Long sellerId;
-        TaskStaticsToday(Long sellerId){
-            this.sellerId=sellerId;
+
+        TaskStaticsToday(Long sellerId) {
+            this.sellerId = sellerId;
         }
+
         @Override
         public OrderStatisticsVO call() throws Exception {
             DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
@@ -284,30 +297,36 @@ public class DaifaAllOrderIndexService {
             Date isStartTime = DateUtil.getIsStartTime(date);
             Date isEndTime = DateUtil.getIsEndTime(date);
             daifaTradeExample.createCriteria().andCreateTimeGreaterThan(date);
-            TodayCount orderCount = daifaTradeMapper.selectTodayCount(DateUtil.dateToString(isStartTime,DateUtil.patternD)
-                    ,DateUtil.dateToString(isEndTime,DateUtil.patternD),sellerId);
+            TodayCount orderCount = daifaTradeMapper.selectTodayCount(DateUtil.dateToString(isStartTime, DateUtil.patternD)
+                    , DateUtil.dateToString(isEndTime, DateUtil.patternD), sellerId);
             OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
             orderStatisticsVO.setTotalNumber(orderCount.getTotalNumber());
             orderStatisticsVO.setTotalMoney(orderCount.getTotalMoney());
-            SendSumVO sum=daifaSendService.sum(sellerId);
+            SendSumVO sum = daifaSendService.sum(sellerId);
             orderStatisticsVO.setSendMoney(sum.getBeenShippedGoodsFee());
             orderStatisticsVO.setSendNumber(sum.getBeenShippedGoods());
             int queCount = 0;
-            DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
-            daifaGgoodsTasksExample.createCriteria().andCreateDateEqualTo(DateUtil.dateToString(new Date(),DateUtil.patternB));
+            DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
+            daifaGgoodsTasksExample.createCriteria().andCreateDateEqualTo(DateUtil.dateToString(new Date(), DateUtil.patternB));
             daifaGgoodsTasksExample.setOrderByClause("tasks_id desc");
-            List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,
+            List<DaifaGgoodsTasks> ts = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,
                     FieldUtil.codeFields("df_order_id,take_goods_status,goods_num"));
-            if(ts.size()>0){
+            if (ts.size() > 0) {
                 Map<Long, List<DaifaGgoodsTasks>> goodsMap = BeanMapper.groupBy(ts, "dfOrderId", Long.class);
-                queCount=goodsMap.values().stream().map(daifaGgoodsTasksList ->
+                queCount = goodsMap.values().stream().map(daifaGgoodsTasksList ->
                         daifaGgoodsTasksList.stream().findFirst().get())
                         .collect(Collectors.toList())
-                        .stream().filter(daifaGgoodsTasks -> daifaGgoodsTasks.getTakeGoodsStatus()==2)
+                        .stream().filter(daifaGgoodsTasks -> daifaGgoodsTasks.getTakeGoodsStatus() == 2)
                         .mapToInt(DaifaGgoodsTasks::getGoodsNum).sum();
             }
             orderStatisticsVO.setStockoutNumber(queCount);
             return orderStatisticsVO;
         }
+    }
+
+    public List<DaifaPostCustomer> selPostCustomer() {
+        DaifaPostCustomerExample example = new DaifaPostCustomerExample();
+        example.createCriteria();
+        return daifaPostCustomerMapper.selectByExample(example);
     }
 }
