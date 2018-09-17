@@ -154,10 +154,10 @@
                 <ul>
                     <li>
                         <a
-                            <#if 'financialStatistic' == $pageid >
+                            <#if 'dfStatistic' == $pageid >
                                 class="current"
                             </#if>
-                            href="financialStatistic.htm"><i></i>财务统计</a>
+                            href="dfStatistic.htm"><i></i>财务统计</a>
                     </li>
                 </ul>
             </li>
