@@ -315,7 +315,7 @@ public class RedisIO {
      * @return
      */
     public boolean tryLock(String key, String requestId, Integer expireTime) {
-        if (StringUtils.isNotBlank(key) && StringUtils.isNotBlank(requestId)) {
+        if (StringUtils.isBlank(key) && StringUtils.isBlank(requestId)) {
             return false;
         }
         Jedis jedis = getJedis();

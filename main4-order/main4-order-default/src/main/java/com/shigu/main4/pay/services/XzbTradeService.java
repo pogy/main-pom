@@ -219,6 +219,7 @@ public class XzbTradeService {
                         throw new XzbPayException(XzbPayTradeError.NO_MUSH_MONEY);
                     }
                     PayTrade payTrade = new PayTrade();
+                    payTrade.setType(XzbSystemConstant.PAY_TRADE_TYPE_BUYIN);
                     payTrade.setDebitType(2);
                     payTrade.setFromAccountId(account.getAccountId());
                     payTrade.setToAccountId(XzbSystemConstant.COMPANY_ACCOUNT_ID);
