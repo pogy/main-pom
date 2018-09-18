@@ -483,27 +483,27 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         subOrderSoidps.setAlreadyRefund(true);
         subOrderSoidpsMapper.updateByPrimaryKey(subOrderSoidps);
         boolean refundLogistics = false;
-        ItemOrderSub itemOrderSub = new ItemOrderSub();
-        itemOrderSub.setOid(refundinfo.getOid());
-        List<ItemOrderSub> subOrders = itemOrderSubMapper.select(itemOrderSub);
-        //订单总商品数
-        int totalGoodsNum = subOrders.stream().mapToInt(ItemOrderSub::getNum).sum();
-        //订单发出前已退商品数
-        int refundedGoodsNum = 0;
-        ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
-        itemOrderRefundExample.createCriteria().andOidEqualTo(refundinfo.getOid()).andStatusEqualTo(2).andTypeIn(Lists.newArrayList(1,4));
-        List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
-        if (itemOrderRefunds.size()>0) {
-            refundedGoodsNum+=itemOrderRefunds.stream().mapToInt(o-> o.getNumber() - o.getFailNumber()).sum();
-        }
-        refundedGoodsNum+=itemOrderRefundMapper.selectByPrimaryKey(refundId).getNumber();
-        if (totalGoodsNum == refundedGoodsNum + 1) {
-            refundLogistics = true;
-            ItemOrderLogistics itemOrderLogistics = new ItemOrderLogistics();
-            itemOrderLogistics.setOid(refundinfo.getOid());
-            itemOrderLogistics = itemOrderLogisticsMapper.selectOne(itemOrderLogistics);
-            refundMoney += itemOrderLogistics.getMoney();
-        }
+//        ItemOrderSub itemOrderSub = new ItemOrderSub();
+//        itemOrderSub.setOid(refundinfo.getOid());
+//        List<ItemOrderSub> subOrders = itemOrderSubMapper.select(itemOrderSub);
+//        //订单总商品数
+//        int totalGoodsNum = subOrders.stream().mapToInt(ItemOrderSub::getNum).sum();
+//        //订单发出前已退商品数
+//        int refundedGoodsNum = 0;
+//        ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
+//        itemOrderRefundExample.createCriteria().andOidEqualTo(refundinfo.getOid()).andStatusEqualTo(2).andTypeIn(Lists.newArrayList(1,4));
+//        List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
+//        if (itemOrderRefunds.size()>0) {
+//            refundedGoodsNum+=itemOrderRefunds.stream().mapToInt(o-> o.getNumber() - o.getFailNumber()).sum();
+//        }
+//        refundedGoodsNum+=itemOrderRefundMapper.selectByPrimaryKey(refundId).getNumber();
+//        if (totalGoodsNum == refundedGoodsNum + 1) {
+//            refundLogistics = true;
+//            ItemOrderLogistics itemOrderLogistics = new ItemOrderLogistics();
+//            itemOrderLogistics.setOid(refundinfo.getOid());
+//            itemOrderLogistics = itemOrderLogisticsMapper.selectOne(itemOrderLogistics);
+//            refundMoney += itemOrderLogistics.getMoney();
+//        }
         for (PayedVO payedVO : SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid()).payedInfo()) {
             if (payedVO.getMoney() - payedVO.getRefundMoney() >= refundMoney) {
                 SpringBeanFactory.getBeanByName(payedVO.getPayType().getService(), PayerService.class).refund(payedVO.getPayId(),"RF_"+refundId+"_"+psoid, refundMoney);

@@ -72,6 +72,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     @Override
     public PackResultVO packSubOrder(Long subOrderId) throws DaifaException {
         DaifaOrder order = daifaOrderMapper.selectByPrimaryKey(subOrderId);
+        Integer manual=0;
         if (order == null) {
             throw new DaifaException("此条码对应的订单编号不存在", DaifaException.DEBUG);
         }
@@ -82,6 +83,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             DaifaPostCustomer customer = new DaifaPostCustomer();
             customer.setExpressId(trade.getExpressId());
             customer = daifaPostCustomerMapper.selectOne(customer);
+            manual=customer.getManual();
             if (customer.getManual() == 1) {
                 throw new DaifaException("此条码对应的订单属于手动发货订单", DaifaException.DEBUG);
             }
@@ -143,8 +145,11 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         bo.setMarkDestination(exvo.getMarkDestination());
         bo.setPackageName(exvo.getPackageName());
         bo.setDfOrderIds(oids);
-        bo.setManual(0L);
+        bo.setManual(Long.valueOf(manual));
         OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, order.getDfTradeId());
+        if (bo.getManual() == 2){
+            bo.setTag(1);
+        }
         orderModel.send(bo);
 
         //获取信息
@@ -330,7 +335,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaPostCustomer customer = new DaifaPostCustomer();
         customer.setExpressId(trade.getExpressId());
         customer = daifaPostCustomerMapper.selectOne(customer);
-        if (customer.getManual() ==0) {//不需手动发货的
+        if (customer.getManual() ==0 || customer.getManual() ==2) {//不需手动发货的
             redisIO.rpush("QueryExpressCodeThread", dfTradeId);
             workerMan.start();
         }

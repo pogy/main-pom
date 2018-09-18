@@ -243,14 +243,14 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         String daifaName = null;
 
         List<Long> longs = ggoodsForPrints.stream().map(GgoodsForPrint::getBuyerId).collect(Collectors.toList());
-        Map<Long,String> userMap;
+        Map<Long, String> userMap;
         //查询下单用户是否被标记
-        if(longs.size()>0){
-            List<MemberVo> memberUserList = daifaTradeMapper.getMemberByUserIdIn(org.apache.commons.lang3.StringUtils.join(longs,","));
+        if (longs.size() > 0) {
+            List<MemberVo> memberUserList = daifaTradeMapper.getMemberByUserIdIn(org.apache.commons.lang3.StringUtils.join(longs, ","));
 
-            userMap=memberUserList.stream().filter(o->o.getRemark7()!=null).collect(Collectors.toMap(MemberVo::getUserId,MemberVo::getRemark7));
-        }else{
-            userMap=new HashMap<>();
+            userMap = memberUserList.stream().filter(o -> o.getRemark7() != null).collect(Collectors.toMap(MemberVo::getUserId, MemberVo::getRemark7));
+        } else {
+            userMap = new HashMap<>();
         }
         if (ggoodsForPrints.size() > 0) {
             DaifaSeller daifaSeller = daifaSellerMapper.selectByPrimaryKey(ggoodsForPrints.get(0).getDfSellerId());
@@ -294,7 +294,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             vo.setGoodsSku(market + "-" + ggoodsForPrint.getStoreNum() + "-" + gn
                     + "-" + ggoodsForPrint.getPropStr());
             vo.setPostName(Pingyin.getPinYinHeadChar(ggoodsForPrint.getExpressName()).toUpperCase());
-            boolean bRet ="tab".equals(userMap.get(ggoodsForPrint.getBuyerId()));
+            boolean bRet = "tab".equals(userMap.get(ggoodsForPrint.getBuyerId()));
             vo.setDpUserIs(bRet);
             pvos.add(vo);
         }
@@ -418,12 +418,23 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if (o.getRefundStatus() != 0) {
             throw new DaifaException("订单已退款(已申请退款)", DaifaException.DEBUG);
         }
+        Long count = getCount(o);
         Long price;
         if (!StringUtils.isEmpty(money)) {
             price = MoneyUtil.StringToLong(money);
-            if (MoneyUtil.StringToLong(o.getSinglePiPrice()) < price) {
-                throw new DaifaException("金额超过商品金额", DaifaException.DEBUG);
+            if (count > 1){
+                if (MoneyUtil.StringToLong(o.getSinglePiPrice()) < price) {
+                    throw new DaifaException("金额超过商品金额", DaifaException.DEBUG);
+                }
             }
+            if (count == 1){
+                Long expressAndService = getTrade(o.getDfTradeId());
+                Long total = expressAndService + MoneyUtil.StringToLong(o.getSinglePiPrice());
+                if (total < price) {
+                    throw new DaifaException("金额超过商品金额,快递费用及服务费用总和", DaifaException.DEBUG);
+                }
+            }
+
         }
         DaifaWaitSendOrder o1 = new DaifaWaitSendOrder();
         o1.setDwsoId(o.getDwsoId());
@@ -474,11 +485,34 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         if (o.getRefundStatus() == 2) {
             throw new DaifaException("订单已退款", DaifaException.DEBUG);
         }
-        if (MoneyUtil.StringToLong(o.getSinglePiPrice()) < refundPrice) {
-            throw new DaifaException("金额超过商品金额", DaifaException.DEBUG);
+        //确定是否是最后的子单
+        Long count = getCount(o);
+        if (count >= 1) {
+            if (MoneyUtil.StringToLong(o.getSinglePiPrice()) < refundPrice) {
+                throw new DaifaException("金额超过商品金额", DaifaException.DEBUG);
+            }
         }
-
+        if (count == 0) {
+            Long money = getTrade(o.getDfTradeId());
+            Long total = money + MoneyUtil.StringToLong(o.getSinglePiPrice());
+            if (total < refundPrice) {
+                throw new DaifaException("金额超过商品金额,快递费用及服务费用总和", DaifaException.DEBUG);
+            }
+        }
         adminRefund(Collections.singletonList(o.getDfOrderId()), o.getDfTradeId(), refundId, refundPrice);
+    }
+
+    public Long getCount(DaifaWaitSendOrder daifaWait) {
+        DaifaWaitSendOrder send = new DaifaWaitSendOrder();
+        send.setDfTradeId(daifaWait.getDfTradeId());
+        List<DaifaWaitSendOrder> orderList = daifaWaitSendOrderMapper.select(send);
+        Long count = orderList.stream().filter(daifaWaitSendOrder -> daifaWaitSendOrder.getRefundStatus() == 0).count();
+        return count;
+    }
+    public Long  getTrade(Long dfTradeId){
+        DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(dfTradeId);
+        Long money=MoneyUtil.StringToLong(trade.getExpressFee())+MoneyUtil.StringToLong(trade.getServicesFee());
+        return money;
     }
 
     /**
