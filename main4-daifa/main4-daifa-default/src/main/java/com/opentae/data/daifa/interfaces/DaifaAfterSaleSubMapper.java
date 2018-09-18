@@ -17,6 +17,5 @@ import java.util.List;
 @Scope("singleton")
 @Lazy(true)
 public interface DaifaAfterSaleSubMapper extends Mapper<DaifaAfterSaleSub> {
-    List<DaifaAfterSaleSub> getAfterOrder(@Param("date") String date);
     List<Long> getRefundFeeOrder(@Param("date") String date);
 }

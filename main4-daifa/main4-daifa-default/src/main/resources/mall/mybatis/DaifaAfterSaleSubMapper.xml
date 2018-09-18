@@ -2,25 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.opentae.data.mall.interfaces.DaifaAfterSaleSubMapper" >
 
-    <select id="getAfterOrder" resultType="com.opentae.data.mall.beans.DaifaAfterSaleSub">
-        SELECT
-        *
-        FROM
-        daifa_after_sale_sub
-        WHERE
-        after_type = 1
-        AND after_status IN ( 2, 3 )
-        AND apply_deal_status = 1
-        AND refund_id NOT IN (
-        SELECT
-        refund_id
-        FROM
-        daifa_after_receive_expres_stock
-        WHERE
-        refund_id IN ( SELECT refund_id FROM daifa_after_sale_sub WHERE after_type = 1 AND after_status IN ( 2, 3 ) AND apply_deal_status = 1 )
-        ) AND apply_time &lt;= ${date}
-    </select>
-
     <select id="getRefundFeeOrder" resultType="java.lang.Long">
         SELECT
         t1.df_order_id
