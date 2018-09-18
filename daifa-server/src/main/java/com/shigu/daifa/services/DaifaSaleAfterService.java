@@ -225,6 +225,9 @@ public class DaifaSaleAfterService {
                                 if(sub.getAfterStatus()<5){
                                     stopDealNum++;
                                 }
+                                if (sub.getAfterStatus() == 8 || sub.getAfterStatus() == 9){
+                                    refund.setRefundState(3);
+                                }
                             }
                             if(refund.getRefundState()==null){
                                 if(stopDealNum==0&&ennum<sublist.size()){
