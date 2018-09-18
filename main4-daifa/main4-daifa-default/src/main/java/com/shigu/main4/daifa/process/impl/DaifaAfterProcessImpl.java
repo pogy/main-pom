@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created By zyl on 2018/9/17 0017/14:43
  */
-@Service
+@Service("daifaAfterProcess")
 public class DaifaAfterProcessImpl implements DaifaAfterProcess {
 
     @Autowired
