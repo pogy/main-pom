@@ -124,7 +124,7 @@ public class DaifaWaitSendAction {
             bo.setManual(Long.valueOf(customer.getManual()));
             orderModelProcess.getSend(bo);
         } catch (DaifaException e) {
-            return JsonResponseUtil.error("手动发货异常！");
+            return JsonResponseUtil.error(e.getMessage());
         }
         return JsonResponseUtil.success();
     }
