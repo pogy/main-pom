@@ -145,9 +145,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         bo.setDfOrderIds(oids);
         bo.setManual(0L);
         OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, order.getDfTradeId());
-        if (bo.getManual() == 2){
-            bo.setTag(1);
-        }
+        bo.setTag(1);
         orderModel.send(bo);
 
         //获取信息
