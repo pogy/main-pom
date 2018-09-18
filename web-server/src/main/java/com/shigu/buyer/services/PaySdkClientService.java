@@ -47,26 +47,26 @@ public class PaySdkClientService {
     private XzbService xzbService;
 
     //private final String freeCashInfoPrefix = "user_cash_apply_unprocessed_prifix_";
-    /**
-     * 支付系统临时授权码
-     * @param userId
-     * @return
-     *
-     * todo: 前端把接口改用主站接口后去除
-     */
-    public String tempcode(Long userId){
-            String tempCode;
-        UserTempSecret4OldRequest req=new UserTempSecret4OldRequest();
-        req.setXzUserId(userId);
-        try {
-            UserTempSecret4OldResponse res= (UserTempSecret4OldResponse) xzSdkClient.getPcOpenClient().execute(req);
-            tempCode=res.getCode();
-        } catch (Exception e) {
-            logger.error("获取tempCode失败 "+userId,e);
-            tempCode="pay_api error";
-        }
-        return tempCode;
-    }
+    ///**
+    // * 支付系统临时授权码
+    // * @param userId
+    // * @return
+    // *
+    // * todo: 前端把接口改用主站接口后去除
+    // */
+    //public String tempcode(Long userId){
+    //        String tempCode;
+    //    UserTempSecret4OldRequest req=new UserTempSecret4OldRequest();
+    //    req.setXzUserId(userId);
+    //    try {
+    //        UserTempSecret4OldResponse res= (UserTempSecret4OldResponse) xzSdkClient.getPcOpenClient().execute(req);
+    //        tempCode=res.getCode();
+    //    } catch (Exception e) {
+    //        logger.error("获取tempCode失败 "+userId,e);
+    //        tempCode="pay_api error";
+    //    }
+    //    return tempCode;
+    //}
 
     /**
      *

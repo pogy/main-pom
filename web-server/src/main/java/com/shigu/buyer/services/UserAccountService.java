@@ -11,6 +11,7 @@ import com.opentae.data.mall.interfaces.OrderPayMapper;
 import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.buyer.bo.MemberAlipayBindBO;
 import com.shigu.buyer.bo.TixianBO;
+import com.shigu.buyer.bo.UserPayTradeQueryBO;
 import com.shigu.buyer.vo.UserAlipayBindVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -23,6 +24,7 @@ import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.process.PayProcess;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.pay.requests.XzbReqPackPayRequest;
+import com.shigu.main4.pay.requests.XzbUserPayTradeRecordRequest;
 import com.shigu.main4.pay.responses.XzbRedPackPayResponse;
 import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
@@ -86,6 +88,23 @@ public class UserAccountService {
      */
     public PayApplyVO rechargeApply(Long userId, Long money) throws PayApplyException {
         return payProcess.rechargeApply(userId, PayType.ALI, money);
+    }
+
+    /**
+     * 用户资金明细
+     * @param userId
+     * @param bo
+     * @return
+     */
+    public JSONObject userpaytrade(Long userId, UserPayTradeQueryBO bo) {
+        XzbUserPayTradeRecordRequest req = new XzbUserPayTradeRecordRequest();
+        req.setXzUserId(userId);
+        req.setBeginTime(bo.getBeginTime());
+        req.setEndTime(bo.getEndTime());
+        req.setType(bo.getType());
+        req.setPage(bo.getPage());
+        req.setOutTradeNo(bo.getOutTradeNo());
+        return JsonResponseUtil.success().element("tradeList", xzbService.userPayTradeRecord(req).getTradeLog());
     }
 
     /**

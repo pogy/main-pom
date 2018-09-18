@@ -27,8 +27,8 @@ public class XzbUserPayTradeRecordRequest implements Serializable {
     private Integer type;
     private String inout;
     private Integer debitType;
-    private Date createTime;
-    private Date endTime;
+    private String beginTime;
+    private String endTime;
     private String outTradeNo;
 
     public Long getAccountId() {
@@ -93,19 +93,19 @@ public class XzbUserPayTradeRecordRequest implements Serializable {
         this.debitType = debitType;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getBeginTime() {
+        return beginTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String  endTime) {
         this.endTime = endTime;
     }
 

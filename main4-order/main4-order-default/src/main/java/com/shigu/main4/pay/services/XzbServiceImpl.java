@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -253,6 +254,7 @@ public class XzbServiceImpl implements XzbService {
             rsp.setException(xzbBaseService.xzbExceptionByErrorCode(XzbBaseErrorCodeEnum.USER_INFO_ID_IS_NOT_EXTIST));
             return rsp;
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Long accountId = account.getAccountId();
         PayTradeExample tradeExample = new PayTradeExample();
         tradeExample.setOrderByClause("create_time desc");//结果排序
@@ -265,12 +267,16 @@ public class XzbServiceImpl implements XzbService {
         PayTradeExample.Criteria criteria = tradeExample.createCriteria();
         if (!StringUtils.isEmpty(request.getOutTradeNo()))//条件查询：外部订单号Like
             criteria.andOutTradeNoLike("%" + request.getOutTradeNo() + "%");
-        if (request.getCreateTime() != null) {//创建时间
-            criteria.andCreateTimeGreaterThanOrEqualTo(request.getCreateTime());
-            if (request.getEndTime() != null){
-                criteria.andCreateTimeLessThanOrEqualTo(request.getEndTime());
-            } else {
-                criteria.andCreateTimeLessThanOrEqualTo(new Date());
+        if (StringUtils.isNotBlank(request.getBeginTime())) {//创建时间
+            try {
+                criteria.andCreateTimeGreaterThanOrEqualTo(sdf.parse(request.getBeginTime()));
+                if (StringUtils.isNotBlank(request.getEndTime())){
+                    criteria.andCreateTimeLessThanOrEqualTo(sdf.parse(request.getEndTime()));
+                } else {
+                    criteria.andCreateTimeLessThanOrEqualTo(new Date());
+                }
+            } catch (ParseException e) {
+
             }
         }
         if (request.getDebitType() != null)//扣款种类
@@ -301,7 +307,7 @@ public class XzbServiceImpl implements XzbService {
         rsp.setCurrentPage(request.getPage());
         List<PayTrade> payTrades = payTradeMapper.selectByConditionList(tradeExample);
         List<XzbUserPayTradeRecordVO> jsonPayTradeVos = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         for (PayTrade payTrade : payTrades) {
             XzbUserPayTradeRecordVO vo = BeanMapper.map(payTrade, XzbUserPayTradeRecordVO.class);
             Long toAccountId = payTrade.getToAccountId();

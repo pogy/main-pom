@@ -89,7 +89,7 @@ public class PayModeService {
             throw new PayApplyException("只能支付自己的订单");
         }
         payModePageVO.setWebSite(itemOrderVO.getWebSite());
-        payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
+        //payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(String.format("%.2f", itemOrderVO.getTotalFee() * .01));
         if("qz".equals(itemOrderVO.getWebSite())){
             payModePageVO.setAlipayUrl("/order/qzAlipay.htm");
