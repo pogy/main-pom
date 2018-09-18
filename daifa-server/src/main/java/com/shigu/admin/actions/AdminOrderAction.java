@@ -1,9 +1,11 @@
 package com.shigu.admin.actions;
 
+import com.opentae.data.daifa.beans.DaifaPostCustomer;
 import com.shigu.admin.services.AdminOrderService;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.services.DaifaAllOrderIndexService;
+import com.shigu.daifa.services.DaifaSendService;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.process.ItemOrderProcess;
@@ -60,8 +62,10 @@ public class AdminOrderAction {
         Session session = SecurityUtils.getSubject().getSession();
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<DaifaAllOrderVO> allOrders = daifaAllOrderIndexService.allOrderPage(bo,sellerId);
+        List<DaifaPostCustomer> customers = daifaAllOrderIndexService.selPostCustomer();
 
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
+        model.addAttribute("customers",customers);
         model.addAttribute("orders", allOrders);
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);

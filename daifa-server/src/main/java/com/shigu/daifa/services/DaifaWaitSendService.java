@@ -171,7 +171,7 @@ public class DaifaWaitSendService {
                 for (DaifaWaitSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
                     DaifaWaitSendVO vo = new DaifaWaitSendVO();
                     Long expressId = daifaWaitSendSimple.getExpressId();
-                    if (1==postMap.get(expressId)){
+                    if (1==postMap.get(expressId) || 2==postMap.get(expressId) ){
                         vo.setEnableSendBtn(true);
                     }
                     sends.add(vo);
