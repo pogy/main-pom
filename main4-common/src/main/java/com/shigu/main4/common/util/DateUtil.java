@@ -5,6 +5,9 @@ package com.shigu.main4.common.util;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -836,5 +839,44 @@ public static ArrayList getWeekListByMonth(int year, int month) {
         cale.add(Calendar.MONTH, 0);
         cale.set(Calendar.DAY_OF_MONTH, 1);
         return cale.getTime();
+    }
+
+
+    public static Date addYearV1_8(int addYear){
+        LocalDateTime ldt = LocalDateTime.now();
+        LocalDateTime localDateTime2;
+        if(addYear>0){
+            localDateTime2 = ldt.plusYears(addYear);
+        }else{
+            localDateTime2 = ldt.minusYears(-addYear);
+        }
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime z=localDateTime2.atZone(zone);
+        return Date.from(z.toInstant());
+    }
+    public static Date addMonthV1_8(int addMonth){
+        LocalDateTime ldt = LocalDateTime.now();
+        LocalDateTime localDateTime2;
+        if(addMonth>0){
+            localDateTime2 = ldt.plusMonths(addMonth);
+        }else{
+            localDateTime2 = ldt.minusMonths(-addMonth);
+        }
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime  z=localDateTime2.atZone(zone);
+        return Date.from(z.toInstant());
+    }
+
+    public static Date addDayV1_8(int addDay){
+        LocalDateTime ldt = LocalDateTime.now();
+        LocalDateTime localDateTime2;
+        if(addDay>0){
+            localDateTime2 = ldt.plusDays(addDay);
+        }else{
+            localDateTime2 = ldt.minusDays(-addDay);
+        }
+        ZoneId zone = ZoneId.systemDefault();
+        ZonedDateTime  z=localDateTime2.atZone(zone);
+        return Date.from(z.toInstant());
     }
 }

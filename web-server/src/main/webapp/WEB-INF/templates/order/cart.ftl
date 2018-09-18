@@ -188,6 +188,8 @@
                     吉林-辽源
                 <#elseif order.webSite == 'jx'>
                     浙江-濮院
+                <#elseif order.webSite == 'qz'>
+                    福建-泉州
                 <#else>
                     浙江-杭州
                 </#if>
