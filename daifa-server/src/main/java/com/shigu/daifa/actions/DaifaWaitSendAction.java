@@ -112,6 +112,8 @@ public class DaifaWaitSendAction {
     @ResponseBody
     public JSONObject setExpressCode(String expressCode, String orderId) {
         DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(orderId);
+        Long expressid=trade.getExpressId();
+        DaifaPostCustomer customer=daifaWaitSendService.getPost(expressid);
         try {
             List<SubOrderExpressBO> list = packDeliveryProcess.cheackeSend(Long.valueOf(orderId));
             List<Long> oids = BeanMapper.getFieldList(list, "orderId", Long.class);
@@ -119,7 +121,7 @@ public class DaifaWaitSendAction {
             bo.setDfTradeId(Long.valueOf(orderId));
             bo.setExpressCode(expressCode);
             bo.setDfOrderIds(oids);
-            bo.setManual(1L);
+            bo.setManual(Long.valueOf(customer.getManual()));
             orderModelProcess.getSend(bo);
         } catch (DaifaException e) {
             return JsonResponseUtil.error("手动发货异常！");
