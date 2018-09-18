@@ -5,6 +5,7 @@ import com.opentae.data.daifa.custom.beans.RefundedFee;
 import com.opentae.data.daifa.custom.beans.StockGoods;
 import com.opentae.data.daifa.custom.beans.TodayPostDetail;
 import com.opentae.data.daifa.custom.beans.WorkerTakeNum;
+import com.shigu.daifa.vo.NewRefundFeeVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;

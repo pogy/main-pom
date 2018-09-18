@@ -671,8 +671,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         tmp.setRefundId(refundId);
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         Long maxMoney=0L;
+        List<Long> entIds = new ArrayList<>();
         for (DaifaAfterSaleSub sub1 : subs) {
-            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
+            if (sub1.getStoreDealStatus() == null || sub1.getStoreDealStatus() != 2) {
+                maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
+                entIds.add(sub1.getAfterSaleSubId());
+            }
         }
         if(MoneyUtil.StringToLong(money)>maxMoney){
             throw new DaifaException("售后状态错误,超过可退总额",DaifaException.DEBUG);
@@ -686,6 +690,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             insert.setConsultBatch(daifaAfterMoneyConsults.size()+1);
             insert.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
             daifaAfterMoneyConsultMapper.insertSelective(insert);
+            DaifaAfterSaleSub update = new DaifaAfterSaleSub();
+            update.setStoreReturnMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money) / entIds.size()));
+            DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
+            daifaAfterSaleSubExample.createCriteria().andAfterSaleSubIdIn(entIds);
+            daifaAfterSaleSubMapper.updateByExampleSelective(update, daifaAfterSaleSubExample);
         }else{
             throw new DaifaException("每次用户拒绝议价,只能设置一次金额",DaifaException.DEBUG);
 //            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();

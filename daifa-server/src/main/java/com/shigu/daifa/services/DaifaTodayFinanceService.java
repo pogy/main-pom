@@ -17,9 +17,9 @@ public class DaifaTodayFinanceService {
     @Autowired
     DaifaSelFinaceMapper daifaSelFinaceMapper;
 
-    private String toDouble(String fee){
+    private String toDouble(String fee) {
         try {
-            Double d=new Double(fee);
+            Double d = new Double(fee);
             DecimalFormat df = new DecimalFormat("0.00");
             return df.format(d);
         } catch (Exception e) {
@@ -27,25 +27,24 @@ public class DaifaTodayFinanceService {
         }
     }
 
-    public NewFinancialVo getFinancial(String timeDate,Long daifaSellerId){
-        String time = DateUtil.dateToString(DateUtil.stringToDate(timeDate,DateUtil.patternA),DateUtil.patternB);
+    public NewFinancialVo getFinancial(String timeDate, Long daifaSellerId) {
+        String time = DateUtil.dateToString(DateUtil.stringToDate(timeDate, DateUtil.patternA), DateUtil.patternB);
         /**
          * 当天发货商品金额
          * 当天发货商品服务费
          * 当天快递费
          * 当日退货退款金额
          */
-
+        NewFinancialVo vo = new NewFinancialVo();
         //daifa_send_order send_status=2 create_data='' sellerId=
-        String goodsFee=toDouble(daifaSelFinaceMapper.selTodayGoodsFee(time,daifaSellerId));
+        String goodsFee = toDouble(daifaSelFinaceMapper.selTodayGoodsFee(time, daifaSellerId));
         // left join daifa_trade  daifa_send
-        String serverFee=toDouble(daifaSelFinaceMapper.selTodayServerFee(time,daifaSellerId));
+        String serverFee = toDouble(daifaSelFinaceMapper.selTodayServerFee(time, daifaSellerId));
         //daifa_send
-        String expressFee=toDouble(daifaSelFinaceMapper.selExpressFee(time,daifaSellerId));
-        //
-        String reFunFee=toDouble(daifaSelFinaceMapper.selTodayRefundFee(time));
+        String expressFee = toDouble(daifaSelFinaceMapper.selExpressFee(time, daifaSellerId));
 
-        NewFinancialVo vo=new NewFinancialVo();
+        String reFunFee = toDouble(daifaSelFinaceMapper.selTodayRefundFee(time));
+
         vo.setTodayGoodsFee(goodsFee);
         vo.setTodayServerFee(serverFee);
         vo.setTodayExpressFee(expressFee);
