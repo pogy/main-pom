@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.process.impl;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaAfterReceiveExpresStock;
 import com.opentae.data.daifa.beans.DaifaAfterSaleSub;
 import com.opentae.data.daifa.examples.DaifaAfterReceiveExpresStockExample;
@@ -63,21 +64,21 @@ public class DaifaAfterProcessImpl implements DaifaAfterProcess {
         list.add(3);
         DaifaAfterSaleSubExample example = new DaifaAfterSaleSubExample();
         example.createCriteria().andAfterTypeEqualTo(1).andAfterStatusIn(list).andApplyDealStatusEqualTo(1).andApplyTimeLessThanOrEqualTo(DateUtil.addDayV1_8(-30));
-        List<DaifaAfterSaleSub> subList=daifaAfterSaleSubMapper.selectByExample(example);
+        List<DaifaAfterSaleSub> subList=daifaAfterSaleSubMapper.selectFieldsByExample(example, FieldUtil.codeFields("after_sale_sub_id,refund_id"));
         if (subList.size()>0){
-            List<Long> longs=subList.stream().map(daifaAfterSaleSub -> daifaAfterSaleSub.getRefundId()).collect(Collectors.toList());
+            List<Long> longs=subList.stream().map(DaifaAfterSaleSub::getRefundId).collect(Collectors.toList());
 
             DaifaAfterReceiveExpresStockExample expresStockExample = new DaifaAfterReceiveExpresStockExample();
             expresStockExample.createCriteria().andRefundIdIn(longs);
             List<DaifaAfterReceiveExpresStock> stockList=daifaAfterReceiveExpresStockMapper.selectByExample(expresStockExample);
             if (stockList.size()>0){
-                List<Long> collect = stockList.stream().map(daifaAfterReceiveExpresStock -> daifaAfterReceiveExpresStock.getRefundId()).collect(Collectors.toList());
+                List<Long> collect = stockList.stream().map(DaifaAfterReceiveExpresStock::getRefundId).collect(Collectors.toList());
 
                 DaifaAfterSaleSubExample subExample = new DaifaAfterSaleSubExample();
                 subExample.createCriteria().andAfterTypeEqualTo(1).andAfterStatusIn(list).andApplyDealStatusEqualTo(1).andRefundIdNotIn(collect);
                 List<DaifaAfterSaleSub> daifaAfterSaleSubList =daifaAfterSaleSubMapper.selectByExample(subExample);
                 if (daifaAfterSaleSubList.size()>0){
-                    List<Long> orderList = daifaAfterSaleSubList.stream().map(daifaAfterSaleSub -> daifaAfterSaleSub.getDfOrderId()).collect(Collectors.toList());
+                    List<Long> orderList = daifaAfterSaleSubList.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
                     DaifaAfterSaleSub saleSub = new DaifaAfterSaleSub();
                     saleSub.setAfterStatus(8);
                     DaifaAfterSaleSubExample example2 = new DaifaAfterSaleSubExample();
