@@ -78,6 +78,12 @@ public class DaifaWaitSendService {
         return postCustomerList;
     }
 
+    public DaifaPostCustomer getPost(Long expressId){
+        DaifaPostCustomer customer=new DaifaPostCustomer();
+        customer.setExpressId(expressId);
+        return daifaPostCustomerMapper.selectOne(customer);
+    }
+
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
         if (bo.getPage() < 1) {
             bo.setPage(1);
