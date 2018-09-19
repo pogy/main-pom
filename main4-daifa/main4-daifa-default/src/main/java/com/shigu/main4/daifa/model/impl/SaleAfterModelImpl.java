@@ -275,7 +275,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             //售后申请不存在
             throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
-        List<Integer> status = Arrays.asList(2, 3);
+        List<Integer> status = Arrays.asList(2, 3, 8);
         if (!status.contains(subs.get(0).getAfterStatus()) ||
                 (subs.get(0).getApplyDealStatus() != null && subs.get(0).getApplyDealStatus() == 2)) {
             //售后状态错误,当前状态不能设置退回快递信息

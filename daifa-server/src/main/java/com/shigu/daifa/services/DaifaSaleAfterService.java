@@ -225,9 +225,17 @@ public class DaifaSaleAfterService {
                                 if(sub.getAfterStatus()<5){
                                     stopDealNum++;
                                 }
+                                //获取子单的售后状态   =8 || =9 显示系统自动完结订单
                                 if (sub.getAfterStatus() == 8 || sub.getAfterStatus() == 9){
                                     refund.setRefundState(3);
+
+                                    //同时 考虑有未同意的退款订单也可以继续操作同意或拒绝 用是否有发货的快递单号为依据
+                                    if (sub.getApplyExpressCode() == null){
+                                        refund.setAfterSaleState(10);
+                                    }
                                 }
+
+
                             }
                             if(refund.getRefundState()==null){
                                 if(stopDealNum==0&&ennum<sublist.size()){

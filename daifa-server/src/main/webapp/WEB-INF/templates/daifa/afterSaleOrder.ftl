@@ -231,7 +231,7 @@
     </#if>
     <#if childOrder_index == 0>
         <td class="orderOpe" rowspan="${(afterSale.childOrders?size)!}">
-        <#if afterSale.afterSaleState == 1 || afterSale.afterSaleState == 21>
+        <#if afterSale.afterSaleState == 1 || afterSale.afterSaleState == 21 || afterSale.afterSaleState == 10>
             <b jbtn="agreeBtn" data-id="${afterSale.refundId!}">同意</b>
             <b jbtn="refuseBtn" data-id="${afterSale.refundId!}">拒绝</b>
         <#elseif afterSale.afterSaleState == 26>
