@@ -28,6 +28,7 @@ import com.shigu.main4.tools.RedisIO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -104,6 +105,7 @@ public class XzbServiceImpl implements XzbService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public XzbPayResponse xzbPay(XzbPayRequest request) {
         XzbPayResponse resp = new XzbPayResponse();
         XzbPayTrade trade = request.getTrade();
@@ -120,6 +122,7 @@ public class XzbServiceImpl implements XzbService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public XzbAlipayRechargeResponse rechargeFromOrderByAlipay(XzbAlipayRechargeRequest request) {
         XzbAlipayRechargeResponse resp = new XzbAlipayRechargeResponse();
         PayAccount account = xzbBaseService.selPayAccount(request.getXzUserId(), request.getAccountId());
@@ -164,6 +167,7 @@ public class XzbServiceImpl implements XzbService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public XzbRefundResponse xzbRefund(XzbRefundRequest request) {
         XzbRefundResponse resp = new XzbRefundResponse();
         if (request.getOutTradeId() == null) {
@@ -195,6 +199,7 @@ public class XzbServiceImpl implements XzbService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public XzbAlipayToCashEdResponse alipayToCashEd(XzbAlipayToCashedRequest request) {
         XzbAlipayToCashEdResponse rsp = new XzbAlipayToCashEdResponse();
 
@@ -350,6 +355,7 @@ public class XzbServiceImpl implements XzbService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public XzbInviteRechargeResponse inviteRebateRecharge(XzbInviteRechargeRequest request) {
         XzbInviteRechargeResponse rsp = new XzbInviteRechargeResponse();
         if (request.getXzUserId() == null || request.getRebateOrderNo() == null || request.getRebateAmount() == null || request.getRebateAmount() <= 0L) {
@@ -370,6 +376,7 @@ public class XzbServiceImpl implements XzbService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public XzbOrderCashBackResponse orderCashBack(XzbOrderCashBackRequest request) {
         XzbOrderCashBackResponse rsp = new XzbOrderCashBackResponse();
         if (request.getXzUserId() == null || request.getCashbackOrderNo() == null || request.getCashbackAmount() == null || request.getCashbackAmount()<=0L) {
@@ -391,8 +398,8 @@ public class XzbServiceImpl implements XzbService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public XzbRedPackPayResponse redPackPay(XzbReqPackPayRequest request) {
-
         XzbRedPackPayResponse resp = new XzbRedPackPayResponse();
         if (request.getXzUserId() == null || request.getPayAmount() <= 0 ) {
             return resp;
