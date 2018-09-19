@@ -78,6 +78,12 @@ public class DaifaWaitSendService {
         return postCustomerList;
     }
 
+    public DaifaPostCustomer getPost(Long expressId){
+        DaifaPostCustomer customer=new DaifaPostCustomer();
+        customer.setExpressId(expressId);
+        return daifaPostCustomerMapper.selectOne(customer);
+    }
+
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
         if (bo.getPage() < 1) {
             bo.setPage(1);
@@ -171,7 +177,7 @@ public class DaifaWaitSendService {
                 for (DaifaWaitSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
                     DaifaWaitSendVO vo = new DaifaWaitSendVO();
                     Long expressId = daifaWaitSendSimple.getExpressId();
-                    if (1==postMap.get(expressId)){
+                    if (1==postMap.get(expressId) || 2==postMap.get(expressId) ){
                         vo.setEnableSendBtn(true);
                     }
                     sends.add(vo);

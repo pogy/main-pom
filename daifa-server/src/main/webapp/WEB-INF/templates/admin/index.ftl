@@ -283,6 +283,23 @@
                                         <p>（${order.expressCode!}）</p>
                                     </#if>
                                 </#if>
+
+
+                                <#list customers as customer>
+                                    <select >
+                                        <option>请选择快递</option>
+                                        <option value="${customer.expressId}">${customer.express}</option>
+                                    </select>
+
+                                    <#if customer.manual == 1>
+                                        <p>
+                                            <input type="text" placeholder="快递单号" class="expressCodeInput fmInput fmInput-sm">
+                                            <b class="manualSendBtn fcBlue" data-orderid="${order.orderId!}">手动发货</b>
+                                        </p>
+                                    </#if>
+
+                                </#list>
+
                             </li>
                         </ul>
                     </div>

@@ -69,7 +69,6 @@
             <select class="fmInput" name="expressId">
                 <option value="">请选择快递</option>
                 <#list expressList as express>
-                <#--<option value="${express.expressId!}">${express.expressText!}</option>-->
                 <option value="${express.expressId!}"<#if query.expressId == express.expressId>selected</#if>>${express.express!}</option>
                 </#list>
             </select>
