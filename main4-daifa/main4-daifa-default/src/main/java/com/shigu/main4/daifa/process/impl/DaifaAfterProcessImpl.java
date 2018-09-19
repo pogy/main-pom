@@ -38,14 +38,13 @@ public class DaifaAfterProcessImpl implements DaifaAfterProcess {
         DaifaAfterSaleSubExample subExample = new DaifaAfterSaleSubExample();
         subExample.createCriteria().andAfterStatusEqualTo(5).andApplyTimeLessThanOrEqualTo(DateUtil.addMonthV1_8(-1));
         List<DaifaAfterSaleSub> subList = daifaAfterSaleSubMapper.selectByExample(subExample);
-        if (subList.size()>0){
+        if (subList.size() > 0) {
             orders = subList.stream().map(daifaAfterSaleSub -> daifaAfterSaleSub.getDfOrderId()).collect(Collectors.toList());
         }
 
         List<Long> longs = daifaAfterSaleSubMapper.getRefundFeeOrder(date);
         orders.addAll(longs);
         if (orders.size() > 0) {
-            System.out.println("==============" + orders.size());
             DaifaAfterSaleSub saleSub = new DaifaAfterSaleSub();
             saleSub.setAfterStatus(9);
             DaifaAfterSaleSubExample example = new DaifaAfterSaleSubExample();
@@ -59,33 +58,30 @@ public class DaifaAfterProcessImpl implements DaifaAfterProcess {
     public void runReceiveGoods() throws DaifaException {
 
         //String date = DateUtil.dateToString(DateUtil.addDayV1_8(-30), "yyyy-MM-dd HH:mm:ss");
-        List<Integer> list=new ArrayList<>();
-        list.add(2);
-        list.add(3);
+
+//            DaifaAfterReceiveExpresStockExample expresStockExample = new DaifaAfterReceiveExpresStockExample();
+//            expresStockExample.createCriteria().andRefundIdIn(longs);
+//            List<DaifaAfterReceiveExpresStock> stockList=daifaAfterReceiveExpresStockMapper.selectByExample(expresStockExample);
+//            if (stockList.size()>0){
+//                List<Long> collect = stockList.stream().map(DaifaAfterReceiveExpresStock::getRefundId).collect(Collectors.toList());
+//
+//                DaifaAfterSaleSubExample subExample = new DaifaAfterSaleSubExample();
+//                subExample.createCriteria().andAfterTypeEqualTo(1).andAfterStatusIn(list).andApplyDealStatusEqualTo(1).andRefundIdNotIn(collect);
+//                List<DaifaAfterSaleSub> daifaAfterSaleSubList =daifaAfterSaleSubMapper.selectByExample(subExample);
+        //if (daifaAfterSaleSubList.size()>0){
+        //List<Long> orderList = daifaAfterSaleSubList.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
+
+        //查询客户未发货，将其状态标为8
         DaifaAfterSaleSubExample example = new DaifaAfterSaleSubExample();
-        example.createCriteria().andAfterTypeEqualTo(1).andAfterStatusIn(list).andApplyDealStatusEqualTo(1).andApplyTimeLessThanOrEqualTo(DateUtil.addDayV1_8(-30));
-        List<DaifaAfterSaleSub> subList=daifaAfterSaleSubMapper.selectFieldsByExample(example, FieldUtil.codeFields("after_sale_sub_id,refund_id"));
-        if (subList.size()>0){
-            List<Long> longs=subList.stream().map(DaifaAfterSaleSub::getRefundId).collect(Collectors.toList());
-
-            DaifaAfterReceiveExpresStockExample expresStockExample = new DaifaAfterReceiveExpresStockExample();
-            expresStockExample.createCriteria().andRefundIdIn(longs);
-            List<DaifaAfterReceiveExpresStock> stockList=daifaAfterReceiveExpresStockMapper.selectByExample(expresStockExample);
-            if (stockList.size()>0){
-                List<Long> collect = stockList.stream().map(DaifaAfterReceiveExpresStock::getRefundId).collect(Collectors.toList());
-
-                DaifaAfterSaleSubExample subExample = new DaifaAfterSaleSubExample();
-                subExample.createCriteria().andAfterTypeEqualTo(1).andAfterStatusIn(list).andApplyDealStatusEqualTo(1).andRefundIdNotIn(collect);
-                List<DaifaAfterSaleSub> daifaAfterSaleSubList =daifaAfterSaleSubMapper.selectByExample(subExample);
-                if (daifaAfterSaleSubList.size()>0){
-                    List<Long> orderList = daifaAfterSaleSubList.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
-                    DaifaAfterSaleSub saleSub = new DaifaAfterSaleSub();
-                    saleSub.setAfterStatus(8);
-                    DaifaAfterSaleSubExample example2 = new DaifaAfterSaleSubExample();
-                    example2.createCriteria().andDfOrderIdIn(orderList);
-                    daifaAfterSaleSubMapper.updateByExampleSelective(saleSub, example);
-                }
-            }
+        example.createCriteria().andAfterTypeEqualTo(1).andAfterStatusEqualTo(2).andApplyDealStatusEqualTo(1).andApplyTimeLessThanOrEqualTo(DateUtil.addDayV1_8(-30));
+        List<DaifaAfterSaleSub> subList = daifaAfterSaleSubMapper.selectFieldsByExample(example, FieldUtil.codeFields("after_sale_sub_id,df_order_id"));
+        if (subList.size() > 0) {
+            List<Long> orderList = subList.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
+            DaifaAfterSaleSub saleSub = new DaifaAfterSaleSub();
+            saleSub.setAfterStatus(8);
+            DaifaAfterSaleSubExample example2 = new DaifaAfterSaleSubExample();
+            example2.createCriteria().andDfOrderIdIn(orderList);
+            daifaAfterSaleSubMapper.updateByExampleSelective(saleSub, example);
 
         }
 
