@@ -101,7 +101,7 @@ public class DaifaListDealUtil {
                     String date2 = DateUtil.dateToString(DateUtil.addDayV1_8(-1), DateUtil.patternB);
                     DaifaListDeal deal = getDaifaListDeal(type,seller_id,date2);
                     DaifaListDeal dld = new DaifaListDeal();
-                    int nums = deal.getNum();
+                    int nums = deal.getNum()+1;
                     dld.setNum(nums);
                     if (nums >= 100) {
                         if (deal.getRemark3().equals("Z")){
