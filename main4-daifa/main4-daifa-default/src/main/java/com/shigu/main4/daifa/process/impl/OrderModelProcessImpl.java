@@ -17,6 +17,7 @@ public class OrderModelProcessImpl implements OrderModelProcess {
     public void getSend(DeliveryBO bo) {
         try {
             OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, bo.getDfTradeId());
+            bo.setTag(2);
             orderModel.send(bo);
         } catch (DaifaException e) {
             e.printStackTrace();

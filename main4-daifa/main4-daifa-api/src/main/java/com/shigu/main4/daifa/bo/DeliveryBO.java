@@ -79,6 +79,17 @@ public class DeliveryBO implements Serializable {
 
     private Long manual;
 
+    //tag  1 扫描发货入口  2 手动发货入口
+    private Integer tag;
+
+    public Integer getTag() {
+        return tag;
+    }
+
+    public void setTag(Integer tag) {
+        this.tag = tag;
+    }
+
     public Long getManual() {
         return manual;
     }
