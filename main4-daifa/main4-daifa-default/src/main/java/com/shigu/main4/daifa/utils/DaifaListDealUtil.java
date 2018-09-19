@@ -62,6 +62,7 @@ public class DaifaListDealUtil {
                     DaifaListDeal dld = dataList.get(0);
                     int num = dld.getNum() + 1;
                     dld.setNum(num);
+
                     if (num >= 100) {
                         //字母转ascii码+1，再转成字母
                         if (dld.getRemark3().equals("Z")){
@@ -77,14 +78,17 @@ public class DaifaListDealUtil {
                             dld.setRemark3(sbm_zm);
                         }
 
-                    } else {
+                    }
+                    else {
                         //数字小于10要加0
                         if (num < 10) {
                             listCode = dld.getRemark3() + "0" + num;
                         } else {
                             listCode = dld.getRemark3() + num;
                         }
+                        dld.setRemark3(dld.getRemark3());
                     }
+
                     dld.setCreateDate(date);
                     dld.setListCode(type.getRule());
                     dld.setSellerId(seller_id);
@@ -94,12 +98,11 @@ public class DaifaListDealUtil {
                     dld.setRemark2(type.getInstruction());
                     daifaListDealMapper.updateByPrimaryKey(dld);
                 } else {
-
                     String date2 = DateUtil.dateToString(DateUtil.addDayV1_8(-1), DateUtil.patternB);
                     DaifaListDeal deal = getDaifaListDeal(type,seller_id,date2);
                     DaifaListDeal dld = new DaifaListDeal();
                     int nums = deal.getNum();
-
+                    dld.setNum(nums);
                     if (nums >= 100) {
                         if (deal.getRemark3().equals("Z")){
                             dld.setNum(1);
@@ -113,13 +116,13 @@ public class DaifaListDealUtil {
                             dld.setNum(nums);
                             dld.setRemark3(sbm_zm);
                         }
-
                     } else {
                         if (nums < 10) {
                             listCode = deal.getRemark3() + "0" + nums;
                         } else {
                             listCode = deal.getRemark3() + nums;
                         }
+                        dld.setRemark3(deal.getRemark3());
                     }
 
                     dld.setCreateDate(date);
