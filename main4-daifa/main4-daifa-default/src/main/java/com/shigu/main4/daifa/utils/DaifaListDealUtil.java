@@ -155,8 +155,27 @@ public class DaifaListDealUtil {
         if (daifaListDeals.size()>0){
             deal=daifaListDeals.get(0);
         }else {
-            String date2 = DateUtil.dateToString(DateUtil.addDayV1_8(-2), DateUtil.patternB);
-            getDaifaListDeal(type,seller_id,date2);
+            examples = new DaifaListDealExample();
+            examples.createCriteria().andTypeEqualTo(type.name()).andSellerIdEqualTo(seller_id);
+            examples.setOrderByClause("list_id desc");
+            examples.setStartIndex(0);
+            examples.setEndIndex(1);
+            daifaListDeals = daifaListDealMapper.selectByConditionList(examples);
+            if(daifaListDeals.size()==0){
+                deal.setNum(1);
+                deal.setRemark3("A");
+                deal.setCreateDate(date);
+                deal.setListCode(type.getRule());
+                deal.setSellerId(seller_id);
+                deal.setType(type.name());
+                deal.setUserId(null);
+                deal.setRemark1("A01");
+                deal.setRemark2(type.getInstruction());
+                return deal;
+            }else{
+                return daifaListDeals.get(0);
+            }
+
         }
         return deal;
     }
