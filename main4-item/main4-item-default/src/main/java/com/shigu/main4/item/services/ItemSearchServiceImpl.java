@@ -459,6 +459,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }else {
             criteria.andTypeEqualTo(category.getCategoryType()).andParentCateValueEqualTo(parentCateValue).andWebSiteEqualTo(website);
         }
+        subExample.setOrderByClause("sort asc");
         List<SearchCategorySub> list=searchCategorySubMapper.selectByExample(subExample);
 
         List<CategoryValue> categoryValues=new ArrayList<>();
