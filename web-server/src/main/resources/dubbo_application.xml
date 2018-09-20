@@ -41,8 +41,8 @@
     <dubbo:reference interface="com.shigu.main4.storeservices.MarketShopService" id="marketShopService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopForCdnService" id="shopForCdnService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.SearchCategoryService" id="searchCategoryService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.storeservices.FlickrManageService" id="FlickrManageService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.storeservices.ShopCategoryClassifyService" id="ShopCategoryClassifyService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.storeservices.FlickrManageService" id="flickrManageService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.storeservices.ShopCategoryClassifyService" id="shopCategoryClassifyService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.item.services.ItemSearchService" id="itemSearchService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ShowForCdnService" id="showForCdnService" timeout="10000"/>
@@ -61,7 +61,7 @@
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="wxPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="xzPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="aliPayerQzService" timeout="10000"/>
-
+    <dubbo:reference interface="com.shigu.main4.order.process.KdnProcess" id="kdnProcess" timeout="10000" />
 
 
     <dubbo:reference interface="com.shigu.main4.order.process.ItemCartProcess" id="itemCartProcess" timeout="10000"/>
