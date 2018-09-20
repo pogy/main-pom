@@ -384,6 +384,13 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     private void subscibeKdn(LogisticsVO logisticsVO) throws Exception {
+        KdnSubscibeExample kdnSubscibeExample = new KdnSubscibeExample();
+        kdnSubscibeExample.createCriteria().andLogisticCodeEqualTo(logisticsVO.getCourierNumber());
+        List<KdnSubscibe> kdnSubscibes = kdnSubscibeMapper.selectByExample(kdnSubscibeExample);
+        if (kdnSubscibes != null && !kdnSubscibes.isEmpty()) {
+            return;
+        }
+
 //        com.opentae.data.mall.beans.ItemOrder itemOrder = itemOrderMapper.selectByPrimaryKey(oid);
 //        SendInfoVO sendInfoVO = itemOrderMapper.getSenderInfoBySendId(itemOrder.getSenderId());
 //        String address = sendInfoVO.getAddress();//省市区、详细地址通过空格分隔
@@ -449,7 +456,9 @@ public class ItemOrderImpl implements ItemOrder {
 //        bo.setReceiver(receiver);
 
         KdnSubscribeResult kdnSubscribeResult = kdniaoUtil.subscribeExpress(bo);
+
         if (kdnSubscribeResult.getSuccess()) {
+
             Date now = new Date();
             KdnSubscibe kdnSubscibe = new KdnSubscibe();
             kdnSubscibe.setOid(oid);
