@@ -352,24 +352,6 @@ public class PddGoodsUpAction {
             return "pinduoduo/parts/success";
         }
 
-        boolean canUpload = false;
-        for (SkuBO skuBO : skuBOS){
-            if (skuBO == null) {
-                continue;
-            }
-            List<SizeBO> sizes = skuBO.getSizes();
-            if (sizes == null || sizes.size() <= 0 ) {
-                continue;
-            }
-            canUpload = true;
-            break;
-        }
-        if (!canUpload) {
-            errMsg = "尺寸sku不能为空";
-            model.addAttribute("errorMsg",errMsg);
-            return "pinduoduo/parts/success";
-        }
-
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         GoodsAddResponse response = null;
         try {
@@ -378,6 +360,10 @@ public class PddGoodsUpAction {
             e.printStackTrace();
             errMsg = e.getMessage();
             model.addAttribute("errorMsg",errMsg);
+            return "pinduoduo/parts/success";
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("errorMsg","上传失败，请联系客服处理");
             return "pinduoduo/parts/success";
         }
 
@@ -492,7 +478,7 @@ public class PddGoodsUpAction {
 
     /**
      * 生成商家自定义的规格
-     * 0 颜色 1 尺码
+     * 1 颜色 0 尺码
      * @return
      */
     @RequestMapping("addProp")
