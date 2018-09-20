@@ -190,4 +190,5 @@
     </bean>
 
     <import resource="message/message_queue.xml"/>
+    <import resource="order.xml"/>
 </beans>

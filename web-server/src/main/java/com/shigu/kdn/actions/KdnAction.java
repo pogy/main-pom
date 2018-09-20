@@ -34,8 +34,9 @@ public class KdnAction {
     @Autowired
     private KuaidiniaoConfig kuaidiniaoConfig;
 
-    @RequestMapping(value = "notify",method = RequestMethod.POST,
-            consumes = "application/x-www-form-urlencoded;charset=utf-8")
+    @RequestMapping(value = "notify",method = RequestMethod.POST
+            ,consumes = "application/x-www-form-urlencoded;charset=utf-8"
+    )
     @ResponseBody
     public JSONObject updatePostInfo(
             @RequestParam(value = "DataSign",required = true)String dataSign,
@@ -63,6 +64,7 @@ public class KdnAction {
             kdnProcess.updatePostInfoByNotify(requestData);
             vo.setSuccess(true);
         } catch (Exception e) {
+            e.printStackTrace();
             if (logger.isWarnEnabled()) {
                 logger.warn("更新快递信息失败 >>> dataSign =  " + dataSign +
                         "  requestData = " + requestData + "  requestType = " + requestType);

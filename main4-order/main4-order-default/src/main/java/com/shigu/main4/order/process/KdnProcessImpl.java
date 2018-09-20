@@ -93,12 +93,14 @@ public class KdnProcessImpl implements KdnProcess{
                 kdnTraceInfoList.add(kdnTraceInfo);
             }
         }
-        KdnTraceInfoExample kdnTraceInfoExample = new KdnTraceInfoExample();
-        kdnTraceInfoExample.createCriteria().andLogisticCodeIn(existLogistCode);
-        kdnTraceInfoMapper.deleteByExample(kdnSubscibeExample);
 
-        kdnSubscibeExample.clear();
-        kdnTraceInfoMapper.insertListNoId(kdnTraceInfoList);
+        if (!kdnTraceInfoList.isEmpty()) {
+            KdnTraceInfoExample kdnTraceInfoExample = new KdnTraceInfoExample();
+            kdnTraceInfoExample.createCriteria().andLogisticCodeIn(existLogistCode);
+            kdnTraceInfoMapper.deleteByExample(kdnSubscibeExample);
+            kdnSubscibeExample.clear();
+            kdnTraceInfoMapper.insertListNoId(kdnTraceInfoList);
+        }
     }
 
     /**
