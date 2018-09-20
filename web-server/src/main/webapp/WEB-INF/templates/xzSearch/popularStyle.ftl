@@ -75,6 +75,7 @@
 </#list>
 </#list>
     </div>
+    <input type="hidden" id="maId" value="${maId!}">
 </div>
 <#list [{}] as $it>
 <#include "/common/xz__footer.ftl">
