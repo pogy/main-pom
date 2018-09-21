@@ -235,10 +235,10 @@
                     </li>
                     <li>
                         <a
-                            <#if 'showCourierTemp' == $pageid >
+                            <#if 'orderOpeInfo' == $pageid >
                                 class="current"
                             </#if>
-                            href="showCourierTemp.htm"><i></i>订单操作信息</a>
+                            href="orderOpeInfo.htm"><i></i>订单操作信息</a>
                     </li>
                 </ul>
             </li>

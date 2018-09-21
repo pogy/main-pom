@@ -10,6 +10,16 @@ import java.util.List;
  */
 public class StatusMoveVo {
 
+    private List<OpenInfo> openInfoList;
+
+    public List<OpenInfo> getOpenInfoList() {
+        return openInfoList;
+    }
+
+    public void setOpenInfoList(List<OpenInfo> openInfoList) {
+        this.openInfoList = openInfoList;
+    }
+
     private Long dfTradeId;
     private Long dfOrderId;
     private Long status;//订单状态

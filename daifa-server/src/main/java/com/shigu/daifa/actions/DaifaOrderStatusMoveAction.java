@@ -3,15 +3,17 @@ package com.shigu.daifa.actions;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.services.DaifaOrderStatusMoveService;
+import com.shigu.daifa.vo.OpenInfo;
 import com.shigu.daifa.vo.StatusMoveVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,25 +32,25 @@ public class DaifaOrderStatusMoveAction {
      *
      */
 
-    @RequestMapping("daifa/selOrderMove")
-    public String scanBarCode(Model model){
+    @RequestMapping("daifa/orderOpeInfo")
+    public String showCourierTemp(String childOrderId,Model model){
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+
+        List<OpenInfo> openInfoList = new ArrayList<>();
+        if (StringUtils.isNotBlank(childOrderId)) {
+            try {
+                openInfoList = daifaOrderStatusMoveService.getStatusMoveVo(Long.valueOf(childOrderId));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        model.addAttribute("opeInfoList",openInfoList);
+
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
-        model.addAttribute("menu","selOrderMove.htm");//前台所要的左边菜单
-        return "daifa/selOrderMove";
+        model.addAttribute("menu","orderOpeInfo.htm");//前台所要的左边菜单
+        return "daifa/orderOpeInfo";
     }
-
-
-    @RequestMapping("daifa/getDaifaTrade")
-    @ResponseBody
-    public List<StatusMoveVo> getPage(Long dfTradeId, Long dfOrderId, Model model){
-        List<StatusMoveVo> moveVoList= daifaOrderStatusMoveService.getStatusMoveVo(dfTradeId, dfOrderId);
-        model.addAttribute("moveVoList",moveVoList);
-        return moveVoList;
-    }
-
-
 
 }
