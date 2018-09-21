@@ -52,25 +52,24 @@ public class DaifaOrderStatusMoveService {
             if (marke != null) {
                 openInfoList.add(marke);
                 List<OpenInfo> fenpei = getGoodsTask(dfOrderId);
-                if (fenpei.size()>0) {
+                if (fenpei.size() > 0) {
                     openInfoList.addAll(fenpei);
                     OpenInfo yifa = sendOrder(dfOrderId);
                     if (yifa != null) {
                         openInfoList.add(yifa);
                         List<OpenInfo> sh = getAfterOrder(dfOrderId);
-                        if (sh.size()>0) {
+                        if (sh.size() > 0) {
                             openInfoList.addAll(sh);
-                            OpenInfo crk = getStock(dfOrderId);
-                            if (crk != null) {
-                                openInfoList.add(crk);
-
-                                    Long refundId = getrefundId(dfOrderId);
-                                    if (refundId != null) {
-                                        List<OpenInfo> openInfos = getConsultMoney(refundId);
-                                        if (openInfos != null) {
-                                            openInfoList.addAll(openInfos);
-                                        }
+                            List<OpenInfo> crk = getStock(dfOrderId);
+                            if (crk.size() > 0) {
+                                openInfoList.addAll(crk);
+                                Long refundId = getrefundId(dfOrderId);
+                                if (refundId != null) {
+                                    List<OpenInfo> openInfos = getConsultMoney(refundId);
+                                    if (openInfos != null) {
+                                        openInfoList.addAll(openInfos);
                                     }
+                                }
 
                             }
                         }
@@ -145,7 +144,7 @@ public class DaifaOrderStatusMoveService {
 
     public String getWorkerName(Long dfWorkerId) {
         DaifaWorker worker = new DaifaWorker();
-        if (dfWorkerId != null){
+        if (dfWorkerId != null) {
             worker.setDaifaWorkerId(dfWorkerId);
             worker = daifaWorkerMapper.selectOne(worker);
             if (worker != null) {
@@ -182,16 +181,16 @@ public class DaifaOrderStatusMoveService {
             openInfo1.setOpeTime(DateUtil.dateToString(afterSaleSub.getApplyTime(), "yyyy-MM-dd HH:mm:ss"));
 
             Integer applyDealStatus = afterSaleSub.getApplyDealStatus();
-            if (applyDealStatus != null){
-                if ( applyDealStatus== 1) {
+            if (applyDealStatus != null) {
+                if (applyDealStatus == 1) {
                     openInfo2.setOpeStateText("同意申请");
                     openInfo2.setOpeTime(DateUtil.dateToString(afterSaleSub.getApplyDealTime(), "yyyy-MM-dd HH:mm:ss"));
 
                     openInfo3.setOpeStateText("填写快递单");
                     openInfo3.setOpeTime(DateUtil.dateToString(afterSaleSub.getSendReturnTime(), "yyyy-MM-dd HH:mm:ss"));
 
-                    openInfo3.setOpeStateText("入库");
-                    openInfo3.setOpeTime(DateUtil.dateToString(afterSaleSub.getSendReturnTime(), "yyyy-MM-dd HH:mm:ss"));
+//                    openInfo3.setOpeStateText("入库");
+//                    openInfo3.setOpeTime(DateUtil.dateToString(afterSaleSub.getSendReturnTime(), "yyyy-MM-dd HH:mm:ss"));
                 } else {
                     openInfo2.setOpeStateText("拒绝申请");
                     openInfo2.setOpeTime(DateUtil.dateToString(afterSaleSub.getApplyDealTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -205,8 +204,11 @@ public class DaifaOrderStatusMoveService {
     }
 
 
-    public OpenInfo getStock(Long dfOrderId) {
-        OpenInfo openInfo = new OpenInfo();
+    public List<OpenInfo> getStock(Long dfOrderId) {
+        List<OpenInfo> openInfos = new ArrayList<>();
+        OpenInfo openInfo1 = new OpenInfo();
+        OpenInfo openInfo2 = new OpenInfo();
+        OpenInfo openInfo3 = new OpenInfo();
         DaifaStock daifaStock = new DaifaStock();
         daifaStock.setDfOrderId(dfOrderId);
         daifaStock = daifaStockMapper.selectOne(daifaStock);
@@ -218,29 +220,32 @@ public class DaifaOrderStatusMoveService {
             if (recordList.size() > 0) {
                 for (DaifaStockRecord stockRecord : recordList) {
                     if (stockRecord.getInOutType() == 1) {
-                        openInfo.setOpePeople(stockRecord.getDaifaWorker());
-                        openInfo.setOpeStateText("入库");
-                        openInfo.setOpeTime(DateUtil.dateToString(stockRecord.getInTime(), "yyyy-MM-dd HH:mm:ss"));
+                        openInfo1.setOpePeople(stockRecord.getDaifaWorker());
+                        openInfo1.setOpeStateText("入库");
+                        openInfo1.setOpeTime(DateUtil.dateToString(stockRecord.getInTime(), "yyyy-MM-dd HH:mm:ss"));
+                        openInfos.add(openInfo1);
                     }
                     if (stockRecord.getInOutType() == 2) {
-                        openInfo.setOpePeople(stockRecord.getDaifaWorker());
-                        openInfo.setOpeStateText("出库");
-                        openInfo.setOpeTime(DateUtil.dateToString(stockRecord.getOutTime(), "yyyy-MM-dd HH:mm:ss"));
+                        openInfo2.setOpePeople(stockRecord.getDaifaWorker());
+                        openInfo2.setOpeStateText("出库");
+                        openInfo2.setOpeTime(DateUtil.dateToString(stockRecord.getOutTime(), "yyyy-MM-dd HH:mm:ss"));
+                        openInfos.add(openInfo2);
                     }
                     if (stockRecord.getInOutType() == 3) {
-                        openInfo.setOpePeople(stockRecord.getDaifaWorker());
-                        openInfo.setOpeStateText("退货完成");
-                        openInfo.setOpeTime(DateUtil.dateToString(stockRecord.getReturnTime(), "yyyy-MM-dd HH:mm:ss"));
+                        openInfo3.setOpePeople(stockRecord.getDaifaWorker());
+                        openInfo3.setOpeStateText("退货完成");
+                        openInfo3.setOpeTime(DateUtil.dateToString(stockRecord.getReturnTime(), "yyyy-MM-dd HH:mm:ss"));
+                        openInfos.add(openInfo3);
                     }
                 }
             }
         }
-        return openInfo;
+        return openInfos;
     }
 
 
     public List<OpenInfo> getConsultMoney(Long refundId) {
-        OpenInfo openInfo=new OpenInfo();
+        OpenInfo openInfo = new OpenInfo();
         List<OpenInfo> openInfos = new ArrayList<>();
         DaifaAfterMoneyConsultExample consultExample = new DaifaAfterMoneyConsultExample();
         consultExample.createCriteria().andRefundIdEqualTo(refundId);
