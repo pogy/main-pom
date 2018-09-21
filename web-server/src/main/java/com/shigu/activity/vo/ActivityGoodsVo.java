@@ -14,6 +14,7 @@ public class ActivityGoodsVo implements Serializable{
     private Long goodsId;
     private String imgSrc;
     private String marketName;
+    private Long marketId;
     private String shopNum;
     private Long shopId;
     private String piPriceString;
@@ -75,4 +76,11 @@ public class ActivityGoodsVo implements Serializable{
         this.title = title;
     }
 
+    public Long getMarketId() {
+        return this.marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
 }
