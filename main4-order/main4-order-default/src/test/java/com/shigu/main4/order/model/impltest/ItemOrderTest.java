@@ -23,8 +23,14 @@ public class ItemOrderTest extends BaseTest {
     private ItemOrderService itemOrderService;
 
     private ItemOrder order() {
-        return SpringBeanFactory.getBean(ItemOrder.class, 2L);
+        return SpringBeanFactory.getBean(ItemOrder.class, 287711L);
     }
+
+    @Test
+    public void sended() throws Exception {
+        order().sended("9730566657506");
+    }
+
 
     @Test
     public void selLogisticses() throws Exception {
@@ -93,10 +99,6 @@ public class ItemOrderTest extends BaseTest {
         order().refundService(1L, 20L);
     }
 
-    @Test
-    public void sended() throws Exception {
-        order().sended("1273456167254178");
-    }
 
     @Test
     public void sendPart() throws Exception {
