@@ -1,5 +1,6 @@
 package com.shigu.main4.storeservices;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.vo.FloorShow;
 import com.shigu.main4.vo.MarketNavShow;
 import com.shigu.main4.vo.MarketShow;
@@ -26,6 +27,13 @@ public interface MarketShopService {
      * @return
      */
     FloorShow selFloorShow(Long outerFloor);
+
+    /**
+     * 根据外部市场ID查询楼层及档口信息
+     * @param outMarketId
+     * @return
+     */
+    List<FloorShow> selFloorShowByOuterMarketId(Long outMarketId) throws Main4Exception;
 
     /**
      * 得取店铺排序的比较器

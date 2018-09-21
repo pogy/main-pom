@@ -236,7 +236,7 @@ public class PhotoWorksProcessImpl implements PhotoWorksProcess {
                     bo.getPageSize()));
 
             List<ShiguPhotoWorksAuth> auths=new ArrayList<>();
-            if(bo.getIsAuthor()){
+            if(bo.getIsAuthor()!=null&&bo.getIsAuthor()){
                 List<Long> wids=pager.getContent().stream().map(PhotoWorksVO::getWorksId).collect(Collectors.toList());
                 if(wids.size()>0){
                     ShiguPhotoWorksAuthExample shiguPhotoWorksAuthExample=new ShiguPhotoWorksAuthExample();

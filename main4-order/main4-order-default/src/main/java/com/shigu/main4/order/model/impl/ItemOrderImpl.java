@@ -10,6 +10,8 @@ import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
+import com.shigu.main4.order.bo.SubscribeAddressBO;
+import com.shigu.main4.order.bo.SubscribeExpressBO;
 import com.shigu.main4.order.dto.TradeCountDTO;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
@@ -23,11 +25,14 @@ import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.services.SellerMsgService;
+import com.shigu.main4.order.utils.KdniaoUtil;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -39,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +55,8 @@ import java.util.stream.Collectors;
 @Repository
 @Scope("prototype")
 public class ItemOrderImpl implements ItemOrder {
+
+    Logger logger = LoggerFactory.getLogger(ItemOrderImpl.class);
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
@@ -108,6 +117,18 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private SellerMsgService sellerMsgService;
+    @Autowired
+    private OrderTownMapper orderTownMapper;
+    @Autowired
+    private OrderProvMapper orderProvMapper;
+    @Autowired
+    private OrderCityMapper orderCityMapper;
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
+    @Autowired
+    private KdniaoUtil kdniaoUtil;
+    @Autowired
+    private KdnSubscibeMapper kdnSubscibeMapper;
 
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
@@ -354,6 +375,106 @@ public class ItemOrderImpl implements ItemOrder {
         }
 
         changeStatus(OrderStatus.SELLER_SENDED_GOODS);
+        // 订阅快递鸟物流跟踪  订阅失败不影响发货
+        try {
+            subscibeKdn(logisticsVOS.get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void subscibeKdn(LogisticsVO logisticsVO) throws Exception {
+        KdnSubscibeExample kdnSubscibeExample = new KdnSubscibeExample();
+        kdnSubscibeExample.createCriteria().andLogisticCodeEqualTo(logisticsVO.getCourierNumber());
+        List<KdnSubscibe> kdnSubscibes = kdnSubscibeMapper.selectByExample(kdnSubscibeExample);
+        if (kdnSubscibes != null && !kdnSubscibes.isEmpty()) {
+            return;
+        }
+
+//        com.opentae.data.mall.beans.ItemOrder itemOrder = itemOrderMapper.selectByPrimaryKey(oid);
+//        SendInfoVO sendInfoVO = itemOrderMapper.getSenderInfoBySendId(itemOrder.getSenderId());
+//        String address = sendInfoVO.getAddress();//省市区、详细地址通过空格分隔
+//        address = address.replaceAll("\\s+"," ");
+//        String[] addressArray = address.split(" ");
+//        if (addressArray.length < 4) {
+//            if (logger.isWarnEnabled()) {
+//                logger.warn("订阅物流信息失败 >>> 发货地址格式错误，省市区及详细地址间请使用空格隔开!");
+//            }
+//            return;
+//        }
+
+        ExpressCompany expressCompany = expressCompanyMapper.selectByPrimaryKey(logisticsVO.getCompanyId());
+//        OrderProv orderProv = orderProvMapper.selectByPrimaryKey(logisticsVO.getProvId());
+//        OrderCity orderCity = orderCityMapper.selectByPrimaryKey(logisticsVO.getCityId());
+//
+//        String townName = null;
+//        if (logisticsVO.getTownId() != null) {
+//            OrderTown orderTown = orderTownMapper.selectByPrimaryKey(logisticsVO.getTownId());
+//            townName = orderTown.getTownName();
+//        }else {
+//            townName = ",";//添加默认区名 ，
+//        }
+
+        SubscribeExpressBO bo = new SubscribeExpressBO();
+        bo.setShipperCode(expressCompany.getRemark3());
+        bo.setLogisticCode(logisticsVO.getCourierNumber());
+        bo.setCallback(String.valueOf(oid));
+
+
+//        SubscribeAddressBO sender = new SubscribeAddressBO();
+//        sender.setName(sendInfoVO.getName());
+//        sender.setProvinceName(addressArray[0]);
+//        sender.setCityName(addressArray[1]);
+//        sender.setExpAreaName(addressArray[2]);
+//        sender.setAddress(addressArray[3]);
+//
+//        Pattern pattern = Pattern.compile("^([0-9]{2,4}[ ]{0,2}-[ ]{0,2})?[0-9]{11}$");
+//
+//        Matcher matcher = pattern.matcher(sendInfoVO.getTelephone());
+//        if (!matcher.find()) {
+//            sender.setTel(sendInfoVO.getTelephone());
+//        }else {
+//            sender.setMobile(sendInfoVO.getTelephone());
+//        }
+//
+//        SubscribeAddressBO receiver = new SubscribeAddressBO();
+//        receiver.setName(logisticsVO.getName());
+//        receiver.setMobile(logisticsVO.getTelephone());
+//        receiver.setProvinceName(orderProv.getProvName());
+//        receiver.setCityName(orderCity.getCityName());
+//        receiver.setExpAreaName(townName);
+//        receiver.setAddress(logisticsVO.getAddress());
+//
+//        matcher = pattern.matcher(logisticsVO.getTelephone());
+//        if (!matcher.find()) {
+//            receiver.setTel(logisticsVO.getTelephone());
+//        }else {
+//            receiver.setMobile(logisticsVO.getTelephone());
+//        }
+//
+//        bo.setSender(sender);
+//        bo.setReceiver(receiver);
+
+        KdnSubscribeResult kdnSubscribeResult = kdniaoUtil.subscribeExpress(bo);
+
+        if (kdnSubscribeResult.getSuccess()) {
+
+            Date now = new Date();
+            KdnSubscibe kdnSubscibe = new KdnSubscibe();
+            kdnSubscibe.setOid(oid);
+            kdnSubscibe.setLogisticState(0);
+            kdnSubscibe.setLogisticCode(logisticsVO.getCourierNumber());
+            kdnSubscibe.setCallBack(String.valueOf(oid));
+            kdnSubscibe.setGmtCreate(now);
+            kdnSubscibe.setGmtUpdate(now);
+
+            kdnSubscibeMapper.insert(kdnSubscibe);
+        }else {
+            if (logger.isWarnEnabled()) {
+                logger.warn("订阅物流信息失败 >>> "+ kdnSubscribeResult.getReason());
+            }
+        }
+
     }
 
     @Override
