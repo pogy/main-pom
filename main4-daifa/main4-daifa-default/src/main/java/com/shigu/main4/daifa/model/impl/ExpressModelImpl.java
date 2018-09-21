@@ -96,6 +96,7 @@ public class ExpressModelImpl implements ExpressModel {
             if (list_dpc.size() == 0) {
                 throw new DaifaException("系统无此快递鸟账户", DaifaException.DEBUG);
             }
+            boolean allAddress=false;
             //再用bo里的信息与快递鸟的账户查询快递
             ExpressBean express = new ExpressBean();
             if (list_dpc.size() > 0) {
@@ -106,6 +107,7 @@ public class ExpressModelImpl implements ExpressModel {
                 express.setKdSite(dpc.getSendSite());//快递网点名
                 express.setKdType(dpc.getExpressCompanyCode());//快递简称
                 express.setExpType(dpc.getExpType());
+                allAddress=dpc.getAllAddress()==null?false:dpc.getAllAddress();
             }
 
             DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(sellerId);
@@ -129,14 +131,14 @@ public class ExpressModelImpl implements ExpressModel {
             send.setReceiverCity(adds[1]);
 
             if (adds.length == 3) {
-                send.setReceiverAddress(adds[2]);
+                send.setReceiverAddress(allAddress?bo.getReceiverAddress():adds[2]);
             } else {
                 send.setReceiverArea(adds[2]);
                 StringBuilder readd = new StringBuilder();
                 for (int i = 3; i < adds.length; i++) {
                     readd.append(adds[i]).append(" ");
                 }
-                send.setReceiverAddress(readd.toString());
+                send.setReceiverAddress(allAddress?bo.getReceiverAddress():readd.toString());
             }
 
             //发货人信息
@@ -146,7 +148,7 @@ public class ExpressModelImpl implements ExpressModel {
             send.setSendProv(ses[0]);
             send.setSendCity(ses[1]);
             send.setSendArea(ses[2]);
-            send.setSendAddress(ses[3]);
+            send.setSendAddress(allAddress?seller.getAddress():ses[3]);
 
             if("EMS".equals(express.getKdType())){
                 String receiverZipCode;
