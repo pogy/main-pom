@@ -1,6 +1,12 @@
 package com.shigu.main4.order.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.order.bo.KdnSelBO;
+import com.shigu.main4.order.bo.SubscribeAddressBO;
+import com.shigu.main4.order.bo.SubscribeExpressBO;
+import com.shigu.main4.order.vo.KdnSelVO;
+import com.shigu.main4.order.vo.KdnSubscribeResult;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,16 +29,20 @@ public class KdniaoUtil {
     private String EBusinessID;
     @Value("${AppKey}")
     private String AppKey;
+    @Value("${SubscribeReqURL}")
+    private String subscribeReqUrl;
+    @Value(("${EbusinessOrderHandleURL}"))
+    private String ebusinessOrderHandleURL;
+
     @Autowired
     private RedisIO redisIO;
+
     public String getOrderTracesByJson(String expCode, String expNo) throws Exception{
         if (expCode == null || expNo == null) {
             throw new Main4Exception("没查询到快递信息");
         }
         String result=redisIO.get("orderTracesByJson_"+expCode+"_"+expNo);
         if(result==null){
-            String ReqURL="http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
-
             String requestData= "{\"OrderCode\":\"\",\"ShipperCode\":\"" + expCode + "\",\"LogisticCode\":\"" + expNo + "\"}";
 
             Map<String, String> params = new HashMap<String, String>();
@@ -43,11 +53,74 @@ public class KdniaoUtil {
             params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
             params.put("DataType", "2");
 
-            result=sendPost(ReqURL, params);
+            result=sendPost(ebusinessOrderHandleURL, params);
             redisIO.putStringTemp("orderTracesByJson_"+expCode+"_"+expNo,result,300);
         }
         //根据公司业务处理返回的信息......
         return result;
+    }
+
+    public KdnSelVO selPostInfo(String expCode, String expNo){
+        KdnSelVO vo = new KdnSelVO();
+        if (expCode == null) {
+            vo.setSuccess(false);
+            vo.setReason("无效的快递编码");
+            return vo;
+        }
+        if (expNo == null) {
+            vo.setSuccess(false);
+            vo.setReason("无效的快递单号");
+            return vo;
+        }
+
+        String result = redisIO.get("orderTracesByJson_"+expCode+"_"+expNo);
+
+        if(result == null){
+            try {
+                KdnSelBO bo = new KdnSelBO();
+                bo.setShipperCode(expCode);
+                bo.setLogisticCode(expNo);
+                String requestData = JSONObject.toJSONString(bo);
+
+                Map<String, String> params = new HashMap<>();
+                params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+                params.put("EBusinessID", EBusinessID);
+                params.put("RequestType", "1002");
+                String dataSign = encrypt(requestData, AppKey, "UTF-8");
+                params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
+                params.put("DataType", "2");
+
+                result = sendPost(ebusinessOrderHandleURL, params);
+                redisIO.putStringTemp("orderTracesByJson_"+expCode+"_"+expNo,result,7200);//缓存俩小时
+            } catch (Exception e) {
+                e.printStackTrace();
+                vo.setSuccess(false);
+                vo.setReason("系统异常");
+                return vo;
+            }
+        }
+        return JSONObject.parseObject(result,KdnSelVO.class);
+    }
+
+    /**
+     * 订阅
+     * @param bo
+     * @return
+     * @throws Exception
+     */
+    public KdnSubscribeResult subscribeExpress(SubscribeExpressBO bo) throws Exception{
+
+        String requestData = JSONObject.toJSONString(bo);
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+        params.put("EBusinessID", EBusinessID);
+        params.put("RequestType", "1008");
+        String dataSign = encrypt(requestData, AppKey, "UTF-8");
+        params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
+        params.put("DataType", "2");
+        String result = sendPost(subscribeReqUrl, params);
+        return JSONObject.parseObject(result, KdnSubscribeResult.class);
     }
 
 

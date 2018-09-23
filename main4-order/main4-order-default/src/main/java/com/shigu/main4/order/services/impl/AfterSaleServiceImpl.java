@@ -4,6 +4,7 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
+import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
@@ -100,9 +101,13 @@ public class AfterSaleServiceImpl implements AfterSaleService {
 
         Long oid = subItemOrderVO.getOid();
         ItemOrder order = SpringBeanFactory.getBean(ItemOrder.class, oid);
-        List<SubItemOrderVO> subOrders = order.subOrdersInfo();
-        List<Long> allSubId = subOrders.stream().map(SubItemOrderVO::getSoid).collect(Collectors.toList());
-        int allSubNum = subOrders.stream().mapToInt(SubItemOrderVO::getNum).sum();
+        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
+        itemOrderSubExample.createCriteria().andOidEqualTo(oid);
+        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
+
+        List<Long> allSubId = itemOrderSubs.stream().map(ItemOrderSub::getSoid).collect(Collectors.toList());
+        int allSubNum = itemOrderSubs.stream().mapToInt(ItemOrderSub::getNum).sum();
+
         ItemOrderRefund refund = new ItemOrderRefund();
         refund.setOid(oid);
         List<ItemOrderRefund> refunds = itemOrderRefundMapper.select(refund);
@@ -133,12 +138,19 @@ public class AfterSaleServiceImpl implements AfterSaleService {
         AfterSaleSimpleOrderVO vo = new AfterSaleSimpleOrderVO();
         vo.setOrderId(itemOrderVO.getOrderId());
         vo.setEndDate(DateUtil.dateToString(itemOrderVO.getCreateTime(), DateUtil.patternD));
-        vo.setOrderPrice(itemOrder.subOrdersInfo().stream().mapToLong(o -> o.getProduct().getPrice() * o.getNum()).sum());
+
+        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
+        itemOrderSubExample.createCriteria().andOidEqualTo(itemOrderVO.getOrderId());
+        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
+
+        vo.setOrderPrice(itemOrderSubs.stream().mapToLong(o -> o.getPrice()).sum());
+
         List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
         vo.setExpressPrice(logisticsVOS.isEmpty() ? 0L : logisticsVOS.get(0).getMoney());
         List<OrderServiceVO> orderServiceVOS = itemOrder.selServices();
         vo.setServicePrice(orderServiceVOS.isEmpty() ? 0L : orderServiceVOS.stream().mapToLong(OrderServiceVO::getMoney).sum());
         vo.setTotalPrice(itemOrderVO.getTotalFee());
+
         return vo;
     }
 

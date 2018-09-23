@@ -24,6 +24,8 @@ public interface ShiguShopMapper extends Mapper<ShiguShop> {
 
     List<ShiguShop> selectShopForMarketList(@Param("floorId") Long floorId);
 
+    List<ShiguShop> selectShopForMarketListByFloorIds(@Param("floorIds") List<Long> floorIds);
+
     /** 市场页店铺查询 */
     List<ShiguShop> selectShopListByShopIdsForMarketList(@Param("shopIdList") List<Long> shopIdList);
 
