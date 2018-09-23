@@ -4,7 +4,6 @@ import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.services.DaifaOrderStatusMoveService;
 import com.shigu.daifa.vo.OpenInfo;
-import com.shigu.daifa.vo.StatusMoveVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -14,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created By zyl on 2018/9/19 0019/16:22
@@ -45,8 +46,10 @@ public class DaifaOrderStatusMoveAction {
                 e.printStackTrace();
             }
         }
+        Map map = new HashMap();
+        map.put("childOrderId",childOrderId);
         model.addAttribute("opeInfoList",openInfoList);
-
+        model.addAttribute("query",map);
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
         model.addAttribute("menu","orderOpeInfo.htm");//前台所要的左边菜单
