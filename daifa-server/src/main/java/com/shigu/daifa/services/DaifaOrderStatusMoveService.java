@@ -94,7 +94,7 @@ public class DaifaOrderStatusMoveService {
         DaifaOrder daifaOrder = daifaOrderMapper.selectByPrimaryKey(dfOrderId);
         if (daifaOrder != null) {
             OpenInfo openInfo = new OpenInfo();
-            openInfo.setOpePeople("");
+            openInfo.setOpePeople("System");
             openInfo.setOpeStateText("创建");
             openInfo.setOpeTime(DateUtil.dateToString(daifaOrder.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             return openInfo;
@@ -113,14 +113,14 @@ public class DaifaOrderStatusMoveService {
             if (tasks.getTakeGoodsStatus() != 0) {
                 OpenInfo openInfo1 = new OpenInfo();
                 String name = getWorkerName(tasks.getDaifaWorkerId());
-                openInfo1.setOpePeople(name != null ? name : null);
+                openInfo1.setOpePeople(name != null ? name : "System");
                 openInfo1.setOpeStateText("分配");
                 openInfo1.setOpeTime(DateUtil.dateToString(tasks.getAllocatTime(), "yyyy-MM-dd HH:mm:ss"));
                 openInfos.add(openInfo1);
 
                 if (tasks.getTakeGoodsStatus() == 1) {
                     OpenInfo openInfo2 = new OpenInfo();
-                    openInfo2.setOpePeople(name != null ? name : null);
+                    openInfo2.setOpePeople(name != null ? name : "System");
                     openInfo2.setOpeStateText("拿货");
                     openInfo2.setOpeTime(tasks.getTakeGoodsDate());
                     openInfos.add(openInfo2);
@@ -128,7 +128,7 @@ public class DaifaOrderStatusMoveService {
 
                 if (tasks.getTakeGoodsStatus() == 2) {
                     OpenInfo openInfo2 = new OpenInfo();
-                    openInfo2.setOpePeople(name != null ? name : null);
+                    openInfo2.setOpePeople(name != null ? name : "System");
                     openInfo2.setOpeStateText("缺货");
                     openInfo2.setOpeTime(DateUtil.dateToString(tasks.getYouhuoDate(), "yyyy-MM-dd HH:mm:ss"));
                     openInfos.add(openInfo2);
@@ -137,7 +137,7 @@ public class DaifaOrderStatusMoveService {
                 if (tasks.getDelistIs() == 1) {
                     OpenInfo openInfo3 = new OpenInfo();
                     OpenInfo openInfo4 = new OpenInfo();
-                    openInfo3.setOpePeople(name != null ? name : null);
+                    openInfo3.setOpePeople(name != null ? name : "System");
                     openInfo3.setOpeStateText("下架");
                     openInfo3.setOpeTime(tasks.getTakeGoodsDate());
                     openInfos.add(openInfo3);
@@ -168,7 +168,7 @@ public class DaifaOrderStatusMoveService {
         sendOrder = daifaSendOrderMapper.selectOne(sendOrder);
         if (sendOrder != null) {
             OpenInfo openInfo = new OpenInfo();
-            openInfo.setOpePeople("");
+            openInfo.setOpePeople("System");
             openInfo.setOpeStateText("发货");
             openInfo.setOpeTime(DateUtil.dateToString(sendOrder.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
             return openInfo;
@@ -183,7 +183,7 @@ public class DaifaOrderStatusMoveService {
         afterSaleSub = daifaAfterSaleSubMapper.selectOne(afterSaleSub);
         if (afterSaleSub != null) {
             OpenInfo openInfo1 = new OpenInfo();
-            openInfo1.setOpePeople("");
+            openInfo1.setOpePeople("System");
             openInfo1.setOpeStateText("申请售后");
             openInfo1.setOpeTime(DateUtil.dateToString(afterSaleSub.getApplyTime(), "yyyy-MM-dd HH:mm:ss"));
             openInfos.add(openInfo1);
@@ -192,10 +192,11 @@ public class DaifaOrderStatusMoveService {
                 if (applyDealStatus == 1) {
                     OpenInfo openInfo2 = new OpenInfo();
                     OpenInfo openInfo3 = new OpenInfo();
+                    openInfo2.setOpePeople("System");
                     openInfo2.setOpeStateText("同意申请");
                     openInfo2.setOpeTime(DateUtil.dateToString(afterSaleSub.getApplyDealTime(), "yyyy-MM-dd HH:mm:ss"));
                     openInfos.add(openInfo2);
-
+                    openInfo3.setOpePeople("System");
                     openInfo3.setOpeStateText("填写快递单");
                     openInfo3.setOpeTime(DateUtil.dateToString(afterSaleSub.getSendReturnTime(), "yyyy-MM-dd HH:mm:ss"));
                     openInfos.add(openInfo3);
@@ -227,17 +228,17 @@ public class DaifaOrderStatusMoveService {
             List<DaifaStockRecord> recordList = daifaStockRecordMapper.selectByExample(recordExample);
             if (recordList.size() > 0) {
                 for (DaifaStockRecord stockRecord : recordList) {
+                    String name = stockRecord.getDaifaWorker();
                     if (stockRecord.getInOutType() == 1) {
                         OpenInfo openInfo1 = new OpenInfo();
-                        openInfo1.setOpePeople(stockRecord.getDaifaWorker());
+                        openInfo1.setOpePeople(name != null ? name : "System");
                         openInfo1.setOpeStateText("入库");
                         openInfo1.setOpeTime(DateUtil.dateToString(stockRecord.getInTime(), "yyyy-MM-dd HH:mm:ss"));
                         openInfos.add(openInfo1);
                     }
                     if (stockRecord.getInOutType() == 2) {
                         OpenInfo openInfo2 = new OpenInfo();
-
-                        openInfo2.setOpePeople(stockRecord.getDaifaWorker());
+                        openInfo2.setOpePeople(name != null ? name : "System");
                         openInfo2.setOpeStateText("出库");
                         openInfo2.setOpeTime(DateUtil.dateToString(stockRecord.getOutTime(), "yyyy-MM-dd HH:mm:ss"));
                         openInfos.add(openInfo2);
@@ -246,7 +247,7 @@ public class DaifaOrderStatusMoveService {
                     }
                     if (stockRecord.getInOutType() == 3) {
                         OpenInfo openInfo3 = new OpenInfo();
-                        openInfo3.setOpePeople(stockRecord.getDaifaWorker());
+                        openInfo3.setOpePeople(name != null ? name : "System");
                         openInfo3.setOpeStateText("档口退货完成");
                         openInfo3.setOpeTime(DateUtil.dateToString(stockRecord.getReturnTime(), "yyyy-MM-dd HH:mm:ss"));
                         openInfos.add(openInfo3);
@@ -264,7 +265,7 @@ public class DaifaOrderStatusMoveService {
         afterSaleSub = daifaAfterSaleSubMapper.selectOne(afterSaleSub);
         if (afterSaleSub.getStoreDealStatus() == 1) {
             OpenInfo openInfo = new OpenInfo();
-            openInfo.setOpePeople("");
+            openInfo.setOpePeople("System");
             openInfo.setOpeStateText("档口同意退款");
             openInfo.setOpeTime(DateUtil.dateToString(afterSaleSub.getStoreDealTime(), "yyyy-MM-dd HH:mm:ss"));
             openInfos.add(openInfo);
@@ -272,11 +273,11 @@ public class DaifaOrderStatusMoveService {
         if (afterSaleSub.getStoreDealStatus() == 2) {
             OpenInfo openInfo2 = new OpenInfo();
             OpenInfo openInfo1 = new OpenInfo();
-            openInfo2.setOpePeople("");
+            openInfo2.setOpePeople("System");
             openInfo2.setOpeStateText("档口拒绝退款");
             openInfo2.setOpeTime(DateUtil.dateToString(afterSaleSub.getStoreDealTime(), "yyyy-MM-dd HH:mm:ss"));
             openInfos.add(openInfo2);
-            openInfo1.setOpePeople("");
+            openInfo1.setOpePeople("System");
             openInfo1.setOpeStateText("结束");
             openInfo1.setOpeTime(DateUtil.dateToString(afterSaleSub.getLastDoTime(), "yyyy-MM-dd HH:mm:ss"));
             openInfos.add(openInfo1);
@@ -294,14 +295,14 @@ public class DaifaOrderStatusMoveService {
         for (DaifaAfterMoneyConsult moneyConsult : consultList) {
             if (moneyConsult.getConsultType() == 2) {
                 OpenInfo openInfo1 = new OpenInfo();
-                openInfo1.setOpePeople("");
+                openInfo1.setOpePeople("System");
                 openInfo1.setOpeStateText("拒绝议价");
                 openInfo1.setOpeTime(DateUtil.dateToString(moneyConsult.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
                 openInfos.add(openInfo1);
             }
             if (moneyConsult.getConsultType() == 1) {
                 OpenInfo openInfo = new OpenInfo();
-                openInfo.setOpePeople("");
+                openInfo.setOpePeople("System");
                 openInfo.setOpeStateText("议价");
                 openInfo.setOpeTime(DateUtil.dateToString(moneyConsult.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
                 openInfos.add(openInfo);
@@ -317,7 +318,7 @@ public class DaifaOrderStatusMoveService {
         if (afterSaleSub.getAfterStatus() == 6) {
             if (StringUtils.isNotBlank(afterSaleSub.getStoreReturnMoney())) {
                 OpenInfo openInfo = new OpenInfo();
-                openInfo.setOpePeople("");
+                openInfo.setOpePeople("System");
                 openInfo.setOpeStateText("退款");
                 openInfo.setOpeTime(DateUtil.dateToString(afterSaleSub.getLastDoTime(), "yyyy-MM-dd HH:mm:ss"));
                 return openInfo;
