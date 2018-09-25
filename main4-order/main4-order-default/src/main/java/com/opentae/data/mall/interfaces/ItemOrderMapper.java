@@ -3,6 +3,7 @@ package com.opentae.data.mall.interfaces;
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ItemOrder;
+import com.shigu.main4.order.vo.SendInfoVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -23,4 +24,6 @@ public interface ItemOrderMapper extends Mapper<ItemOrder> {
     List<Long> getOidListByOrderStatus(@Param("userId") Long userId, @Param("createTime") Date createTime);
     List<Long> getRidListByOrderStatus(@Param("userId") Long userId,@Param("createTime") Date createTime);
     Long getSenderIdByRefundId(@Param("refundId")Long refundId);
+
+    SendInfoVO getSenderInfoBySendId(@Param("sellerId")Long sellerId);
 }

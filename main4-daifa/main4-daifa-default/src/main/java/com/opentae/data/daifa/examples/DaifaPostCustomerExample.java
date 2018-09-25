@@ -19,6 +19,7 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
     public static EntityColumn customerName;
     public static EntityColumn useStatus;
     public static EntityColumn monthCode;
+    public static EntityColumn allAddress;
     public static EntityColumn sendSite;
     public static EntityColumn expType;
     public static EntityColumn logisticCode;
@@ -39,6 +40,7 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
         customerName = listMap.get("customerName");
         useStatus = listMap.get("useStatus");
         monthCode = listMap.get("monthCode");
+        allAddress = listMap.get("allAddress");
         sendSite = listMap.get("sendSite");
         expType = listMap.get("expType");
         logisticCode = listMap.get("logisticCode");
@@ -519,6 +521,53 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
 
         public DaifaPostCustomerExample.Criteria andMonthCodeNotBetween(String value1, String value2) {
             return notBetween(monthCode, value1, value2);
+        }
+        public DaifaPostCustomerExample.Criteria andAllAddressIsNull() {
+            return isNull(allAddress);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressIsNotNull() {
+            return isNotNull(allAddress);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressEqualTo(Boolean value) {
+            return equalTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressNotEqualTo(Boolean value) {
+            return notEqualTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressGreaterThan(Boolean value) {
+            return greaterThan(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressLessThan(Boolean value) {
+            return lessThan(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressIn(List<Boolean> values) {
+            return in(allAddress, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressNotIn(List<Boolean> values) {
+            return notIn(allAddress, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressBetween(Boolean value1, Boolean value2) {
+            return between(allAddress, value1, value2);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(allAddress, value1, value2);
         }
         public DaifaPostCustomerExample.Criteria andSendSiteIsNull() {
             return isNull(sendSite);

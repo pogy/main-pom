@@ -73,9 +73,14 @@ public class DaifaPostCustomer implements Serializable {
 	private Integer expType;
 
     /**
-     * 手动发货标记
+     * 手动代发标记 1需要手动代发 0不需要
      */
 	private Integer manual;
+
+    /**
+     * 
+     */
+	private Boolean allAddress;
 
 	public void setPostCustomerId(Long postCustomerId) {
 		this.postCustomerId = postCustomerId;
@@ -187,6 +192,14 @@ public class DaifaPostCustomer implements Serializable {
 
 	public Integer getManual() {
 		return this.manual;
+	}
+
+	public void setAllAddress(Boolean allAddress) {
+		this.allAddress = allAddress;
+	}
+
+	public Boolean getAllAddress() {
+		return this.allAddress;
 	}
 
 }
