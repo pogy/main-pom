@@ -1,19 +1,20 @@
 package com.shigu.buyer.services;
 
-import com.openJar.beans.sgpay.XzbPayTrade;
+
 import com.openJar.requests.sgpay.AlipayMoneyTradeSearch4OldRequest;
-import com.openJar.requests.sgpay.AlipayToCashEd4OldRequest;
 import com.openJar.requests.sgpay.UserTempSecret4OldRequest;
-import com.openJar.requests.sgpay.XzbPayRequest;
 import com.openJar.responses.sgpay.AlipayMoneyTradeSearch4OldResponse;
-import com.openJar.responses.sgpay.AlipayToCashEd4OldResponse;
 import com.openJar.responses.sgpay.UserTempSecret4OldResponse;
-import com.openJar.responses.sgpay.XzbPayResponse;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.bo.TixianBO;
-import com.shigu.buyer.vo.DisposeBeanVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.pay.bo.XzbPayTrade;
+import com.shigu.main4.pay.requests.XzbAlipayToCashedRequest;
+import com.shigu.main4.pay.requests.XzbPayRequest;
+import com.shigu.main4.pay.requests.XzbUserDisposeLimitRequest;
+import com.shigu.main4.pay.responses.XzbAlipayToCashEdResponse;
+import com.shigu.main4.pay.responses.XzbDisposeLimitResponse;
+import com.shigu.main4.pay.responses.XzbPayResponse;
+import com.shigu.main4.pay.services.XzbService;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONObject;
@@ -22,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * 支付sdk调用系统服务
@@ -35,34 +34,39 @@ public class PaySdkClientService {
     @Autowired
     XzSdkClient xzSdkClient;
     
-    @Autowired
-    private MemberUserMapper memberUserMapper;
+    //@Autowired
+    //private MemberUserMapper memberUserMapper;
     
-    @Autowired
-    private RedisIO redisIO;
+    //@Autowired
+    //private RedisIO redisIO;
     
-    @Autowired
-    private DisposeBeanVO disposeBeanVO;
+    //@Autowired
+    //private DisposeBeanVO disposeBeanVO;
 
-    private final String freeCashInfoPrefix = "user_cash_apply_unprocessed_prifix_";
-    /**
-     * 支付系统临时授权码
-     * @param userId
-     * @return
-     */
-    public String tempcode(Long userId){
-            String tempCode;
-        UserTempSecret4OldRequest req=new UserTempSecret4OldRequest();
-        req.setXzUserId(userId);
-        try {
-            UserTempSecret4OldResponse res= (UserTempSecret4OldResponse) xzSdkClient.getPcOpenClient().execute(req);
-            tempCode=res.getCode();
-        } catch (Exception e) {
-            logger.error("获取tempCode失败 "+userId,e);
-            tempCode="pay_api error";
-        }
-        return tempCode;
-    }
+    @Autowired
+    private XzbService xzbService;
+
+    //private final String freeCashInfoPrefix = "user_cash_apply_unprocessed_prifix_";
+    ///**
+    // * 支付系统临时授权码
+    // * @param userId
+    // * @return
+    // *
+    // * todo: 前端把接口改用主站接口后去除
+    // */
+    //public String tempcode(Long userId){
+    //        String tempCode;
+    //    UserTempSecret4OldRequest req=new UserTempSecret4OldRequest();
+    //    req.setXzUserId(userId);
+    //    try {
+    //        UserTempSecret4OldResponse res= (UserTempSecret4OldResponse) xzSdkClient.getPcOpenClient().execute(req);
+    //        tempCode=res.getCode();
+    //    } catch (Exception e) {
+    //        logger.error("获取tempCode失败 "+userId,e);
+    //        tempCode="pay_api error";
+    //    }
+    //    return tempCode;
+    //}
 
     /**
      *
@@ -71,12 +75,12 @@ public class PaySdkClientService {
      * @return
      */
     public JSONObject tixian(TixianBO bo, Long userId){
-        AlipayToCashEd4OldRequest req=new AlipayToCashEd4OldRequest();
+        XzbAlipayToCashedRequest req=new XzbAlipayToCashedRequest();
         req.setXzUserId(userId);
         req.setAlipayUserId(bo.getAlipay());
         req.setCashAmount((long) (bo.getPaynum()*100));
         req.setAlipayRealName(bo.getPayname());
-        AlipayToCashEd4OldResponse res=(AlipayToCashEd4OldResponse)xzSdkClient.getPcOpenClient().execute(req);
+        XzbAlipayToCashEdResponse res = xzbService.alipayToCashEd(req);
         JSONObject obj;
         if(res.isSuccess()){
             obj=JSONObject.fromObject("{'result':'success'}");
@@ -117,7 +121,7 @@ public class PaySdkClientService {
         trade.setTotalFee(money);
         trade.setOuterId(outerId);
         request.setTrade(trade);
-        XzbPayResponse response = xzSdkClient.getPcOpenClient().execute(request);
+        XzbPayResponse response = xzbService.xzbPay(request);
         if (!response.isSuccess()) {
             throw new JsonErrException(response.getBody());
         }
@@ -130,15 +134,22 @@ public class PaySdkClientService {
      * @return
      */
     public JSONObject selCurrentFreeCashInfo(Long userId) {
-        Long xzbId = memberUserMapper.userXzbAccount(userId);
-        Map withdrawMap = redisIO.get(String.format("%s%d_%d", freeCashInfoPrefix, xzbId, new Date().getMonth()), Map.class);
-        int cashTimes = 0;
-        if (withdrawMap != null) {
-            cashTimes = withdrawMap.size();
+        XzbUserDisposeLimitRequest request = new XzbUserDisposeLimitRequest();
+        request.setXzUserId(userId);
+        XzbDisposeLimitResponse resp = xzbService.userDisposeLimit(request);
+        if (resp.isSuccess()) {
+            return JsonResponseUtil.success().element("freeWithdrawNum", resp.getFreeWithdrawNum()).element("withdrawUpperLimit", resp.getWithdrawUpperLimit());
         }
-        int freeWithdrawNum = disposeBeanVO.getMaxFreeTimes() - cashTimes;
-        return JsonResponseUtil.success()
-                       .element("freeWithdrawNum", freeWithdrawNum < 0 ? 0 : freeWithdrawNum)
-                       .element("withdrawUpperLimit", String.format("%.2f", 0.01 * disposeBeanVO.getMaxCashMoney()));
+        return JsonResponseUtil.error(resp.getException().getErrMsg());
+        //Long xzbId = memberUserMapper.userXzbAccount(userId);
+        //Map withdrawMap = redisIO.get(String.format("%s%d_%d", freeCashInfoPrefix, xzbId, new Date().getMonth()), Map.class);
+        //int cashTimes = 0;
+        //if (withdrawMap != null) {
+        //    cashTimes = withdrawMap.size();
+        //}
+        //int freeWithdrawNum = disposeBeanVO.getMaxFreeTimes() - cashTimes;
+        //return JsonResponseUtil.success()
+        //               .element("freeWithdrawNum", freeWithdrawNum < 0 ? 0 : freeWithdrawNum)
+        //               .element("withdrawUpperLimit", String.format("%.2f", 0.01 * disposeBeanVO.getMaxCashMoney()));
     }
 }

@@ -1,16 +1,11 @@
 package com.shigu.main4.order.model.impl;
 
-import com.openJar.requests.sgpay.InviteRebateRechargeRequest;
-import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
-import com.openJar.responses.sgpay.InviteRebateRechargeResponse;
-import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
-import com.shigu.main4.order.bo.SubscribeAddressBO;
 import com.shigu.main4.order.bo.SubscribeExpressBO;
 import com.shigu.main4.order.dto.TradeCountDTO;
 import com.shigu.main4.order.enums.OrderStatus;
@@ -28,9 +23,13 @@ import com.shigu.main4.order.services.SellerMsgService;
 import com.shigu.main4.order.utils.KdniaoUtil;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
+import com.shigu.main4.pay.requests.XzbInviteRechargeRequest;
+import com.shigu.main4.pay.requests.XzbOrderCashBackRequest;
+import com.shigu.main4.pay.responses.XzbInviteRechargeResponse;
+import com.shigu.main4.pay.responses.XzbOrderCashBackResponse;
+import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
-import com.shigu.tools.XzSdkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -88,8 +81,8 @@ public class ItemOrderImpl implements ItemOrder {
     @Autowired
     private RedisIO redisIO;
 
-    @Autowired
-    private  XzSdkClient xzSdkClient;
+    //@Autowired
+    //private  XzSdkClient xzSdkClient;
 
     @Autowired
     private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
@@ -117,18 +110,21 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private SellerMsgService sellerMsgService;
-    @Autowired
-    private OrderTownMapper orderTownMapper;
-    @Autowired
-    private OrderProvMapper orderProvMapper;
-    @Autowired
-    private OrderCityMapper orderCityMapper;
+    //@Autowired
+    //private OrderTownMapper orderTownMapper;
+    //@Autowired
+    //private OrderProvMapper orderProvMapper;
+    //@Autowired
+    //private OrderCityMapper orderCityMapper;
     @Autowired
     private ExpressCompanyMapper expressCompanyMapper;
     @Autowired
     private KdniaoUtil kdniaoUtil;
     @Autowired
     private KdnSubscibeMapper kdnSubscibeMapper;
+
+    @Autowired
+    private XzbService xzbService;
 
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
@@ -611,7 +607,7 @@ public class ItemOrderImpl implements ItemOrder {
         if (date.getTime() - 1527782400000L > 0){
             Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK, String.class));
             if (b != null && b) {
-                OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
+                XzbOrderCashBackRequest request = new XzbOrderCashBackRequest();
                 request.setXzUserId(itemOrderSubMapper.selectUserIdByOid(oid));
                 request.setCashbackOrderNo(oid);
                 List<OrderSubMoney> orderSubMoneyList = itemOrderSubMapper.selectOrderSubByOid(oid);
@@ -630,7 +626,7 @@ public class ItemOrderImpl implements ItemOrder {
                     shiguOrderCashback.setOId(oid);
                     shiguOrderCashback.setCashback(money / 100);
                     shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
-                    OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
+                    XzbOrderCashBackResponse resp = xzbService.orderCashBack(request);
                     if (resp == null || !resp.isSuccess()) {
                         try {
                             throw new RefundException("订单返现失败：oid=" + oid);
@@ -713,11 +709,11 @@ public class ItemOrderImpl implements ItemOrder {
                             inviteOrderRebateRecord.setRebateState(1);
                             inviteOrderRebateRecordMapper.insertSelective(inviteOrderRebateRecord);
                         }
-                        InviteRebateRechargeRequest inviteRebateRechargeRequest = new InviteRebateRechargeRequest();
+                        XzbInviteRechargeRequest inviteRebateRechargeRequest = new XzbInviteRechargeRequest();
                         inviteRebateRechargeRequest.setXzUserId(inviteUserId);
                         inviteRebateRechargeRequest.setRebateOrderNo(oid);
                         inviteRebateRechargeRequest.setRebateAmount(rebateAmount);
-                        InviteRebateRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(inviteRebateRechargeRequest);
+                        XzbInviteRechargeResponse resp = xzbService.inviteRebateRecharge(inviteRebateRechargeRequest);
                         if (resp == null || !resp.isSuccess()) {
                             try {
                                 throw new RefundException("邀请注册订单返点失败：oid=" + oid);

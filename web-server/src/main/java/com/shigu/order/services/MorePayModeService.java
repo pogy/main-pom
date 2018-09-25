@@ -59,7 +59,7 @@ public class MorePayModeService {
         orderIds=payModeService.checkedMyOrder(orderIds,userId);
         checkedIsPay(orderIds);
         PayModePageVO payModePageVO = new PayModePageVO();
-        payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
+        //payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(selTotalMoney(orderIds));
         payModePageVO.setAlipayUrl("/order/alipay.htm");
         payModePageVO.setCurrentAmount(String.format("%.2f", memberUserMapper.userBalance(userId) * .01));
