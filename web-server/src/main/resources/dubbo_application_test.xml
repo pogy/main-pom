@@ -64,6 +64,7 @@
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="wxPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="xzPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="aliPayerQzService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.order.process.KdnProcess" id="kdnProcess" timeout="10000" />
 
 
 

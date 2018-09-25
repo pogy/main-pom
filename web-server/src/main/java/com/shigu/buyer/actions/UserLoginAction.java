@@ -637,6 +637,7 @@ public class UserLoginAction {
             obj.element("loginName", ps.getLoginName());
             obj.element("userId", ps.getUserId());
             obj.element("memberVipIs", ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
+            obj.element("headUrl",ps.getHeadUrl());
             if (ps.getLogshop() != null) {
                 obj.element("userType", "gys");
             } else {
