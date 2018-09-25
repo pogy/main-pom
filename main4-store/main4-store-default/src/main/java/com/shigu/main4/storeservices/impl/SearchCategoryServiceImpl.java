@@ -49,6 +49,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             cateMenu.setText(ssscOneList.get(i).getCname());
             ssscTwoExample = new ShiguSiteSearchCategoryExample();
             ssscTwoExample.createCriteria().andParentCidEqualTo(ssscOneList.get(i).getId()).andCStatusEqualTo(1).andDisplayEqualTo(1);
+            ssscTwoExample.setOrderByClause("sort asc");
             ssscTwoList = shiguSiteSearchCategoryMapper.selectByExample(ssscTwoExample);
             subMenuList = new ArrayList<SubMenu>();
             for (int j = 0; j <ssscTwoList.size() ; j++) {
@@ -99,7 +100,6 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                 .andWebSiteEqualTo(webSite)
                 .andSexEqualTo(sex)
                 .andInfoTypeEqualTo(infoType);
-        ssscExample1.setOrderByClause("id asc");
         List<ShiguSiteSearchCategory> ssscList1 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample1);
         if(ssscList1.size()==0){
             return new ArrayList<>();
@@ -107,7 +107,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
         List<Long> ssscids=ssscList1.stream().map(ShiguSiteSearchCategory::getId).collect(Collectors.toList());
         ShiguSiteSearchCategoryExample ssscExampleSub = new ShiguSiteSearchCategoryExample();
         ssscExampleSub.createCriteria().andParentCidIn(ssscids).andCStatusEqualTo(1).andDisplayEqualTo(1);
-        ssscExampleSub.setOrderByClause("id asc");
+        ssscExampleSub.setOrderByClause("sort asc");
         List<ShiguSiteSearchCategory> ssscSubList = shiguSiteSearchCategoryMapper.selectByExample(ssscExampleSub);
         Map<Long,List<ShiguSiteSearchCategory>> map=ssscSubList.stream().collect(Collectors.groupingBy(ShiguSiteSearchCategory::getParentCid));
 
@@ -169,6 +169,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
             homeCateMenu.setText(ssscList1.get(i).getCname());
             ShiguSiteSearchCategoryExample ssscExample2 = new ShiguSiteSearchCategoryExample();
             ssscExample2.createCriteria().andDisplayEqualTo(1).andCStatusEqualTo(1).andParentCidEqualTo(ssscList1.get(i).getId());
+            ssscExample2.setOrderByClause("sort asc");
             ssscList2 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample2);
             if (ssscList2 != null && ssscList2.size() > 0){
                 detailItemList = new ArrayList<>();
@@ -178,6 +179,7 @@ public class SearchCategoryServiceImpl implements SearchCategoryService{
                     detailItem.setText(ssscList2.get(j).getCname());
                     ShiguSiteSearchCategoryExample ssscExample3 = new ShiguSiteSearchCategoryExample();
                     ssscExample3.createCriteria().andCStatusEqualTo(1).andDisplayEqualTo(1).andParentCidEqualTo(ssscList2.get(j).getId());
+                    ssscExample3.setOrderByClause("sort asc");
                     ssscList3 = shiguSiteSearchCategoryMapper.selectByExample(ssscExample3);
                     if (ssscList3 != null && ssscList3.size() > 0){
                         itemList = new ArrayList<>();

@@ -60,7 +60,7 @@ public class MarketActivityService {
         }
         ShiguMarketActivityGoodsExample activityGoodsexample = new ShiguMarketActivityGoodsExample();
         activityGoodsexample.createCriteria().andMagStatusEqualTo(1).andMaIdEqualTo(maId);
-        activityGoodsexample.setOrderByClause("sort asc");
+        activityGoodsexample.setOrderByClause("sort ASC , mag_id ASC");
         activityGoodsexample.setStartIndex(pageno);
         activityGoodsexample.setEndIndex(pageSize);
         List<ShiguMarketActivityGoods> marketActivityGoodsList = shiguMarketActivityGoodsMapper.selectFieldsByConditionList(activityGoodsexample,"goods_id");
