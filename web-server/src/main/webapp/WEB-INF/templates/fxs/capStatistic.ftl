@@ -79,8 +79,18 @@
         </tbody>
     </table>
     <input type="hidden" class="tempCode" value="${tempCode!}" />
-    <div class="pagination">
-    </div>
+<#list [{}] as $it>
+<#list [{}] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+</#list>
+</#list>
+    <div class="jqPagination" id="jqPagination0" data-option=""></div>
 </div>
             </div>
     </div>
