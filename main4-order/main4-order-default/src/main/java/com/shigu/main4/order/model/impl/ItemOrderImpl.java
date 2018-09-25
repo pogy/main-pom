@@ -6,7 +6,6 @@ import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
-import com.shigu.main4.order.bo.SubscribeAddressBO;
 import com.shigu.main4.order.bo.SubscribeExpressBO;
 import com.shigu.main4.order.dto.TradeCountDTO;
 import com.shigu.main4.order.enums.OrderStatus;
@@ -31,7 +30,6 @@ import com.shigu.main4.pay.responses.XzbOrderCashBackResponse;
 import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
-import com.shigu.tools.XzSdkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +81,8 @@ public class ItemOrderImpl implements ItemOrder {
     @Autowired
     private RedisIO redisIO;
 
-    @Autowired
-    private  XzSdkClient xzSdkClient;
+    //@Autowired
+    //private  XzSdkClient xzSdkClient;
 
     @Autowired
     private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
@@ -112,12 +110,12 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private SellerMsgService sellerMsgService;
-    @Autowired
-    private OrderTownMapper orderTownMapper;
-    @Autowired
-    private OrderProvMapper orderProvMapper;
-    @Autowired
-    private OrderCityMapper orderCityMapper;
+    //@Autowired
+    //private OrderTownMapper orderTownMapper;
+    //@Autowired
+    //private OrderProvMapper orderProvMapper;
+    //@Autowired
+    //private OrderCityMapper orderCityMapper;
     @Autowired
     private ExpressCompanyMapper expressCompanyMapper;
     @Autowired
