@@ -1,12 +1,14 @@
 package com.shigu.daifa.services;
 
 import com.opentae.data.daifa.beans.*;
+import com.opentae.data.daifa.examples.DaifaActExample;
 import com.opentae.data.daifa.examples.DaifaAfterMoneyConsultExample;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaStockRecordExample;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.vo.OpenInfo;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.process.DaifaActProcess;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,8 @@ public class DaifaOrderStatusMoveService {
     private DaifaStockMapper daifaStockMapper;
     @Autowired
     private DaifaStockRecordMapper daifaStockRecordMapper;
-
+    @Autowired
+    private DaifaActMapper daifaActMapper;
 
     public List<OpenInfo> getStatusMoveVo(Long dfOrderId) {
 
@@ -192,7 +195,9 @@ public class DaifaOrderStatusMoveService {
                 if (applyDealStatus == 1) {
                     OpenInfo openInfo2 = new OpenInfo();
                     OpenInfo openInfo3 = new OpenInfo();
-                    openInfo2.setOpePeople("System");
+                    String url="/daifa/agreeAfterSale.json";
+                    String name = getAct(url,dfOrderId);
+                    openInfo2.setOpePeople(name);
                     openInfo2.setOpeStateText("同意申请");
                     openInfo2.setOpeTime(DateUtil.dateToString(afterSaleSub.getApplyDealTime(), "yyyy-MM-dd HH:mm:ss"));
                     openInfos.add(openInfo2);
@@ -203,8 +208,12 @@ public class DaifaOrderStatusMoveService {
                 } else {
                     OpenInfo openInfo2 = new OpenInfo();
                     OpenInfo openInfo3 = new OpenInfo();
+                    String url="/daifa/refuseAfterSale.json";
+                    String name = getAct(url,dfOrderId);
+                    openInfo2.setOpePeople(name);
                     openInfo2.setOpeStateText("拒绝申请");
                     openInfo2.setOpeTime(DateUtil.dateToString(afterSaleSub.getApplyDealTime(), "yyyy-MM-dd HH:mm:ss"));
+                    openInfo3.setOpePeople("System");
                     openInfo3.setOpeStateText("结束");
                     openInfo3.setOpeTime(DateUtil.dateToString(afterSaleSub.getLastDoTime(), "yyyy-MM-dd HH:mm:ss"));
                     openInfos.add(openInfo2);
@@ -265,7 +274,9 @@ public class DaifaOrderStatusMoveService {
         afterSaleSub = daifaAfterSaleSubMapper.selectOne(afterSaleSub);
         if (afterSaleSub.getStoreDealStatus() == 1) {
             OpenInfo openInfo = new OpenInfo();
-            openInfo.setOpePeople("System");
+            String url="/daifa/writeRefund.json";
+            String name = getAct(url,dfOrderId);
+            openInfo.setOpePeople(name);
             openInfo.setOpeStateText("档口同意退款");
             openInfo.setOpeTime(DateUtil.dateToString(afterSaleSub.getStoreDealTime(), "yyyy-MM-dd HH:mm:ss"));
             openInfos.add(openInfo);
@@ -273,7 +284,9 @@ public class DaifaOrderStatusMoveService {
         if (afterSaleSub.getStoreDealStatus() == 2) {
             OpenInfo openInfo2 = new OpenInfo();
             OpenInfo openInfo1 = new OpenInfo();
-            openInfo2.setOpePeople("System");
+            String url="/daifa/writeStockCode.json";
+            String name = getAct(url,dfOrderId);
+            openInfo2.setOpePeople(name);
             openInfo2.setOpeStateText("档口拒绝退款");
             openInfo2.setOpeTime(DateUtil.dateToString(afterSaleSub.getStoreDealTime(), "yyyy-MM-dd HH:mm:ss"));
             openInfos.add(openInfo2);
@@ -325,5 +338,30 @@ public class DaifaOrderStatusMoveService {
             }
         }
         return null;
+    }
+
+    public String getAct(String url,Long dfOrderId){
+        Long refundId = getrefundId(dfOrderId);
+        String para="";
+        if (url.equals("/daifa/writeStockCode.json")){
+            para="{\"childOrderId\":[\""+dfOrderId+"\"]";
+        }
+        if (url.equals("/daifa/writeRefund.json")){
+            para="{\"refundId\":[\""+refundId+"\"],\"refundMoney";
+        }
+        if (url.equals("/daifa/agreeAfterSale.json")){
+            para="{\"refundId\":[\""+refundId+"\"]}";
+        }
+        if (url.equals("/daifa/writeStockCode.json")){
+            para="{\"childOrderId\":[\""+dfOrderId+"\"],\"stockCode\"";
+        }
+        DaifaActExample example = new DaifaActExample();
+        example.createCriteria().andUrlEqualTo(url).andParamLike("%"+para+"%");
+        List<DaifaAct> actList = daifaActMapper.selectByExample(example);
+        if (actList.size()>0) {
+            Long dfWorker = actList.get(0).getWorkerId();
+            return getWorkerName(dfWorker);
+        }
+        return "System";
     }
 }
