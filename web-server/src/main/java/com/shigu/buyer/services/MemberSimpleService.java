@@ -9,6 +9,9 @@ import com.opentae.data.mall.interfaces.*;
 import com.shigu.component.shiro.enums.CacheEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.pay.requests.XzbUserBalanceRequest;
+import com.shigu.main4.pay.responses.XzbUserBalanceResponse;
+import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -53,6 +56,9 @@ public class MemberSimpleService {
 
     @Autowired
     UserBaseService userBaseService;
+
+    @Autowired
+    XzbService xzbService;
 
     @Autowired
     PaySdkClientService paySdkClientService;
@@ -162,30 +168,30 @@ public class MemberSimpleService {
         return memberUser.getPayPassword().equals(EncryptUtil.encrypt(payPwd));
     }
 
-    /**
-     * 获取用户余额,正常用户登陆后才会调用到这个接口，userId不会为空
-     *
-     * @param userId
-     * @return
-     */
-    public BalanceVO getUserBalance(Long userId) {
-        if (userId == null) {
-            return null;
-        }
-        BalanceVO balanceVO = memberUserMapper.userBalanceInfo(userId);
-        if (balanceVO == null) {
-            //如果还没有对应支付站账户，去创建账户
-            paySdkClientService.tempcode(userId);
-            balanceVO = memberUserMapper.userBalanceInfo(userId);
-        }
-        // 星座宝账户不存在且账户创建失败
-        if (balanceVO == null || balanceVO.getMoney() == null) {
-            balanceVO = new BalanceVO();
-            balanceVO.setMoney(0L);
-            balanceVO.setBlockMoney(0L);
-        }
-        return balanceVO;
-    }
+    ///**
+    // * 获取用户余额,正常用户登陆后才会调用到这个接口，userId不会为空
+    // *
+    // * @param userId
+    // * @return
+    // */
+    //public BalanceVO getUserBalance(Long userId) {
+    //    if (userId == null) {
+    //        return null;
+    //    }
+    //    BalanceVO balanceVO = memberUserMapper.userBalanceInfo(userId);
+    //    if (balanceVO == null) {
+    //        //如果还没有对应支付站账户，去创建账户
+    //        paySdkClientService.tempcode(userId);
+    //        balanceVO = memberUserMapper.userBalanceInfo(userId);
+    //    }
+    //    // 星座宝账户不存在且账户创建失败
+    //    if (balanceVO == null || balanceVO.getMoney() == null) {
+    //        balanceVO = new BalanceVO();
+    //        balanceVO.setMoney(0L);
+    //        balanceVO.setBlockMoney(0L);
+    //    }
+    //    return balanceVO;
+    //}
 
     /**
      * 获取账户余额信息的json结果
@@ -194,20 +200,27 @@ public class MemberSimpleService {
      * @return
      */
     public JSONObject getUserBalanceShow(Long userId) {
-        BalanceVO userBalance = getUserBalance(userId);
-        if (userBalance == null) {
-            return JsonResponseUtil.error("未查到错误信息");
+        XzbUserBalanceRequest request = new XzbUserBalanceRequest();
+        request.setUserId(userId);
+        XzbUserBalanceResponse resp = xzbService.xzbUserBalance(request);
+        if (resp.isSuccess()) {
+            return JsonResponseUtil.success().element("balance",resp.getBalance()).element("blockMoney", resp.getBlockMoney());
         }
-        //正常情况
-        if (userBalance.getMoney() != null) {
-            JSONObject result = JsonResponseUtil.success();
-            result.element("balance", String.format("%.2f", userBalance.getMoney() * 0.01));
-            if (userBalance.getBlockMoney() != null) {
-                result.element("blockMoney", String.format("%.2f", userBalance.getBlockMoney() * 0.01));
-            }
-            return result;
-        }
-        return JsonResponseUtil.error("未查询到账户余额信息");
+        return JsonResponseUtil.error(resp.getException().getErrMsg());
+        //BalanceVO userBalance = getUserBalance(userId);
+        //if (userBalance == null) {
+        //    return JsonResponseUtil.error("未查到错误信息");
+        //}
+        ////正常情况
+        //if (userBalance.getMoney() != null) {
+        //    JSONObject result = JsonResponseUtil.success();
+        //    result.element("balance", String.format("%.2f", userBalance.getMoney() * 0.01));
+        //    if (userBalance.getBlockMoney() != null) {
+        //        result.element("blockMoney", String.format("%.2f", userBalance.getBlockMoney() * 0.01));
+        //    }
+        //    return result;
+        //}
+        //return JsonResponseUtil.error("未查询到账户余额信息");
     }
 
     /**

@@ -14,10 +14,10 @@
         </property>
     </bean>
 
-    <bean id="disposeBeanVO" class="com.shigu.buyer.vo.DisposeBeanVO">
-        <property name="maxFreeTimes" value="${cash.maxFreeTimes}"/>
-        <property name="maxCashMoney" value="${cash.maxCashMoney}"/>
-    </bean>
+    <!--<bean id="disposeBeanVO" class="com.shigu.buyer.vo.DisposeBeanVO">-->
+        <!--<property name="maxFreeTimes" value="${cash.maxFreeTimes}"/>-->
+        <!--<property name="maxCashMoney" value="${cash.maxCashMoney}"/>-->
+    <!--</bean>-->
     <!--<bean id="consumer" class="com.aliyun.openservices.ons.api.bean.ConsumerBean" init-method="start" destroy-method="shutdown">-->
         <!--<property name="properties" > &lt;!&ndash;消费者配置信息&ndash;&gt;-->
             <!--<props>-->

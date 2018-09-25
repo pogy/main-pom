@@ -1,7 +1,5 @@
 package com.shigu.buyer.services;
 
-import com.openJar.requests.sgpay.RedPackPayRequest;
-import com.openJar.responses.sgpay.RedPackPayResponse;
 import com.opentae.data.mall.beans.MemberAlipayBind;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
@@ -13,6 +11,7 @@ import com.opentae.data.mall.interfaces.OrderPayMapper;
 import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.buyer.bo.MemberAlipayBindBO;
 import com.shigu.buyer.bo.TixianBO;
+import com.shigu.buyer.bo.UserPayTradeQueryBO;
 import com.shigu.buyer.vo.UserAlipayBindVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.RoleEnum;
@@ -24,6 +23,10 @@ import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.process.PayProcess;
 import com.shigu.main4.order.vo.PayApplyVO;
+import com.shigu.main4.pay.requests.XzbReqPackPayRequest;
+import com.shigu.main4.pay.requests.XzbUserPayTradeRecordRequest;
+import com.shigu.main4.pay.responses.XzbRedPackPayResponse;
+import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.Rds3TempUser;
@@ -72,6 +75,9 @@ public class UserAccountService {
     @Autowired
     private XzSdkClient xzSdkClient;
 
+    @Autowired
+    private XzbService xzbService;
+
     /**
      * 充值申请
      *
@@ -85,6 +91,23 @@ public class UserAccountService {
     }
 
     /**
+     * 用户资金明细
+     * @param userId
+     * @param bo
+     * @return
+     */
+    public JSONObject userpaytrade(Long userId, UserPayTradeQueryBO bo) {
+        XzbUserPayTradeRecordRequest req = new XzbUserPayTradeRecordRequest();
+        req.setXzUserId(userId);
+        req.setBeginTime(bo.getBeginTime());
+        req.setEndTime(bo.getEndTime());
+        req.setType(bo.getType());
+        req.setPage(bo.getPage());
+        req.setOutTradeNo(bo.getOutTradeNo());
+        return JsonResponseUtil.success().element("tradeList", xzbService.userPayTradeRecord(req).getTradeLog());
+    }
+
+    /**
      * 红包充值申请
      *
      * @param userId
@@ -95,10 +118,10 @@ public class UserAccountService {
     public boolean redPackApply(Long userId, Long money) {
 
         try {
-            RedPackPayRequest request = new RedPackPayRequest();
+            XzbReqPackPayRequest request = new XzbReqPackPayRequest();
             request.setXzUserId(userId);
             request.setPayAmount(money);
-            RedPackPayResponse response = xzSdkClient.getPcOpenClient().execute(request);
+            XzbRedPackPayResponse response = xzbService.redPackPay(request);
             if (!response.isSuccess()) {
                 return false;
             }

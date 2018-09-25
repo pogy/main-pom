@@ -1105,8 +1105,8 @@ public class MemberAction {
             throw new Main4Exception("非法的路径");
         }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String tempCode = paySdkClientService.tempcode(ps.getUserId());
-        model.addAttribute("tempCode", tempCode);
+        //String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        //model.addAttribute("tempCode", tempCode);
         model.addAttribute("webSite", "hz");
         model.addAttribute("excelUrl", "");
         if (SELLER_PATH.equals(identity)) {
@@ -1177,11 +1177,19 @@ public class MemberAction {
      * @return
      */
     @RequestMapping("member/capStatistic")
-    public String capStatistic(HttpSession session, Model model) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String tempCode = paySdkClientService.tempcode(ps.getUserId());
-        model.addAttribute("tempCode", tempCode);
+    public String capStatistic() {
+        //PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        //String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        //model.addAttribute("tempCode", tempCode);
         return "fxs/capStatistic";
+    }
+
+    @RequestMapping({"member/userpaytrade", "seller/userpaytrade"})
+    @ResponseBody
+    public JSONObject userpaytrade(UserPayTradeQueryBO bo, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        return userAccountService.userpaytrade(userId, bo);
     }
 
     /**

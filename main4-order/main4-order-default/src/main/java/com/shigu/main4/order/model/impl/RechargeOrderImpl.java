@@ -1,7 +1,5 @@
 package com.shigu.main4.order.model.impl;
 
-import com.openJar.requests.sgpay.RechargeFromOrderRequest;
-import com.openJar.responses.sgpay.RechargeFromOrderResponse;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
 import com.shigu.main4.order.enums.PayType;
@@ -11,6 +9,9 @@ import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.RechargeOrder;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.order.vo.PayedVO;
+import com.shigu.main4.pay.requests.XzbAlipayRechargeRequest;
+import com.shigu.main4.pay.responses.XzbAlipayRechargeResponse;
+import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class RechargeOrderImpl implements RechargeOrder {
 
     @Autowired
     private OrderPayApplyMapper orderPayApplyMapper;
+
+    @Autowired
+    private XzbService xzbService;
 
     @Autowired
     private XzSdkClient xzSdkClient;
@@ -97,11 +101,11 @@ public class RechargeOrderImpl implements RechargeOrder {
 
     @Override
     public void payed(String alipayNo) throws PayApplyException {
-        RechargeFromOrderRequest request=new RechargeFromOrderRequest();
+        XzbAlipayRechargeRequest request=new XzbAlipayRechargeRequest();
         request.setPayAmount(money);
         request.setXzUserId(userId);
         request.setAlipayNo(alipayNo);
-        RechargeFromOrderResponse response=xzSdkClient.getPcOpenClient().execute(request);
+        XzbAlipayRechargeResponse response = xzbService.rechargeFromOrderByAlipay(request);
         if (!response.isSuccess()) {
             throw new PayApplyException("充值失败");
         }
