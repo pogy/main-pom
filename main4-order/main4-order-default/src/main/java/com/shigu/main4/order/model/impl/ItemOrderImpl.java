@@ -478,12 +478,13 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    public void updateExpressCode(String courierNumber){
+    public void updateExpressCode(Long companyId,String courierNumber){
         List<LogisticsVO> logisticsVOS = selLogisticses();
         if (logisticsVOS.size() == 1) {
             ItemOrderLogistics logistics = new ItemOrderLogistics();
             logistics.setId(logisticsVOS.get(0).getId());
-            logistics.setCourierNumber(courierNumber);
+            if(courierNumber != null){logistics.setCourierNumber(courierNumber);}
+            if (companyId != null){logistics.setCompanyId(companyId);}
             itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
         }
     }

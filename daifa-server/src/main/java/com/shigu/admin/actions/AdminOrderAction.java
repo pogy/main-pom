@@ -5,9 +5,11 @@ import com.shigu.admin.services.AdminOrderService;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.services.DaifaAllOrderIndexService;
-import com.shigu.daifa.services.DaifaSendService;
+import com.shigu.daifa.services.DaifaWaitSendService;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.process.ItemOrderProcess;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -43,6 +45,12 @@ public class AdminOrderAction {
     private DaifaAllOrderIndexService daifaAllOrderIndexService;
     @Autowired
     ItemOrderProcess itemOrderProcess;
+    @Autowired
+    private OrderManageProcess orderManageProcess;
+    @Autowired
+    DaifaWaitSendService daifaWaitSendService;
+
+
     @Value("${DAIFA_GROUP}")
     Long sellerId;
     @Autowired
@@ -63,14 +71,12 @@ public class AdminOrderAction {
         String auth = (String) session.getAttribute(DaifaSessionConfig.DAIFA_SYS_SESSION);
         List<DaifaAllOrderVO> allOrders = daifaAllOrderIndexService.allOrderPage(bo,sellerId);
         List<DaifaPostCustomer> customers = daifaAllOrderIndexService.selPostCustomer();
-
         String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
         model.addAttribute("customers",customers);
         model.addAttribute("orders", allOrders);
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
         model.addAttribute("userName", auth);
-
         return "admin/index";
 
     }
@@ -90,4 +96,22 @@ public class AdminOrderAction {
         itemOrderProcess.sysFinish(oid);
         return JsonResponseUtil.success();
     }
+
+    @RequestMapping("admin/daifa/changeExpress")
+    @ResponseBody
+    public JSONObject changeExpress(Long tradeState,Long orderId,Long expressId,String expressCode) {
+        try {
+            if (tradeState == 1){
+                daifaAllOrderIndexService.setExpressAndEcode(orderId,expressId,expressCode);
+            }
+            if (tradeState == 2){
+                DaifaPostCustomer postCustomer = daifaAllOrderIndexService.getPost(expressId);
+                orderManageProcess.updateExpress(orderId,expressId,expressCode,postCustomer.getExpress());
+            }
+        } catch (DaifaException e) {
+            return JsonResponseUtil.error(e.getMessage());
+        }
+        return JsonResponseUtil.success();
+    }
+
 }

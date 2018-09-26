@@ -10,6 +10,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.bo.AutoRefundBo;
 import com.shigu.main4.daifa.bo.MoveShopDataBO;
 import com.shigu.main4.daifa.bo.OrderBO;
+import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.enums.DaifaTradeStatus;
 import com.shigu.main4.daifa.enums.SubOrderStatus;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -17,8 +18,10 @@ import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.daifa.utils.MQUtil;
 import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +56,10 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     DaifaSellerMapper daifaSellerMapper;
     @Autowired
     DaifaAfterSaleSubMapper daifaAfterSaleSubMapper;
+    @Autowired
+    DaifaSendMapper daifaSendMapper;
+    @Autowired
+    MQUtil mqUtil;
 
 
     @Override
@@ -429,6 +436,44 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public void getMessage(Integer refundId) {
         SpringBeanFactory.getBean(OrderModel.class).sendMessage(refundId);
+    }
+
+    @Override
+    public void updateExpress(Long dfTreadeId, Long expressId, String expressCode,String expressName) {
+        DaifaTrade daifaTrade=new DaifaTrade();
+        daifaTrade.setExpressId(expressId);
+        daifaTrade.setExpressName(expressName);
+        daifaTrade.setExpressCode(expressCode);
+        daifaTrade.setDfTradeId(dfTreadeId);
+        int i = daifaTradeMapper.updateByPrimaryKeySelective(daifaTrade);
+
+        DaifaSend daifaSend = new DaifaSend();
+        daifaSend.setDfTradeId(dfTreadeId);
+        daifaSend = daifaSendMapper.selectOne(daifaSend);
+        daifaSend.setExpressCode(expressCode);
+        daifaSend.setExpressId(expressId);
+        daifaSend.setExpressName(expressName);
+        int x = daifaSendMapper.updateByPrimaryKeySelective(daifaSend);
+
+        DaifaWaitSend daifaWaitSend = new DaifaWaitSend();
+        daifaWaitSend.setDfTradeId(dfTreadeId);
+        daifaWaitSend = daifaWaitSendMapper.selectOne(daifaWaitSend);
+        daifaWaitSend.setExpressCode(expressCode);
+        daifaWaitSend.setExpressId(expressId);
+        daifaWaitSend.setExpressName(expressName);
+        int y = daifaWaitSendMapper.updateByPrimaryKeySelective(daifaWaitSend);
+
+        JSONObject jsonObject = new JSONObject();
+        java.util.Map map = new HashMap();
+        map.put("expressId",expressId);
+        map.put("expressCode",expressCode);
+        map.put("orderId",daifaWaitSend.getTradeCode());
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.updateExpressCode.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.updateExpressCode.getMessageKey()+daifaWaitSend.getTradeCode(),
+                DaifaSendMqEnum.updateExpressCode.getMessageTag(),
+                jsonObject.toString());
     }
 
 }

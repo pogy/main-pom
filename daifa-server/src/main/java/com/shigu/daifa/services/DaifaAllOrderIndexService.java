@@ -12,8 +12,12 @@ import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.vo.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.bo.DeliveryBO;
+import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.daifa.process.OrderModelProcess;
+import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -81,9 +85,13 @@ public class DaifaAllOrderIndexService {
     @Autowired
     private DaifaAllocatedService daifaAllocatedService;
 
+    @Autowired
+    private PackDeliveryProcess packDeliveryProcess;
+    @Autowired
+    private OrderModelProcess orderModelProcess;
+
+
     public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo, Long sellerId) {
-
-
         DaifaTradeExample dtex = new DaifaTradeExample();
         DaifaOrderExample doex = new DaifaOrderExample();
         if (bo.getStockoutFlag() != null && bo.getStockoutFlag() == 1) {
@@ -96,12 +104,6 @@ public class DaifaAllOrderIndexService {
             Date endDate = DateUtil.getIsEndTime(DateUtil.stringToDate(bo.getEndTime(), "yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
         }
-//        else {
-//            String de=DateUtil.dateToString(new Date(),"yyyy-MM-dd");
-//            Date endDate =DateUtil.getIsStartTime (DateUtil.stringToDate(de,"yyyy-MM-dd")) ;
-//            ce.andCreateTimeLessThanOrEqualTo(endDate);
-//            bo.setEndTime(de);
-//        }
         if (StringUtils.hasText(bo.getTelephone())) {
             ce.andReceiverPhoneEqualTo(bo.getTelephone());
         }
@@ -109,15 +111,6 @@ public class DaifaAllOrderIndexService {
             Date startDate = DateUtil.getIsStartTime(DateUtil.stringToDate(bo.getStartTime(), "yyyy-MM-dd"));
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
         }
-//        else {
-//            Calendar calendar=Calendar.getInstance();
-//            calendar.add(Calendar.MONTH,-3);
-//            Date date=calendar.getTime();
-//            String de=DateUtil.dateToString(date,"yyyy-MM-dd");
-//            Date startDate = DateUtil.getIsEndTime (DateUtil.stringToDate(de,"yyyy-MM-dd"));
-//            ce.andCreateTimeGreaterThanOrEqualTo(startDate);
-//            bo.setStartTime(de);
-//        }
         if (StringUtils.hasText(bo.getOrderId())) {
             ce.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%" + bo.getOrderId());
         }
@@ -328,5 +321,27 @@ public class DaifaAllOrderIndexService {
         DaifaPostCustomerExample example = new DaifaPostCustomerExample();
         example.createCriteria();
         return daifaPostCustomerMapper.selectByExample(example);
+    }
+
+    public void setExpressAndEcode(Long dfTreadeId, Long expressId, String expressCode) throws DaifaException {
+        DaifaPostCustomer customer = getPost(expressId);
+        //未发  手动发货
+        DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(dfTreadeId);
+        List<SubOrderExpressBO> boList = packDeliveryProcess.cheackeSend(dfTreadeId);
+        List<Long> oids = BeanMapper.getFieldList(boList, "orderId", Long.class);
+        DeliveryBO bo = BeanMapper.map(trade, DeliveryBO.class);
+        bo.setDfTradeId(dfTreadeId);
+        bo.setExpressCode(expressCode);
+        bo.setDfOrderIds(oids);
+        bo.setManual(Long.valueOf(customer.getManual()));
+        bo.setExpressId(expressId);
+        bo.setExpressName(customer.getExpress());
+        orderModelProcess.getSend(bo);
+    }
+
+    public DaifaPostCustomer getPost(Long expressId) {
+        DaifaPostCustomer customer = new DaifaPostCustomer();
+        customer.setExpressId(expressId);
+        return daifaPostCustomerMapper.selectOne(customer);
     }
 }

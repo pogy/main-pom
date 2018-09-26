@@ -81,4 +81,9 @@ public interface OrderManageProcess {
     void storeMove(MoveShopDataBO bo);
 
     void getMessage(Integer refundId);
+
+    /**
+     * 修改快递单号
+     */
+    void updateExpress(Long dfTreadeId,Long expressId,String expressCode,String expressName);
 }

@@ -10,22 +10,22 @@
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="${daifa_host}/js/admin/adminorder/adminorder.js?t=201709121011"></script>
     <script>
-        function downloadExcelSubmit(){
-            var nick=$("input[name='buyerNick']").val();
-            if(!nick){
+        function downloadExcelSubmit() {
+            var nick = $("input[name='buyerNick']").val();
+            if (!nick) {
                 alert("请输入昵称");
                 return false;
             }
-            window.open("${daifa_host}admin/printExcel.htm?buyerNick="+nick);
+            window.open("${daifa_host}admin/printExcel.htm?buyerNick=" + nick);
         }
 
-        function orderFinish(oid){
-            if (confirm("确认完结订单?")==true){
-                $.post("${daifa_host}admin/orderFinish.json",{"oid":oid},function(data){
-                    if(data.result=="success"){
+        function orderFinish(oid) {
+            if (confirm("确认完结订单?") == true) {
+                $.post("${daifa_host}admin/orderFinish.json", {"oid": oid}, function (data) {
+                    if (data.result == "success") {
                         alert("OK");
                         location.reload();
-                    }else{
+                    } else {
                         alert(data.msg);
                     }
                 })
@@ -57,11 +57,20 @@
         </div>
         <div class="orderSearch orderSearchBox">
             <ul>
-                <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
-                <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
-                <li><label>发货快递单：</label><input type="text" class="fmInput" name="postCode" <#if query.postCode??> value="${query.postCode!}" </#if>></li>
-                <li><label>买家昵称：</label><input type="text" class="fmInput" name="buyerNick" <#if query.buyerNick??> value="${query.buyerNick!}" </#if>></li>
-                <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
+                <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??>
+                                                value="${query.orderId!}" </#if> ></li>
+                <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??>
+                                             value="${query.telephone!}" </#if>></li>
+                <li><label>发货快递单：</label><input type="text" class="fmInput" name="postCode" <#if query.postCode??>
+                                                value="${query.postCode!}" </#if>></li>
+                <li><label>买家昵称：</label><input type="text" class="fmInput" name="buyerNick" <#if query.buyerNick??>
+                                               value="${query.buyerNick!}" </#if>></li>
+                <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D"
+                                               name="startTime" placeholder="请选择起始时间" <#if query.startTime??>
+                                               value="${query.startTime!}" </#if>><span
+                        class="divideLine">-</span><input type="text" class="jqDatepicker fmInput"
+                                                          data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间"
+                                                          <#if query.endTime??>value="${query.endTime!}"</#if>></li>
 
                 <li>
 
@@ -96,7 +105,10 @@
             </ul>
         </div>
 
-    <#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"postCode","value":"${query.postCode!}"},{"name":"buyerNick","value":"${query.buyerNick!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+    <#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}
+        "},{"name":"telephone","value":"${query.telephone!}"},{"name":"postCode","value":"${query.postCode!}
+        "},{"name":"buyerNick","value":"${query.buyerNick!}"},{"name":"startTime","value":"${query.startTime!}
+        "},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
     <#assign moduledata1=text?eval />
     <#list [moduledata1] as $it>
         <#if $it.fields??>
@@ -117,7 +129,7 @@
 
     </#list>
         <div class="orderSearch orderSearchBox">
-            <a  class="fmButton fmButton-blue searchBtn" onclick="downloadExcelSubmit()">导出Excel</a>
+            <a class="fmButton fmButton-blue searchBtn" onclick="downloadExcelSubmit()">导出Excel</a>
         </div>
         <div class="orderCon">
             <div class="theadCon">
@@ -146,13 +158,14 @@
                     <div class="rightConBox fr">
                         <div class="fl pr receiverAddress">
                             <span class="">${order.receiverName!}（${order.receiverPhone!}）</span>
-                            <div class="pa addressCon">${order.receiverName!},${order.receiverPhone!},${order.receiverAddress!}</div>
+                            <div class="pa addressCon">${order.receiverName!},${order.receiverPhone!}
+                                ,${order.receiverAddress!}</div>
                         </div>
                         <#if order.buyerRemark??>
                             <div class="pr fl buyerRemark">
                                 <i class="icon-s-message iconfont haveRemark"></i>
                                 <div class="remarkCon">
-                                ${order.buyerRemark!}
+                                    ${order.buyerRemark!}
                                 </div>
                             </div>
                         </#if>
@@ -259,7 +272,7 @@
                                     <i class="icon-s-message iconfont <#if childOrder.childRemark??>haveRemark</#if>"></i>
                                     <div class="remarkCon pa">
                                         <#if childOrder.childRemark??>
-                                        ${childOrder.childRemark!}
+                                            ${childOrder.childRemark!}
                                         </#if>
                                         <#if order.tradeState == 1 && childOrder.refundState == 0>
                                             <p><b class="addChildRemark" jbtn="addChildRemark">添加备注</b></p>
@@ -267,13 +280,12 @@
                                     </div>
                                 </div>
                             </li>
+
                             <li class="tradeState">
                                 <#if childOrder_index == 0>
                                     <#if order.tradeState == 1>
                                         <p>未发货</p>
-
-                                            <p>（${order.expressCode!}）</p>
-
+                                        <p>（${order.expressCode!}）</p>
                                     <#elseif order.tradeState == 2>
                                         <p>已发货</p>
                                         <a href="javascript:void(0)" onclick="orderFinish(${order.tradeCode})">完成订单</a>
@@ -283,28 +295,30 @@
                                         <p>（${order.expressCode!}）</p>
                                     </#if>
                                 </#if>
-
-
-                                <#list customers as customer>
-                                    <select >
-                                        <option>请选择快递</option>
-                                        <option value="${customer.expressId}">${customer.express}</option>
-                                    </select>
-
-                                    <#if customer.manual == 1>
+                                <#if childOrder_index == 0>
+                                    <#if order!= "">
                                         <p>
-                                            <input type="text" placeholder="快递单号" class="expressCodeInput fmInput fmInput-sm">
-                                            <b class="manualSendBtn fcBlue" data-orderid="${order.orderId!}">手动发货</b>
+                                            <select id="expr_${order.orderId}">
+                                                <option value="">选择快递</option>
+                                                <#list customers as custom>
+                                                <option value="${custom.expressId}" <#if order.expressName == custom.express>selected</#if>>${custom.express}</option>
+                                                </#list>
+                                            </select>
+                                        </p>
+                                        <p>
+                                            <input id="express_${order.orderId}" type="text" placeholder="快递单号"
+                                                   class="expressCodeInput fmInput fmInput-sm">
+                                            <#if order.tradeState == 2>
+                                                <b class="manualSendBtn fcBlue" data-orderid="${order.orderId!}" onclick="sendExpress(${order.tradeState},${order.orderId})">修改快递</b>
+                                            <#elseif order.tradeState == 1>
+                                                <b class="manualSendBtn fcBlue" data-orderid="${order.orderId!}" onclick="sendExpress(${order.tradeState},${order.orderId})">手动发货</b>
+                                            </#if>
                                         </p>
                                     </#if>
-
-                                </#list>
-
+                                </#if>
                             </li>
                         </ul>
                     </div>
-
-
                 </#list>
             </div>
         </#list>
@@ -326,4 +340,18 @@
 
     </div>
 </div>
+<script>
+    function sendExpress(tradeState,orderId) {
+        var expressId= $("#expr_"+orderId).val();
+        var expressCode = $("#express_"+orderId).val();
+        $.post("daifa/changeExpress.json", {"tradeState": tradeState,"orderId":orderId,"expressId":expressId,"expressCode":expressCode}, function (data) {
+            if (data.result == "success") {
+                alert("OK");
+                location.reload();
+            } else {
+                alert(data.msg);
+            }
+        })
+    }
+</script>
 <!--省略end，让浏览器自动添加-->
