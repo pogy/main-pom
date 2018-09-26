@@ -101,17 +101,22 @@ public class AdminOrderAction {
     @ResponseBody
     public JSONObject changeExpress(Long tradeState,Long orderId,Long expressId,String expressCode) {
         try {
-            if (tradeState == 1){
-                daifaAllOrderIndexService.setExpressAndEcode(orderId,expressId,expressCode);
-            }
-            if (tradeState == 2){
-                DaifaPostCustomer postCustomer = daifaAllOrderIndexService.getPost(expressId);
-                orderManageProcess.updateExpress(orderId,expressId,expressCode,postCustomer.getExpress());
+            if (tradeState != null && orderId != null){
+                if (expressId != null || StringUtils.isNotBlank(expressCode)){
+                    if (tradeState == 1){
+                        daifaAllOrderIndexService.setExpressAndEcode(orderId,expressId,expressCode);
+                    }
+                    if (tradeState == 2){
+                        DaifaPostCustomer postCustomer = daifaAllOrderIndexService.getPost(expressId);
+                        orderManageProcess.updateExpress(orderId,expressId,expressCode,postCustomer.getExpress());
+                    }
+                    return JsonResponseUtil.success();
+                }
             }
         } catch (DaifaException e) {
             return JsonResponseUtil.error(e.getMessage());
         }
-        return JsonResponseUtil.success();
+        return JsonResponseUtil.error("请选择，并填写相应数据！");
     }
 
 }
