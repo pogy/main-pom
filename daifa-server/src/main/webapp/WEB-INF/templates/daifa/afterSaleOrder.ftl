@@ -271,6 +271,8 @@
             <#elseif afterSale.refundState == 2>
             <p class="fcG">已退款</p>
             <p class="fcF40">${afterSale.refundForShop!}</p>
+            <#elseif afterSale.refundState == 3>
+            <p class="fcG">系统自动完结订单</p>
             </#if>
         </#if>
         </td>

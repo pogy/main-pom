@@ -600,7 +600,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         }
         Long refundMoney = 0L;
         for (DaifaAfterSaleSub s : subs) {
-            if (!Arrays.asList(5,7).contains(s.getAfterStatus())) {
+            if (!Arrays.asList(5,7,9).contains(s.getAfterStatus())) {
                 throw new DaifaException("当前订单状态不可议价",DaifaException.DEBUG);
             }
             refundMoney += MoneyUtil.StringToLong(s.getStoreReturnMoney());
