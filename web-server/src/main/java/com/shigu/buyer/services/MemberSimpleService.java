@@ -200,9 +200,7 @@ public class MemberSimpleService {
      * @return
      */
     public JSONObject getUserBalanceShow(Long userId) {
-        XzbUserBalanceRequest request = new XzbUserBalanceRequest();
-        request.setUserId(userId);
-        XzbUserBalanceResponse resp = xzbService.xzbUserBalance(request);
+        XzbUserBalanceResponse resp = userBalanceInfo(userId);
         if (resp.isSuccess()) {
             return JsonResponseUtil.success().element("balance",resp.getBalance()).element("blockMoney", resp.getBlockMoney());
         }
@@ -221,6 +219,15 @@ public class MemberSimpleService {
         //    return result;
         //}
         //return JsonResponseUtil.error("未查询到账户余额信息");
+    }
+
+    public XzbUserBalanceResponse userBalanceInfo(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        XzbUserBalanceRequest request = new XzbUserBalanceRequest();
+        request.setUserId(userId);
+        return xzbService.xzbUserBalance(request);
     }
 
     /**
