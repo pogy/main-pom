@@ -7,10 +7,12 @@ import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.sn.bo.SnUploadBo;
 import com.shigu.goodsup.sn.bo.SnUploadSkuBo;
 import com.shigu.goodsup.sn.bo.SnUploadTbo;
+import com.shigu.goodsup.sn.enums.SnTips;
 import com.shigu.goodsup.sn.service.SnCategoryService;
 import com.shigu.goodsup.sn.service.SnUpItemService;
 import com.shigu.goodsup.sn.service.SnUploadService;
 import com.shigu.goodsup.sn.service.SnUserInfoService;
+import com.shigu.goodsup.sn.util.EnumUtil;
 import com.shigu.goodsup.sn.vo.SnPageItem;
 import com.shigu.goodsup.sn.vo.SnPropsVo;
 import com.shigu.main4.common.util.BeanMapper;
@@ -56,15 +58,15 @@ public class SnUploadAction {
     private OssIO ossIO;
 
     @RequestMapping("sn/index")
-    public String upload(HttpSession session, Map<String,Object> map, SnUploadBo bo,String skus,
+    public String upload(HttpSession session, Map<String, Object> map, SnUploadBo bo, String skus,
                          @RequestParam(value = "prop_img[]", required = false) List<String> propImg,
                          @RequestParam(value = "picUrl[]", required = false) List<String> picUrls,
                          @RequestParam(value = "sku_props[]", required = false) List<String> skuProps,
-                         @RequestParam(value = "seller_cids[]",required = false) List<Long> sellerCids,HttpServletRequest request) throws UnsupportedEncodingException{
+                         @RequestParam(value = "seller_cids[]", required = false) List<Long> sellerCids, HttpServletRequest request) throws UnsupportedEncodingException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String SnUsername=snUserInfoService.getSnUsernameBySubUid(ps.getSubUserId());
-        SnUploadTbo sbo = BeanMapper.map(bo,SnUploadTbo.class);
-        List<SnUploadSkuBo> sku = (List<SnUploadSkuBo>) JSONArray.toList(JSONArray.fromObject(skus), SnUploadSkuBo.class, new HashMap<String,Class>() {{
+        String SnUsername = snUserInfoService.getSnUsernameBySubUid(ps.getSubUserId());
+        SnUploadTbo sbo = BeanMapper.map(bo, SnUploadTbo.class);
+        List<SnUploadSkuBo> sku = (List<SnUploadSkuBo>) JSONArray.toList(JSONArray.fromObject(skus), SnUploadSkuBo.class, new HashMap<String, Class>() {{
             put("sizes", SnUploadSkuBo.class);
         }});
         sbo.setSkus(sku);
@@ -72,8 +74,8 @@ public class SnUploadAction {
         sbo.callSku_props(skuProps);
         sbo.setPicUrls(picUrls);
         sbo.setSellerCids(sellerCids);
-        String errorMsg=null;
-        String numIid=null;
+        String errorMsg = null;
+        String numIid = null;
         try {
             int total = Integer.valueOf(snCategoryService.getCategory(SnUsername).getTotalSize());
             if (total == 0) {
@@ -91,27 +93,39 @@ public class SnUploadAction {
                 snPageItem.setSellPointLength(snPageItem.getItem().getSellPoint().getBytes(Charset.forName("GBK")).length);
             }
             SnItemAddResponse response = snUploadService.upload(SnUsername, sbo);
-            if(response.getErrmsg()==null){
-                map.put("success","发布成功");
-                numIid=response.getApplyParams().getApplyCode();
-            }else{
-                errorMsg=response.getErrmsg();
-                if(errorMsg.equals("biz.custom.additem.invalid-biz:175")){
-                    errorMsg="颜色属性图上传错误:必须800*800规格";
-                }else if(errorMsg.equals("biz.custom.additem.invalid-biz:124")){
-                    errorMsg="商品已存在";
+            if (response.getErrmsg() == null) {
+                map.put("success", "发布成功");
+                numIid = response.getApplyParams().getApplyCode();
+            } else {
+                errorMsg = response.getErrmsg();
+                if (errorMsg.contains("isp.sys.service.unavailable.mcmp")) {
+                    errorMsg = "上传失败，请稍后重试。";
+                } else {
+                    String msg = errorMsg.substring(errorMsg.lastIndexOf(":"));
+                    SnTips snTips = EnumUtil.getEnumObject(msg, SnTips.class);
+                    if(snTips==null){
+                        String msg1 = msg.substring(0,msg.indexOf("-"));
+                        if(msg1.equals("179")){
+                            String num = msg.substring(msg.lastIndexOf("-"));
+                            map.put("num",num);
+                        }
+                        snTips = EnumUtil.getEnumObject(msg1, SnTips.class);
+                        errorMsg = snTips.getTip();
+                    }else {
+                        errorMsg = snTips.getTip();
+                    }
                 }
             }
-        }catch (AuthOverException e){
+        } catch (AuthOverException e) {
             String queryString = request.getQueryString();
             return "redirect:http://www.571xz.com/ortherLogin.htm?ortherLoginType=8&backUrl=" + URLEncoder.encode(request.getRequestURL().toString() +
                     (queryString == null ? "" : ("?" + queryString)), "utf-8");
-        }catch (CustomException e){
-            errorMsg=e.getMessage();
+        } catch (CustomException e) {
+            errorMsg = e.getMessage();
         }
 
-        map.put("numIid",numIid);
-        map.put("errorMsg",errorMsg);
+        map.put("numIid", numIid);
+        map.put("errorMsg", errorMsg);
         return "suning/parts/success";
     }
 
