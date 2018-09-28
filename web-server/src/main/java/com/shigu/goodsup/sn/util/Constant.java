@@ -2,6 +2,7 @@ package com.shigu.goodsup.sn.util;
 
 import com.shigu.goodsup.sn.enums.SnTips;
 import com.shigu.goodsup.sn.interfaces.EnumMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class Constant {
 
     static {
         System.out.println("类被加载时，先初始化各个静态变量，再执行static块。" +
-                "所以不能在这里执行pathList的add操作(\"com.example.myFirstProject.enums\")。");
+                "所以不能在这里执行pathList的add操作(\"com.shigu.goodsup.sn.enums\")。");
     }
 
     /**

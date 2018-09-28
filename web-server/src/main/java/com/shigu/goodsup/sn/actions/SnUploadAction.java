@@ -100,8 +100,8 @@ public class SnUploadAction {
                 errorMsg = response.getErrmsg();
                 if (errorMsg.contains("isp.sys.service.unavailable.mcmp")) {
                     errorMsg = "上传失败，请稍后重试。";
-                } else {
-                    String msg = errorMsg.substring(errorMsg.lastIndexOf(":"));
+                } else if(errorMsg.contains("biz.custom.additem.invalid-biz")){
+                    String msg = errorMsg.substring(errorMsg.lastIndexOf(":")+1);
                     SnTips snTips = EnumUtil.getEnumObject(msg, SnTips.class);
                     if(snTips==null){
                         String msg1 = msg.substring(0,msg.indexOf("-"));

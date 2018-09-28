@@ -1,5 +1,7 @@
 package com.shigu.goodsup.sn.util;
 
+import com.shigu.goodsup.sn.enums.SnTips;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,11 @@ public class PackageUtil {
      */
     private static List<String> getClassName(String packageName) {
         //根据报名获取该package的系统路径
-        String filePath = "/home/yxg/work/main-pom/web-server/src/main/java/" + packageName.replace(".", "/");
+        String filePath = new Object() {
+            public String getPath() {
+                return this.getClass().getResource("/").getPath();
+            }
+        }.getPath()+ packageName.replace(".", "/");
         System.out.println(filePath);
         // filePath: /D:/workspace-git/springbootlearning/target/classes/com\example\myFirstProject\enums
         List<String> fileNames = getClassName(filePath, null);
@@ -66,4 +72,8 @@ public class PackageUtil {
 
         return myClassName;
     }
+
+//    public static void main(String[] args){
+//        System.out.println(EnumUtil.getEnumObject("101", SnTips.class).getTip());
+//    }
 }
