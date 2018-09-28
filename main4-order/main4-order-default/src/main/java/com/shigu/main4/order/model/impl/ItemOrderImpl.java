@@ -152,17 +152,19 @@ public class ItemOrderImpl implements ItemOrder {
         ItemOrderLogistics logistics = new ItemOrderLogistics();
         logistics.setOid(oid == null ? -1L : oid);
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(logistics);
+        List<LogisticsVO> logisticsVOS = new ArrayList<>();
+        if (select.size()>0){
+            ItemOrderSub orderSub = new ItemOrderSub();
+            orderSub.setOid(oid == null ? -1L : oid);
+            Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
 
-        ItemOrderSub orderSub = new ItemOrderSub();
-        orderSub.setOid(oid);
-        Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
-
-        List<LogisticsVO> logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
-        logisticsVOS.forEach(logisticsVO -> {
-            if (longListMap.get(logisticsVO.getId()) != null) {
-                logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
-            }
-        });
+            logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
+            logisticsVOS.forEach(logisticsVO -> {
+                if (longListMap.get(logisticsVO.getId()) != null) {
+                    logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
+                }
+            });
+        }
         return logisticsVOS;
     }
 
