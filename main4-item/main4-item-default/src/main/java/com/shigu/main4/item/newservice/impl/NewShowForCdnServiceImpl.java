@@ -38,4 +38,9 @@ public class NewShowForCdnServiceImpl extends ShowForCdnServiceImpl implements N
     public NewCdnItem selItemInstockById(Long id, String webSite) {
         return (NewCdnItem) super.selItemInstockById(id,webSite);
     }
+
+    @Override
+    public Integer updateSkuPriceStock(List<SingleSkuVO> skus,String webSite) {
+        return super.updateSkuPriceStock(skus,webSite);
+    }
 }

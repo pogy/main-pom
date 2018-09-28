@@ -1,16 +1,24 @@
 package com.shigu.seller.actions;
 
+import com.alibaba.fastjson.JSONArray;
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.seller.bo.GoodsSkuBo;
 import com.shigu.seller.bo.GoodsStyleManageQueryBO;
 import com.shigu.seller.services.ShopItemModService;
+import com.shigu.seller.vo.GoodsSkuVo;
 import com.shigu.seller.vo.ShopStyleGoodsAggrVO;
 import com.shigu.seller.vo.ShopStyleGoodsInfoVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -68,4 +76,31 @@ public class ShopGoodsAction {
         model.addAttribute("pageOption",totalCount+","+pageSize+","+page);
         return "gys/goodsStyleManager";
     }
+
+    @RequestMapping("seller/selGoodssku")
+    @ResponseBody
+    public JSONObject selGoodssku(Long goodsId) throws JsonErrException {
+        if (goodsId == null) {
+            throw new JsonErrException("缺少参数");
+        }
+        List<GoodsSkuVo> voList = shopItemModService.selGoodsSku(goodsId);
+        String skuList = JSONArray.toJSONString(voList);
+        JSONObject obj= JsonResponseUtil.success();
+        obj.put("skuList",skuList);
+        return  obj;
+    }
+
+    @RequestMapping("seller/saveGoodssku")
+    @ResponseBody
+    public JSONObject selGoodssku(String date) throws JsonErrException {
+        if (StringUtil.isNull(date)) {
+            throw new JsonErrException("缺少参数");
+        }
+        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(date);
+        List<GoodsSkuBo> skuList = JSONArray.parseArray(json.getString("sku"),GoodsSkuBo.class);
+        shopItemModService.updateSkuPriceStock(skuList,json.getString("webSite"));
+        JSONObject obj= JsonResponseUtil.success();
+        return  obj;
+    }
+
 }

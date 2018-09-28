@@ -14,6 +14,7 @@ import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
 import com.shigu.main4.item.vo.news.NewCdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -65,6 +66,9 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 
     @Autowired
     private ShiguPropImgsMapper shiguPropImgsMapper;
+
+    @Autowired
+    private ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
 
     @Autowired
     private RedisIO redisIO;
@@ -176,6 +180,23 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 
         shopLicensesList.removeAll(Arrays.asList(goodsUnlicense.split(",")));
         return shopLicensesList;
+    }
+
+    @Override
+    public Integer updateSkuPriceStock(List<SingleSkuVO> skus,String webSite) {
+        Integer b = 0;
+        for (SingleSkuVO sku : skus) {
+            ShiguGoodsSingleSku singleSku = new ShiguGoodsSingleSku();
+            singleSku.setStockNum(sku.getStockNum());
+            singleSku.setPriceString(sku.getPriceString());
+            singleSku.setSkuId(sku.getSkuId());
+            singleSku.setWebSite(webSite);
+            b=shiguGoodsSingleSkuMapper.updateByPrimaryKeySelective(singleSku);
+            if (b<=0){
+                break;
+            }
+        }
+        return b;
     }
 
     /**
