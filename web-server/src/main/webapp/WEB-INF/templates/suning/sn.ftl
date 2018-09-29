@@ -138,7 +138,7 @@
                 <label class="fl">
                     <em>*</em>宝贝图片</label>
                 <div class="field-content fl">
-                    <div class="block info" style="margin: 0 0px 3px;">宝贝主图大小不能超过3MB；700*700 以上的图片上传以后宝贝详情页自动提供放大镜的功能
+                    <div class="block info" style="margin: 0 0px 3px;">宝贝主图大小不能超过3MB；800*800 以上的图片上传以后宝贝详情页自动提供放大镜的功能
                     </div>
                     <div class="multmedia-wrap clearfix" id="multiImage">
                         <div class="multimage-wrap zhu-img">
