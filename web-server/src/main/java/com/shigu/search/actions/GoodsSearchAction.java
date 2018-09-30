@@ -6,6 +6,7 @@ import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.storeservices.SearchCategoryService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.CategoryInSearchService;
@@ -32,6 +33,11 @@ import sun.misc.BASE64Decoder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +61,11 @@ public class GoodsSearchAction {
 
     @Autowired
     OssIO ossIO;
+
+    @Autowired
+    RedisIO redisIO;
+
+    private static String SHIGU_ITEM_SEARCH_KEYWORD = "shigu_item_search_keyword";
 
     /**
      * 图搜
@@ -205,8 +216,21 @@ public class GoodsSearchAction {
             });
         }
 
-
-        model.addAttribute("goodslist", pager.getContent());
+        List<GoodsInSearch> goodsList = pager.getContent();
+        if (bo.getPage() == 1 && bo.getCid() == null && bo.getPid() == null){
+            Set<String> keywordSet = new HashSet<>();
+            for (GoodsInSearch goods : goodsList) {
+                Pattern p = Pattern.compile("\\<em>(.*?)\\</em>");//正则表达式，取=和|之间的字符串，不包括=和|
+                Matcher m = p.matcher(goods.getHighLightTitle());
+                while(m.find()) {
+                    keywordSet.add(m.group(1));
+                }
+            }
+            for (String keyword : keywordSet) {
+                redisIO.rpush(SHIGU_ITEM_SEARCH_KEYWORD,keyword);
+            }
+        }
+        model.addAttribute("goodslist", goodsList);
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 1, bo.getPid()));
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         //查顶部导航
