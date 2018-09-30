@@ -81,7 +81,7 @@ public interface ItemOrder extends Order{
     /**
      * 全单发货.
      */
-    void sended(String courierNumber);
+    void sended(Long companyId ,String courierNumber);
 
     /**
      * 更新快递单号

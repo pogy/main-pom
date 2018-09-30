@@ -190,7 +190,7 @@ public class DfMessageListener implements MessageListener {
 
     public void sendAll(BaseMessage<SendAllMessage> msg) {
         SendAllMessage sendAllMessage = msg.getData();
-        SpringBeanFactory.getBean(ItemOrder.class, sendAllMessage.getOrderId()).sended(sendAllMessage.getExpressCode());
+        SpringBeanFactory.getBean(ItemOrder.class, sendAllMessage.getOrderId()).sended(sendAllMessage.getExpressId(),sendAllMessage.getExpressCode());
         try {
             qimenTradeProcess.toOut(sendAllMessage.getOrderId());
         } catch (Exception e) {

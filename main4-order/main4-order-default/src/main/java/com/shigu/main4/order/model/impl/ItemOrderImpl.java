@@ -367,11 +367,12 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    public void sended(String courierNumber) {
+    public void sended(Long companyId ,String courierNumber) {
         List<LogisticsVO> logisticsVOS = selLogisticses();
         if (logisticsVOS.size() == 1) {
             ItemOrderLogistics logistics = new ItemOrderLogistics();
             logistics.setId(logisticsVOS.get(0).getId());
+            if (companyId != null){logistics.setCompanyId(companyId);}
             logistics.setCourierNumber(courierNumber);
             itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
         }

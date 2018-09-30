@@ -8,7 +8,16 @@ import java.io.Serializable;
 public class SendAllMessage implements Serializable {
 
     private Long orderId;
+    private Long expressId;
     private String expressCode;
+
+    public Long getExpressId() {
+        return expressId;
+    }
+
+    public void setExpressId(Long expressId) {
+        this.expressId = expressId;
+    }
 
     public Long getOrderId() {
         return orderId;
