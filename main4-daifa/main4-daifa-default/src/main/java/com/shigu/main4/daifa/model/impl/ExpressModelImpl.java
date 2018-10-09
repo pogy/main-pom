@@ -312,7 +312,11 @@ public class ExpressModelImpl implements ExpressModel {
         if (obj.containsKey("Success")) {
             QueryPostCodeVO queryPostCodeVO = jsonToPostResult(obj);
             if ("EMS".equals(express.getKdType())) {
-                queryPostCodeVO.setMarkDestination(send.getReceiverArea());
+                if(StringUtils.isNotBlank(send.getReceiverArea())){
+                    queryPostCodeVO.setMarkDestination(send.getReceiverArea());
+                }else{
+                    queryPostCodeVO.setMarkDestination(send.getReceiverCity());
+                }
                 queryPostCodeVO.setPackageName(send.getReceiverProv() + " " + send.getReceiverCity());
             }
             return queryPostCodeVO;
