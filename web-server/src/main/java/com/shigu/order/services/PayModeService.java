@@ -93,15 +93,13 @@ public class PayModeService {
             throw new PayApplyException("只能支付自己的订单");
         }
         payModePageVO.setWebSite(itemOrderVO.getWebSite());
-        // 没有创建过星座宝账户的用户创建星座宝账户
-        memberSimpleService.userBalanceInfo(userId);
         payModePageVO.setAmountPay(String.format("%.2f", itemOrderVO.getTotalFee() * .01));
         if("qz".equals(itemOrderVO.getWebSite())){
             payModePageVO.setAlipayUrl("/order/qzAlipay.htm");
         }else{
             payModePageVO.setAlipayUrl("/order/alipay.htm");
         }
-        payModePageVO.setCurrentAmount(String.format("%.2f", memberUserMapper.userBalance(userId) * .01));
+        payModePageVO.setCurrentAmount(memberSimpleService.userBalanceInfo(userId).getBalance());
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
         payModePageVO.setNotSetPassword(memberUser.getPayPassword() == null ? "没有支付密码" : null);
         return payModePageVO;
