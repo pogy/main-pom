@@ -25,7 +25,8 @@ public class KeyWordsUtil {
     static String shamKeyWords = "史无前例,前无古人,纯天然,祖传,永久,无敌,精确,超赚,100%";
     //        权威
     static String authorityKeyWords = "无需国家质量检测,错过就没机会了,中国驰名商标,再不抢就没了,不会再便宜了,专家推荐,万人疯抢,全民抢购,全民疯抢,抢疯了,卖疯了,免抽检,老字号,专供,特供,抢爆,秒杀";
-
+    //        天气
+    static String weatherKeyWords = "雾霾";
 
     private static final List<String> veryKeyList ;
 
@@ -43,6 +44,8 @@ public class KeyWordsUtil {
 
     private static final List<String> authorityKeyList;
 
+    private static final List<String> weatherKeyList;
+
     private static final List<String> allKeys;
 
     static {
@@ -54,6 +57,8 @@ public class KeyWordsUtil {
         brandKeyList = Arrays.asList(brandKeyWords.split(","));
         shamKeyList = Arrays.asList(shamKeyWords.split(","));
         authorityKeyList = Arrays.asList(authorityKeyWords.split(","));
+        weatherKeyList = Arrays.asList(weatherKeyWords.split(","));
+
 
         allKeys=new ArrayList<>();
         allKeys.addAll(veryKeyList);
@@ -64,6 +69,7 @@ public class KeyWordsUtil {
         allKeys.addAll(brandKeyList);
         allKeys.addAll(shamKeyList);
         allKeys.addAll(authorityKeyList);
+        allKeys.addAll(weatherKeyList);
         Collections.sort(allKeys,new KeySort());
     }
 
@@ -118,6 +124,17 @@ public class KeyWordsUtil {
 //        }
 //        return  false;
 //    }
+
+
+    public static boolean containsKeyWords(String orignalWords) {
+        for (String value : allKeys) {
+            if (orignalWords.contains(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 替换语句中所有关键词
