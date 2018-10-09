@@ -409,7 +409,7 @@ ${navCon}
             <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
             <a class="img-jyxkz" href="http://www.zca.gov.cn/" title="互联网经营许可证" target="_blank"></a>
             <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
-            <a class="img-cxwz" href="https://credit.szfw.org/CX20180926003160350188.html" target="_blank"></a>
+            <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>
         <p class="jyga">
             <span>&copy; 2009-2018 571xz.com 版权所有</span> <a href="//www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
