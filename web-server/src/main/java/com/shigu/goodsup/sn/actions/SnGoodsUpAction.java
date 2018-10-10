@@ -166,12 +166,13 @@ public class SnGoodsUpAction {
             map.put("categoryCode", categoryCode);
             map.put("sn_yj_sn_session", ps);
             return "suning/sn";
-        } catch (
-                Exception e)
-
-        {
-            e.printStackTrace();
-            map.put("errmsg", "该商品暂不支持上传");
+        } catch (Exception e) {
+            if (e instanceof CustomException) {
+                map.put("errmsg", e.getMessage());
+            } else {
+                e.printStackTrace();
+                map.put("errmsg", "该商品暂不支持上传");
+            }
             return "suning/uperror";
         }
 
