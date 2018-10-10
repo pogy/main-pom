@@ -40,25 +40,25 @@ public class ShiguFeedbackVO implements Serializable {
      */
 	private Date createTime;
 
-    /**
-     * 备用
-     */
-	private String remark1;
+	/**
+	 * 手机品牌
+	 */
+	private String phoneBrand;
 
-    /**
-     * 备用
-     */
-	private String remark2;
+	/**
+	 * 手机型号
+	 */
+	private String phoneModel;
 
-    /**
-     * 备用
-     */
-	private String remark3;
+	/**
+	 * 操作系统版本号
+	 */
+	private String osVersion;
 
-    /**
-     * 备用
-     */
-	private String remark4;
+	/**
+	 * 请求接口的版本号
+	 */
+	private String openVersion;
 
     /**
      * 备用
@@ -121,36 +121,36 @@ public class ShiguFeedbackVO implements Serializable {
 		return this.createTime;
 	}
 
-	public void setRemark1(String remark1) {
-		this.remark1 = remark1;
+	public String getPhoneBrand() {
+		return phoneBrand;
 	}
 
-	public String getRemark1() {
-		return this.remark1;
+	public void setPhoneBrand(String phoneBrand) {
+		this.phoneBrand = phoneBrand;
 	}
 
-	public void setRemark2(String remark2) {
-		this.remark2 = remark2;
+	public String getPhoneModel() {
+		return phoneModel;
 	}
 
-	public String getRemark2() {
-		return this.remark2;
+	public void setPhoneModel(String phoneModel) {
+		this.phoneModel = phoneModel;
 	}
 
-	public void setRemark3(String remark3) {
-		this.remark3 = remark3;
+	public String getOsVersion() {
+		return osVersion;
 	}
 
-	public String getRemark3() {
-		return this.remark3;
+	public void setOsVersion(String osVersion) {
+		this.osVersion = osVersion;
 	}
 
-	public void setRemark4(String remark4) {
-		this.remark4 = remark4;
+	public String getOpenVersion() {
+		return openVersion;
 	}
 
-	public String getRemark4() {
-		return this.remark4;
+	public void setOpenVersion(String openVersion) {
+		this.openVersion = openVersion;
 	}
 
 	public void setRemark5(String remark5) {

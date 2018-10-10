@@ -77,7 +77,6 @@ public class KdnProcessImpl implements KdnProcess{
             KdnSubscibe updateKdnSubscibe = new KdnSubscibe();
             updateKdnSubscibe.setId(kdnSubscibe.getId());
             updateKdnSubscibe.setLogisticState(Integer.parseInt(traceInfo.getState()));
-            updateKdnSubscibe.setGmtCreate(now);
             updateKdnSubscibe.setGmtUpdate(now);
 
             kdnSubscibeMapper.updateByPrimaryKeySelective(updateKdnSubscibe);

@@ -10,36 +10,34 @@ import java.util.*;
 public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteria> {
     public static final Class<ShiguFeedback> beanClass = ShiguFeedback.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn phoneModel;
     public static EntityColumn fcontents;
+    public static EntityColumn osVersion;
     public static EntityColumn createTime;
+    public static EntityColumn phoneBrand;
+    public static EntityColumn openVersion;
     public static EntityColumn remark5;
     public static EntityColumn feedbackId;
-    public static EntityColumn remark4;
     public static EntityColumn updateTime;
-    public static EntityColumn title;
-    public static EntityColumn remark1;
     public static EntityColumn userId;
-    public static EntityColumn remark3;
     public static EntityColumn status;
-    public static EntityColumn remark2;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
+        phoneModel = listMap.get("phoneModel");
         fcontents = listMap.get("fcontents");
+        osVersion = listMap.get("osVersion");
         createTime = listMap.get("createTime");
+        phoneBrand = listMap.get("phoneBrand");
+        openVersion = listMap.get("openVersion");
         remark5 = listMap.get("remark5");
         feedbackId = listMap.get("feedbackId");
-        remark4 = listMap.get("remark4");
         updateTime = listMap.get("updateTime");
-        title = listMap.get("title");
-        remark1 = listMap.get("remark1");
         userId = listMap.get("userId");
-        remark3 = listMap.get("remark3");
         status = listMap.get("status");
-        remark2 = listMap.get("remark2");
         }
 
     public ShiguFeedbackExample() {
@@ -61,6 +59,61 @@ public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteri
             super(example);
         }
 
+        public ShiguFeedbackExample.Criteria andPhoneModelIsNull() {
+            return isNull(phoneModel);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelIsNotNull() {
+            return isNotNull(phoneModel);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelEqualTo(String value) {
+            return equalTo(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelNotEqualTo(String value) {
+            return notEqualTo(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelGreaterThan(String value) {
+            return greaterThan(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelLessThan(String value) {
+            return lessThan(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelLike(String value) {
+            return like(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelNotLike(String value) {
+            return notLike(phoneModel, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelIn(List<String> values) {
+            return in(phoneModel, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelNotIn(List<String> values) {
+            return notIn(phoneModel, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelBetween(String value1, String value2) {
+            return between(phoneModel, value1, value2);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneModelNotBetween(String value1, String value2) {
+            return notBetween(phoneModel, value1, value2);
+        }
         public ShiguFeedbackExample.Criteria andFcontentsIsNull() {
             return isNull(fcontents);
         }
@@ -116,6 +169,61 @@ public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteri
         public ShiguFeedbackExample.Criteria andFcontentsNotBetween(String value1, String value2) {
             return notBetween(fcontents, value1, value2);
         }
+        public ShiguFeedbackExample.Criteria andOsVersionIsNull() {
+            return isNull(osVersion);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionIsNotNull() {
+            return isNotNull(osVersion);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionEqualTo(String value) {
+            return equalTo(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionNotEqualTo(String value) {
+            return notEqualTo(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionGreaterThan(String value) {
+            return greaterThan(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionLessThan(String value) {
+            return lessThan(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionLike(String value) {
+            return like(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionNotLike(String value) {
+            return notLike(osVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionIn(List<String> values) {
+            return in(osVersion, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionNotIn(List<String> values) {
+            return notIn(osVersion, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionBetween(String value1, String value2) {
+            return between(osVersion, value1, value2);
+        }
+
+        public ShiguFeedbackExample.Criteria andOsVersionNotBetween(String value1, String value2) {
+            return notBetween(osVersion, value1, value2);
+        }
         public ShiguFeedbackExample.Criteria andCreateTimeIsNull() {
             return isNull(createTime);
         }
@@ -162,6 +270,116 @@ public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteri
 
         public ShiguFeedbackExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             return notBetween(createTime, value1, value2);
+        }
+        public ShiguFeedbackExample.Criteria andPhoneBrandIsNull() {
+            return isNull(phoneBrand);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandIsNotNull() {
+            return isNotNull(phoneBrand);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandEqualTo(String value) {
+            return equalTo(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandNotEqualTo(String value) {
+            return notEqualTo(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandGreaterThan(String value) {
+            return greaterThan(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandLessThan(String value) {
+            return lessThan(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandLike(String value) {
+            return like(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandNotLike(String value) {
+            return notLike(phoneBrand, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandIn(List<String> values) {
+            return in(phoneBrand, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandNotIn(List<String> values) {
+            return notIn(phoneBrand, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandBetween(String value1, String value2) {
+            return between(phoneBrand, value1, value2);
+        }
+
+        public ShiguFeedbackExample.Criteria andPhoneBrandNotBetween(String value1, String value2) {
+            return notBetween(phoneBrand, value1, value2);
+        }
+        public ShiguFeedbackExample.Criteria andOpenVersionIsNull() {
+            return isNull(openVersion);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionIsNotNull() {
+            return isNotNull(openVersion);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionEqualTo(String value) {
+            return equalTo(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionNotEqualTo(String value) {
+            return notEqualTo(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionGreaterThan(String value) {
+            return greaterThan(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionLessThan(String value) {
+            return lessThan(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionLike(String value) {
+            return like(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionNotLike(String value) {
+            return notLike(openVersion, value);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionIn(List<String> values) {
+            return in(openVersion, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionNotIn(List<String> values) {
+            return notIn(openVersion, values);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionBetween(String value1, String value2) {
+            return between(openVersion, value1, value2);
+        }
+
+        public ShiguFeedbackExample.Criteria andOpenVersionNotBetween(String value1, String value2) {
+            return notBetween(openVersion, value1, value2);
         }
         public ShiguFeedbackExample.Criteria andRemark5IsNull() {
             return isNull(remark5);
@@ -265,61 +483,6 @@ public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteri
         public ShiguFeedbackExample.Criteria andFeedbackIdNotBetween(Long value1, Long value2) {
             return notBetween(feedbackId, value1, value2);
         }
-        public ShiguFeedbackExample.Criteria andRemark4IsNull() {
-            return isNull(remark4);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4IsNotNull() {
-            return isNotNull(remark4);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4EqualTo(String value) {
-            return equalTo(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4NotEqualTo(String value) {
-            return notEqualTo(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4GreaterThan(String value) {
-            return greaterThan(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4GreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4LessThan(String value) {
-            return lessThan(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4LessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4Like(String value) {
-            return like(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4NotLike(String value) {
-            return notLike(remark4, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4In(List<String> values) {
-            return in(remark4, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4NotIn(List<String> values) {
-            return notIn(remark4, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4Between(String value1, String value2) {
-            return between(remark4, value1, value2);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark4NotBetween(String value1, String value2) {
-            return notBetween(remark4, value1, value2);
-        }
         public ShiguFeedbackExample.Criteria andUpdateTimeIsNull() {
             return isNull(updateTime);
         }
@@ -366,116 +529,6 @@ public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteri
 
         public ShiguFeedbackExample.Criteria andUpdateTimeNotBetween(Date value1, Date value2) {
             return notBetween(updateTime, value1, value2);
-        }
-        public ShiguFeedbackExample.Criteria andTitleIsNull() {
-            return isNull(title);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleIsNotNull() {
-            return isNotNull(title);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleEqualTo(String value) {
-            return equalTo(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleNotEqualTo(String value) {
-            return notEqualTo(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleGreaterThan(String value) {
-            return greaterThan(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleLessThan(String value) {
-            return lessThan(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleLike(String value) {
-            return like(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleNotLike(String value) {
-            return notLike(title, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleIn(List<String> values) {
-            return in(title, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleNotIn(List<String> values) {
-            return notIn(title, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleBetween(String value1, String value2) {
-            return between(title, value1, value2);
-        }
-
-        public ShiguFeedbackExample.Criteria andTitleNotBetween(String value1, String value2) {
-            return notBetween(title, value1, value2);
-        }
-        public ShiguFeedbackExample.Criteria andRemark1IsNull() {
-            return isNull(remark1);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1IsNotNull() {
-            return isNotNull(remark1);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1EqualTo(String value) {
-            return equalTo(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1NotEqualTo(String value) {
-            return notEqualTo(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1GreaterThan(String value) {
-            return greaterThan(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1LessThan(String value) {
-            return lessThan(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1LessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1Like(String value) {
-            return like(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1NotLike(String value) {
-            return notLike(remark1, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1In(List<String> values) {
-            return in(remark1, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1NotIn(List<String> values) {
-            return notIn(remark1, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1Between(String value1, String value2) {
-            return between(remark1, value1, value2);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark1NotBetween(String value1, String value2) {
-            return notBetween(remark1, value1, value2);
         }
         public ShiguFeedbackExample.Criteria andUserIdIsNull() {
             return isNull(userId);
@@ -524,61 +577,6 @@ public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteri
         public ShiguFeedbackExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
             return notBetween(userId, value1, value2);
         }
-        public ShiguFeedbackExample.Criteria andRemark3IsNull() {
-            return isNull(remark3);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3IsNotNull() {
-            return isNotNull(remark3);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3EqualTo(String value) {
-            return equalTo(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3NotEqualTo(String value) {
-            return notEqualTo(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3GreaterThan(String value) {
-            return greaterThan(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3GreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3LessThan(String value) {
-            return lessThan(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3LessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3Like(String value) {
-            return like(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3NotLike(String value) {
-            return notLike(remark3, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3In(List<String> values) {
-            return in(remark3, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3NotIn(List<String> values) {
-            return notIn(remark3, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3Between(String value1, String value2) {
-            return between(remark3, value1, value2);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark3NotBetween(String value1, String value2) {
-            return notBetween(remark3, value1, value2);
-        }
         public ShiguFeedbackExample.Criteria andStatusIsNull() {
             return isNull(status);
         }
@@ -625,61 +623,6 @@ public class ShiguFeedbackExample extends SgExample<ShiguFeedbackExample.Criteri
 
         public ShiguFeedbackExample.Criteria andStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(status, value1, value2);
-        }
-        public ShiguFeedbackExample.Criteria andRemark2IsNull() {
-            return isNull(remark2);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2IsNotNull() {
-            return isNotNull(remark2);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2EqualTo(String value) {
-            return equalTo(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2NotEqualTo(String value) {
-            return notEqualTo(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2GreaterThan(String value) {
-            return greaterThan(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2LessThan(String value) {
-            return lessThan(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2LessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2Like(String value) {
-            return like(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2NotLike(String value) {
-            return notLike(remark2, value);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2In(List<String> values) {
-            return in(remark2, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2NotIn(List<String> values) {
-            return notIn(remark2, values);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2Between(String value1, String value2) {
-            return between(remark2, value1, value2);
-        }
-
-        public ShiguFeedbackExample.Criteria andRemark2NotBetween(String value1, String value2) {
-            return notBetween(remark2, value1, value2);
         }
     }
 }
