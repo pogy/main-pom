@@ -35,8 +35,8 @@ public class PriceCalculateServiceImpl implements PriceCalculateService {
     /**
      * 默认的批发价解析规则
      */
-    private static final Pattern DEFAULT_P_RULE = Pattern.compile("([^a-zA-Z]|[t|T])[p|P](\\d+(\\.[0-9]*)?)");
-    private static final Pattern DEFAULT_F_RULE = Pattern.compile("[^a-zA-Z][f|F](\\d+(\\.[0-9]*)?)");
+    private static final Pattern DEFAULT_P_RULE = Pattern.compile("([^a-zA-Z]|[tT])[pP](\\d+(\\.[0-9]*)?)");
+    private static final Pattern DEFAULT_F_RULE = Pattern.compile("[^a-zA-Z][fF](\\d+(\\.[0-9]*)?)");
 
     private static final Pattern NUMBER = Pattern.compile("[1-9]\\d*(\\.\\d*)?|0\\.\\d*[1-9]\\d*");
 
