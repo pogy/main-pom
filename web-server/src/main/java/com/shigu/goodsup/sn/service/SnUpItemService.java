@@ -20,19 +20,20 @@ import com.shigu.goodsup.jd.vo.SkuVO;
 import com.shigu.goodsup.jd.vo.StoreCatVO;
 import com.shigu.goodsup.jd.vo.TdVO;
 import com.shigu.goodsup.sn.vo.*;
-import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.tb.finder.vo.PropType;
 import com.shigu.tools.KeyWordsUtil;
 import com.suning.api.entity.custom.NewbrandQueryResponse;
 import com.suning.api.entity.item.ItemparametersQueryResponse;
 import com.suning.api.entity.sale.FreighttemplateQueryResponse;
 import com.suning.api.util.StringUtil;
-import com.taobao.api.domain.DeliveryTemplate;
 import com.taobao.api.domain.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -147,7 +148,11 @@ public class SnUpItemService {
             return null;
         } else {
             Map<Integer, List<SnShopCategory>> map = shopCategories.stream().collect(Collectors.groupingBy(SnShopCategory::getIsFirst));
-            return map.get(0).stream().map(shopCategory -> {
+            List<SnShopCategory> shopCate = map.get(0);
+            if (shopCate == null) {
+                shopCate = map.get(1);
+            }
+            return shopCate.stream().map(shopCategory -> {
                 StoreCatVO vo = new StoreCatVO();
                 vo.setCatId(Long.valueOf(shopCategory.getCategoryCode()));
                 vo.setName(shopCategory.getCategoryName());

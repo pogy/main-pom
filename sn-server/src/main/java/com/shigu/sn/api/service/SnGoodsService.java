@@ -167,16 +167,19 @@ public class SnGoodsService {
             snShopCategory.setUsername(username);
             snShopCategory.setIsFirst(1);
             snShopCategoryMapper.insert(snShopCategory);
-            for(ShopcategoryQueryResponse.SecondCategory secondCategory:s.getSecondCategory()){
-                SnShopCategory snShopCategory2=new SnShopCategory();
-                snShopCategory2.setIsFirst(0);
-                snShopCategory2.setUsername(username);
-                snShopCategory2.setFirstId(snShopCategory.getId());
-                snShopCategory2.setCategorySort(Integer.valueOf(secondCategory.getSecondCategorySort()));
-                snShopCategory2.setCategoryName(secondCategory.getSecondCategoryName());
-                snShopCategory2.setCategoryImg(secondCategory.getSecondCategoryImg());
-                snShopCategory2.setCategoryCode(secondCategory.getSecondCategoryCode());
-                snShopCategories.add(snShopCategory2);
+            List<ShopcategoryQueryResponse.SecondCategory> secondCategories = s.getSecondCategory();
+            if (secondCategories != null && !secondCategories.isEmpty()) {
+                for(ShopcategoryQueryResponse.SecondCategory secondCategory: secondCategories){
+                    SnShopCategory snShopCategory2=new SnShopCategory();
+                    snShopCategory2.setIsFirst(0);
+                    snShopCategory2.setUsername(username);
+                    snShopCategory2.setFirstId(snShopCategory.getId());
+                    snShopCategory2.setCategorySort(Integer.valueOf(secondCategory.getSecondCategorySort()));
+                    snShopCategory2.setCategoryName(secondCategory.getSecondCategoryName());
+                    snShopCategory2.setCategoryImg(secondCategory.getSecondCategoryImg());
+                    snShopCategory2.setCategoryCode(secondCategory.getSecondCategoryCode());
+                    snShopCategories.add(snShopCategory2);
+                }
             }
         }
         snShopCategoryMapper.insertListNoId(snShopCategories);
