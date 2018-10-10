@@ -152,7 +152,7 @@ public class SnGoodsService {
         shopcategoryQueryRequest.setPageNo(1);
         shopcategoryQueryRequest.setPageSize(10);
         ShopcategoryQueryResponse shopcategoryQueryResponse=snSdkClient.send(shopcategoryQueryRequest,snTokenInfo.getAccessToken());
-        if(shopcategoryQueryResponse.getSnerror().getErrorCode().equals("biz.handler.data-get:no-result")){
+        if(shopcategoryQueryResponse.getSnerror() != null && "biz.handler.data-get:no-result".equals(shopcategoryQueryResponse.getSnerror().getErrorCode())){
             return null;
         }
         List<ShopcategoryQueryResponse.ShopCategory> shopCategories=shopcategoryQueryResponse.getSnbody().getShopCategory();
