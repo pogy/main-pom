@@ -71,7 +71,8 @@ public class SnGoodsService {
         request.setPageSize(10);
         CategoryQueryResponse response = new CategoryQueryResponse();
         response=snSdkClient.send(request,snTokenInfo.getAccessToken());
-        return response.getSnbody().getCategoryQueries();
+        CategoryQueryResponse.SnBody snbody = response.getSnbody();
+        return snbody==null?new ArrayList<>():snbody.getCategoryQueries();
     }
 
     /**
