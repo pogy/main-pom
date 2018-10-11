@@ -135,7 +135,7 @@ public class ActivityWebService {
                             .add(userId, activeForShowVOList, newActivityVO);
                     break;
                 }
-                case "泉州商品上传抽奖":{
+                case "沧州商品上传抽奖":{
                     SpringBeanFactory.getBean("tae_activityForShowHotGoodsDrawImpl", ActivityForShowInterface.class)
                             .add(userId, activeForShowVOList, newActivityVO);
                     break;
