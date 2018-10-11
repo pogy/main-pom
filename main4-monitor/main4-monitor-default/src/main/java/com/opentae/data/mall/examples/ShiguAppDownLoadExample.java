@@ -10,8 +10,8 @@ import java.util.*;
 public class ShiguAppDownLoadExample extends SgExample<ShiguAppDownLoadExample.Criteria> {
     public static final Class<ShiguAppDownLoad> beanClass = ShiguAppDownLoad.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
-    public static EntityColumn downLoadNum;
     public static EntityColumn id;
+    public static EntityColumn gmtCreate;
     public static EntityColumn terminalType;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -19,8 +19,8 @@ public class ShiguAppDownLoadExample extends SgExample<ShiguAppDownLoadExample.C
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
-        downLoadNum = listMap.get("downLoadNum");
         id = listMap.get("id");
+        gmtCreate = listMap.get("gmtCreate");
         terminalType = listMap.get("terminalType");
         }
 
@@ -43,53 +43,6 @@ public class ShiguAppDownLoadExample extends SgExample<ShiguAppDownLoadExample.C
             super(example);
         }
 
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumIsNull() {
-            return isNull(downLoadNum);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumIsNotNull() {
-            return isNotNull(downLoadNum);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumEqualTo(Long value) {
-            return equalTo(downLoadNum, value);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumNotEqualTo(Long value) {
-            return notEqualTo(downLoadNum, value);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumGreaterThan(Long value) {
-            return greaterThan(downLoadNum, value);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(downLoadNum, value);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumLessThan(Long value) {
-            return lessThan(downLoadNum, value);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(downLoadNum, value);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumIn(List<Long> values) {
-            return in(downLoadNum, values);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumNotIn(List<Long> values) {
-            return notIn(downLoadNum, values);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumBetween(Long value1, Long value2) {
-            return between(downLoadNum, value1, value2);
-        }
-
-        public ShiguAppDownLoadExample.Criteria andDownLoadNumNotBetween(Long value1, Long value2) {
-            return notBetween(downLoadNum, value1, value2);
-        }
         public ShiguAppDownLoadExample.Criteria andIdIsNull() {
             return isNull(id);
         }
@@ -136,6 +89,53 @@ public class ShiguAppDownLoadExample extends SgExample<ShiguAppDownLoadExample.C
 
         public ShiguAppDownLoadExample.Criteria andIdNotBetween(Integer value1, Integer value2) {
             return notBetween(id, value1, value2);
+        }
+        public ShiguAppDownLoadExample.Criteria andGmtCreateIsNull() {
+            return isNull(gmtCreate);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateIsNotNull() {
+            return isNotNull(gmtCreate);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateEqualTo(Date value) {
+            return equalTo(gmtCreate, value);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateNotEqualTo(Date value) {
+            return notEqualTo(gmtCreate, value);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateGreaterThan(Date value) {
+            return greaterThan(gmtCreate, value);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(gmtCreate, value);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateLessThan(Date value) {
+            return lessThan(gmtCreate, value);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(gmtCreate, value);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateIn(List<Date> values) {
+            return in(gmtCreate, values);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateNotIn(List<Date> values) {
+            return notIn(gmtCreate, values);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateBetween(Date value1, Date value2) {
+            return between(gmtCreate, value1, value2);
+        }
+
+        public ShiguAppDownLoadExample.Criteria andGmtCreateNotBetween(Date value1, Date value2) {
+            return notBetween(gmtCreate, value1, value2);
         }
         public ShiguAppDownLoadExample.Criteria andTerminalTypeIsNull() {
             return isNull(terminalType);

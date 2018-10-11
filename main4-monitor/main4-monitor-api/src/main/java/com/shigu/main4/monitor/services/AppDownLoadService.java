@@ -6,7 +6,7 @@ package com.shigu.main4.monitor.services;
  */
 public interface AppDownLoadService {
     /**
-     * 下载量+1
+     * 下载记录
      */
-    void addDownLoadNum(Integer type);
+    void addDownLoadRecord(Integer type);
 }

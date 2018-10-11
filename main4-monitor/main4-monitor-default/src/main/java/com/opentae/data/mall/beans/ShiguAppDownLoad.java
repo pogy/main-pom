@@ -2,6 +2,7 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 import java.io.Serializable;
 
 public class ShiguAppDownLoad implements Serializable {
@@ -18,9 +19,9 @@ public class ShiguAppDownLoad implements Serializable {
 	private Integer terminalType;
 
     /**
-     * app下载量
+     * 记录创建时间
      */
-	private Long downLoadNum;
+	private Date gmtCreate;
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -38,12 +39,12 @@ public class ShiguAppDownLoad implements Serializable {
 		return this.terminalType;
 	}
 
-	public void setDownLoadNum(Long downLoadNum) {
-		this.downLoadNum = downLoadNum;
+	public void setGmtCreate(Date gmtCreate) {
+		this.gmtCreate = gmtCreate;
 	}
 
-	public Long getDownLoadNum() {
-		return this.downLoadNum;
+	public Date getGmtCreate() {
+		return this.gmtCreate;
 	}
 
 }
