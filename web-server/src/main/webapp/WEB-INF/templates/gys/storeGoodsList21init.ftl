@@ -169,7 +169,7 @@ $$.domready('#goodsStyle', function(){
             <button class="tbGoods" jhand="openEditGoodsStyleWindow">批量设置风格</button>
             <span>&nbsp;</span>
             <a href="//zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
-            <a href="//zixun.571xz.com/affiche/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
+            <a href="//zixun.571xz.com/detail.htm?id=643" class="videoPro" target="_blank">主图视频使用指南</a>
         </li>
     </ul>
     <#list goodslist as item>
