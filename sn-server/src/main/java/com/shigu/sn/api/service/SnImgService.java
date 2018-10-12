@@ -68,8 +68,11 @@ public class SnImgService {
                     NPicAddRequest nPicAddRequest = new NPicAddRequest();
                     nPicAddRequest.setPicFileData(imgData);
                     NPicAddResponse response = snSdkClient.mulSend(nPicAddRequest, snTokenInfo.getAccessToken());
-                    list.add(response.getSnbody().getAddNPic());
-                    imgIds.append(",").append(response.getSnbody().getAddNPic().getPicUrl());
+                    NPicAddResponse.SnBody snbody = response.getSnbody();
+                    if (snbody != null && snbody.getAddNPic() != null) {
+                        list.add(snbody.getAddNPic());
+                        imgIds.append(",").append(snbody.getAddNPic().getPicUrl());
+                    }
                 } catch (OtherCustomException e) {
                     imgDelete(username, imgIds.toString());
                     return null;
