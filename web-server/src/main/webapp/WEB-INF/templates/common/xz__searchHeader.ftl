@@ -4,7 +4,7 @@
             <a href="//${webSite!}.571xz.com">
                 <img src="//style.571xz.com/v6/common/css/img/xz/mtLogo.png" alt width="168" height="30">
             </a>
-            <em class="yahei">${headerTitle!}</em>
+            <#if headerTitle??><em class="yahei">${headerTitle!}</em></#if>
         </div>
 <div class="searchBar fr">
     <div class="tabList clearfix">
@@ -12,7 +12,7 @@
             <li type="goods" <#if 'goods' == searchType>class="select"</#if>>商品</li>
             <li type="shop" <#if 'shop' == searchType>class="select"</#if>>档口</li>
         </ul>
-        <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
+        <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs' || webSite == 'cz'>
         <a href="${mainHost!}/picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
         </#if>
     </div>
