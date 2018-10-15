@@ -5,11 +5,14 @@ import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.beans.ShiguNewActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
+import com.shigu.activity.process.HotGoodsDrawService;
 import com.shigu.activity.service.ActivityWebService;
 import com.shigu.activity.service.DrawQualification;
 import com.shigu.activity.service.NewPopularService;
 import com.shigu.activity.tempvo.PopularGoodsVO;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
+import com.shigu.activity.vo.ActiveForShowVO;
+import com.shigu.activity.vo.ActivePhaseForShowVO;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.active.vo.ShiguActivityVO;
@@ -69,6 +72,9 @@ public class ActivityAction {
 
     @Autowired
     private GoatDubboService goatDubboService;
+
+    @Autowired
+    private HotGoodsDrawService hotGoodsDrawService;
 
     /**
      * 秋装新品发布会0811临时使用

@@ -86,6 +86,7 @@
 
     <dubbo:reference interface="com.shigu.activity.process.NewActivityProcess" id="newActivityProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.activity.process.StrengthMemberService" id="strengthMemberService" retries="0" timeout="20000"/>
+    <dubbo:reference interface="com.shigu.activity.process.HotGoodsDrawService" id="hotGoodsDrawService" retries="0" timeout="20000"/>
 
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoUserProcess" id="photoUserProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoImgProcess" id="photoImgProcess" retries="0" timeout="20000"/>

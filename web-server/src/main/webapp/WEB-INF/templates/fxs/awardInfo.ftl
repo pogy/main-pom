@@ -53,43 +53,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <#if (phase.awardList?size) gt 2>
-                                <div class="awardList clearfix">
-                                    <ul>
-                                        <#list phase.awardList as award>
-                                            <li>
-                                                <dl>
-                                                    <dt><img src="${award.img!}"></dt>
-                                                    <dd>
-                                                        <span>${award.name!}</span>
-                                                        <p>${award.prize!}</p>
-                                                    </dd>
-                                                </dl>
-                                                <div class="lotteryState">
-                                                    <#if award.state == 1>
-                                                        等待抽奖
-                                                    <#elseif award.state == 2>
-                                                        未中奖
-                                                    <#elseif award.state == 3>
-                                                        <#if award.takedIs == true>
-                                                            <span class="hasTake">已领取</span>
-                                                        <#else>
-                                                            <span class="hasLottery">已中奖（领取码：${award.takeCode!}） </span>
-                                                        </#if>
-                                                    </#if>
-                                                </div>
-                                            </li>
-                                        </#list>
-                                    </ul>
+                            <#if phase.czLuckyDraw??>
+                                <div class="infoBox">
+                                    <span>本期有<em>${phase.czLuckyDraw.haveNum!}</em>次抽奖机会,已经抽奖<em>${phase.czLuckyDraw.usedNum!}</em>次,还剩<em class="remainNum">${phase.czLuckyDraw.haveNum - phase.czLuckyDraw.usedNum}</em>次</span>
+                                    <span class="fr">抽奖验证码：<em class="fs16 fcF40">【${phase.czLuckyDraw.userCode!}】</em></span>
                                 </div>
                             <#else>
-                                <div class="justOneAward">
-                                    <#list phase.awardList as award>
-                                        <div class="awardBox">
-                                            <div class="awardMoney" style="background-image:url(${award.img!})"></div>
-                                            <div class="awardInfo">
-                                                <ul>
-                                                    <li>状态：
+                                <#if (phase.awardList?size) gt 2>
+                                    <div class="awardList clearfix">
+                                        <ul>
+                                            <#list phase.awardList as award>
+                                                <li>
+                                                    <dl>
+                                                        <dt><img src="${award.img!}"></dt>
+                                                        <dd>
+                                                            <span>${award.name!}</span>
+                                                            <p>${award.prize!}</p>
+                                                        </dd>
+                                                    </dl>
+                                                    <div class="lotteryState">
                                                         <#if award.state == 1>
                                                             等待抽奖
                                                         <#elseif award.state == 2>
@@ -101,24 +83,49 @@
                                                                 <span class="hasLottery">已中奖（领取码：${award.takeCode!}） </span>
                                                             </#if>
                                                         </#if>
-                                                    </li>
-                                                    <li>
-                                                        <#if award.uploadNum??>上传商品个数：
-                                                            <#if award.state == 3>
-                                                                <span class="fcF40">${award.uploadNum!}</span>
-                                                            <#else>
-                                                                ${award.uploadNum!}
+                                                    </div>
+                                                </li>
+                                            </#list>
+                                        </ul>
+                                    </div>
+                                <#else>
+                                    <div class="justOneAward">
+                                        <#list phase.awardList as award>
+                                            <div class="awardBox">
+                                                <div class="awardMoney" style="background-image:url(${award.img!})"></div>
+                                                <div class="awardInfo">
+                                                    <ul>
+                                                        <li>状态：
+                                                            <#if award.state == 1>
+                                                                等待抽奖
+                                                            <#elseif award.state == 2>
+                                                                未中奖
+                                                            <#elseif award.state == 3>
+                                                                <#if award.takedIs == true>
+                                                                    <span class="hasTake">已领取</span>
+                                                                <#else>
+                                                                    <span class="hasLottery">已中奖（领取码：${award.takeCode!}） </span>
+                                                                </#if>
                                                             </#if>
-                                                        <#else>
-                                                        类型：摄影代金券
-                                                        </#if>
-                                                    </li>
-                                                    <li>领取地点：置地国际电商基地1楼</li>
-                                                </ul>
+                                                        </li>
+                                                        <li>
+                                                            <#if award.uploadNum??>上传商品个数：
+                                                                <#if award.state == 3>
+                                                                    <span class="fcF40">${award.uploadNum!}</span>
+                                                                <#else>
+                                                                    ${award.uploadNum!}
+                                                                </#if>
+                                                            <#else>
+                                                            类型：摄影代金券
+                                                            </#if>
+                                                        </li>
+                                                        <li>领取地点：置地国际电商基地1楼</li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </#list>
-                                </div>
+                                        </#list>
+                                    </div>
+                                </#if>
                             </#if>
                         </div>
                     </#list>
