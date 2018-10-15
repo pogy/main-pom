@@ -204,7 +204,7 @@
             </#if>
         </#if>
         <#if 'videoSpace' != 'xiufuGoods21init' && 'videoSpace' != 'ghTongbu' || session_user_redis__.logshop.type == 1>
-            <#if 'videoSpace' != 'pictureSpace' || 'videoSpace' == 'pictureSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
+            <#if 'videoSpace' != 'videoSpace' || 'videoSpace' == 'videoSpace' && session_user_redis__.logshop.type == 2 &&session_user_redis__.logshop.webSite == 'qz'>
             <#if 'videoSpace' != 'goodsCategory' || (session_user_redis__.logshop.type == 2 && (session_user_redis__.logshop.webSite == 'hz' || session_user_redis__.logshop.webSite == 'qz'))>
             <li>
                 <a
@@ -334,7 +334,7 @@
                         style="color:#f40"
                         href="https://shop121675953.taobao.com"
                         target="_blank"
-                >广告位竞拍</a>
+                >广告竞拍/秒杀</a>
             </li>
             </#if>
             </#if>
