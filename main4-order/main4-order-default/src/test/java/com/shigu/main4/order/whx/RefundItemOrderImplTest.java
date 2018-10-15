@@ -95,6 +95,6 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sended(){
-        SpringBeanFactory.getBean(ItemOrder.class, 670L).sended("437039539484");
+        SpringBeanFactory.getBean(ItemOrder.class, 670L).sended(437039539484L,"");
     }
 }

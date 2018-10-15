@@ -431,6 +431,7 @@ public class OrderModelImpl implements OrderModel {
         DaifaTrade t = daifaTradeMapper.selectByPrimaryKey(trade.getDfTradeId());
         Map<String, Object> map = new HashMap<>();
         map.put("orderId", t.getTradeCode());
+        map.put("expressId",delivery.getExpressId());
         map.put("expressCode", delivery.getExpressCode());
         JSONObject obj = new JSONObject();
         obj.put("data", map);

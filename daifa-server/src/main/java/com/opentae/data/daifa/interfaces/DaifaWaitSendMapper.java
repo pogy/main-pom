@@ -1,15 +1,13 @@
 package com.opentae.data.daifa.interfaces;
 
+import com.opentae.core.mybatis.config.MyBatisRepository;
+import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.daifa.beans.DaifaWaitSend;
 import com.opentae.data.daifa.beans.DaifaWaitSendSimple;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
-import com.opentae.core.mybatis.mapper.Mapper;
-import com.opentae.core.mybatis.config.MyBatisRepository;
+import org.springframework.context.annotation.Scope;
 
-import java.util.Date;
 import java.util.List;
 
 /**
