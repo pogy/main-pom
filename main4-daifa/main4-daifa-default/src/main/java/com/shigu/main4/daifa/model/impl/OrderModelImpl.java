@@ -316,11 +316,16 @@ public class OrderModelImpl implements OrderModel {
             //查询待拿货表
             //修改代拿货表状态为已截单
             //为发消息，拿到待拿货的id集合
-            List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("tasks_id,df_order_id"));
-            List<Long> dfOrderIds;
+            List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("tasks_id,df_order_id,youhuo_date"));
+            List<Long> dfOrderIds=new ArrayList<>();
             if (daifaGgoodsTasks.size() > 0) {
+                for(DaifaGgoodsTasks t:daifaGgoodsTasks){
+                    if(new Integer(DateUtil.dateToString(new Date(),DateUtil.patternB))<=new Integer(DateUtil.dateToString(t.getYouhuoDate(),DateUtil.patternB))){
+                        return;
+                    }
+                    dfOrderIds.add(t.getDfOrderId());
+                }
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
-                dfOrderIds = BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
                 DaifaOrderExample orderExample = new DaifaOrderExample();
                 orderExample.createCriteria().andDfOrderIdIn(dfOrderIds);
                 DaifaOrder order = new DaifaOrder();
