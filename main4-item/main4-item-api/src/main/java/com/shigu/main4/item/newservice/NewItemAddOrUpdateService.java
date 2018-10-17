@@ -128,4 +128,11 @@ public interface NewItemAddOrUpdateService {
      */
     void addImgToSearch(Long goodsId,String webSite,String oldUrl,String url,int type);
 
+
+    /**
+     * 更新批发价格
+     * @param itemId 商品主键
+     */
+    Integer systemUpItemPiPrice(Long itemId,String piPrice,String webSite) throws ItemModifyException;
+
 }

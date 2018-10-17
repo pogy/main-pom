@@ -12,22 +12,22 @@ import java.util.List;
  */
 public class GoodsSkuVo implements Serializable{
 
-    private String color;
-    private List<GoodsSizeVo> sizeSku;
+    private String colorText;
+    private List<GoodsSizeVo> sizes;
 
-    public String getColor() {
-        return color;
+    public String getColorText() {
+        return colorText;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColorText(String colorText) {
+        this.colorText = colorText;
     }
 
-    public List<GoodsSizeVo> getSizeSku() {
-        return sizeSku;
+    public List<GoodsSizeVo> getSizes() {
+        return sizes;
     }
 
-    public void setSizeSku(List<GoodsSizeVo> sizeSku) {
-        this.sizeSku = sizeSku;
+    public void setSizes(List<GoodsSizeVo> sizes) {
+        this.sizes = sizes;
     }
 }

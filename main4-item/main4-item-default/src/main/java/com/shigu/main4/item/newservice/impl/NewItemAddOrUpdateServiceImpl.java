@@ -246,4 +246,10 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         vo.setInputPids("");
         vo.setInputStr("");
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer systemUpItemPiPrice(Long itemId, String piPrice, String webSite) throws ItemModifyException {
+        return super.systemUpItemPiPrice(itemId,piPrice,webSite);
+    }
 }

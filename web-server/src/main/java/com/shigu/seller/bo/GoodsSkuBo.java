@@ -13,7 +13,8 @@ public class GoodsSkuBo implements Serializable{
 
     private Long skuId;
     private String skuPrice;
-    private Integer skuInventory;
+    private Integer inventory;
+
 
     public Long getSkuId() {
         return skuId;
@@ -31,11 +32,11 @@ public class GoodsSkuBo implements Serializable{
         this.skuPrice = skuPrice;
     }
 
-    public Integer getSkuInventory() {
-        return skuInventory;
+    public Integer getInventory() {
+        return inventory;
     }
 
-    public void setSkuInventory(Integer skuInventory) {
-        this.skuInventory = skuInventory;
+    public void setInventory(Integer inventory) {
+        this.inventory = inventory;
     }
 }

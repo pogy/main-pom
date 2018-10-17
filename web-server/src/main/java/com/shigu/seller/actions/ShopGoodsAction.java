@@ -77,7 +77,7 @@ public class ShopGoodsAction {
         return "gys/goodsStyleManager";
     }
 
-    @RequestMapping("seller/selGoodssku")
+    @RequestMapping("seller/getSkuInfo")
     @ResponseBody
     public JSONObject selGoodssku(Long goodsId) throws JsonErrException {
         if (goodsId == null) {
@@ -86,19 +86,34 @@ public class ShopGoodsAction {
         List<GoodsSkuVo> voList = shopItemModService.selGoodsSku(goodsId);
         String skuList = JSONArray.toJSONString(voList);
         JSONObject obj= JsonResponseUtil.success();
-        obj.put("skuList",skuList);
+        obj.put("skuInfos",skuList);
         return  obj;
     }
 
-    @RequestMapping("seller/saveGoodssku")
+    @RequestMapping("seller/updateGoodsSkuInfo")
     @ResponseBody
-    public JSONObject selGoodssku(String date) throws JsonErrException {
-        if (StringUtil.isNull(date)) {
+    public JSONObject selGoodssku(String skus,Long goodsId,String piPrice) throws JsonErrException {
+        if (StringUtil.isNull(skus)) {
             throw new JsonErrException("缺少参数");
         }
-        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(date);
-        List<GoodsSkuBo> skuList = JSONArray.parseArray(json.getString("sku"),GoodsSkuBo.class);
-        shopItemModService.updateSkuPriceStock(skuList,json.getString("webSite"));
+        if (goodsId == null) {
+            throw new JsonErrException("缺少参数");
+        }
+//        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(skus);
+//        List<GoodsSkuBo> skuList = JSONArray.parseArray(json,GoodsSkuBo.class);
+        List<GoodsSkuBo> skuList = JSONArray.parseArray(skus,GoodsSkuBo.class);
+        String webSite = shopItemModService.selWebSiteByGoodsId(goodsId);
+        int b;
+        b = shopItemModService.updateSkuPriceStock(skuList,webSite);
+        if (b <= 0){
+            return JsonResponseUtil.error("更新失败");
+        }
+        if (!StringUtil.isNull(piPrice)) {
+            b = shopItemModService.updatePiPrice(piPrice, goodsId, webSite);
+            if (b <= 0) {
+                return JsonResponseUtil.error("更新失败");
+            }
+        }
         JSONObject obj= JsonResponseUtil.success();
         return  obj;
     }

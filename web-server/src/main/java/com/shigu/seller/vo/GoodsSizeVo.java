@@ -11,18 +11,11 @@ import java.io.Serializable;
  */
 public class GoodsSizeVo implements Serializable{
 
-    private String size;
+    private String sizeText;
     private Long skuId;
     private String skuPrice;
-    private Integer inventory;
+    private Integer num;
 
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
 
     public Long getSkuId() {
         return skuId;
@@ -40,11 +33,19 @@ public class GoodsSizeVo implements Serializable{
         this.skuPrice = skuPrice;
     }
 
-    public Integer getInventory() {
-        return inventory;
+    public String getSizeText() {
+        return sizeText;
     }
 
-    public void setInventory(Integer inventory) {
-        this.inventory = inventory;
+    public void setSizeText(String sizeText) {
+        this.sizeText = sizeText;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }
