@@ -148,17 +148,19 @@ public class ItemOrderImpl implements ItemOrder {
         ItemOrderLogistics logistics = new ItemOrderLogistics();
         logistics.setOid(oid == null ? -1L : oid);
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(logistics);
+        List<LogisticsVO> logisticsVOS = new ArrayList<>();
+        if (select.size()>0){
+            ItemOrderSub orderSub = new ItemOrderSub();
+            orderSub.setOid(oid == null ? -1L : oid);
+            Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
 
-        ItemOrderSub orderSub = new ItemOrderSub();
-        orderSub.setOid(oid);
-        Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
-
-        List<LogisticsVO> logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
-        logisticsVOS.forEach(logisticsVO -> {
-            if (longListMap.get(logisticsVO.getId()) != null) {
-                logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
-            }
-        });
+            logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
+            logisticsVOS.forEach(logisticsVO -> {
+                if (longListMap.get(logisticsVO.getId()) != null) {
+                    logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
+                }
+            });
+        }
         return logisticsVOS;
     }
 
@@ -361,11 +363,12 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    public void sended(String courierNumber) {
+    public void sended(Long companyId ,String courierNumber) {
         List<LogisticsVO> logisticsVOS = selLogisticses();
         if (logisticsVOS.size() == 1) {
             ItemOrderLogistics logistics = new ItemOrderLogistics();
             logistics.setId(logisticsVOS.get(0).getId());
+            if (companyId != null){logistics.setCompanyId(companyId);}
             logistics.setCourierNumber(courierNumber);
             itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
         }
@@ -474,12 +477,13 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    public void updateExpressCode(String courierNumber){
+    public void updateExpressCode(Long companyId,String courierNumber){
         List<LogisticsVO> logisticsVOS = selLogisticses();
         if (logisticsVOS.size() == 1) {
             ItemOrderLogistics logistics = new ItemOrderLogistics();
             logistics.setId(logisticsVOS.get(0).getId());
-            logistics.setCourierNumber(courierNumber);
+            if(courierNumber != null){logistics.setCourierNumber(courierNumber);}
+            if (companyId != null){logistics.setCompanyId(companyId);}
             itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
         }
     }

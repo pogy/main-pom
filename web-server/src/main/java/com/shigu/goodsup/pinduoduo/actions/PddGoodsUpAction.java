@@ -32,6 +32,8 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +67,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("pdd")
 public class PddGoodsUpAction {
+
+    private Logger logger = LoggerFactory.getLogger(PddGoodsUpAction.class);
 
     @Resource
     private UserBaseService userBaseService;
@@ -110,8 +114,14 @@ public class PddGoodsUpAction {
      */
     @RequestMapping("callback")
     public String jdCallback(String code, HttpServletRequest request, HttpSession session) throws Main4Exception {
-        String jsonStr = Opt3Des.decryptPlainData(code.replace(" ", "+"));
-        PddAuthInfoResponse pddAuthInfoResponse = com.alibaba.fastjson.JSONObject.parseObject(jsonStr, PddAuthInfoResponse.class);
+        PddAuthInfoResponse pddAuthInfoResponse = null;
+        try {
+            String jsonStr = Opt3Des.decryptPlainData(code.replace(" ", "+"));
+            pddAuthInfoResponse = com.alibaba.fastjson.JSONObject.parseObject(jsonStr, PddAuthInfoResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warn("拼多多授权失败 ->>> code = " + code );
+        }
         /******************登陆**********************/
         Subject currentUser = SecurityUtils.getSubject();
         String thirdUid = String.valueOf(pddAuthInfoResponse.getThirdUid());
@@ -122,11 +132,11 @@ public class PddGoodsUpAction {
         token.setSubKey(thirdUid);
         try {
             currentUser.login(token);
-            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(pddAuthInfoResponse.getThirdUserNick(),thirdUid, LoginFromType.PDD);
-            if (personalSession == null || personalSession.getUserId() == null) {
-                //还是检查一遍避免 字符串+null 出现
-                throw new Main4Exception("授权失败");
-            }
+//            PersonalSession personalSession = userBaseService.selUserForSessionByUserName(pddAuthInfoResponse.getThirdUserNick(),thirdUid, LoginFromType.PDD);
+//            if (personalSession == null || personalSession.getUserId() == null) {
+//                //还是检查一遍避免 字符串+null 出现
+//                throw new Main4Exception("授权失败");
+//            }
 
             //得到回调用地址
             String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
@@ -160,7 +170,8 @@ public class PddGoodsUpAction {
     @RequestMapping("publish")
     public String publish(PublishBO bo, HttpServletRequest request, HttpSession session, Model model) throws UnsupportedEncodingException, CustomException {
         if (bo.getGoodsId() == null) {
-            throw new CustomException("商品不存在");
+            model.addAttribute("errmsg","商品不存在");
+            return "pinduoduo/uperror";
         }
 
         //判断是否拼多多登陆
@@ -188,7 +199,9 @@ public class PddGoodsUpAction {
         /********************************屏蔽卖家用户使用********************************/
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.hasRole(RoleEnum.STORE.getValue())) {
-            throw new CustomException("档口不支持代理功能");
+//            throw new CustomException("档口不支持代理功能");
+            model.addAttribute("errmsg","档口不支持上传");
+            return "pinduoduo/uperror";
         }
 
         /********************************查上传记录********************************/
@@ -207,11 +220,13 @@ public class PddGoodsUpAction {
 
         Long xzCid = pddGoodsUpService.selCidByGoodsId(bo.getGoodsId());
         if (xzCid == null) {
-            throw new CustomException("未查询到类目信息");
+            model.addAttribute("errmsg","未查询到类目信息");
+            return "pinduoduo/uperror";
         }
         PddItemDetailVO pddItemDetailVO = pddGoodsUpService.goodsDetail(bo.getGoodsId());
         if (pddItemDetailVO == null) {
-            throw new CustomException("商品不存在");
+            model.addAttribute("errmsg","商品不存在");
+            return "pinduoduo/uperror";
         }
 
         /********************************查出类目信息********************************/
@@ -369,11 +384,17 @@ public class PddGoodsUpAction {
 
         //记录上次是用的运费模板
         redisIO.put(PDD_POST_TEMPLATE_PRE + ps.getUserId(),bo.getPostage_id());
-
         //添加上传记录
         try {
-            pddGoodsUpService.addUsedCatRecord(ps.getUserId(),bo.getCid());
             pddGoodsUpService.saveRecord(ps.getUserId(),bo.getCid(),mid,bo,response.getGoodsCommitId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.warn("添加拼多多上传记录失败 >>> [userId = " +ps.getUserId() +" cid = "
+                    +bo.getCid()+" goodsId ="+mid+"goodsCommitId ="+response.getGoodsCommitId()+"]");
+        }
+
+        try {
+            pddGoodsUpService.addUsedCatRecord(ps.getUserId(),bo.getCid());
         } catch (Exception e) {
             e.printStackTrace();
         }

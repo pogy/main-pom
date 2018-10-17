@@ -28,7 +28,6 @@ public enum DaifaSendMqEnum {
     markDown("mark_down","mark_down_","标记下架"),
     updateExpressCode("update_express_code","update_express_code_","更新快递单号"),
 
-
     ;
 
 

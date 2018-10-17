@@ -1,10 +1,13 @@
 package com.shigu.main4.daifa.process.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.daifa.beans.DaifaAfterMoneyConsult;
 import com.opentae.data.daifa.beans.DaifaAfterReceiveExpresStock;
 import com.opentae.data.daifa.beans.DaifaAfterSaleSub;
+import com.opentae.data.daifa.examples.DaifaAfterMoneyConsultExample;
 import com.opentae.data.daifa.examples.DaifaAfterReceiveExpresStockExample;
 import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
+import com.opentae.data.daifa.interfaces.DaifaAfterMoneyConsultMapper;
 import com.opentae.data.daifa.interfaces.DaifaAfterReceiveExpresStockMapper;
 import com.opentae.data.daifa.interfaces.DaifaAfterSaleSubMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -30,6 +33,9 @@ public class DaifaAfterProcessImpl implements DaifaAfterProcess {
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
 
+    @Autowired
+    private DaifaAfterMoneyConsultMapper daifaAfterMoneyConsultMapper;
+
     @Override
     public void runRefundFee() throws DaifaException {
 
@@ -42,8 +48,26 @@ public class DaifaAfterProcessImpl implements DaifaAfterProcess {
             orders = subList.stream().map(daifaAfterSaleSub -> daifaAfterSaleSub.getDfOrderId()).collect(Collectors.toList());
         }
 
-        List<Long> longs = daifaAfterSaleSubMapper.getRefundFeeOrder(date);
-        orders.addAll(longs);
+//        List<Long> longs = daifaAfterSaleSubMapper.getRefundFeeOrder(date);
+        DaifaAfterSaleSubExample saleSubExample = new DaifaAfterSaleSubExample();
+        saleSubExample.createCriteria().andAfterStatusEqualTo(7);
+        List<DaifaAfterSaleSub> saleSubList = daifaAfterSaleSubMapper.selectByExample(saleSubExample);
+        if (saleSubList.size()>0){
+            List<Long> longList = saleSubList.stream().map(DaifaAfterSaleSub::getRefundId).collect(Collectors.toList());
+            DaifaAfterMoneyConsultExample consultExample = new DaifaAfterMoneyConsultExample();
+            consultExample.createCriteria().andRefundIdIn(longList).andCreateTimeLessThanOrEqualTo(DateUtil.addMonthV1_8(-1));
+            List<DaifaAfterMoneyConsult> consults = daifaAfterMoneyConsultMapper.selectByExample(consultExample);
+            if (consults.size()>0){
+                List<Long> collect = consults.stream().map(DaifaAfterMoneyConsult::getRefundId).collect(Collectors.toList());
+                DaifaAfterSaleSubExample saleSubExample1 = new DaifaAfterSaleSubExample();
+                saleSubExample1.createCriteria().andRefundIdIn(collect);
+                List<Long> collect1 = daifaAfterSaleSubMapper.selectByExample(saleSubExample1).stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
+                if (collect1.size()>0){
+                    orders.addAll(collect1);
+                }
+            }
+        }
+
         if (orders.size() > 0) {
             DaifaAfterSaleSub saleSub = new DaifaAfterSaleSub();
             saleSub.setAfterStatus(9);

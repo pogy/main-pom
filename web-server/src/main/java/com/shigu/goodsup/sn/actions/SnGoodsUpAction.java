@@ -11,7 +11,6 @@ import com.shigu.component.shiro.enums.UserType;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.goodsup.jd.exceptions.CustomException;
-import com.shigu.goodsup.jd.service.JdUpItemService;
 import com.shigu.goodsup.sn.service.SnCategoryService;
 import com.shigu.goodsup.sn.service.SnUpItemService;
 import com.shigu.goodsup.sn.service.SnUserInfoService;
@@ -22,11 +21,8 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.HttpRequestUtil;
-import com.shigu.tools.JsonResponseUtil;
-import com.suning.api.entity.custom.CategoryredictGetResponse;
 import com.suning.api.entity.custom.NewbrandQueryResponse;
 import com.suning.api.entity.item.CategoryQueryResponse;
-import com.taobao.api.domain.Item;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -35,14 +31,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("sn")
@@ -60,8 +57,8 @@ public class SnGoodsUpAction {
     @Autowired
     private SnUserInfoService snUserInfoService;
 
-    @Autowired
-    private JdUpItemService jdUpItemService;
+    //@Autowired
+    //private JdUpItemService jdUpItemService;
 
     @Autowired
     private SnUpItemService snUpItemService;
@@ -166,12 +163,13 @@ public class SnGoodsUpAction {
             map.put("categoryCode", categoryCode);
             map.put("sn_yj_sn_session", ps);
             return "suning/sn";
-        } catch (
-                Exception e)
-
-        {
-            e.printStackTrace();
-            map.put("errmsg", "该商品暂不支持上传");
+        } catch (Exception e) {
+            if (e instanceof CustomException) {
+                map.put("errmsg", e.getMessage());
+            } else {
+                e.printStackTrace();
+                map.put("errmsg", "该商品暂不支持上传");
+            }
             return "suning/uperror";
         }
 

@@ -28,7 +28,7 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void sended() throws Exception {
-        order().sended("9730566657506");
+        order().sended(1L,"");
     }
 
 

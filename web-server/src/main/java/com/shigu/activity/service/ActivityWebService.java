@@ -14,6 +14,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.spread.enums.ActiveEnum;
 import com.shigu.main4.spread.service.ActiveShowService;
 import com.shigu.main4.spread.vo.*;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +41,6 @@ public class ActivityWebService {
     StrengthMemberService strengthMemberService;
     @Autowired
     private ShiguNewActivityMapper shiguNewActivityMapper;
-
-    @Autowired
-    private ShiguNewActiveParticipantsMapper shiguNewActiveParticipantsMapper;
     @Autowired
     MemberUserSubMapper memberUserSubMapper;
 
@@ -115,20 +113,7 @@ public class ActivityWebService {
         return activity;
     }
 
-    /**
-     * 获取最新的两期上传得现金活动
-     * @return
-     */
-    public List<ShiguNewActivity> getNewestActivityList() {
-        Date now = new Date();
-        ShiguNewActivityExample example = new ShiguNewActivityExample();
-        example.setStartIndex(0);
-        example.setEndIndex(1);
-        example.setOrderByClause("id desc");
-        ShiguNewActivityExample.Criteria criteria = example.createCriteria();
-        criteria.andStartTimeLessThanOrEqualTo(now).andIdLessThan(11L);
-        return shiguNewActivityMapper.selectByConditionList(example);
-    }
+
 
     /**
      * 上传得现金活动的中奖信息
@@ -137,71 +122,30 @@ public class ActivityWebService {
      */
     public void getActivityAwardInfo(Long userId, Model model) {
         List activeForShowVOList = new ArrayList<>();
-
-        List<NewActivityVO> newActivityVOS=newActivityProcess.selActivitys();
-        for(NewActivityVO newActivityVO:newActivityVOS){
-            ActiveForShowVO activeForShowVO = new ActiveForShowVO();
-            activeForShowVO.setActName(newActivityVO.getActName());
-            if("上传商品得现金活动".equals(newActivityVO.getActName())){
-                // 获取最新的两期活动
-                List<ShiguNewActivity> activityList = getNewestActivityList();
-                if (activityList != null && !activityList.isEmpty()) {
-                    List<ActivePhaseForShowVO> actPhaseList = new ArrayList<>();
-                    for (ShiguNewActivity activity : activityList) {
-                        ActivePhaseForShowVO activePhaseForShowVO = new ActivePhaseForShowVO();
-                        activePhaseForShowVO.setPhaseTime(DateFormatUtils.format(activity.getStartTime(), "yyyy年MM月dd日")
-                                + " —— " + DateFormatUtils.format(activity.getEndTime(), "yyyy年MM月dd日"));
-                        activePhaseForShowVO.setRuleList(Arrays.asList(activity.getActiveRules().split("\n")));
-                        UserPrizeForShowVO userPrizeForShowVO = new UserPrizeForShowVO();
-                        userPrizeForShowVO.setImg("http://imgs.571xz.net/super/80e6705a65e2ee0c0d6b7b9eb548b5dc.jpg");
-                        userPrizeForShowVO.setName("现金奖");
-                        userPrizeForShowVO.setPrize(Integer.parseInt(activity.getAmount()) / 100 + "元");
-                        if (activity.getEndTime().getTime() > System.currentTimeMillis()) {
-                            userPrizeForShowVO.setState(1); // 等待抽奖
-                        } else {
-                            // 获取用户的中奖信息
-                            ShiguNewActiveParticipants query = new ShiguNewActiveParticipants();
-                            query.setNewActiveId(activity.getId());
-                            query.setMemberId(userId);
-                            ShiguNewActiveParticipants participants = shiguNewActiveParticipantsMapper.selectOne(query);
-                            if (participants == null) {
-                                userPrizeForShowVO.setState(2); // 未中奖
-                            } else {
-                                if (participants.getWinningStatus() == 3) {
-                                    userPrizeForShowVO.setImg("http://imgs.571xz.net/super/fdc2e13ff182ea915032cb2da1b0de74.jpg");
-                                    userPrizeForShowVO.setState(3); // 已中奖
-                                    userPrizeForShowVO.setTakedIs(false); // 未领奖
-                                    userPrizeForShowVO.setTakeCode(participants.getWinningCode());
-                                } else if (participants.getWinningStatus() == 4) {
-                                    userPrizeForShowVO.setImg("http://imgs.571xz.net/super/fdc2e13ff182ea915032cb2da1b0de74.jpg");
-                                    userPrizeForShowVO.setState(3); // 已中奖
-                                    userPrizeForShowVO.setTakedIs(true); // 已领奖
-                                } else {
-                                    userPrizeForShowVO.setState(2); // 未中奖
-                                }
-                            }
-                        }
-                        List<UserPrizeForShowVO> awardList = new ArrayList<>();
-                        awardList.add(userPrizeForShowVO);
-                        activePhaseForShowVO.setAwardList(awardList);
-                        actPhaseList.add(activePhaseForShowVO);
-                    }
-                    activeForShowVO.setActPhaseList(actPhaseList);
-                    activeForShowVOList.add(activeForShowVO);
+        List<NewActivityVO> newActivityVOS = newActivityProcess.selActivitys();
+        for (NewActivityVO newActivityVO : newActivityVOS) {
+            switch (newActivityVO.getActName()) {
+                case "上传商品得现金活动": {
+                    SpringBeanFactory.getBean("tae_activityForShowCashImpl", ActivityForShowInterface.class)
+                            .add(userId, activeForShowVOList, newActivityVO);
+                    break;
                 }
-            }else{
-                MemberUserSub sub=new MemberUserSub();
-                sub.setAccountType(3);
-                sub.setUserId(userId);
-                List<MemberUserSub> subs=memberUserSubMapper.select(sub);
-                String nick=null;
-                if(subs.size()!=0){
-                    nick=subs.get(0).getSubUserName();
+                case "实力会员招募" :{
+                    SpringBeanFactory.getBean("tae_activityForShowStrengthMemberImpl", ActivityForShowInterface.class)
+                            .add(userId, activeForShowVOList, newActivityVO);
+                    break;
                 }
-                activeForShowVOList.addAll(strengthMemberService.activityAwards(nick,newActivityVO.getActId()));
+                case "沧州商品上传抽奖":{
+                    SpringBeanFactory.getBean("tae_activityForShowHotGoodsDrawImpl", ActivityForShowInterface.class)
+                            .add(userId, activeForShowVOList, newActivityVO);
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
         }
-        model.addAttribute("actList",activeForShowVOList);
+        model.addAttribute("actList", activeForShowVOList);
     }
 
 }

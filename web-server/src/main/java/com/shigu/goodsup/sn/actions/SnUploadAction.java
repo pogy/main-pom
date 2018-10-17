@@ -16,7 +16,17 @@ import com.shigu.goodsup.sn.util.EnumUtil;
 import com.shigu.goodsup.sn.vo.SnPageItem;
 import com.shigu.goodsup.sn.vo.SnPropsVo;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.item.services.ShowForCdnService;
+import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
+import com.shigu.main4.monitor.services.ItemUpRecordService;
+import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.vo.ShopBase;
+import com.shigu.main4.vo.StoreRelation;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -40,6 +50,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +65,14 @@ public class SnUploadAction {
     SnUpItemService snUpItemService;
     @Autowired
     SnUploadService snUploadService;
+    @Autowired
+    ItemUpRecordService itemUpRecordService;
+    @Autowired
+    ShowForCdnService showForCdnService;
+    @Autowired
+    StoreRelationService storeRelationService;
+    @Autowired
+    ShopBaseService shopBaseService;
 
     private OssIO ossIO;
 
@@ -126,7 +145,48 @@ public class SnUploadAction {
 
         map.put("numIid", numIid);
         map.put("errorMsg", errorMsg);
+        addUploadRecord(bo.getMid(),ps);
         return "suning/parts/success";
+    }
+
+    private void addUploadRecord(Long id, PersonalSession personalSession) {
+        CdnItem cdnItem = showForCdnService.selItemById(id);
+        StoreRelation storeRelation = storeRelationService.selRelationById(cdnItem.getShopId());
+        ShopBase shopBase = shopBaseService.shopBaseForUpdate(cdnItem.getShopId());
+        ItemUpRecordVO record = new ItemUpRecordVO();
+        record.setFenUserId(personalSession.getUserId());
+        record.setFenUserNick(personalSession.getUserNick());
+        record.setFenPrice(cdnItem.getPiPrice());
+        record.setSupperPiPrice(cdnItem.getPiPrice());
+        record.setSupperPrice(cdnItem.getPrice());
+        record.setStatus(0L);
+        record.setFenGoodsName(cdnItem.getTitle());
+        record.setSupperGoodsId(id);
+        record.setSupperStoreId(cdnItem.getShopId());
+        record.setSupperMarketId(cdnItem.getMarketId());
+        record.setSupperNumiid(cdnItem.getTbNumIid());
+        record.setCid(cdnItem.getCid());
+        if (!cdnItem.getImgUrl().isEmpty()) {
+            String img = cdnItem.getImgUrl().get(0);
+            record.setSupperImage(img);
+            record.setFenImage(img);
+        }
+        record.setFlag(GoodsUploadFlagEnum.SN.getFlag());
+        record.setSupperGoodsName(cdnItem.getTitle());
+        record.setWebSite(cdnItem.getWebSite());
+        record.setDaiTime(DateUtil.dateToString(new Date(), DateUtil.patternD));
+        record.setFenNumiid(cdnItem.getTbNumIid());
+        if (storeRelation != null) {
+            record.setSupperServers("退现金,包换款");
+            record.setSupperStorenum(storeRelation.getStoreNum());
+            record.setSupperImww(storeRelation.getImWw());
+            record.setSupperTelephone(storeRelation.getTelephone());
+            record.setSupperTaobaoUrl(shopBase.getTaobaoUrl());
+            record.setSupperMarket(storeRelation.getMarketName());
+            record.setSupperStoreName(shopBase.getShopName());
+            record.setSupperQq(storeRelation.getImQq());
+        }
+        itemUpRecordService.addItemUpRecord(record);
     }
 
 }

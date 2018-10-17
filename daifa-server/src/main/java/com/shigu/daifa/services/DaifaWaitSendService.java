@@ -66,9 +66,7 @@ public class DaifaWaitSendService {
     public List<DaifaPostCustomer> selPost() {
         DaifaPostCustomerExample example = new DaifaPostCustomerExample();
         example.setOrderByClause("express_id desc");
-        example.setStartIndex(0);
-        example.setEndIndex(20);
-        List<DaifaPostCustomer> list = daifaPostCustomerMapper.selectFieldsByConditionList(example, "express_id,express");
+        List<DaifaPostCustomer> list = daifaPostCustomerMapper.selectFieldsByExample(example, "post_customer_id,express_id,express");
         Map<Long, DaifaPostCustomer> customerMap = BeanMapper.list2Map(list, "expressId", Long.class);
         List<DaifaPostCustomer> postCustomerList = new ArrayList<>();
         for (Long key : customerMap.keySet()) {
