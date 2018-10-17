@@ -2,6 +2,7 @@ package com.shigu.search.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.storeservices.SearchCategoryService;
@@ -221,9 +222,11 @@ public class GoodsSearchAction {
             Set<String> keywordSet = new HashSet<>();
             for (GoodsInSearch goods : goodsList) {
                 Pattern p = Pattern.compile("\\<em>(.*?)\\</em>");//正则表达式，取=和|之间的字符串，不包括=和|
-                Matcher m = p.matcher(goods.getHighLightTitle());
-                while(m.find()) {
-                    keywordSet.add(m.group(1));
+                if(!StringUtil.isNull(goods.getHighLightTitle()) && goods.getHighLightTitle().contains("<em>")) {
+                    Matcher m = p.matcher(goods.getHighLightTitle());
+                    while (m.find()) {
+                        keywordSet.add(m.group(1));
+                    }
                 }
             }
             for (String keyword : keywordSet) {
