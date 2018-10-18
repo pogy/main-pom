@@ -72,6 +72,24 @@ public class CdnShopInfoVO {
      * 店铺类型
      */
     private Integer type;
+    private Integer isWx;
+    private Integer isZx;
+
+    public Integer getIsWx() {
+        return isWx;
+    }
+
+    public void setIsWx(Integer isWx) {
+        this.isWx = isWx;
+    }
+
+    public Integer getIsZx() {
+        return isZx;
+    }
+
+    public void setIsZx(Integer isZx) {
+        this.isZx = isZx;
+    }
 
     public Long getMarketId() {
         return marketId;

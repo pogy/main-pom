@@ -30,10 +30,7 @@ import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.storeservices.*;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.vo.HomeCateMenu;
-import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.main4.vo.ShopBase;
-import com.shigu.main4.vo.StoreRelation;
+import com.shigu.main4.vo.*;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.TodayNewGoodsService;
@@ -1026,6 +1023,13 @@ public class CdnAction {
             if (shopShowVO.getItemList() != null) {
                 shopShowVO.getItemList().getContent().forEach(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getGoodsNo())));
             }
+            List<Long> longs = new ArrayList<>();
+            longs.add(bo.getId());
+            List<LinceseVo> voList = shopLicenseService.selShopLIcenseByIds(longs);
+            if (voList.size()>0){
+                shopShowVO.setIsWx(voList.get(0).getIsWx());
+                shopShowVO.setIsWx(voList.get(0).getIsZx());
+            }
             model.addAttribute("vo", shopShowVO);
             if ("kx".equalsIgnoreCase(webSite)) {
                 return "cdn/xieShopDown";
@@ -1394,6 +1398,19 @@ public class CdnAction {
         goods.setDescHtml(KeyWordsUtil.duleKeyWords(goods.getDescHtml()));
         dzhtml = KeyWordsUtil.duleKeyWords(dzhtml);
         see.forEach(cdnSimpleGoodsVO -> cdnSimpleGoodsVO.setTitle(KeyWordsUtil.duleKeyWords(cdnSimpleGoodsVO.getTitle())));
+
+
+            List<Long> longs = new ArrayList<>();
+            longs.add(goods.getShopId());
+            List<LinceseVo> voList = shopLicenseService.selShopLIcenseByIds(longs);
+            if (voList.size()>0){
+                if (voList.get(0).getIsWx() == 0){
+                    shop.setIsWx(0);
+                    shop.setMobile(shop.getMobile()+"（微信同号）");
+                }
+                shop.setIsZx(voList.get(0).getIsZx());
+            }
+
 
         model.addAttribute("webSite", goods.getWebSite());
         model.addAttribute("shopInfo", shop);

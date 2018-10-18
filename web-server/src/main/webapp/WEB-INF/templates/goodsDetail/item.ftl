@@ -75,6 +75,7 @@
                     沧州
                 </#if> - ${shopInfo.marketName!}${shopInfo.floor!}</li>
             <li><label>电话：</label>${shopInfo.mobile!}</li>
+            <li><label>发货咨询：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
             <li><label>开店时间：</label>${shopInfo.openTime!}</li>
         </ul>
