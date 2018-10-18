@@ -88,7 +88,7 @@ public class DaifaCustomerAction {
 
     @RequestMapping("daifa/toNotTake")
     @ResponseBody
-    public JSONObject toNotTake(Long childOrderId){
+    public synchronized JSONObject toNotTake(Long childOrderId){
         if(childOrderId == null){
             return JsonResponseUtil.error("单号不能空");
         }

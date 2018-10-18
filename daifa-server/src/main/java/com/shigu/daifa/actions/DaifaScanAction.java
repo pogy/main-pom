@@ -59,7 +59,7 @@ public class DaifaScanAction {
      */
     @RequestMapping("daifa/doScanBarCode")
     @ResponseBody
-    public JSONObject doScanBarCode(String barCode) throws DaifaException {
+    public synchronized JSONObject doScanBarCode(String barCode) throws DaifaException {
 
         Long dfOrderId;
         try {

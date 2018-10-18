@@ -77,7 +77,7 @@ public class DaifaAllocatedAction {
      */
     @RequestMapping("daifa/setIsGetGoodsJson")
     @ResponseBody
-    public JSONObject setIsGetGoodsJson(Integer type,Long takeGoodsId) throws DaifaException {
+    public synchronized JSONObject setIsGetGoodsJson(Integer type,Long takeGoodsId) throws DaifaException {
         if (type == null||takeGoodsId == null) {
             throw new DaifaException("缺少参数",DaifaException.DEBUG);
         }
@@ -123,7 +123,7 @@ public class DaifaAllocatedAction {
      */
     @RequestMapping("daifa/printGoodsTabJson")
     @ResponseBody
-    public JSONObject printGoodsTabJson(PrintGoodsTagBO bo) throws DaifaException {
+    public synchronized JSONObject printGoodsTabJson(PrintGoodsTagBO bo) throws DaifaException {
 
         if (bo.getType() == null) {
             throw new DaifaException("缺少参数",DaifaException.DEBUG);
