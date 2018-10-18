@@ -104,7 +104,7 @@ public class ShopGoodsAction {
         List<GoodsSkuBo> skuList = JSONArray.parseArray(skus,GoodsSkuBo.class);
         String webSite = shopItemModService.selWebSiteByGoodsId(goodsId);
         int b;
-        b = shopItemModService.updateSkuPriceStock(skuList,webSite);
+        b = shopItemModService.updateSkuPriceStock(skuList,webSite,goodsId);
         if (b <= 0){
             return JsonResponseUtil.error("更新失败");
         }

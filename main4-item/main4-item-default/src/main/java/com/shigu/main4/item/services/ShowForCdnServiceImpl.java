@@ -10,6 +10,7 @@ import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.model.ItemSkuModel;
 import com.shigu.main4.item.services.utils.SkuCheckUtil;
 import com.shigu.main4.item.tools.CacheUtil;
+import com.shigu.main4.item.tools.ItemCache;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.item.vo.NormalProp;
 import com.shigu.main4.item.vo.SaleProp;
@@ -78,6 +79,9 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
     private SoldoutItemSelector soldoutItemSelector = new SoldoutItemSelector();
 
     private static final String ITEM_DUBBO_CACHE_SYNCHRONIZED = "item_dubbo_cache_synchronized";
+
+    @Autowired
+    private ItemCache itemCache;
 
     /**
      * 按商品ID查商品
@@ -196,6 +200,8 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                 break;
             }
         }
+        if (skus != null && skus.get(0) != null && !StringUtil.isNull(skus.get(0).getGoodsId()))
+           itemCache.cleanItemCache(skus.get(0).getGoodsId());
         return b;
     }
 

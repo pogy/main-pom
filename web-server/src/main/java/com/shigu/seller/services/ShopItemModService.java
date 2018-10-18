@@ -569,11 +569,12 @@ public class ShopItemModService {
         return voList;
     }
 
-    public Integer updateSkuPriceStock(List<GoodsSkuBo> boList , String webSite){
+    public Integer updateSkuPriceStock(List<GoodsSkuBo> boList , String webSite,Long goodsId){
         List<SingleSkuVO> skuList = new ArrayList<>();
         for (GoodsSkuBo bo : boList) {
             SingleSkuVO sku = new SingleSkuVO();
             sku.setSkuId(bo.getSkuId());
+            sku.setGoodsId(goodsId);
             sku.setPriceString(bo.getSkuPrice());
             sku.setStockNum(bo.getInventory());
             skuList.add(sku);
