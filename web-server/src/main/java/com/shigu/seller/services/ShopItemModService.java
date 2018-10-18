@@ -554,8 +554,15 @@ public class ShopItemModService {
                     System.out.println(vo.getColorText()+"   "+sizeVo.getSizeText()+"   "+sizeVo.getSkuId());
                 }
             }
-            List<GoodsSizeVo> sizes = sizeList.stream().filter(goodsSizeVo -> CdnService.SIZE_SORT.get(goodsSizeVo.getSizeText().toUpperCase()) != null).collect(Collectors.toList());
-            sizes.sort(Comparator.comparingInt(o -> CdnService.SIZE_SORT.get(o.getSizeText().toUpperCase())));
+            List<GoodsSizeVo> sizes  = new ArrayList<>();
+            List<GoodsSizeVo> haveSizes = sizeList.stream().filter(goodsSizeVo -> CdnService.SIZE_SORT.get(goodsSizeVo.getSizeText().toUpperCase()) != null).collect(Collectors.toList());
+            haveSizes.sort(Comparator.comparingInt(o -> CdnService.SIZE_SORT.get(o.getSizeText().toUpperCase())));
+
+            List<GoodsSizeVo> noSizes =sizeList.stream().filter(goodsSizeVo -> CdnService.SIZE_SORT.get(goodsSizeVo.getSizeText().toUpperCase()) == null).collect(Collectors.toList());
+            noSizes.sort(Comparator.comparing(GoodsSizeVo::getSizeText));
+
+            sizes.addAll(haveSizes);
+            sizes.addAll(noSizes);
             vo.setSizes(sizes);
             voList.add(vo);
         }
