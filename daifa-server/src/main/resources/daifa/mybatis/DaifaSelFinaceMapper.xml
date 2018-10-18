@@ -319,7 +319,7 @@
     <select id="selExpressFee" resultType="java.lang.String">
         select sum(express_fee) from(
           SELECT
-            SUM( express_fee )
+            express_fee
           FROM
             daifa_send
           WHERE
@@ -327,7 +327,7 @@
             AND seller_id = ${sellerId}
             AND create_date = ${time}
           group by df_trade_id
-        }
+        )t
     </select>
 
     <select id="selTodayRefundFee" resultType="java.lang.String">
