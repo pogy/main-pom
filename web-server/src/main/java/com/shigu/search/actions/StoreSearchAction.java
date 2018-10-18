@@ -1,7 +1,9 @@
 package com.shigu.search.actions;
 
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.storeservices.SearchCategoryService;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.search.bo.StorenumBO;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.services.StoreSelFromEsService;
@@ -26,6 +28,12 @@ public class StoreSearchAction {
 
     @Autowired
     SearchCategoryService searchCategoryService;
+
+    @Autowired
+    RedisIO redisIO;
+
+    private static String SHIGU_SHOP_SEARCH_KEYWORD = "shigu_shop_search_keyword";
+
     /**
      * 档口搜索
      * @return
@@ -39,6 +47,8 @@ public class StoreSearchAction {
         if (bo.getKeyword() == null) {
             bo.setKeyword("");
         }
+        if (!StringUtil.isNull(bo.getKeyword()))
+            redisIO.rpush(SHIGU_SHOP_SEARCH_KEYWORD,bo.getKeyword());
         model.addAttribute("query",bo);
         model.addAttribute("markets",categoryInSearchService.selMarkets(bo.getWebSite()));
         ShiguPager<StoreInSearch> pager=storeSelFromEsService.searchStore(bo);
