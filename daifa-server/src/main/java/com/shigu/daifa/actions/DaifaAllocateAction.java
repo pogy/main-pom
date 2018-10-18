@@ -127,7 +127,7 @@ public class DaifaAllocateAction {
      */
     @RequestMapping("daifa/submitAllocation")
     @ResponseBody
-    public JSONObject submitAllocation(Long userId,String type,String ids) throws DaifaException {
+    public synchronized JSONObject submitAllocation(Long userId,String type,String ids) throws DaifaException {
 
         return daifaAllocateService.submitAllocation(userId,type,ids);
     }

@@ -290,39 +290,44 @@
     </select>
 
     <select id="selTodayGoodsFee" resultType="java.lang.String">
-        SELECT
-        SUM( single_pi_price * goods_num )
-        FROM
-        daifa_send_order
-        WHERE
-        send_status = 2
-        AND seller_id = ${sellerId}
-        AND create_date = ${time}
+        select sum(single_pi_price) from(
+          select DISTINCT df_order_id,single_pi_price
+          from daifa_send_order
+          where send_status=2
+          AND seller_id = ${sellerId}
+          AND create_date = ${time}
+        )t
     </select>
 
     <select id="selTodayServerFee" resultType="java.lang.String">
-        SELECT
-        SUM( t1.services_fee )
-        FROM
-        daifa_trade t1,
-        daifa_send t2
-        WHERE
-        t1.df_trade_id = t2.df_trade_id
-        AND t2.send_status = 2
-        AND t2.seller_id = ${sellerId}
-        AND t2.create_date = ${time}
+        select sum(services_fee) from(
+            SELECT
+              t1.services_fee
+            FROM
+              daifa_trade t1,
+              daifa_send t2
+            WHERE
+              t1.df_trade_id = t2.df_trade_id
+              AND t2.send_status = 2
+              AND t2.seller_id = ${sellerId}
+              AND t2.create_date = ${time}
+            group by t1.df_trade_id
+        )t
     </select>
 
 
     <select id="selExpressFee" resultType="java.lang.String">
-        SELECT
-        SUM( express_fee )
-        FROM
-        daifa_send
-        WHERE
-        send_status = 2
-        AND seller_id = ${sellerId}
-        AND create_date = ${time}
+        select sum(express_fee) from(
+          SELECT
+            express_fee
+          FROM
+            daifa_send
+          WHERE
+            send_status = 2
+            AND seller_id = ${sellerId}
+            AND create_date = ${time}
+          group by df_trade_id
+        )t
     </select>
 
     <select id="selTodayRefundFee" resultType="java.lang.String">
