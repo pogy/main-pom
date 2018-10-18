@@ -250,7 +250,8 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer systemUpItemPiPrice(Long itemId, String piPrice, String webSite) throws ItemModifyException {
+        int b = super.systemUpItemPiPrice(itemId,piPrice,webSite);
         super.cleanItemCache(itemId);
-        return super.systemUpItemPiPrice(itemId,piPrice,webSite);
+        return b;
     }
 }

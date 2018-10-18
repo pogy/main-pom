@@ -200,7 +200,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
                 break;
             }
         }
-        if (skus != null && skus.get(0) != null && !StringUtil.isNull(skus.get(0).getGoodsId()))
+        if (skus != null && skus.get(0) != null && skus.get(0).getGoodsId() != null)
            itemCache.cleanItemCache(skus.get(0).getGoodsId());
         return b;
     }
