@@ -11,7 +11,7 @@
     </a>
     <div class="goodsInfo">
         <span class="fcF40 yahei fs14">&yen;${goods.piprice!}</span>
-        <a href="${mainHost!}/shop.htm?id=${goods.shopId!}" target="_blank" class="fr">${goods.marketName!} ${goods.shopNo!}</a>
+        <a href="${mainHost!}/shop.htm?id=${goods.shopId!}" target="_blank" class="fr" title="${goods.marketName!} ${goods.shopNo!}">${goods.marketName!} ${goods.shopNo!}</a>
     </div>
 </div>
         </#list>
