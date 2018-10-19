@@ -63,16 +63,18 @@ public class ShopShowVO {
      */
     private Long starNum;
 
-    private Integer isWx;
+    private Integer existWx;
     private Integer isZx;
 
-    public Integer getIsWx() {
-        return isWx;
+
+    public Integer getExistWx() {
+        return existWx;
     }
 
-    public void setIsWx(Integer isWx) {
-        this.isWx = isWx;
+    public void setExistWx(Integer existWx) {
+        this.existWx = existWx;
     }
+
 
     public Integer getIsZx() {
         return isZx;

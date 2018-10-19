@@ -72,15 +72,24 @@ public class CdnShopInfoVO {
      * 店铺类型
      */
     private Integer type;
-    private Integer isWx;
+    private Integer existWx;
     private Integer isZx;
+    private String advisoryMobile;
 
-    public Integer getIsWx() {
-        return isWx;
+    public String getAdvisoryMobile() {
+        return advisoryMobile;
     }
 
-    public void setIsWx(Integer isWx) {
-        this.isWx = isWx;
+    public void setAdvisoryMobile(String advisoryMobile) {
+        this.advisoryMobile = advisoryMobile;
+    }
+
+    public Integer getExistWx() {
+        return existWx;
+    }
+
+    public void setExistWx(Integer existWx) {
+        this.existWx = existWx;
     }
 
     public Integer getIsZx() {

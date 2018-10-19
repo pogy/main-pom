@@ -49,6 +49,15 @@ public class StoreRelation implements Serializable{
      * @return
      */
     private Long marketId;
+    private String advisoryMobile;
+
+    public String getAdvisoryMobile() {
+        return advisoryMobile;
+    }
+
+    public void setAdvisoryMobile(String advisoryMobile) {
+        this.advisoryMobile = advisoryMobile;
+    }
 
     public Long getMarketId() {
         return marketId;
