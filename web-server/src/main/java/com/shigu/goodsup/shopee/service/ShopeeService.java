@@ -1,11 +1,16 @@
 package com.shigu.goodsup.shopee.service;
 
 import com.shigu.upload.shopee.sdk.ShopeeClient;
+import com.shigu.upload.shopee.sdk.domain.ShopeeLogistic;
 import com.shigu.upload.shopee.sdk.request.ShopeeGetLogisticsRequest;
 import com.shigu.upload.shopee.sdk.request.ShopeeGetShopInfoRequest;
 import com.shigu.upload.shopee.sdk.response.ShopeeGetLogisticsResponse;
 import com.shigu.upload.shopee.sdk.response.ShopeeGetShopInfoResponse;
+import com.taobao.api.domain.DeliveryTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类名：ShopeeService
@@ -30,18 +35,29 @@ public class ShopeeService {
         return client.execute(request);
     }
 
-    public void registerShopeeUser(ShopeeGetShopInfoResponse shopInfo) {
-
+    public void refreshShopeeUser(ShopeeGetShopInfoResponse shopInfo) {
+        // todo: 记录和刷新虾皮用户信息
     }
 
-    public void shopLogistics(Long shopId) {
+    public List<DeliveryTemplate> shopLogistics(Long shopId) {
+        List<DeliveryTemplate> result = new ArrayList<>();
         ShopeeGetLogisticsRequest request = new ShopeeGetLogisticsRequest();
         request.setShopId(shopId);
         ShopeeGetLogisticsResponse response = client.execute(request);
-        if (!response.isSuccess()) {
+        if (response.isSuccess()) {
+            List<ShopeeLogistic> logistics = response.getLogistics();
+            if (logistics != null && logistics.size() > 0) {
+                for (ShopeeLogistic logistic : logistics) {
+                    if (logistic.getEnabled()!=null && logistic.getEnabled()) {
+                        DeliveryTemplate template = new DeliveryTemplate();
+                        template.setTemplateId(logistic.getLogisticId());
+                        template.setName(logistic.getLogisticName());
+                        result.add(template);
+                    }
 
-        } else {
-            response.getLogistics();
+                }
+            }
         }
+        return result;
     }
 }

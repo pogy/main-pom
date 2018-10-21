@@ -15,7 +15,7 @@ public enum LoginFromType {
     JD("京东","jd",8),
     PDD("拼多多","pdd",9),
     SN("苏宁","sn",10),
-
+    SHOPEE("虾皮","shopee",11),
     ;
 
 
