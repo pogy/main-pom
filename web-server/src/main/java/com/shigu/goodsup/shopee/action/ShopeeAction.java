@@ -74,6 +74,5 @@ public class ShopeeAction {
         } else {
             return pageErrAction.pageErr("获取用户信息失败", model);
         }
-
     }
 }

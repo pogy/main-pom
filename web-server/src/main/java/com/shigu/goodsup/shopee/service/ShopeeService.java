@@ -1,5 +1,6 @@
 package com.shigu.goodsup.shopee.service;
 
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.upload.shopee.sdk.ShopeeClient;
 import com.shigu.upload.shopee.sdk.domain.ShopeeLogistic;
 import com.shigu.upload.shopee.sdk.request.ShopeeGetLogisticsRequest;
@@ -7,6 +8,7 @@ import com.shigu.upload.shopee.sdk.request.ShopeeGetShopInfoRequest;
 import com.shigu.upload.shopee.sdk.response.ShopeeGetLogisticsResponse;
 import com.shigu.upload.shopee.sdk.response.ShopeeGetShopInfoResponse;
 import com.taobao.api.domain.DeliveryTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,6 +27,11 @@ public class ShopeeService {
 
     private ShopeeClient client;
 
+    @Autowired
+    public RedisIO redisIO;
+
+    private final String logisticCachePre = "SHOPEE_SHOP_LOGISTICS_CACHE_";
+
     public String authorUrl(String redirectUrl) {
         return client.authorizationUrl(redirectUrl);
     }
@@ -40,7 +47,12 @@ public class ShopeeService {
     }
 
     public List<DeliveryTemplate> shopLogistics(Long shopId) {
-        List<DeliveryTemplate> result = new ArrayList<>();
+        String cacheKey = logisticCachePre + shopId;
+        List<DeliveryTemplate> result = redisIO.getList(cacheKey, DeliveryTemplate.class);
+        if (result != null && result.size() > 0) {
+            return result;
+        }
+        result = new ArrayList<>();
         ShopeeGetLogisticsRequest request = new ShopeeGetLogisticsRequest();
         request.setShopId(shopId);
         ShopeeGetLogisticsResponse response = client.execute(request);
@@ -58,6 +70,8 @@ public class ShopeeService {
                 }
             }
         }
+        // 物流模板缓存20分钟
+        redisIO.putTemp(cacheKey, result, 60 * 20);
         return result;
     }
 }
