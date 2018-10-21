@@ -69,18 +69,6 @@
                 <h1>商品信息</h1>
                 <ul>
                     <li>
-                        <label class="label-title">[包装]长：</label>
-                        <span><em>*</em><input type="text" id="length" name="length" class="text text-short notBeEmpty" value="" data-error-title="包装长度"> mm</span>
-                    </li>
-                    <li>
-                        <label class="label-title">[包装]宽：</label>
-                        <span><em>*</em><input type="text" id="width" name="width" class="text text-short notBeEmpty" value="" data-error-title="包装宽度"> mm</span>
-                    </li>
-                    <li>
-                        <label class="label-title">[包装]高：</label>
-                        <span><em>*</em><input type="text" id="height" name="height" class="text text-short notBeEmpty" value="" data-error-title="包装高度"> mm</span>
-                    </li>
-                    <li>
                         <label class="label-title">商品毛重：</label>
                         <span><em>*</em><input type="text" id="weight" name="weight" class="text text-short notBeEmpty" value="" data-error-title="包装重量"> 公斤</span>
                     </li>
