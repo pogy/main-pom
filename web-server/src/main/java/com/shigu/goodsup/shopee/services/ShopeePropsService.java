@@ -1,8 +1,10 @@
 package com.shigu.goodsup.shopee.services;
 
 import com.opentae.data.mall.beans.ShiguShopeeCat;
+import com.opentae.data.mall.examples.ShiguShopeeCatExample;
 import com.opentae.data.mall.interfaces.ShiguShopeeCatMapper;
 import com.shigu.goodsup.shopee.utils.ZHConverter;
+import com.shigu.goodsup.shopee.vo.CategoryVO;
 import com.shigu.tb.finder.exceptions.TbPropException;
 import com.shigu.tb.finder.services.TbPropsService;
 import com.shigu.tb.finder.vo.PropType;
@@ -97,5 +99,27 @@ public class ShopeePropsService {
                 selCname(shiguShopeeCat.getParentCid(),cnames);
             }
         }
+    }
+
+    public List<CategoryVO> selCate(Long cid){
+        List<ShiguShopeeCat> shiguShopeeCats;
+        if(cid==null||cid<=0L){
+            List<Long> cids=Arrays.asList(63L,62L,1859L,64L,1837L,65L,2580L);
+            ShiguShopeeCatExample shiguShopeeCatExample=new ShiguShopeeCatExample();
+            shiguShopeeCatExample.createCriteria().andCidIn(cids);
+            shiguShopeeCats=shiguShopeeCatMapper.selectByExample(shiguShopeeCatExample);
+            shiguShopeeCats.sort(Comparator.comparingInt(shiguShopeeCat -> cids.indexOf(shiguShopeeCat.getCid())));
+        }else{
+            ShiguShopeeCatExample shiguShopeeCatExample=new ShiguShopeeCatExample();
+            shiguShopeeCatExample.createCriteria().andParentCidEqualTo(cid);
+            shiguShopeeCats=shiguShopeeCatMapper.selectByExample(shiguShopeeCatExample);
+        }
+        return shiguShopeeCats.stream().map(shiguShopeeCat -> {
+            CategoryVO vo=new CategoryVO();
+            vo.setCid(shiguShopeeCat.getCid());
+            vo.setText(shiguShopeeCat.getCname());
+            vo.setHasChild(shiguShopeeCat.getIsParent());
+            return vo;
+        }).collect(Collectors.toList());
     }
 }

@@ -6,11 +6,15 @@ import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.shopee.services.ShopeePropsService;
 import com.shigu.goodsup.shopee.vo.ShopeeShowDataVO;
 import com.shigu.tb.finder.exceptions.TbPropException;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.nio.charset.Charset;
 
@@ -21,17 +25,18 @@ public class ShopeePublishAction {
     @Autowired
     ShopeePropsService shopeePropsService;
     private static final Logger logger = LoggerFactory.getLogger(ShopeePublishAction.class);
-    public String publish(Long id, Long cid, Model model) throws CustomException, TbPropException {
+
+
+    @RequestMapping("sp/publish")
+    public String publish(Long goodsId, Long cid, Model model) throws CustomException, TbPropException {
         if(cid==null){
             //todo 获取类目列表,并指向到类目选择页
-
-
-
+            return "redirect:changeGoodsCate.htm?id="+goodsId;
         }
         Long shopeeId=0L;
         JdPageItem item;
         try {
-            item= jdUpItemService.findGoods(id);
+            item= jdUpItemService.findGoods(goodsId);
             if(item==null){
                 model.addAttribute("errmsg","商品不存在");
                 return "shopee/uperror";
@@ -50,9 +55,15 @@ public class ShopeePublishAction {
         allData.setItems(item);
         allData.setJdUserId(shopeeId);
 //        allData.setDeliveyList(shopeePropsService.selPostModel(shopeeId));
-        allData.setProps(shopeePropsService.selProps(id,cid));
+        allData.setProps(shopeePropsService.selProps(goodsId,cid));
 //        allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
         allData.setGoodsCat(shopeePropsService.selCatPath(cid));
-        return "";
+        return "shopee/sp";
+    }
+
+    @RequestMapping("sp/getCateDatas")
+    @ResponseBody
+    public JSONObject getCateDatas(Long cid){
+        return JsonResponseUtil.success().element("datas",shopeePropsService.selCate(cid));
     }
 }
