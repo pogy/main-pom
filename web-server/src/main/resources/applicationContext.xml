@@ -53,6 +53,12 @@
         <constructor-arg index="6" value="${signType}"/>
     </bean>
 
+    <bean id="shopeeClient" class="com.shigu.upload.shopee.sdk.ShopeeClient">
+        <property name="sopUrl" value="${shopee.sopUrl}"/>
+        <property name="key" value="${shopee.key}"/>
+        <property name="partnerId" value="${shopee.partnerId}"/>
+    </bean>
+
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
