@@ -15,9 +15,12 @@
                                     <li>
                                         <#assign lastvid=allData.props.pingpai.values[0].name>
                                         <select id="prop_${allData.props.pingpai.pid}_select" class="keyPropClass" data-transtype="dropbox" style="display: none; visibility: hidden;">
+                                            <#assign selectedpv=allData.props.pingpai.values[0]>
                                             <#list allData.props.pingpai.values as pppv>
                                             <option data-pid="${allData.props.pingpai.pid}" data-fid="${pppv.fid}"
+                                                    data-vid="${pppv_index}"
                                                 <#if pppv.selected>
+                                                    <#assign selectedpv=pppv>
                                                 selected
                                                 </#if>
                                                 value="${allData.props.pingpai.pid}:${pppv.name}"
@@ -27,7 +30,7 @@
                                         </select>
                                         <div class="kui-combobox" role="combobox">
                                             <div class="kui-dropdown-trigger">
-                                                <input readonly="true" class="kui-combobox-caption prop_from" data-pid="${allData.props.pingpai.pid}" data-value="" value="" style="width:190px;" id="prop_${allData.props.pingpai.pid}" role="textbox" aria-autocomplete="list" aria-haspopup="true" aria-label="上下键打开选项列表，回车选中选项，ESC关闭列表，关闭后TAB键跳转到其他选项">
+                                                <input readonly="true" class="kui-combobox-caption prop_from" data-pid="${allData.props.pingpai.pid}" data-value="${allData.props.pingpai.pid}:${selectedpv.name}" value="${selectedpv.name}" style="width:190px;" id="prop_${allData.props.pingpai.pid}" role="textbox" aria-autocomplete="list" aria-haspopup="true" aria-label="上下键打开选项列表，回车选中选项，ESC关闭列表，关闭后TAB键跳转到其他选项">
                                                 <div class="kui-icon-dropdown"></div>
                                             </div>
                                         </div>

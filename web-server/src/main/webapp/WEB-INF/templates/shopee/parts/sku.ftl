@@ -27,51 +27,6 @@
                         </div>
                 </#if>
             </div>
-            <div id="J_SKUColorWrapper" class="sku-wrapper">
-
-                <label class="sku-lable">&nbsp;</label>
-                <table border="0" cellspacing="0" class="J_SKUImgTable img-table">
-                    <caption>颜色属性图片上传表格</caption>
-                    <thead>
-                        <tr>
-                            <th>颜色</th>
-                            <th>图片（无图片可不填）</th>
-                            <th>已有图片</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <#list color.values as c>
-                        <tr id="J_MapImg_${color.pid}-${c.vid}" <#if !c.selected>
-                            style="display: none;"
-                            </#if>
-                        >
-                            <td class="tile">
-                                <i class="color-lump" style="background-color:#${colorMap["${c.vid}"]};"></i>
-                                <span class="J_Map" data-value="${color.pid}:${c.vid}">${c.name}</span>
-                            </td>
-                            <td>
-                                <input type="button" value="上传图片">
-                            </td>
-                            <td class="preview">
-                                <#if c.imgUrl??>
-                                <input type="hidden" id="prop_img-${color.pid}_${c.vid}" name="prop_img[]"
-                                    class="prop_img_default" data-value="${color.pid}:${c.vid}"
-                                    name="cpvf_old_${color.pid}:${c.vid}[]"
-                                    value="${color.pid}_${c.vid}##${c.imgUrl}">
-                                <a target="_blank" href="${c.imgUrl}">
-                                    <img height="40px" width="40px;" src="${c.imgUrl}_40x40.jpg">
-                                </a>
-                                <a class="del" href="javascript:void(0);">删除</a>
-                                <a class="undel" data-path="" href="javascript:void(0);">恢复删除</a>
-                                <#else >
-                                当前无图片
-                                </#if>
-                            </td>
-                        </tr>
-                        </#list>
-                    </tbody>
-                </table>
-            </div>
             <#if allData.props.saleProps??>
                 <#list allData.props.saleProps as s>
                     <div class="sku-group required sku-size " data-caption="${s.name}" data-features=" edit" data-p="${s.pid}">
@@ -134,25 +89,34 @@
                                     <tr class="J_MapRow" data-color="${s[0].headIds}">
                                     <#assign lastid="">
                                     <#list s as si>
-                                        <td rowspan="${si.rowspan}" <#if si.color>class="tile"</#if>>
-                                            <#if si.color><i class="color-lump" style="background-color:#${colorMap["${si.vid}"]};"></i></#if>
-                                            <span class="J_Map_${si.pid}-${si.vid}">${si.value}</span>
-                                        </td>
+                                        <#if si.color>
+                                            <td rowspan="${si.rowspan}" class="tile">
+                                                <i class="color-lump" style="background-color:#${colorMap["${si.vid}"]};"></i>
+                                                <span class="J_Map_${si.pid}-${si.vid}">${si.value}</span>
+                                            </td>
+                                        <#else>
+                                            <#if si.price>
+                                                <td class="price">
+                                                    <input data-id="${si.ids}"
+                                                           id="J_SkuField_price_${si.ids}"
+                                                           class="J_MapPrice text" data-type="price" type="text" value="${si.value}">
+                                                </td>
+                                            <#elseif si.num>
+                                                <td class="quantity">
+                                                    <input maxlength="9" data-id="${si.ids}"
+                                                           id="J_SkuField_quantity_${si.ids}"
+                                                           class="J_MapQuantity text" data-type="quantity" type="text"
+                                                           value="${si.value}"></td>
+                                            <#else>
+                                                <td rowspan="${si.rowspan}">
+                                                    <span class="J_Map_${si.pid}-${si.vid}">${si.value}</span>
+                                                </td>
+                                            </#if>
+                                        </#if>
                                         <#if !si_has_next>
                                             <#assign lastid=si.ids>
                                         </#if>
                                     </#list>
-                                        <td class="price">
-                                            <input data-id="${lastid}"
-                                                   id="J_SkuField_price_${lastid}"
-                                                   class="J_MapPrice text" data-type="price" type="text" value="${item.price}">
-                                        </td>
-                                        <td class="quantity">
-                                            <input maxlength="9" data-id="${lastid}"
-                                                   id="J_SkuField_quantity_${lastid}"
-                                                   class="J_MapQuantity text" data-type="quantity" type="text"
-                                                   value="100">
-                                        </td>
                                         <td class="tsc">
                                             <input data-id="${lastid}"
                                                    id="J_SkuField_tsc_${lastid}"

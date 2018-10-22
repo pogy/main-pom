@@ -385,45 +385,45 @@ function ready_publish(){
     // });
 
     //抓取宝贝描述图拼接成数组
-    isReportRequest=$('.imgDetailTemp').length;
-    if(isReportRequest>0) {
-        //第二次提交，内容图片已经被替换则用最新
-        imgList=$('#pcContent').val();
-    }else{
-        //第一次提交，直接抓取编辑器中的内容
-        imgList = pcContentObj.getContentDocData();  //获取编辑器的值
-        $('#pcContent').html(imgList); //将编辑器中的值付给textare，因为提交的是textare
-        $('#pcContent').val(imgList);
-    }
+    // isReportRequest=$('.imgDetailTemp').length;
+    // if(isReportRequest>0) {
+    //     //第二次提交，内容图片已经被替换则用最新
+    //     imgList=$('#pcContent').val();
+    // }else{
+    //     //第一次提交，直接抓取编辑器中的内容
+    //     imgList = pcContentObj.getContentDocData();  //获取编辑器的值
+    //     $('#pcContent').html(imgList); //将编辑器中的值付给textare，因为提交的是textare
+    //     $('#pcContent').val(imgList);
+    // }
 
     var imgReg = /<img.*?(?:>|\/>)/gi;
-    var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
-    var arr = imgList.match(imgReg);
-    if(arr){
-        var imgsList=new Array();
-        var errorNum=0;
-        for (var i = 0; i < arr.length; i++) {
-            iTrue=i-errorNum;
-            var src = arr[i].match(srcReg);
-            if (src && src[1]) {
-                imgsList[iTrue + 1] = src[1];
-            }else{
-                errorNum++;
-            }
-        }
-        imgAllNum=imgsList.length-1;
-
-        //抓取商品描述图搬家记录并生成数组 搬家=将编辑器中的图片通过ajax替换成自动京东相册中的图片
-        var img_detal_arr_temp = new Array();
-        $(".imgDetailTemp").each(function(){
-            imgOwn=$(this).data('own');
-            img_detal_arr_temp.push(imgOwn);
-        });
-    }else{
-        //如果详细图片里一个图片也没有
-        img_detal_arr_temp=new Array();
-        imgOwn=new Array();
-    }
+    // var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+    // var arr = imgList.match(imgReg);
+    // if(arr){
+    //     var imgsList=new Array();
+    //     var errorNum=0;
+    //     for (var i = 0; i < arr.length; i++) {
+    //         iTrue=i-errorNum;
+    //         var src = arr[i].match(srcReg);
+    //         if (src && src[1]) {
+    //             imgsList[iTrue + 1] = src[1];
+    //         }else{
+    //             errorNum++;
+    //         }
+    //     }
+    //     imgAllNum=imgsList.length-1;
+    //
+    //     //抓取商品描述图搬家记录并生成数组 搬家=将编辑器中的图片通过ajax替换成自动京东相册中的图片
+    //     var img_detal_arr_temp = new Array();
+    //     $(".imgDetailTemp").each(function(){
+    //         imgOwn=$(this).data('own');
+    //         img_detal_arr_temp.push(imgOwn);
+    //     });
+    // }else{
+    //     //如果详细图片里一个图片也没有
+    //     img_detal_arr_temp=new Array();
+    //     imgOwn=new Array();
+    // }
 
 
     //抓取宝贝主图拼接成数组
@@ -444,21 +444,21 @@ function ready_publish(){
 
     //抓取宝贝属性图拼接成数组
     var img_arr_list_prop = new Array();
-    var img_arr_id_prop=new Array();
-    var picUrlI=0;
-    $(".prop_img_default").each(function(){
-        picUrlI=picUrlI+1;
-        picUrlValue=$(this).val();
-        picUrlId=$(this).attr('id');
-        if(picUrlValue){
-            img_arr_list_prop[picUrlI]=picUrlValue;
-            img_arr_id_prop[picUrlI]=picUrlId;
-        }
-    });
+    // var img_arr_id_prop=new Array();
+    // var picUrlI=0;
+    // $(".prop_img_default").each(function(){
+    //     picUrlI=picUrlI+1;
+    //     picUrlValue=$(this).val();
+    //     picUrlId=$(this).attr('id');
+    //     if(picUrlValue){
+    //         img_arr_list_prop[picUrlI]=picUrlValue;
+    //         img_arr_id_prop[picUrlI]=picUrlId;
+    //     }
+    // });
     img_arr_list_prop_count=img_arr_list_prop.length-1;
 
-    var is_pic_full=0;//图片空间是否满了，1表示满了，0表示未满
-    var is_show_full=0;//是否提示过满了
+    // var is_pic_full=0;//图片空间是否满了，1表示满了，0表示未满
+    // var is_show_full=0;//是否提示过满了
 //将描述图上传到京东并替换链接
 //     function download_detail(url,order,times) {
 //         if(!times){times=0;}
