@@ -213,32 +213,32 @@ public class JdGoodsupAction {
         return JsonResponseUtil.success().element("allBrand",allBrand);
     }
 
-    @RequestMapping("getJdGoodsInfo")
-    @ResponseBody
-    public JSONObject jdGoodsInfo(Long goodsId){
-        Item item;
-        try {
-            item = jdUpItemService.staticGoods(jdUpItemService.selTiny(goodsId));
-        } catch (CustomException e) {
-            return JsonResponseUtil.error(e.getMessage());
-        }
-        Map<String,String> map=new HashMap<>();
-        Arrays.stream(item.getPropsName().split(";")).forEach(s -> {
-            String[] strs=s.split(":");
-            String str=map.get(strs[2]);
-            if(str==null){
-                str="";
-            }
-            str+=strs[3]+",";
-            map.put(strs[2],str);
-        });
-        return JsonResponseUtil.success().element("attrList",map.entrySet().stream().map(s -> {
-            JSONObject o=new JSONObject();
-            o.put("name",s.getKey());
-            o.put("value",s.getValue().substring(0,s.getValue().length()-1));
-            return o;
-        }).collect(Collectors.toList()));
-    }
+//    @RequestMapping("getJdGoodsInfo")
+//    @ResponseBody
+//    public JSONObject jdGoodsInfo(Long goodsId){
+//        Item item;
+//        try {
+//            item = jdUpItemService.staticGoods(jdUpItemService.selTiny(goodsId));
+//        } catch (CustomException e) {
+//            return JsonResponseUtil.error(e.getMessage());
+//        }
+//        Map<String,String> map=new HashMap<>();
+//        Arrays.stream(item.getPropsName().split(";")).forEach(s -> {
+//            String[] strs=s.split(":");
+//            String str=map.get(strs[2]);
+//            if(str==null){
+//                str="";
+//            }
+//            str+=strs[3]+",";
+//            map.put(strs[2],str);
+//        });
+//        return JsonResponseUtil.success().element("attrList",map.entrySet().stream().map(s -> {
+//            JSONObject o=new JSONObject();
+//            o.put("name",s.getKey());
+//            o.put("value",s.getValue().substring(0,s.getValue().length()-1));
+//            return o;
+//        }).collect(Collectors.toList()));
+//    }
 
 
     /**

@@ -33,7 +33,7 @@ $(function(){
             vid = $(e).attr("data-vid");
             lastVid = dataVal;   //在div使用类似option的方式写入id，为只用ajax后部after数据提供条件
             fid=$(this).data('fid');
-            nowList += "<div data-nonum='"+nonum+"' data-fid='"+fid+"' data-pid='"+pid+"' data-vid='"+vid+"' id='prop_option_"+dataVal+"' class='has_son_prop kui-option' role='menuitem' data-value='"+dataVal+"'  title='"+optionVal+"'>"+optionVal+"</div>"; //onclick='propSon("+fid+")'
+            nowList += "<div data-nonum='"+nonum+"' data-fid='"+fid+"' data-pid='"+pid+"' data-vid='"+vid+"' id='prop_option_"+pid+":"+ vid +"' class='has_son_prop kui-option' role='menuitem' data-value='"+dataVal+"'  title='"+optionVal+"'>"+optionVal+"</div>"; //onclick='propSon("+fid+")'
         });
         downHtml += "<div role='menu' class='kui-list kui-listbox'>";
         downHtml += "<div class='kui-header' role='region'>" ;
@@ -594,10 +594,10 @@ $(function(){
 		if(direction == 0 && index != 0){
 			var sibIndex = index-1;
 		}
-		if(direction == 1 && index != 5){
+		if(direction == 1 && index != 9){
 			var sibIndex = index+1;
 		}
-		if(direction == 0 && index != 0 || direction == 1 && index != 5){
+		if(direction == 0 && index != 0 || direction == 1 && index != 9){
 
 			var $curIndex = $(".image-list li[data-index="+(index)+"]");
 			var $sibIndex = $(".image-list li[data-index="+sibIndex+"]");

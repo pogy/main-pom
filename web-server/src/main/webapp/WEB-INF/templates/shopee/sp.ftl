@@ -79,7 +79,7 @@
                 <#assign item=allData.items.item>
                 <div class="field-content fl">
                     <input type="text" id="TitleID" class="text text-long notBeEmpty" data-error-title='宝贝标题'
-                           name="title" value="${item.title}">
+                           name="title" value="${item.title!}">
                     <span id="J_TitleCountDownTip" class="input-count"><span>${allData.items.titleLength}</span>/60</span>
                     <input type="hidden" id="nav_title" data-feed="err_nav_title">
                     <div id="err_nav_title" style="display:none">
@@ -188,22 +188,6 @@
                 </div>
             </div>
             <div class="field clearfix">
-
-                <div class="field clearfix">
-                    <label class="fl">店铺中分类</label>
-                    <div class="field-content fl">
-                        <div class="block info" style="margin: 0px 0px 3px;">系统默认24小时自动更新您的店铺分类<a href="javascript:void(0);" id="ShopCatUpdate" class="gengxin"><i></i>立即更新</a></div>
-                        <div class="list-box" id="shopcatlist">
-                            <ul class="J_ShopCatList" id="J_ShopCatList">
-                                <#if allData.storeCats??>
-                                    <#assign cats=allData.storeCats>
-                                    <#include "/shopee/parts/storecat.ftl">
-                                </#if>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="field clearfix">
                     <label class="fl">
                         <em>*</em>运费</label>
@@ -227,14 +211,13 @@
                         <div id="startTime.startType" class="checkbox-wrap">
                             <#if (allData.props.color)??>
                                 <label>
-                                    <input type="radio" class="radio" name="approve_status" value="onsale"
-                                           checked="checked">
-                                    <label for="_now0">立刻</label>
+                                    <input type="radio" class="radio" name="approve_status" value="onsale" checked="checked">
+                                    立刻
                                 </label>
                             </#if>
                             <label>
                                 <input type="radio" class="radio" name="approve_status" value="instock" <#if !(allData.props.color)??>checked="checked"</#if>>
-                                <label for="inStock">放入仓库</label>
+                                放入仓库
                             </label>
                         </div>
                     </div>

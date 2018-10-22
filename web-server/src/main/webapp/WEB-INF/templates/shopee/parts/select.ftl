@@ -10,7 +10,7 @@
                                 <#list prop.values as pv>
                                     <option data-pid="${prop.pid}"
                                             class="props_option_${prop.pid}"
-                                            data-vid="${pv.name}"
+                                            data-vid="${pv_index}"
                                             <#if pv.selected>
                                                 <#assign selectedpv=pv>
                                             selected

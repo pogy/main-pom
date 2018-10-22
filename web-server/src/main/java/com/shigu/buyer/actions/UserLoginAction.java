@@ -313,6 +313,15 @@ public class UserLoginAction {
                 url = "http://www.571xz.com/sn/login.htm";
                 break;
             }
+            //虾皮授权
+            case 9:{
+                url = "http://www.571xz.com/sp/login.htm";
+                break;
+            }
+            default:{
+                url = "http://www.571xz.com/login.htm";
+                break;
+            }
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
         return "redirect:" + url;

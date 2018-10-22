@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ import java.util.List;
 @Component
 public class ShopeeService {
 
+    @Autowired
     private ShopeeClient client;
 
     @Autowired
@@ -60,6 +63,12 @@ public class ShopeeService {
     }
 
     public List<DeliveryTemplate> shopLogistics(Long shopId) {
+        if(shopId==0L){
+            DeliveryTemplate template = new DeliveryTemplate();
+            template.setTemplateId(1L);
+            template.setName("测试");
+            return Collections.singletonList(template);
+        }
         String cacheKey = logisticCachePre + shopId;
         List<DeliveryTemplate> result = redisIO.getList(cacheKey, DeliveryTemplate.class);
         if (result != null && result.size() > 0) {

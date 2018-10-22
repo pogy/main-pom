@@ -1,5 +1,7 @@
 package com.shigu.goodsup.shopee.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,14 +44,18 @@ public class ZHConverter {
     }
 
     public static String convert(String text, int converterType) {
+        if(StringUtils.isBlank(text)){
+            return text;
+        }
         ZHConverter instance = getInstance(converterType);
         return instance.convert(text);
     }
 
     private ZHConverter(String propertyFile) {
         InputStream is = null;
-        is = getClass()
-                .getResourceAsStream(propertyFile);
+        is = getClass().getClassLoader().getResourceAsStream(propertyFile);
+//        is = getClass()
+//                .getResourceAsStream(propertyFile);
         if (is != null) {
             BufferedReader reader = null;
             try {
