@@ -1386,4 +1386,20 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         }
     }
 
+    @Override
+    public Integer systemUpItemPiPrice(Long itemId, String piPrice, String webSite) throws ItemModifyException {
+        ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
+        shiguGoodsTiny.setWebSite(webSite);
+        shiguGoodsTiny.setPiPriceString(piPrice);
+        Double pipriceLong = Double.valueOf(piPrice)*100;
+        shiguGoodsTiny.setGoodsId(itemId);
+        shiguGoodsTiny.setPiPrice(pipriceLong.longValue());
+        int b;
+        b = shiguGoodsTinyMapper.updateByPrimaryKeySelective(shiguGoodsTiny);
+        ShiguGoodsModified modified = new ShiguGoodsModified();
+        modified.setHasSetPiprice(1);
+        ShiguGoodsModifiedExample example = new ShiguGoodsModifiedExample();
+        example.createCriteria().andItemIdEqualTo(itemId);
+        return shiguGoodsModifiedMapper.updateByExampleSelective(modified,example);
+    }
 }

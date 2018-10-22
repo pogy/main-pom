@@ -1,6 +1,7 @@
 package com.shigu.main4.item.services;
 
 import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 
 import java.util.List;
 
@@ -54,4 +55,10 @@ public interface ShowForCdnService {
      */
     List<String> selItemLicenses(Long id,Long shopId);
 
+    /**
+     * 修改sku的库存数和价格
+     * @param skus sku集合
+     * @return 商品信息
+     */
+    Integer updateSkuPriceStock(List<SingleSkuVO> skus,String webSite);
 }

@@ -194,5 +194,9 @@ public interface ItemAddOrUpdateService {
     // TODO: 18-1-23 准备撤掉
     void moveSortCustomerStyle(Long goodsStyleId, Integer sortType);
 
-
+    /**
+     * 更新批发价格
+     * @param itemId 商品主键
+     */
+    Integer systemUpItemPiPrice(Long itemId,String piPrice,String webSite) throws ItemModifyException;
 }
