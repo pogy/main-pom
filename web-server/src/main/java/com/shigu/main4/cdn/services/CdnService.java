@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CdnService {
-    private final static Map<String, Integer> SIZE_SORT;
+    public final static Map<String, Integer> SIZE_SORT;
 
     static {
         SIZE_SORT = new HashMap<>();

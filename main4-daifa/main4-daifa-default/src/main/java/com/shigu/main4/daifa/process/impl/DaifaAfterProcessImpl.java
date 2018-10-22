@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,31 +39,36 @@ public class DaifaAfterProcessImpl implements DaifaAfterProcess {
 
     @Override
     public void runRefundFee() throws DaifaException {
-
-        String date = DateUtil.dateToString(DateUtil.addMonthV1_8(-1), "yyyy-MM-dd HH:mm:ss");
+        Date d = DateUtil.addMonthV1_8(-1);
         List<Long> orders = new ArrayList<>();
         DaifaAfterSaleSubExample subExample = new DaifaAfterSaleSubExample();
-        subExample.createCriteria().andAfterStatusEqualTo(5).andApplyTimeLessThanOrEqualTo(DateUtil.addMonthV1_8(-1));
-        List<DaifaAfterSaleSub> subList = daifaAfterSaleSubMapper.selectByExample(subExample);
+        subExample.createCriteria().andAfterStatusEqualTo(5).andApplyTimeLessThanOrEqualTo(d);
+        List<DaifaAfterSaleSub> subList = daifaAfterSaleSubMapper
+                .selectFieldsByExample(subExample, FieldUtil.codeFields("after_sale_sub_id,df_order_id"));
         if (subList.size() > 0) {
-            orders = subList.stream().map(daifaAfterSaleSub -> daifaAfterSaleSub.getDfOrderId()).collect(Collectors.toList());
+            orders = subList.stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
         }
 
 //        List<Long> longs = daifaAfterSaleSubMapper.getRefundFeeOrder(date);
         DaifaAfterSaleSubExample saleSubExample = new DaifaAfterSaleSubExample();
         saleSubExample.createCriteria().andAfterStatusEqualTo(7);
-        List<DaifaAfterSaleSub> saleSubList = daifaAfterSaleSubMapper.selectByExample(saleSubExample);
-        if (saleSubList.size()>0){
+        List<DaifaAfterSaleSub> saleSubList = daifaAfterSaleSubMapper
+                .selectFieldsByExample(saleSubExample, FieldUtil.codeFields("after_sale_sub_id,refund_id"));
+        if (saleSubList.size() > 0) {
             List<Long> longList = saleSubList.stream().map(DaifaAfterSaleSub::getRefundId).collect(Collectors.toList());
             DaifaAfterMoneyConsultExample consultExample = new DaifaAfterMoneyConsultExample();
-            consultExample.createCriteria().andRefundIdIn(longList).andCreateTimeLessThanOrEqualTo(DateUtil.addMonthV1_8(-1));
-            List<DaifaAfterMoneyConsult> consults = daifaAfterMoneyConsultMapper.selectByExample(consultExample);
-            if (consults.size()>0){
-                List<Long> collect = consults.stream().map(DaifaAfterMoneyConsult::getRefundId).collect(Collectors.toList());
+            consultExample.createCriteria().andRefundIdIn(longList).andCreateTimeLessThanOrEqualTo(d);
+            List<DaifaAfterMoneyConsult> consults = daifaAfterMoneyConsultMapper
+                    .selectFieldsByExample(consultExample, FieldUtil.codeFields("after_consult_id,refund_id"));
+            if (consults.size() > 0) {
+                List<Long> collect = consults.stream().map(DaifaAfterMoneyConsult::getRefundId)
+                        .collect(Collectors.toList());
                 DaifaAfterSaleSubExample saleSubExample1 = new DaifaAfterSaleSubExample();
                 saleSubExample1.createCriteria().andRefundIdIn(collect);
-                List<Long> collect1 = daifaAfterSaleSubMapper.selectByExample(saleSubExample1).stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
-                if (collect1.size()>0){
+                List<Long> collect1 = daifaAfterSaleSubMapper
+                        .selectFieldsByExample(saleSubExample1, FieldUtil.codeFields("after_sale_sub_id,df_order_id"))
+                        .stream().map(DaifaAfterSaleSub::getDfOrderId).collect(Collectors.toList());
+                if (collect1.size() > 0) {
                     orders.addAll(collect1);
                 }
             }

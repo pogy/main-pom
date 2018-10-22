@@ -1,16 +1,24 @@
 package com.shigu.seller.actions;
 
+import com.alibaba.fastjson.JSONArray;
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.seller.bo.GoodsSkuBo;
 import com.shigu.seller.bo.GoodsStyleManageQueryBO;
 import com.shigu.seller.services.ShopItemModService;
+import com.shigu.seller.vo.GoodsSkuVo;
 import com.shigu.seller.vo.ShopStyleGoodsAggrVO;
 import com.shigu.seller.vo.ShopStyleGoodsInfoVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -68,4 +76,46 @@ public class ShopGoodsAction {
         model.addAttribute("pageOption",totalCount+","+pageSize+","+page);
         return "gys/goodsStyleManager";
     }
+
+    @RequestMapping("seller/getSkuInfo")
+    @ResponseBody
+    public JSONObject selGoodssku(Long goodsId) throws JsonErrException {
+        if (goodsId == null) {
+            throw new JsonErrException("缺少参数");
+        }
+        List<GoodsSkuVo> voList = shopItemModService.selGoodsSku(goodsId);
+        String skuList = JSONArray.toJSONString(voList);
+        JSONObject obj= JsonResponseUtil.success();
+        obj.put("skuInfos",skuList);
+        return  obj;
+    }
+
+    @RequestMapping("seller/updateGoodsSkuInfo")
+    @ResponseBody
+    public JSONObject selGoodssku(String skus,Long goodsId,String piPrice) throws JsonErrException {
+        if (StringUtil.isNull(skus)) {
+            throw new JsonErrException("缺少参数");
+        }
+        if (goodsId == null) {
+            throw new JsonErrException("缺少参数");
+        }
+//        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(skus);
+//        List<GoodsSkuBo> skuList = JSONArray.parseArray(json,GoodsSkuBo.class);
+        List<GoodsSkuBo> skuList = JSONArray.parseArray(skus,GoodsSkuBo.class);
+        String webSite = shopItemModService.selWebSiteByGoodsId(goodsId);
+        int b;
+        b = shopItemModService.updateSkuPriceStock(skuList,webSite,goodsId);
+        if (b <= 0){
+            return JsonResponseUtil.error("更新失败");
+        }
+        if (!StringUtil.isNull(piPrice)) {
+            b = shopItemModService.updatePiPrice(piPrice, goodsId, webSite);
+            if (b <= 0) {
+                return JsonResponseUtil.error("更新失败");
+            }
+        }
+        JSONObject obj= JsonResponseUtil.success();
+        return  obj;
+    }
+
 }
