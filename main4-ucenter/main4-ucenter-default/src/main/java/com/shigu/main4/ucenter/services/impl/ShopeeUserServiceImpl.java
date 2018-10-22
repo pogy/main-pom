@@ -4,9 +4,9 @@ import com.opentae.data.mall.beans.ShopeeUserInfo;
 import com.opentae.data.mall.interfaces.ShopeeUserInfoMapper;
 import com.shigu.main4.ucenter.bo.ShopeeUserBO;
 import com.shigu.main4.ucenter.services.ShopeeUserService;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * 类名：ShopeeUserServiceImpl
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 项目： main-pom
  * 描述：
  */
+@Service("shopeeUserServiceImpl")
 public class ShopeeUserServiceImpl implements ShopeeUserService {
 
     @Autowired

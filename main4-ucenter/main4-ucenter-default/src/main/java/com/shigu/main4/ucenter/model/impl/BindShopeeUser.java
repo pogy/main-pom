@@ -4,6 +4,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.exceptions.Bind3RdsException;
 import com.shigu.main4.ucenter.model.BindOuterRdUser;
 import com.shigu.session.main4.Rds3TempUser;
+import org.springframework.stereotype.Service;
 
 /**
  * 类名：BindShopeeUser
@@ -13,6 +14,7 @@ import com.shigu.session.main4.Rds3TempUser;
  * 项目： main-pom
  * 描述：
  */
+@Service
 public class BindShopeeUser implements BindOuterRdUser {
     @Override
     public void admittance(String phone, Rds3TempUser tempUser) throws Main4Exception {
