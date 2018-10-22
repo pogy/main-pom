@@ -202,7 +202,7 @@ public class CargoManImpl implements CargoManModel {
         //状态修改s
         DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
         DaifaWaitSendOrderExample dfwsoex = new DaifaWaitSendOrderExample();
-        fo:for (DaifaGgoods ddgoods : gglist) {
+        for (DaifaGgoods ddgoods : gglist) {
             ddgoods.setUseStatus(0);//变成不可用了
             ddgoods.setOperateIs(1);
             if (!Objects.equals(ddgoods.getTakeGoodsStatus(), TakeGoodsEnum.HAS_TAKE.getValue())) {//未拿到货的
