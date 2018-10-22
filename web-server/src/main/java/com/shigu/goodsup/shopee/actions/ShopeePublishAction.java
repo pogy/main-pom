@@ -78,7 +78,7 @@ public class ShopeePublishAction {
             token.setSubKey(shopInfo.getShopId().toString());
             token.setRememberMe(true);
             session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
-            return userLoginAction.tryLogin(currentUser, token, session);
+            return "redirect" + userLoginAction.tryLogin(currentUser, token, session);
         } else {
             return pageErrAction.pageErr("获取用户信息失败", model);
         }

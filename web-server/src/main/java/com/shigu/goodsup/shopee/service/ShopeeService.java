@@ -1,6 +1,8 @@
 package com.shigu.goodsup.shopee.service;
 
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.ucenter.bo.ShopeeUserBO;
+import com.shigu.main4.ucenter.services.ShopeeUserService;
 import com.shigu.upload.shopee.sdk.ShopeeClient;
 import com.shigu.upload.shopee.sdk.domain.ShopeeLogistic;
 import com.shigu.upload.shopee.sdk.request.ShopeeGetLogisticsRequest;
@@ -30,6 +32,9 @@ public class ShopeeService {
     @Autowired
     public RedisIO redisIO;
 
+    @Autowired
+    public ShopeeUserService shopeeUserService;
+
     private final String logisticCachePre = "SHOPEE_SHOP_LOGISTICS_CACHE_";
 
     public String authorUrl(String redirectUrl) {
@@ -43,7 +48,15 @@ public class ShopeeService {
     }
 
     public void refreshShopeeUser(ShopeeGetShopInfoResponse shopInfo) {
-        // todo: 记录和刷新虾皮用户信息
+        if (shopInfo != null && shopInfo.isSuccess() && shopInfo.getShopId() != null) {
+            ShopeeUserBO bo = new ShopeeUserBO();
+            bo.setShopId(shopInfo.getShopId());
+            bo.setShopName(shopInfo.getShopName());
+            bo.setCountry(shopInfo.getCountry());
+            bo.setShopDescription(shopInfo.getShopDescription());
+            bo.setItemLimit(shopInfo.getItemLimit());
+            shopeeUserService.refreshShopeeUserInfo(bo);
+        }
     }
 
     public List<DeliveryTemplate> shopLogistics(Long shopId) {
