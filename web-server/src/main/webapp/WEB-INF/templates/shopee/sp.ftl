@@ -36,7 +36,7 @@
     <script>
         $(function(){
             var goodsId = '${id!}';
-            $.post('getJdGoodsInfo.json', {goodsId: goodsId}, function(resp){
+            $.post('getSpGoodsInfo.json', {goodsId: goodsId}, function(resp){
                 if(resp.result == 'success'){
                     var html_ = '';
                     $.each(resp.attrList, function(key, item){
