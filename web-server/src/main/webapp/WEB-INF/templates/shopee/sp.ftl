@@ -96,7 +96,7 @@
             <div class="field clearfix">
                 <label class="fl">商品描述</label>
                 <div class="field-content fl">
-                    <textarea id="SubheadingID" class="xzw-textarea" cols="77" rows="3" name="sellPoint" placeholder="提示：如果同时设置了促销宣传语，此商品标语在前台将会被促销宣传语覆盖！">${item.sellPoint!}</textarea>
+                    <textarea id="SubheadingID" class="xzw-textarea" cols="77" rows="3" name="sellPoint" placeholder="提示：建议使用繁体编写">${item.sellPoint!}</textarea>
                     <span id="J_SubheadingCountDownTip" class="input-count"><span>${allData.items.sellPointLength}</span>/3000</span>
                     <input type="hidden" id="nav_subTitle" data-feed="err_nav_subTitle">
                     <div id="err_nav_subTitle" style="display:none">
