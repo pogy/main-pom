@@ -46,4 +46,10 @@ public interface NewShowForCdnService {
      */
     NewCdnItem selItemInstockById(Long id, String webSite);
 
+    /**
+     * 修改sku的库存数和价格
+     * @param skus sku集合
+     * @return 商品信息
+     */
+    Integer updateSkuPriceStock(List<SingleSkuVO> skus,String webSite);
 }

@@ -6,22 +6,25 @@ import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.opentae.data.mall.multibeans.GoodsStyleInfoBean;
 import com.opentae.data.mall.multibeans.ShopStyleGoodsAggrBean;
+import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.vo.StyleChannelVO;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.bo.news.NewPushSynItemBO;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.newservice.NewItemAddOrUpdateService;
+import com.shigu.main4.item.newservice.NewShowForCdnService;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.vo.OnsaleItem;
+import com.shigu.main4.item.vo.news.NewCdnItem;
 import com.shigu.main4.item.vo.news.NewPullSynItemVO;
+import com.shigu.main4.item.vo.news.SingleSkuVO;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.seller.vo.ShiguStyleVo;
-import com.shigu.seller.vo.ShopStyleGoodsAggrVO;
-import com.shigu.seller.vo.ShopStyleGoodsInfoVO;
-import com.shigu.seller.vo.StyleVo;
+import com.shigu.seller.bo.GoodsSkuBo;
+import com.shigu.seller.vo.*;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
@@ -42,6 +45,7 @@ import java.util.stream.Collectors;
 public class ShopItemModService {
 
     private static final Logger logger = Logger.getLogger(ShopItemModService.class);
+
 
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
@@ -81,6 +85,15 @@ public class ShopItemModService {
 
     @Autowired
     private ItemUpRecordService itemUpRecordService;
+
+    @Autowired
+    private ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
+
+    @Autowired
+    private NewShowForCdnService newShowForCdnService;
+
+    @Autowired
+    private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Autowired
     RedisIO redisIO;
@@ -519,5 +532,68 @@ public class ShopItemModService {
 //        synItem.getCidAll();//商家编号
 
         return synItem;
+    }
+
+    public List<GoodsSkuVo> selGoodsSku(Long goodsId){
+        List<SingleSkuVO> shiguGoodsSingleSkus = newShowForCdnService.selSingleSkus(goodsId);
+        List<GoodsSkuVo> voList = new ArrayList<>();
+        List<String> colorList = BeanMapper.getFieldList(shiguGoodsSingleSkus, "thisColor", String.class);
+        List<String> colors = colorList.stream().distinct().collect(Collectors.toList());
+        for (int i = 0; i <colors.size() ; i++) {
+            GoodsSkuVo vo = new GoodsSkuVo();
+            List<GoodsSizeVo> sizeList = new ArrayList<>();
+            vo.setColorText(colors.get(i));
+            for (int j = 0; j <shiguGoodsSingleSkus.size() ; j++) {
+                if (vo.getColorText().equals(shiguGoodsSingleSkus.get(j).getThisColor())){
+                    GoodsSizeVo sizeVo = new GoodsSizeVo();
+                    sizeVo.setSkuId(shiguGoodsSingleSkus.get(j).getSkuId());
+                    sizeVo.setSizeText(shiguGoodsSingleSkus.get(j).getThisSize());
+                    sizeVo.setNum(shiguGoodsSingleSkus.get(j).getStockNum());
+                    sizeVo.setSkuPrice(shiguGoodsSingleSkus.get(j).getPriceString());
+                    sizeList.add(sizeVo);
+                    System.out.println(vo.getColorText()+"   "+sizeVo.getSizeText()+"   "+sizeVo.getSkuId());
+                }
+            }
+            List<GoodsSizeVo> sizes  = new ArrayList<>();
+            List<GoodsSizeVo> haveSizes = sizeList.stream().filter(goodsSizeVo -> CdnService.SIZE_SORT.get(goodsSizeVo.getSizeText().toUpperCase()) != null).collect(Collectors.toList());
+            haveSizes.sort(Comparator.comparingInt(o -> CdnService.SIZE_SORT.get(o.getSizeText().toUpperCase())));
+
+            List<GoodsSizeVo> noSizes =sizeList.stream().filter(goodsSizeVo -> CdnService.SIZE_SORT.get(goodsSizeVo.getSizeText().toUpperCase()) == null).collect(Collectors.toList());
+            noSizes.sort(Comparator.comparing(GoodsSizeVo::getSizeText));
+
+            sizes.addAll(haveSizes);
+            sizes.addAll(noSizes);
+            vo.setSizes(sizes);
+            voList.add(vo);
+        }
+        return voList;
+    }
+
+    public Integer updateSkuPriceStock(List<GoodsSkuBo> boList , String webSite,Long goodsId){
+        List<SingleSkuVO> skuList = new ArrayList<>();
+        for (GoodsSkuBo bo : boList) {
+            SingleSkuVO sku = new SingleSkuVO();
+            sku.setSkuId(bo.getSkuId());
+            sku.setGoodsId(goodsId);
+            sku.setPriceString(bo.getSkuPrice());
+            sku.setStockNum(bo.getInventory());
+            skuList.add(sku);
+        }
+        return newShowForCdnService.updateSkuPriceStock(skuList,webSite);
+    }
+
+    public Integer updatePiPrice(String piPrice,Long goodsId , String webSite){
+        try {
+            return newItemAddOrUpdateService.systemUpItemPiPrice(goodsId,piPrice,webSite);
+        } catch (ItemModifyException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public String selWebSiteByGoodsId(Long goodsId){
+        ShiguGoodsIdGenerator goodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        System.out.println(goodsIdGenerator);
+        return goodsIdGenerator.getWebSite();
     }
 }

@@ -320,6 +320,9 @@ public class OrderModelImpl implements OrderModel {
             List<Long> dfOrderIds=new ArrayList<>();
             if (daifaGgoodsTasks.size() > 0) {
                 for(DaifaGgoodsTasks t:daifaGgoodsTasks){
+                    if (t.getYouhuoDate() == null) {
+                        continue;
+                    }
                     if(new Integer(DateUtil.dateToString(new Date(),DateUtil.patternB))<=new Integer(DateUtil.dateToString(t.getYouhuoDate(),DateUtil.patternB))){
                         return;
                     }

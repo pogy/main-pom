@@ -294,6 +294,7 @@
           select DISTINCT df_order_id,single_pi_price
           from daifa_send_order
           where send_status=2
+          AND take_goods_status=1
           AND seller_id = ${sellerId}
           AND create_date = ${time}
         )t
