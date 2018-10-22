@@ -594,10 +594,10 @@ $(function(){
 		if(direction == 0 && index != 0){
 			var sibIndex = index-1;
 		}
-		if(direction == 1 && index != 5){
+		if(direction == 1 && index != 9){
 			var sibIndex = index+1;
 		}
-		if(direction == 0 && index != 0 || direction == 1 && index != 5){
+		if(direction == 0 && index != 0 || direction == 1 && index != 9){
 
 			var $curIndex = $(".image-list li[data-index="+(index)+"]");
 			var $sibIndex = $(".image-list li[data-index="+sibIndex+"]");

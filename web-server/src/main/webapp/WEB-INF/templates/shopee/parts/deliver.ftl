@@ -2,7 +2,7 @@
 <#if deliveyList??>
     <#list deliveyList as dy>
         <#if dy??>
-            <input type="checkbox" name="deliver[]" value="${dy.templateId}">${dy.name}
+            <label><input type="checkbox" name="deliver[]" value="${dy.templateId}">${dy.name}</label>
         </#if>
     </#list>
 </#if>
