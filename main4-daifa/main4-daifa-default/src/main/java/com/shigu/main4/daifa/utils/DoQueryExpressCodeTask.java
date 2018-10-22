@@ -75,18 +75,20 @@ public class DoQueryExpressCodeTask implements Runnable{
                 logger.error(tidString+"尝试获取单号失败",e);
             }
         }
+        String tradeCode = trade.getTradeCode();
+        trade = null;
         try {
             if (vo != null && vo.getExpressCode() != null){
                 Boolean expressNumber = redisIO.get("ORDER_EXPRESS_GETEXPRESSNUMBER", Boolean.class);
                 if (expressNumber != null && expressNumber){
                     Map<String,Object> map=new HashMap<>();
-                    map.put("orderId",trade.getTradeCode());
+                    map.put("orderId", tradeCode);
                     map.put("expressCode",vo.getExpressCode());
                     JSONObject obj=new JSONObject();
                     obj.put("data",map);
                     obj.put("msg","更新快递单号");
                     obj.put("status",true);
-                    mqUtil.sendMessage(DaifaSendMqEnum.updateExpressCode.getMessageKey()+trade.getTradeCode(),
+                    mqUtil.sendMessage(DaifaSendMqEnum.updateExpressCode.getMessageKey()+ tradeCode,
                             DaifaSendMqEnum.updateExpressCode.getMessageTag(), obj.toString());
                 }
             }
