@@ -1,6 +1,8 @@
 package com.shigu.main4.monitor.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
+import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
@@ -42,6 +44,9 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
 
     @Resource(name="starCaculateService")
     private StarCaculateService starCaculateService;
+
+    @Autowired
+    private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Autowired
     RedisIO redisIO;
@@ -110,7 +115,8 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
                     if (StringUtils.equals("gz", webSitestr) || StringUtils.equals("hz", webSitestr) ||
                             StringUtils.equals("cs", webSitestr) || StringUtils.equals("bj", webSitestr) ||
                             StringUtils.equals("ss", webSitestr) || StringUtils.equals("xh", webSitestr) ||
-                            StringUtils.equals("bb", webSitestr)) {
+                            StringUtils.equals("bb", webSitestr) || StringUtils.equals("zl", webSitestr) ||
+                            StringUtils.equals("cz", webSitestr)) {
                         browerRecord.setWebSite(webSitestr);
                     } else {
                         browerRecord.setWebSite("hz");
@@ -177,5 +183,19 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * 进入商品页面时,查询站点
+     * @param idKey 主键key
+     * @return
+     */
+    @Override
+    public String selWebSite(Long idKey) {
+        ShiguGoodsIdGenerator goodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(idKey);
+        if (goodsIdGenerator == null){
+            return "www";
+        }
+        return goodsIdGenerator.getWebSite();
     }
 }

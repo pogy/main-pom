@@ -57,16 +57,20 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
 
             List<GoodsCountForsearch> goodsCountForsearchList = new ArrayList<GoodsCountForsearch>();
             for (Map.Entry<String, List<String>> entryItem : itemIpsMap.entrySet()) {
-                GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-                goodsCountForsearch.setClick(new Long(entryItem.getValue().size()));
-                goodsCountForsearch.setClickIp(new Long(new HashSet(entryItem.getValue()).size()));
-                goodsCountForsearch.setGoodsId(Long.valueOf(entryItem.getKey()));
+                try {
+                    GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                    goodsCountForsearch.setClick(new Long(entryItem.getValue().size()));
+                    goodsCountForsearch.setClickIp(new Long(new HashSet(entryItem.getValue()).size()));
+                    goodsCountForsearch.setGoodsId(Long.valueOf(entryItem.getKey()));
 
-                ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsCountForsearch.getGoodsId());
-                if (shiguGoodsIdGenerator != null) {
-                    goodsCountForsearch.setWebSite(shiguGoodsIdGenerator.getWebSite());
+                    ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsCountForsearch.getGoodsId());
+                    if (shiguGoodsIdGenerator != null) {
+                        goodsCountForsearch.setWebSite(shiguGoodsIdGenerator.getWebSite());
+                    }
+                    goodsCountForsearchList.add(goodsCountForsearch);
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-                goodsCountForsearchList.add(goodsCountForsearch);
             }
             goodsCountForsearchMapper.insertOrUpdateForAdd(goodsCountForsearchList);
             jedis.del(key + "_temp");

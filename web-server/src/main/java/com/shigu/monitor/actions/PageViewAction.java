@@ -1,5 +1,6 @@
 package com.shigu.monitor.actions;
 
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.monitor.bo.PageInfoBO;
 import com.shigu.main4.monitor.services.BrowerMonitorService;
 import com.shigu.main4.monitor.vo.ClientMsg;
@@ -47,10 +48,6 @@ public class PageViewAction {
         if (StringUtils.isNotEmpty(url)) {
             String hostUrl = url.replace("http://", "").replace("https://", "");
             String webSite = hostUrl.split("\\.")[0];
-            if ("www".equals(webSite)) {
-                webSite = "hz";
-            }
-            info.setWebSite(webSite);
             Map<String, String> params = getParams(hostUrl);
             String id = params.get("id");
             Long idLong = null;
@@ -62,10 +59,30 @@ public class PageViewAction {
             if ("/item.htm".equals(path)) {
                 type = "item";
                 info.setItemId(idLong);
+                if(idLong != null) {
+                    webSite = browerMonitorService.selWebSite(idLong);
+                }
             } else if ("/shop.htm".equals(path)){
                 type = "shop";
                 info.setShopId(idLong);
             }
+            if ("www".equals(webSite)) {
+                try {
+                    if (StringUtils.isNotEmpty(info.getReferer()) && !"undefined".equals(info.getReferer()) && !info.getReferer().contains("www.")) {
+                        String refererHostUrl = info.getReferer().replace("http://", "").replace("https://", "");
+                        webSite = refererHostUrl.split("\\.")[0];
+                        if ("so".equals(webSite))
+                            webSite = "hz";
+                    } else {
+                        webSite = "hz";
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    webSite = "hz";
+                }
+            }
+            info.setWebSite(webSite);
+
         }
 
         ClientMsg client = new ClientMsg();
