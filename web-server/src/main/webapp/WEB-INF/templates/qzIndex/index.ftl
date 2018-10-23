@@ -241,4 +241,4 @@
 <#list [{"bg":"whiteBg"}] as $it>
 <#include "/common/xz__footer.ftl">
 </#list>
-<#include "/common/qzcnzz.ftl">
+<#include "/common/cnzz.ftl">

@@ -2,7 +2,7 @@
 <script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?cfc45b93f9f9957de28fa36a643bef88";var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
 <script type="text/javascript">
     $(function () {
-        var referrer = encodeURIComponent(document.referrer);
+        var referrer = encodeURIComponent(document.referer);
         var url = encodeURIComponent(location.href);
         var pv = "<script src='//www.571xz.com/monitor/in_page.htm?shopId=${vo.cdnItem.shopId!}&referer=" + referrer + "&connectKey=&url=" + url + "'><\/script>";
         $("body").append(pv);
