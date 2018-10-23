@@ -2,24 +2,15 @@ package com.shigu.seller.services;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.openJar.beans.JdItemProp;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.MemberLicense;
-import com.opentae.data.mall.beans.ShiguGoodsSoldout;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.examples.MemberLicenseExample;
-import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.beans.GoodsBogusRecords;
 import com.opentae.data.mall.beans.MemberUser;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.GoodsBogusRecordsExample;
 import com.opentae.data.mall.examples.MemberUserExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.util.DateUtil;
@@ -31,6 +22,7 @@ import com.shigu.main4.monitor.vo.BrowerRecord;
 import com.shigu.main4.monitor.vo.HotUpItem;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.NoUpItem;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -90,6 +82,12 @@ public class ShopIndexDataService {
     MemberUserMapper memberUserMapper;
     @Autowired
     GoodsBogusUploadRecordsMapper goodsBogusUploadRecordsMapper;
+    @Autowired
+    RedisIO redisIO;
+
+    private final static String REIDS_TODAY_DOWNLAOD_DATA_LIST_KEY ="shop_es_data_today_downlaod_data_list_";
+    private final static String REIDS_WEEK_READ_DATA_LIST_KEY ="shop_es_data_week_read_data_list";
+    private final static String REIDS_WEEK_DOWNLOAD_DATA_LIST_KEY ="shop_es_data_week_download_data_list_";
 
     /**
      * 商户中心,首屏数据
@@ -333,7 +331,13 @@ public class ShopIndexDataService {
      * @return
      */
     public List<DownlaodDataVO> todayDownlaodDataList(Long shopId, String webSite) {
-        return downlaodDataList(shopId,webSite,DateUtil.dateToString(DateUtil.getStartTime(),DateUtil.patternD));
+        List<DownlaodDataVO> list;
+        if((list=redisIO.getList(REIDS_TODAY_DOWNLAOD_DATA_LIST_KEY,DownlaodDataVO.class))!=null){
+            return list;
+        }
+        list=downlaodDataList(shopId,webSite,DateUtil.dateToString(DateUtil.getStartTime(),DateUtil.patternD));
+        redisIO.putTemp(REIDS_TODAY_DOWNLAOD_DATA_LIST_KEY,list,600);
+        return list;
     }
 
     /**
@@ -448,7 +452,13 @@ public class ShopIndexDataService {
      * @return
      */
     public List<DownlaodDataVO> weekDownloadDataList(Long shopId, String webSite) {
-        return downlaodDataList(shopId,webSite,DateUtil.dateToString(DateUtil.getIsStartTime(DateUtil.getdate(-7)),DateUtil.patternD));
+        List<DownlaodDataVO> list;
+        if((list=redisIO.getList(REIDS_WEEK_DOWNLOAD_DATA_LIST_KEY,DownlaodDataVO.class))!=null){
+            return list;
+        }
+        list=downlaodDataList(shopId,webSite,DateUtil.dateToString(DateUtil.getIsStartTime(DateUtil.getdate(-7)),DateUtil.patternD));
+        redisIO.putTemp(REIDS_WEEK_DOWNLOAD_DATA_LIST_KEY,list,600);
+        return list;
     }
 
     public static void main(String[] args) {
@@ -468,8 +478,12 @@ public class ShopIndexDataService {
      * @return
      */
     public List<WeekReadDataVO> weekReadDataList(Long shopId, String webSite) {
+        List<WeekReadDataVO> weekReadDataVOS;
+        if((weekReadDataVOS=redisIO.getList(REIDS_WEEK_READ_DATA_LIST_KEY,WeekReadDataVO.class))!=null){
+            return weekReadDataVOS;
+        }
         int num=10;
-        List<WeekReadDataVO> weekReadDataVOS = goodsBogusRecordsMapper.qzIndexCount(shopId, webSite,num);
+        weekReadDataVOS = goodsBogusRecordsMapper.qzIndexCount(shopId, webSite,num);
         List<Long> gids=weekReadDataVOS.stream().map(weekReadDataVO -> new Long(weekReadDataVO.getGoodsId())).collect(Collectors.toList());
         Map<Long,GoodsBogusRecords> map=new HashMap<>();
         if(gids.size()>0){
@@ -502,6 +516,7 @@ public class ShopIndexDataService {
                 }
             }
         });
+        redisIO.putTemp(REIDS_WEEK_READ_DATA_LIST_KEY,weekReadDataVOS,600);
         return weekReadDataVOS;
     }
 
