@@ -70,6 +70,8 @@ public class PageViewAction {
                 if(StringUtils.isNotEmpty(info.getReferer()) && !"undefined".equals(info.getReferer()) && !info.getReferer().contains("www.")){
                     String refererHostUrl = info.getReferer().replace("http://", "").replace("https://", "");
                     webSite = refererHostUrl.split("\\.")[0];
+                    if("so".equals(webSite))
+                        webSite = "hz";
                 }else {
                     webSite = "hz";
                 }
