@@ -1,5 +1,6 @@
 package com.shigu.goodsup.shopee.actions;
 
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.shigu.buyer.actions.UserLoginAction;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.UserType;
@@ -69,13 +70,14 @@ public class ShopeePublishAction {
     private UserLoginAction userLoginAction;
 
 
+
     @RequestMapping("sp/login")
     public String login() {
         return "redirect:" + shopeeService.authorUrl(mainSiteConfig.getMainSiteDomain() + "sp/callback.htm");
     }
 
     @RequestMapping("sp/callback")
-    public String callback(@RequestParam(value = "shop_id",required = true)Long shopId, String backUrl, HttpServletRequest request, Model model, HttpSession session) {
+    public String callback(@RequestParam(value = "shop_id")Long shopId, HttpServletRequest request, Model model, HttpSession session) {
         if (shopId == null) {
             return pageErrAction.pageErr("授权失败", model);
         }
@@ -90,8 +92,7 @@ public class ShopeePublishAction {
             token.setLoginFromType(LoginFromType.SHOPEE);
             token.setSubKey(shopInfo.getShopId().toString());
             token.setRememberMe(true);
-            session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
-            return "redirect" + userLoginAction.tryLogin(currentUser, token, session);
+            return "redirect:" + userLoginAction.tryLogin(currentUser, token, session);
         } else {
             return pageErrAction.pageErr("获取用户信息失败", model);
         }
@@ -121,7 +122,7 @@ public class ShopeePublishAction {
         if(ps==null||ps.getLoginFromType()!=LoginFromType.SHOPEE){
             return "redirect:changeGoodsCate.htm?goodsId="+goodsId;
         }
-        Long shopeeId=0L;
+        Long shopeeId=new Long(shopeeService.getSpUsernameBySubUid(ps.getSubUserId()));
         JdPageItem item;
         try {
             item= jdUpItemService.findGoods(goodsId);
@@ -195,12 +196,15 @@ public class ShopeePublishAction {
                          @RequestParam(value = "sku_props[]",required = false)String[] skuProps,
                          @RequestParam(value = "deliver[]",required = false)String[] deliver,
                          String skus,
-                         HttpSession httpsession,
-                         HttpServletRequest request, HttpServletResponse httpServletResponse, Model model) throws IOException {
+                         HttpSession session) throws IOException {
         List<JdUploadSkuBO> sku = (List<JdUploadSkuBO>) JSONArray.toList(JSONArray.fromObject(skus), JdUploadSkuBO.class, new HashMap<String, Class>() {{
             put("sizes", JdUploadSkuBO.class);
         }});
-        Long shopeeId=0L;
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(ps==null||ps.getLoginFromType()!=LoginFromType.SHOPEE){
+            return "redirect:changeGoodsCate.htm?goodsId="+bo.getMid();
+        }
+        Long shopeeId=new Long(shopeeService.getSpUsernameBySubUid(ps.getSubUserId()));
         shopeePropsService.itemAdd(bo,sku,picUrl,skuProps,deliver,shopeeId);
 
         return  "";

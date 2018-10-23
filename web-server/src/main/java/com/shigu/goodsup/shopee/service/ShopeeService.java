@@ -1,8 +1,11 @@
 package com.shigu.goodsup.shopee.service;
 
+import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.bo.ShopeeUserBO;
 import com.shigu.main4.ucenter.services.ShopeeUserService;
+import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.upload.shopee.sdk.ShopeeClient;
 import com.shigu.upload.shopee.sdk.domain.ShopeeLogistic;
 import com.shigu.upload.shopee.sdk.request.ShopeeGetLogisticsRequest;
@@ -37,6 +40,8 @@ public class ShopeeService {
 
     @Autowired
     public ShopeeUserService shopeeUserService;
+    @Autowired
+    MemberUserSubMapper memberUserSubMapper;
 
     private final String logisticCachePre = "SHOPEE_SHOP_LOGISTICS_CACHE_";
 
@@ -60,6 +65,13 @@ public class ShopeeService {
             bo.setItemLimit(shopInfo.getItemLimit());
             shopeeUserService.refreshShopeeUserInfo(bo);
         }
+    }
+    public String getSpUsernameBySubUid(Long subUid){
+        MemberUserSub memberUserSub = new MemberUserSub();
+        memberUserSub.setSubUserId(subUid);
+        memberUserSub.setAccountType(LoginFromType.SHOPEE.getAccountType());
+        memberUserSub=memberUserSubMapper.selectOne(memberUserSub);
+        return memberUserSub.getSubUserKey();
     }
 
     public List<DeliveryTemplate> shopLogistics(Long shopId) {

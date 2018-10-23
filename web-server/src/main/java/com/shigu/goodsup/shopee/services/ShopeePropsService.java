@@ -1,5 +1,6 @@
 package com.shigu.goodsup.shopee.services;
 
+import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ShiguShopeeCat;
 import com.opentae.data.mall.examples.ShiguShopeeCatExample;
 import com.opentae.data.mall.interfaces.ShiguShopeeCatMapper;
@@ -24,6 +25,7 @@ import com.shigu.upload.shopee.sdk.request.ShopeeGetCategoriesByCountryRequest;
 import com.shigu.upload.shopee.sdk.request.ShopeeItemAddRequest;
 import com.shigu.upload.shopee.sdk.response.ShopeeGetAttributesResponse;
 import com.shigu.upload.shopee.sdk.response.ShopeeGetCategoriesResponse;
+import com.shigu.upload.shopee.sdk.response.ShopeeItemAddResponse;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,7 +241,9 @@ public class ShopeePropsService {
         req.setVariations(vs);
         req.setStock(num[0]);
 
-        System.out.println(JSONObject.fromObject(req));
+        System.out.println(JSON.toJSONString(req));
+        ShopeeItemAddResponse execute = client.execute(req);
+        System.out.println(JSON.toJSONString(execute));
 
     }
     private Double priceStringToDouble(String priceString){

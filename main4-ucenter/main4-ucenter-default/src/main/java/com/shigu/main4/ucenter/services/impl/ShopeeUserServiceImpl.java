@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * 项目： main-pom
  * 描述：
  */
-@Service("shopeeUserServiceImpl")
+@Service("shopeeUserService")
 public class ShopeeUserServiceImpl implements ShopeeUserService {
 
     @Autowired
