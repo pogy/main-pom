@@ -212,6 +212,8 @@ var webSite = '${webSite!}';
                 <#if $it.id != "">
                 <a class="imQQ" href="//wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
                 </#if>
+
+            <#if vo.existWx??><i style="display: inline-block; cursor: default; width: 18px; height: 18px; vertical-align: -2px; margin-left: 5px; background: url(//style.571xz.com/v6/goodsDetail/css/img/wxIcon.png)"></i></#if>
                 <i class="ti iconfont">&#xe60b;</i>
             </div>
             
@@ -320,7 +322,8 @@ function openShop(){
                 <div class="p1 clearfix">
                     <ul class="r1">
                         <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == 'jx'>濮院</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
-                        <li><label>电话：</label>${vo.storeRelation.telephone!}</li>
+                        <li><label>档口电话：</label>${vo.storeRelation.telephone!}</li>
+                        <#if vo.isZx??><li><label>发货咨询：</label>${vo.storeRelation.advisoryMobile!}</li></#if>
                         <li><label>主营：</label>${vo.other.mainBus!}</li>
                         <li><label>开店时间：</label>${vo.other.openTime!}</li>
                     </ul>

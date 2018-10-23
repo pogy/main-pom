@@ -120,8 +120,8 @@ public class TodayNewGoodsService {
 
         Calendar cal=Calendar.getInstance();
         Date to=cal.getTime();
-        // 泉州要24小时内的
-        if ("qz".equals(bo.getWebSite())) {
+        // 泉州,沧州要24小时内的
+        if ("qz".equals(bo.getWebSite())||"cz".equals(bo.getWebSite())) {
             cal.add(Calendar.DATE, -1);
         } else {
             cal.set(Calendar.HOUR_OF_DAY,0);

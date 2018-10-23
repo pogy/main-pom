@@ -72,6 +72,33 @@ public class CdnShopInfoVO {
      * 店铺类型
      */
     private Integer type;
+    private Integer existWx;
+    private Integer isZx;
+    private String advisoryMobile;
+
+    public String getAdvisoryMobile() {
+        return advisoryMobile;
+    }
+
+    public void setAdvisoryMobile(String advisoryMobile) {
+        this.advisoryMobile = advisoryMobile;
+    }
+
+    public Integer getExistWx() {
+        return existWx;
+    }
+
+    public void setExistWx(Integer existWx) {
+        this.existWx = existWx;
+    }
+
+    public Integer getIsZx() {
+        return isZx;
+    }
+
+    public void setIsZx(Integer isZx) {
+        this.isZx = isZx;
+    }
 
     public Long getMarketId() {
         return marketId;

@@ -2,6 +2,7 @@ package com.shigu.main4.storeservices;
 
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
+import com.shigu.main4.vo.LinceseVo;
 import com.shigu.main4.vo.ShopLicense;
 
 import java.util.List;
@@ -42,4 +43,13 @@ public interface ShopLicenseService {
      * @return
      */
     ShopLicense selShopLIcenseByType(Long shopId, ShopLicenseTypeEnum type);
+
+    /**
+     * 据shopid type 改店铺权益
+     * @param shopId
+     * @param
+     */
+    Integer updateShopLIcenseByType(Long shopId,Integer type, Integer licenseFailure, String content);
+
+    List<LinceseVo> selShopLIcenseByIds(List<Long> shopIds);
 }

@@ -30,10 +30,7 @@ import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.storeservices.*;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.vo.HomeCateMenu;
-import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.main4.vo.ShopBase;
-import com.shigu.main4.vo.StoreRelation;
+import com.shigu.main4.vo.*;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.TodayNewGoodsService;
@@ -768,7 +765,7 @@ public class CdnAction {
 
 
         //类目导航
-        ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, manOrWoman.equals("Woman") ? 2 : 1, manOrWoman.equals("Woman")?SpreadEnum.NEW_SS_Woman_HomeCateMenu:SpreadEnum.NEW_SS_Man_HomeCateMenu);
+        ObjFromCache<List<HomeCateMenu>> catemenu = spreadService.castedHomeCateMenu(webSite, manOrWoman.equals("Woman") ? 2 : 1, manOrWoman.equals("Woman") ? SpreadEnum.NEW_SS_Woman_HomeCateMenu : SpreadEnum.NEW_SS_Man_HomeCateMenu);
         model.addAttribute("catemenu", selFromCache(catemenu));
         //规则
         model.addAttribute("rules", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZRULE)));
@@ -1026,6 +1023,23 @@ public class CdnAction {
             if (shopShowVO.getItemList() != null) {
                 shopShowVO.getItemList().getContent().forEach(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getGoodsNo())));
             }
+
+
+            List<LinceseVo> voList = selShopLIcense(bo.getId());
+            if (voList.size() > 0) {
+                LinceseVo vo = voList.get(0);
+                if (vo.getIsWx() != null && vo.getIsWx() == 0){
+                        shopShowVO.setExistWx(0);
+                        StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
+                        storeRelation1.setTelephone(storeRelation1.getTelephone()+"（微信同号）");
+                }
+                if (vo.getIsZx() != null && vo.getIsZx() == 0){
+                    shopShowVO.setIsZx(0);
+                    StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
+                    storeRelation1.setAdvisoryMobile(vo.getContext());
+                }
+            }// TODO: 微信同号，咨询电话
+
             model.addAttribute("vo", shopShowVO);
             if ("kx".equalsIgnoreCase(webSite)) {
                 return "cdn/xieShopDown";
@@ -1188,6 +1202,22 @@ public class CdnAction {
         if (shopShowVO.getItemList() != null) {
             shopShowVO.getItemList().getContent().forEach(itemShowBlock -> itemShowBlock.setTitle(KeyWordsUtil.duleKeyWords(itemShowBlock.getGoodsNo())));
         }
+
+        List<LinceseVo> voList = selShopLIcense(shopId);
+        if (voList.size() > 0) {
+            LinceseVo vo = voList.get(0);
+            if (vo.getIsWx() != null && vo.getIsWx() == 0){
+                shopShowVO.setExistWx(0);
+                StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
+                storeRelation1.setTelephone(storeRelation1.getTelephone()+"（微信同号）");
+            }
+            if (vo.getIsZx() != null && vo.getIsZx() == 0){
+                shopShowVO.setIsZx(0);
+                StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
+                storeRelation1.setAdvisoryMobile(vo.getContext());
+            }
+        }// TODO: 微信同号，咨询电话
+
         model.addAttribute("container", containerVO);
         model.addAttribute("pages", shopDesignService.selAllPage(shopId));
         model.addAttribute("isEditer", false);
@@ -1564,17 +1594,17 @@ public class CdnAction {
             return JsonResponseUtil.error("商品不存在");
         }
         int i = cdnService.setNewGoods(goodsId);
-        if (i==0) {
+        if (i == 0) {
             return JsonResponseUtil.success();
-        } else if(i==1){
+        } else if (i == 1) {
             return JsonResponseUtil.error("每日仅限三款设为新品");
-        }else if(i==2){
+        } else if (i == 2) {
             return JsonResponseUtil.error("档口不存在");
-        }else if(i==3){
+        } else if (i == 3) {
             return JsonResponseUtil.error("商品不存在");
-        }else if(i==4){
+        } else if (i == 4) {
             return JsonResponseUtil.error("今日已设置");
-        }else{
+        } else {
             return JsonResponseUtil.error("系统异常");
         }
     }
@@ -1600,6 +1630,7 @@ public class CdnAction {
 
     /**
      * 一件代发
+     *
      * @param model
      * @return
      */
@@ -1618,13 +1649,30 @@ public class CdnAction {
 
     /**
      * app下载
+     *
      * @return
      */
     @RequestMapping("appDownIntro")
-    public String appDownIntro(Model model){
+    public String appDownIntro(Model model) {
         model.addAttribute("webSite", "hz");
-        model.addAttribute("catemenu",searchCategoryService.getMarketCateShow("hz"));
-        model.addAttribute("daifaTelphone",cdnService.selDaifaPhoneNo());
+        model.addAttribute("catemenu", searchCategoryService.getMarketCateShow("hz"));
+        model.addAttribute("daifaTelphone", cdnService.selDaifaPhoneNo());
         return "xzSearch/appDownIntro";
     }
+
+    private List<LinceseVo> selShopLIcense(Long shopIds) {
+        List<Long> longs = new ArrayList<>();
+        longs.add(shopIds);
+        return shopLicenseService.selShopLIcenseByIds(longs);
+//        if (voList.size()>0){
+//            if (voList.get(0).getIsWx() == 0){
+//                shop.setIsWx(0);
+//                shop.setMobile(shop.getMobile()+"（微信同号）");
+//            }
+//            if (voList.get(0).getIsZx() == 0){
+//                shop.setAdvisoryMobile(voList.get(0).getContext());
+//            }
+//        }
+    }
+
 }
