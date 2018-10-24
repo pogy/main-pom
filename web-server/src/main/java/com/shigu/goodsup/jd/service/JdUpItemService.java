@@ -25,8 +25,6 @@ import com.shigu.goodsup.jd.vo.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
-import com.shigu.tb.finder.exceptions.TbPropException;
-import com.shigu.tb.finder.services.TbPropsService;
 import com.shigu.tb.finder.vo.PropType;
 import com.shigu.tools.KeyWordsUtil;
 import com.taobao.api.domain.*;
@@ -62,15 +60,13 @@ public class JdUpItemService {
     @Autowired
     ItemAddOrUpdateService itemAddOrUpdateService;
     @Autowired
+    PropsService propsService;
+    @Autowired
     JdUserInfoService jdUserInfoService;
     @Autowired
     JdCategoryService jdCategoryService;
     @Autowired
     XzJdSdkSend xzJdSdkSend;
-    @Autowired
-    TbPropsService tbPropsService;
-    @Autowired
-    PropsService propsService;
     /**
      * 得到商品
      * @return
@@ -234,8 +230,14 @@ public class JdUpItemService {
 
 
 
-    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfo> brands) throws CloneNotSupportedException, IOException, ClassNotFoundException, AuthOverException, CustomException, TbPropException {
-        com.shigu.tb.finder.vo.PropsVO tbPropsVO=tbPropsService.selHasValueProps(item.getCid());
+    public PropsVO selProps(Long goodsId,Long jdCid,Long jdUserId,Item item,List<JdVenderBrandPubInfo> brands) throws CloneNotSupportedException, IOException, ClassNotFoundException, AuthOverException, CustomException {
+        PropsVO tbPropsVO=propsService.selProps(item.getCid());
+        List<PropImg> propImgs=item.getPropImgs();
+        if (propImgs == null) {
+            propImgs=new ArrayList<>();
+        }
+        tbPropsVO=propsService.importValue(tbPropsVO,item.getPropsName(), BeanMapper.mapList(propImgs, PropImg.class),item.getPropertyAlias(),item
+                .getInputStr(),item.getInputPids(),goodsId);
         PropsVO prop=find(item,jdUserId,jdCid,brands);
 //        if (prop.getColor() == null) {
 //            throw new CustomException("获取颜色信息失败");
@@ -374,14 +376,14 @@ public class JdUpItemService {
     }
 
 
-    public void fillProp(List<PropertyItemVO> jdVS,List<com.shigu.tb.finder.vo.PropertyItemVO> tbVS){
+    public void fillProp(List<PropertyItemVO> jdVS,List<PropertyItemVO> tbVS){
         for(PropertyItemVO jdV:jdVS){
-            for(com.shigu.tb.finder.vo.PropertyItemVO tbV:tbVS){
+            for(PropertyItemVO tbV:tbVS){
                 if(tbV.getName().equals(jdV.getName())){
                     if(jdV.getType().equals(PropType.INPUT)){
                         if(tbV.getValues().size()>0){
                             if(tbV.getType().equals(PropType.INPUT)){
-                                com.shigu.tb.finder.vo.PropertyValueVO propertyValueVO=tbV.getValues().get(0);
+                                PropertyValueVO propertyValueVO=tbV.getValues().get(0);
                                 if(!StringUtils.isEmpty(propertyValueVO.getName())){
                                     PropertyValueVO pp = new PropertyValueVO();
                                     pp.setName(propertyValueVO.getName());
@@ -390,8 +392,8 @@ public class JdUpItemService {
                                     break;
                                 }
                             }else{
-                                List<com.shigu.tb.finder.vo.PropertyValueVO> tbvvs=tbV.getValues().stream().filter(propertyValueVO ->
-                                    propertyValueVO.isSelected()&&!StringUtils.isEmpty(propertyValueVO.getName())
+                                List<PropertyValueVO> tbvvs=tbV.getValues().stream().filter(propertyValueVO ->
+                                        propertyValueVO.isSelected()&&!StringUtils.isEmpty(propertyValueVO.getName())
                                 ).collect(Collectors.toList());
                                 if(tbvvs.size()>0){
                                     PropertyValueVO pp = new PropertyValueVO();
@@ -409,23 +411,23 @@ public class JdUpItemService {
             }
         }
     }
-    public void fillPropValue(PropertyItemVO jdV,com.shigu.tb.finder.vo.PropertyItemVO tbV){
+    public void fillPropValue(PropertyItemVO jdV,PropertyItemVO tbV){
         if (jdV == null) {
             return;
         }
         List<PropertyValueVO> jdValues=jdV.getValues();
-        Map<Long,com.shigu.tb.finder.vo.PropertyValueVO> tbMap=new HashMap<>();
+        Map<Long,PropertyValueVO> tbMap=new HashMap<>();
         Set<Long> removeKey=new HashSet<>();
-        for(com.shigu.tb.finder.vo.PropertyValueVO tb:tbV.getValues()){
+        for(PropertyValueVO tb:tbV.getValues()){
             if(tb.isSelected()){
                 if(jdV.isCanAlias()){
                     tbMap.put(tb.getVid(),tb);
                 }
                 for(PropertyValueVO jd:jdValues){
-                    if(tb.getVname()==null){
+                    if(tb.getOldName()==null){
                         break;
                     }
-                    if(tb.getVname().equals(jd.getName())||(jd.getName().replace("型","").equals(tb.getVname()))){
+                    if(tb.getOldName().equals(jd.getName())||(jd.getName().replace("型","").equals(tb.getOldName()))){
                         jd.setSelected(true);
                         if(!jdV.getType().equals(PropType.SELECT)){
                             jd.setName(tb.getName());
@@ -439,12 +441,12 @@ public class JdUpItemService {
             }
         }
         if(tbMap.size()>0){
-            List<com.shigu.tb.finder.vo.PropertyValueVO> tbs= new ArrayList<>(tbMap.values());
+            List<PropertyValueVO> tbs= new ArrayList<>(tbMap.values());
             for(PropertyValueVO jd:jdValues){
                 if(removeKey.contains(jd.getVid())){
                     continue;
                 }
-                com.shigu.tb.finder.vo.PropertyValueVO tb=tbs.get(0);
+                PropertyValueVO tb=tbs.get(0);
                 jd.setName(tb.getName());
                 jd.setSelected(true);
                 jd.setImgUrl(tb.getImgUrl());
