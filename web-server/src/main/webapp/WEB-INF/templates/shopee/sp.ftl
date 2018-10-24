@@ -78,7 +78,7 @@
                     <em>*</em>宝贝标题</label>
                 <#assign item=allData.items.item>
                 <div class="field-content fl">
-                    <input type="text" id="TitleID" class="text text-long notBeEmpty" data-error-title='宝贝标题'
+                    <input type="text" id="TitleID" maxlength="60" class="text text-long notBeEmpty" data-error-title='宝贝标题'
                            name="title" value="${item.title!}">
                     <span id="J_TitleCountDownTip" class="input-count"><span>${allData.items.titleLength}</span>/60</span>
                     <input type="hidden" id="nav_title" data-feed="err_nav_title">
@@ -87,7 +87,7 @@
                             <ul>
                                 <li>
                                     <i class="icon iconfont icon-removecircle"></i>
-                                    <span class="errorinfo">不能超过30个字或60个字符!</span></li>
+                                    <span class="errorinfo">不能超过60个字!</span></li>
                             </ul>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
             <div class="field clearfix">
                 <label class="fl">商品描述</label>
                 <div class="field-content fl">
-                    <textarea id="SubheadingID" class="xzw-textarea" cols="77" rows="3" name="sellPoint" placeholder="提示：建议使用繁体编写">${item.sellPoint!}</textarea>
+                    <textarea id="SubheadingID" class="xzw-textarea notBeEmpty" maxlength="3000" cols="77" rows="3" name="sellPoint" placeholder="提示：建议使用繁体编写">${item.sellPoint!}</textarea>
                     <span id="J_SubheadingCountDownTip" class="input-count"><span>${allData.items.sellPointLength}</span>/3000</span>
                     <input type="hidden" id="nav_subTitle" data-feed="err_nav_subTitle">
                     <div id="err_nav_subTitle" style="display:none">
@@ -104,7 +104,7 @@
                             <ul>
                                 <li>
                                     <i class="icon iconfont icon-removecircle"></i>
-                                    <span class="errorinfo">不能超过1500个字或3000个字符!</span></li>
+                                    <span class="errorinfo">不能超过3000个字或少于3个字!</span></li>
                             </ul>
                         </div>
                     </div>

@@ -196,20 +196,23 @@ $(function(){
         var txtCount = 60;
         var obj = $('#TitleID');
         var errID = $("#err_nav_title");
-        getBt(obj,txtCount,errID);
+        getBt(obj,txtCount,errID, 1);
     });
     //宝贝卖点
     $("#SubheadingID").keyup(function(){
         var txtCount = 3000;
         var obj = $('#SubheadingID');
         var errID = $("#err_nav_subTitle");
-        getBt(obj,txtCount,errID);
+        getBt(obj,txtCount,errID, 1, 3);
     });
 
-    function getBt(obj,count,errID){
+    function getBt(obj,count,errID, type, min){
         var txtVal = obj.val();
         var charBt = txtVal.replace(/[^\x00-\xff]/g, '**').length;
-        if(charBt>count){
+        if(type){
+            charBt = txtVal.length;
+        }
+        if(charBt>count || (min && charBt < min)){
             obj.siblings(".input-count").addClass("overcount");
             obj.siblings(".input-count").find("span").text(charBt).addClass("warning");
             errID.show();
