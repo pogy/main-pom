@@ -14,5 +14,5 @@ public interface ShopeeUserService {
 
     void refreshShopeeUserInfo(ShopeeUserBO bo);
 
-
+    ShopeeUserBO selShopeeInfo(Long userId);
 }
