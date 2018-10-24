@@ -17,7 +17,7 @@
     <div class="ovbox hd-nav" id="bgcolor" style="background:${moduleSet.storeNav.background};">
         <div class="mod_item">
             <div class="nav-main clearfix">
-                <ul class="clearfix fl">
+                <ul class="clearfix fl" style="float:left;">
                     <li>
                         <#if shop.domain != "" && shop.domain??>
                             <a href="//${shop.domain}.571xz.com" style="color:${moduleSet.storeNav.color};">
@@ -154,7 +154,7 @@
                         </li>
                     </#if>
                 </ul>
-                <ul class="clearfix fl" style="width:860px; overflow-y:hidden;">
+                <ul class="clearfix fl" style="width:860px; overflow-y:hidden; float:left;">
                 <#list checkedNavs as nav>
                     <li>
                         <a href="${nav.href!}" style="color:${moduleSet.storeNav.color!};">
