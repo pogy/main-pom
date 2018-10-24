@@ -13,6 +13,7 @@ public enum  GoodsUploadFlagEnum {
     JD("jd","上传到京东"),
     PDD("pdd","上传到拼多多"),
     SN("sn","上传到苏宁"),
+    SHOPEE("shopee","上传到虾皮")
 
     ;
 

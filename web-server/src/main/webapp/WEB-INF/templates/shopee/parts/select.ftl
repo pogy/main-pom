@@ -1,3 +1,4 @@
+<#if prop.values?size gt 0>
 <li id="spu_${prop.pid}" class="J_spu-property <#if prop.mustHave>mandatory</#if>" name="spus">
     <label class="label-title" id="ariaby-prop_${prop.pid}">${prop.name}：</label>
                                                 <span>
@@ -37,7 +38,7 @@
                           &nbsp;                                  <select data-transtype="dropbox" class="" id="prop_${selectedpv.subPropItem.name}" style="display: none; visibility: hidden;">
                                   <#assign subselectedpv=selectedpv.subPropItem.values[0]>
                                   <#list selectedpv.subPropItem.values as spv>
-                                      <option class="props_option_${selectedpv.subPropItem.pid}" data-pid="${spv.name}"
+                                      <option class="props_option_${selectedpv.subPropItem.pid}" data-pid="${selectedpv.subPropItem.pid}"
                                               <#if spv.selected>
                                               <#assign subselectedpv=spv>
                                                   selected
@@ -61,3 +62,4 @@
                         </ul>
                       </span>
 </li>
+</#if>

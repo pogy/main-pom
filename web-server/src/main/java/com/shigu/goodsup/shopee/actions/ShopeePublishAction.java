@@ -1,6 +1,6 @@
 package com.shigu.goodsup.shopee.actions;
 
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.alibaba.fastjson.JSON;
 import com.shigu.buyer.actions.UserLoginAction;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.UserType;
@@ -8,28 +8,34 @@ import com.shigu.configBean.MainSiteConfig;
 import com.shigu.goodsup.jd.bo.JdUploadSkuBO;
 import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.jd.service.JdUpItemService;
+import com.shigu.goodsup.jd.service.JdUploadService;
 import com.shigu.goodsup.jd.vo.JdPageItem;
 import com.shigu.goodsup.shopee.bo.UptoTbShopee;
 import com.shigu.goodsup.shopee.service.ShopeeService;
 import com.shigu.goodsup.shopee.services.ShopeePropsService;
 import com.shigu.goodsup.shopee.utils.ZHConverter;
 import com.shigu.goodsup.shopee.vo.ShopeeShowDataVO;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
+import com.shigu.main4.ucenter.bo.ShopeeUserBO;
+import com.shigu.main4.ucenter.services.ShopeeUserService;
 import com.shigu.search.actions.PageErrAction;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tb.finder.exceptions.TbPropException;
+import com.shigu.tb.finder.vo.PropsVO;
 import com.shigu.tools.JsonResponseUtil;
-import com.taobao.api.domain.Item;
 import com.shigu.upload.shopee.sdk.response.ShopeeGetShopInfoResponse;
+import com.taobao.api.domain.Item;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +43,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -65,9 +70,23 @@ public class ShopeePublishAction {
 
     @Autowired
     private PageErrAction pageErrAction;
-
+    @Autowired
+    public ShopeeUserService shopeeUserService;
+    @Autowired
+    private JdUploadService jdUploadService;
     @Autowired
     private UserLoginAction userLoginAction;
+    @Value("${shopee.item.url}")
+    private String itemUrl;
+    @Value("${shopee.item.isTest}")
+    private boolean isTest;
+
+    static Map<String,String> errMap=new HashMap<>();
+    static{
+        errMap.put("Variation length should not bigger than 20.","sku数量超过20");
+        errMap.put("Description length invalid","商品详情长度必须在100-3000个字之间");
+        errMap.put("All images download fail","图片搬家失败");
+    }
 
 
 
@@ -137,7 +156,8 @@ public class ShopeePublishAction {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             logger.error("获取商品数据异常",e);
-            throw new CustomException("商品信息异常");
+            model.addAttribute("errmsg","商品信息异常");
+            return "shopee/uperror";
         }
 
         item.getItem().setTitle(ZHConverter.convert(item.getItem().getTitle(), ZHConverter.TRADITIONAL));
@@ -150,7 +170,9 @@ public class ShopeePublishAction {
         allData.setItems(item);
         allData.setJdUserId(shopeeId);
         allData.setDeliveyList(shopeeService.shopLogistics(shopeeId));
-        allData.setProps(shopeePropsService.selProps(goodsId,cid));
+        PropsVO propsVO = shopeePropsService.selProps(goodsId, cid,shopeeId);
+        propsVO.setCid(cid);
+        allData.setProps(propsVO);
 //        allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
         allData.setGoodsCat(shopeePropsService.selCatPath(cid));
         model.addAttribute("allData",allData);
@@ -159,8 +181,10 @@ public class ShopeePublishAction {
 
     @RequestMapping("sp/getCateDatas")
     @ResponseBody
-    public JSONObject getCateDatas(Long cid){
-        return JsonResponseUtil.success().element("datas",shopeePropsService.selCate(cid));
+    public JSONObject getCateDatas(Long cid, HttpSession session){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long shopeeId=new Long(shopeeService.getSpUsernameBySubUid(ps.getSubUserId()));
+        return JsonResponseUtil.success().element("datas",shopeePropsService.selCate(cid,shopeeId));
     }
 
     @RequestMapping({"sp/getSpGoodsInfo","jd/getJdGoodsInfo"})
@@ -196,17 +220,42 @@ public class ShopeePublishAction {
                          @RequestParam(value = "sku_props[]",required = false)String[] skuProps,
                          @RequestParam(value = "deliver[]",required = false)String[] deliver,
                          String skus,
-                         HttpSession session) throws IOException {
-        List<JdUploadSkuBO> sku = (List<JdUploadSkuBO>) JSONArray.toList(JSONArray.fromObject(skus), JdUploadSkuBO.class, new HashMap<String, Class>() {{
-            put("sizes", JdUploadSkuBO.class);
-        }});
+                         HttpSession session,Model model) throws IOException {
+//        List<JdUploadSkuBO> sku = (List<JdUploadSkuBO>) JSONArray.toList(JSONArray.fromObject(skus), JdUploadSkuBO.class, new HashMap<String, Class>() {{
+//            put("sizes", JdUploadSkuBO.class);
+//        }});
+        List<JdUploadSkuBO> sku = JSON.parseArray(skus,JdUploadSkuBO.class);
+        String errorMsg=null;
+        String url=null;
+        Long itemId = null;
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if(ps==null||ps.getLoginFromType()!=LoginFromType.SHOPEE){
-            return "redirect:changeGoodsCate.htm?goodsId="+bo.getMid();
+            errorMsg="授权过期";
+        }else {
+            if (bo.getTitle() == null) {
+                errorMsg = "标题不能为空";
+            } else {
+                bo.setTitle(bo.getTitle().trim());
+                Long shopeeId = new Long(shopeeService.getSpUsernameBySubUid(ps.getSubUserId()));
+                try {
+                    itemId=shopeePropsService.itemAdd(bo, sku, picUrl, skuProps, deliver, shopeeId);
+                    ShopeeUserBO shopeeUserBO = shopeeUserService.selShopeeInfo(ps.getUserId());
+                    url = String.format(itemUrl, shopeeUserBO.getCountry().toLowerCase(), bo.getTitle(), shopeeId, itemId);
+                } catch (Main4Exception e) {
+                    String s = errMap.get(e.getMessage());
+                    if(s!=null){
+                        errorMsg=s;
+                    }else{
+                        errorMsg=e.getMessage();
+                    }
+                }
+            }
         }
-        Long shopeeId=new Long(shopeeService.getSpUsernameBySubUid(ps.getSubUserId()));
-        shopeePropsService.itemAdd(bo,sku,picUrl,skuProps,deliver,shopeeId);
-
-        return  "";
+        model.addAttribute("errorMsg",errorMsg);
+        model.addAttribute("shopeeUrl",url);
+        if(url!=null&&!isTest){
+            jdUploadService.addUploadRecord(bo.getMid(),itemId,bo.getPrice(),picUrl[0],bo.getTitle(),GoodsUploadFlagEnum.SHOPEE,ps);
+        }
+        return "shopee/parts/success";
     }
 }

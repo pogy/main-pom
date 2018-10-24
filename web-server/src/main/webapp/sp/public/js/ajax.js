@@ -612,6 +612,7 @@ function upForm(){
         dataType: "html",
         data : $( '#mainform').serialize(),
         success : function(data) {
+            $('#tip_content').show();
             $('#tip_content').html(data);
             $('#tip_default').hide();
             $('.time-con').hide();

@@ -14,7 +14,17 @@ import com.shigu.goodsup.jd.exceptions.AuthOverException;
 import com.shigu.goodsup.jd.exceptions.CustomException;
 import com.shigu.goodsup.jd.util.XzJdSdkSend;
 import com.shigu.goodsup.jd.vo.PropsVO;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.item.services.ShowForCdnService;
+import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
+import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.vo.ShopBase;
+import com.shigu.main4.vo.StoreRelation;
+import com.shigu.session.main4.PersonalSession;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -40,6 +50,14 @@ public class JdUploadService {
     JdGoodsUpService jdGoodsUpService;
     @Autowired
     MemberUserSubMapper memberUserSubMapper;
+    @Autowired
+    ItemUpRecordService itemUpRecordService;
+    @Autowired
+    ShowForCdnService showForCdnService;
+    @Autowired
+    StoreRelationService storeRelationService;
+    @Autowired
+    ShopBaseService shopBaseService;
     static List<Integer> cdnIndexs = Arrays.asList(10, 11, 12, 13, 14);
 
     public SdkJdWareAdd upload(PropsVO prop, JdUploadTmpBO tbo, Long jdUid) throws CustomException, AuthOverException {
@@ -291,5 +309,46 @@ public class JdUploadService {
                 "</div>";
         Elements on = Jsoup.parse(str).getElementsByAttributeStarting("on");
         System.out.println(on.toString());
+    }
+
+    public void addUploadRecord(Long id,Long numIid,String outerPrice,String firstImg,String fenTitle,GoodsUploadFlagEnum flag, PersonalSession personalSession) {
+        CdnItem cdnItem = showForCdnService.selItemById(id);
+        StoreRelation storeRelation = storeRelationService.selRelationById(cdnItem.getShopId());
+        ShopBase shopBase = shopBaseService.shopBaseForUpdate(cdnItem.getShopId());
+        ItemUpRecordVO record = new ItemUpRecordVO();
+        record.setFenUserId(personalSession.getUserId());
+        record.setFenUserNick(personalSession.getUserNick());
+        record.setFenPrice(outerPrice);
+        record.setFenImage(firstImg);
+        record.setFenGoodsName(fenTitle);
+        record.setFenNumiid(numIid);
+
+        record.setSupperPiPrice(cdnItem.getPiPrice());
+        record.setSupperPrice(cdnItem.getPrice());
+        record.setStatus(0L);
+        record.setSupperGoodsId(id);
+        record.setSupperStoreId(cdnItem.getShopId());
+        record.setSupperMarketId(cdnItem.getMarketId());
+        record.setSupperNumiid(cdnItem.getTbNumIid());
+        record.setCid(cdnItem.getCid());
+        if (!cdnItem.getImgUrl().isEmpty()) {
+            String img = cdnItem.getImgUrl().get(0);
+            record.setSupperImage(img);
+        }
+        record.setFlag(flag.getFlag());
+        record.setSupperGoodsName(cdnItem.getTitle());
+        record.setWebSite(cdnItem.getWebSite());
+        record.setDaiTime(DateUtil.dateToString(new Date(), DateUtil.patternD));
+        if (storeRelation != null) {
+            record.setSupperServers("退现金,包换款");
+            record.setSupperStorenum(storeRelation.getStoreNum());
+            record.setSupperImww(storeRelation.getImWw());
+            record.setSupperTelephone(storeRelation.getTelephone());
+            record.setSupperTaobaoUrl(shopBase.getTaobaoUrl());
+            record.setSupperMarket(storeRelation.getMarketName());
+            record.setSupperStoreName(shopBase.getShopName());
+            record.setSupperQq(storeRelation.getImQq());
+        }
+        itemUpRecordService.addItemUpRecord(record);
     }
 }
