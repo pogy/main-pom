@@ -70,9 +70,11 @@
                                             <li class="f_con">
                                                 <a href="/shop/search.htm?id=${shop.shopId}&scid=${cat.cid!}">
                                                     ${cat.name!}
-                                                    <span>
-                                                        &gt;
-                                                    </span>
+                                                    <#if cat.subCats??>
+                                                        <span>
+                                                            &gt;
+                                                        </span>
+                                                    </#if>
                                                 </a>
                                                 <#if cat.subCats??>
                                                    <#if cat.subCats?size gt 0>
