@@ -114,7 +114,7 @@
                 <label class="fl"><em>*</em>shopee价</label>
                 <div class="field-content fl">
                     <input type="text" id="buynow" name="price" size="15" value="${item.price}" class="text text-pri notBeEmpty" data-error-title='shopee价'>
-                    (<span style="color:red;">最终</span>价格以<span style="color:red;">shopee价</span>为准)
+                    (<span style="color:red;">最终</span>价格以<span style="color:red;">shopee价</span>为准；注：此价格对应台湾的新台币，请自主计算汇率，以免造成损失)
                 </div>
             </div>
             <!--sku信息-->
