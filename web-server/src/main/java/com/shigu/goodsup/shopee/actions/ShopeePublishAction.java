@@ -104,6 +104,10 @@ public class ShopeePublishAction {
         if (!shopInfo.isSuccess()) {
             return pageErrAction.pageErr(shopInfo.getErrorDescription(), model);
         }
+        if(!"TW".equalsIgnoreCase(shopInfo.getCountry())){
+            model.addAttribute("errmsg","暂时只支持shopee台湾站点用户");
+            return "shopee/uperror";
+        }
         if (shopInfo.getShopId() != null) {
             shopeeService.refreshShopeeUser(shopInfo);
             Subject currentUser = SecurityUtils.getSubject();
@@ -176,6 +180,7 @@ public class ShopeePublishAction {
 //        allData.setStoreCats(jdUpItemService.selShopCats(jdUserId));
         allData.setGoodsCat(shopeePropsService.selCatPath(cid));
         model.addAttribute("allData",allData);
+        model.addAttribute("id",goodsId);
         return "shopee/sp";
     }
 
