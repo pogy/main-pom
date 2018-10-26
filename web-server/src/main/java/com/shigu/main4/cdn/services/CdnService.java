@@ -521,8 +521,12 @@ public class CdnService {
                     vo.setExistWx(0);
                     vo.setMobile(vo.getMobile() + "（微信同号）");
             }
-            if (vo1.getIsZx() != null && vo1.getIsZx() == 0){
-                    vo.setAdvisoryMobile(voList.get(0).getContext());
+        }
+        List<LinceseVo> voList1 = selShopLIcense(shop.getMarketId());
+        if (voList1.size()>0){
+            LinceseVo linceseVo = voList1.get(0);
+            if (linceseVo.getIsZx() != null && linceseVo.getIsZx() == 0){
+                    vo.setAdvisoryMobile(linceseVo.getContext());
                     vo.setIsZx(0);
             }
         }

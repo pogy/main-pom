@@ -1028,15 +1028,19 @@ public class CdnAction {
             List<LinceseVo> voList = selShopLIcense(bo.getId());
             if (voList.size() > 0) {
                 LinceseVo vo = voList.get(0);
-                if (vo.getIsWx() != null && vo.getIsWx() == 0){
-                        shopShowVO.setExistWx(0);
-                        StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
-                        storeRelation1.setTelephone(storeRelation1.getTelephone()+"（微信同号）");
+                if (vo.getIsWx() != null && vo.getIsWx() == 0) {
+                    shopShowVO.setExistWx(0);
+                    StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
+                    storeRelation1.setTelephone(storeRelation1.getTelephone() + "（微信同号）");
                 }
-                if (vo.getIsZx() != null && vo.getIsZx() == 0){
+            }
+                List<LinceseVo> voList1 = selShopLIcense(storeRelation.getMarketId());
+            if (voList1.size()>0){
+                LinceseVo vo1 = voList1.get(0);
+                if (vo1.getIsZx() != null && vo1.getIsZx() == 0){
                     shopShowVO.setIsZx(0);
                     StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
-                    storeRelation1.setAdvisoryMobile(vo.getContext());
+                    storeRelation1.setAdvisoryMobile(vo1.getContext());
                 }
             }// TODO: 微信同号，咨询电话
 
@@ -1206,18 +1210,23 @@ public class CdnAction {
         List<LinceseVo> voList = selShopLIcense(shopId);
         if (voList.size() > 0) {
             LinceseVo vo = voList.get(0);
-            if (vo.getIsWx() != null && vo.getIsWx() == 0){
+            if (vo.getIsWx() != null && vo.getIsWx() == 0) {
                 shopShowVO.setExistWx(0);
                 StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
-                storeRelation1.setTelephone(storeRelation1.getTelephone()+"（微信同号）");
+                storeRelation1.setTelephone(storeRelation1.getTelephone() + "（微信同号）");
             }
-            if (vo.getIsZx() != null && vo.getIsZx() == 0){
-                shopShowVO.setIsZx(0);
-                StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
-                storeRelation1.setAdvisoryMobile(vo.getContext());
-            }
-        }// TODO: 微信同号，咨询电话
-
+        }
+        if (shopShowVO.getStoreRelation()!=null){
+            StoreRelation storeRelation1 = shopShowVO.getStoreRelation();
+            List<LinceseVo> voList1 = selShopLIcense(storeRelation1.getMarketId());
+            if (voList1.size()>0){
+                LinceseVo vo1 = voList1.get(0);
+                if (vo1.getIsZx() != null && vo1.getIsZx() == 0){
+                    shopShowVO.setIsZx(0);
+                    storeRelation1.setAdvisoryMobile(vo1.getContext());
+                }
+            }// TODO: 微信同号，咨询电话
+        }
         model.addAttribute("container", containerVO);
         model.addAttribute("pages", shopDesignService.selAllPage(shopId));
         model.addAttribute("isEditer", false);
@@ -1664,15 +1673,6 @@ public class CdnAction {
         List<Long> longs = new ArrayList<>();
         longs.add(shopIds);
         return shopLicenseService.selShopLIcenseByIds(longs);
-//        if (voList.size()>0){
-//            if (voList.get(0).getIsWx() == 0){
-//                shop.setIsWx(0);
-//                shop.setMobile(shop.getMobile()+"（微信同号）");
-//            }
-//            if (voList.get(0).getIsZx() == 0){
-//                shop.setAdvisoryMobile(voList.get(0).getContext());
-//            }
-//        }
     }
 
 }
