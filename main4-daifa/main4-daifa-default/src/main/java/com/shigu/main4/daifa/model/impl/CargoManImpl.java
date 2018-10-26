@@ -19,10 +19,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -116,7 +113,6 @@ public class CargoManImpl implements CargoManModel {
         if(daifaGgoodsTasksMapper.countByExample(daifaGgoodsTasksExample)!=0){
             throw new DaifaException("存在今天之前分配的拿货中的数据,禁止分配",DaifaException.DEBUG);
         }
-
         try {
             takeLock.lock();
             //拿货拿货code
@@ -132,6 +128,7 @@ public class CargoManImpl implements CargoManModel {
                     .andEndStatusEqualTo(0);//未结算
             List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectByExample(dgtex);
             List<DaifaGgoods> ggoodsList = new ArrayList<>();
+            List<Long> orderIds=new ArrayList<>();
             for (DaifaGgoodsTasks tasks : daifaGgoodsTasks) {
                 DaifaGgoods ggoods = new DaifaGgoods();
                 BeanUtils.copyProperties(tasks, ggoods);
@@ -159,13 +156,21 @@ public class CargoManImpl implements CargoManModel {
                 //修改任务表
                 daifaGgoodsTasksMapper.updateByPrimaryKeySelective(tasks);
                 //修改子订单表状态
+                orderIds.add(tasks.getDfOrderId());
                 DaifaOrder order = new DaifaOrder();
                 order.setDfOrderId(tasks.getDfOrderId());
                 order.setOrderStatus(2);
                 order.setAllocatStatus(1);
                 daifaOrderMapper.updateByPrimaryKeySelective(order);
             }
-
+            if(orderIds.size()>0){
+                DaifaOrder order = new DaifaOrder();
+                order.setOrderStatus(2);
+                order.setAllocatStatus(1);
+                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(orderIds);
+                daifaOrderMapper.updateByExampleSelective(order,daifaOrderExample);
+            }
 
             //写入已分配表
             if (ggoodsList.size() != 0) {
@@ -197,7 +202,7 @@ public class CargoManImpl implements CargoManModel {
         //状态修改s
         DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
         DaifaWaitSendOrderExample dfwsoex = new DaifaWaitSendOrderExample();
-        fo:for (DaifaGgoods ddgoods : gglist) {
+        for (DaifaGgoods ddgoods : gglist) {
             ddgoods.setUseStatus(0);//变成不可用了
             ddgoods.setOperateIs(1);
             if (!Objects.equals(ddgoods.getTakeGoodsStatus(), TakeGoodsEnum.HAS_TAKE.getValue())) {//未拿到货的

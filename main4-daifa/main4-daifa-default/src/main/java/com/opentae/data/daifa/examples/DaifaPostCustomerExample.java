@@ -15,9 +15,11 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
     public static EntityColumn dfSellerId;
     public static EntityColumn expressCompanyCode;
     public static EntityColumn express;
+    public static EntityColumn manual;
     public static EntityColumn customerName;
     public static EntityColumn useStatus;
     public static EntityColumn monthCode;
+    public static EntityColumn allAddress;
     public static EntityColumn sendSite;
     public static EntityColumn expType;
     public static EntityColumn logisticCode;
@@ -34,9 +36,11 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
         dfSellerId = listMap.get("dfSellerId");
         expressCompanyCode = listMap.get("expressCompanyCode");
         express = listMap.get("express");
+        manual = listMap.get("manual");
         customerName = listMap.get("customerName");
         useStatus = listMap.get("useStatus");
         monthCode = listMap.get("monthCode");
+        allAddress = listMap.get("allAddress");
         sendSite = listMap.get("sendSite");
         expType = listMap.get("expType");
         logisticCode = listMap.get("logisticCode");
@@ -314,6 +318,53 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
         public DaifaPostCustomerExample.Criteria andExpressNotBetween(String value1, String value2) {
             return notBetween(express, value1, value2);
         }
+        public DaifaPostCustomerExample.Criteria andManualIsNull() {
+            return isNull(manual);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualIsNotNull() {
+            return isNotNull(manual);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualEqualTo(Integer value) {
+            return equalTo(manual, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualNotEqualTo(Integer value) {
+            return notEqualTo(manual, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualGreaterThan(Integer value) {
+            return greaterThan(manual, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(manual, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualLessThan(Integer value) {
+            return lessThan(manual, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(manual, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualIn(List<Integer> values) {
+            return in(manual, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualNotIn(List<Integer> values) {
+            return notIn(manual, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualBetween(Integer value1, Integer value2) {
+            return between(manual, value1, value2);
+        }
+
+        public DaifaPostCustomerExample.Criteria andManualNotBetween(Integer value1, Integer value2) {
+            return notBetween(manual, value1, value2);
+        }
         public DaifaPostCustomerExample.Criteria andCustomerNameIsNull() {
             return isNull(customerName);
         }
@@ -470,6 +521,53 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
 
         public DaifaPostCustomerExample.Criteria andMonthCodeNotBetween(String value1, String value2) {
             return notBetween(monthCode, value1, value2);
+        }
+        public DaifaPostCustomerExample.Criteria andAllAddressIsNull() {
+            return isNull(allAddress);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressIsNotNull() {
+            return isNotNull(allAddress);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressEqualTo(Boolean value) {
+            return equalTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressNotEqualTo(Boolean value) {
+            return notEqualTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressGreaterThan(Boolean value) {
+            return greaterThan(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressLessThan(Boolean value) {
+            return lessThan(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(allAddress, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressIn(List<Boolean> values) {
+            return in(allAddress, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressNotIn(List<Boolean> values) {
+            return notIn(allAddress, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressBetween(Boolean value1, Boolean value2) {
+            return between(allAddress, value1, value2);
+        }
+
+        public DaifaPostCustomerExample.Criteria andAllAddressNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(allAddress, value1, value2);
         }
         public DaifaPostCustomerExample.Criteria andSendSiteIsNull() {
             return isNull(sendSite);

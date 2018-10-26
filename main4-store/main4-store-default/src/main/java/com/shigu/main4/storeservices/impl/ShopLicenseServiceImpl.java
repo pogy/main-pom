@@ -1,22 +1,25 @@
 package com.shigu.main4.storeservices.impl;
 
-import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShiguShopLicense;
-import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguShopLicenseExample;
 import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.storeservices.ShopLicenseService;
+import com.shigu.main4.vo.LinceseVo;
 import com.shigu.main4.vo.ShopLicense;
+import com.sun.jdi.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import sun.awt.SunHints;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 店铺权益服务
@@ -136,4 +139,63 @@ public class ShopLicenseServiceImpl implements ShopLicenseService{
         }
         return null;
     }
+
+    @Override
+    public Integer updateShopLIcenseByType(Long shopId,Integer type, Integer licenseFailure, String content) {
+        Integer tag;
+        ShiguShopLicense license = new ShiguShopLicense();
+        license.setShopId(shopId);
+        license.setLicenseType(type);
+        license = shiguShopLicenseMapper.selectOne(license);
+        if (license == null){
+            ShiguShopLicense license1 = new ShiguShopLicense();
+            license1.setShopId(shopId);
+            license1.setLicenseFailure(licenseFailure);
+            license1.setContext(content);
+            license1.setLicenseType(type);
+            tag = shiguShopLicenseMapper.insertSelective(license1);
+        }else {
+            license.setLicenseFailure(licenseFailure);
+            ShiguShopLicenseExample example = new ShiguShopLicenseExample();
+            example.createCriteria().andShopIdEqualTo(shopId).andLicenseTypeEqualTo(type);
+            license.setContext(content);
+            tag = shiguShopLicenseMapper.updateByExampleSelective(license,example);
+        }
+        return tag;
+    }
+
+    @Override
+    public List<LinceseVo> selShopLIcenseByIds(List<Long> shopIds) {
+        List<LinceseVo> voList = new ArrayList<>();
+
+        ShiguShopLicenseExample shiguShopLicenseExample=new ShiguShopLicenseExample();
+        List<Integer> integers = new ArrayList<>();
+        integers.add(ShopLicenseTypeEnum.WEIXIN.getValue());
+        integers.add(ShopLicenseTypeEnum.ZIXUN.getValue());
+        shiguShopLicenseExample.createCriteria().andShopIdIn(shopIds).andLicenseTypeIn(integers);
+        List<ShiguShopLicense> licenses=shiguShopLicenseMapper.selectByExample(shiguShopLicenseExample);
+        if (licenses.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        Map<Long, List<ShiguShopLicense>> maps = licenses.stream().collect(Collectors.groupingBy(ShiguShopLicense::getShopId));
+
+        for (Long ls : maps.keySet()){
+            LinceseVo vo = new LinceseVo();
+            List<ShiguShopLicense> shiguShopLicenses = maps.get(ls);
+            vo.setShopId(ls);
+            for (ShiguShopLicense license : shiguShopLicenses){
+                if (license.getLicenseType() == 9){
+                    vo.setIsWx(license.getLicenseFailure());
+                }
+                if (license.getLicenseType() == 10){
+                    vo.setIsZx(license.getLicenseFailure());
+                    vo.setContext(license.getContext());
+                }
+            }
+            voList.add(vo);
+        }
+        return voList;
+    }
+
 }

@@ -1,15 +1,12 @@
 package com.shigu.main4.order.model.impl;
 
-import com.openJar.requests.sgpay.InviteRebateRechargeRequest;
-import com.openJar.requests.sgpay.OrderCashbackRechargeRequest;
-import com.openJar.responses.sgpay.InviteRebateRechargeResponse;
-import com.openJar.responses.sgpay.OrderCashbackRechargeResponse;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.SubOrderBO;
+import com.shigu.main4.order.bo.SubscribeExpressBO;
 import com.shigu.main4.order.dto.TradeCountDTO;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
@@ -23,11 +20,18 @@ import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.services.SellerMsgService;
+import com.shigu.main4.order.utils.KdniaoUtil;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
+import com.shigu.main4.pay.requests.XzbInviteRechargeRequest;
+import com.shigu.main4.pay.requests.XzbOrderCashBackRequest;
+import com.shigu.main4.pay.responses.XzbInviteRechargeResponse;
+import com.shigu.main4.pay.responses.XzbOrderCashBackResponse;
+import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
-import com.shigu.tools.XzSdkClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -35,10 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +48,8 @@ import java.util.stream.Collectors;
 @Repository
 @Scope("prototype")
 public class ItemOrderImpl implements ItemOrder {
+
+    Logger logger = LoggerFactory.getLogger(ItemOrderImpl.class);
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
@@ -79,8 +81,8 @@ public class ItemOrderImpl implements ItemOrder {
     @Autowired
     private RedisIO redisIO;
 
-    @Autowired
-    private  XzSdkClient xzSdkClient;
+    //@Autowired
+    //private  XzSdkClient xzSdkClient;
 
     @Autowired
     private ShiguOrderCashbackMapper shiguOrderCashbackMapper;
@@ -108,6 +110,21 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private SellerMsgService sellerMsgService;
+    //@Autowired
+    //private OrderTownMapper orderTownMapper;
+    //@Autowired
+    //private OrderProvMapper orderProvMapper;
+    //@Autowired
+    //private OrderCityMapper orderCityMapper;
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
+    @Autowired
+    private KdniaoUtil kdniaoUtil;
+    @Autowired
+    private KdnSubscibeMapper kdnSubscibeMapper;
+
+    @Autowired
+    private XzbService xzbService;
 
     private static String ACTIVITY_ORDER_CASHBACK = "activity_order_cashback";
 
@@ -131,17 +148,19 @@ public class ItemOrderImpl implements ItemOrder {
         ItemOrderLogistics logistics = new ItemOrderLogistics();
         logistics.setOid(oid == null ? -1L : oid);
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(logistics);
+        List<LogisticsVO> logisticsVOS = new ArrayList<>();
+        if (select.size()>0){
+            ItemOrderSub orderSub = new ItemOrderSub();
+            orderSub.setOid(oid == null ? -1L : oid);
+            Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
 
-        ItemOrderSub orderSub = new ItemOrderSub();
-        orderSub.setOid(oid);
-        Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
-
-        List<LogisticsVO> logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
-        logisticsVOS.forEach(logisticsVO -> {
-            if (longListMap.get(logisticsVO.getId()) != null) {
-                logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
-            }
-        });
+            logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
+            logisticsVOS.forEach(logisticsVO -> {
+                if (longListMap.get(logisticsVO.getId()) != null) {
+                    logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
+                }
+            });
+        }
         return logisticsVOS;
     }
 
@@ -344,25 +363,127 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    public void sended(String courierNumber) {
+    public void sended(Long companyId ,String courierNumber) {
         List<LogisticsVO> logisticsVOS = selLogisticses();
         if (logisticsVOS.size() == 1) {
             ItemOrderLogistics logistics = new ItemOrderLogistics();
             logistics.setId(logisticsVOS.get(0).getId());
+            if (companyId != null){logistics.setCompanyId(companyId);}
             logistics.setCourierNumber(courierNumber);
             itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
         }
 
         changeStatus(OrderStatus.SELLER_SENDED_GOODS);
+        // 订阅快递鸟物流跟踪  订阅失败不影响发货
+        try {
+            subscibeKdn(logisticsVOS.get(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void subscibeKdn(LogisticsVO logisticsVO) throws Exception {
+        KdnSubscibeExample kdnSubscibeExample = new KdnSubscibeExample();
+        kdnSubscibeExample.createCriteria().andLogisticCodeEqualTo(logisticsVO.getCourierNumber());
+        List<KdnSubscibe> kdnSubscibes = kdnSubscibeMapper.selectByExample(kdnSubscibeExample);
+        if (kdnSubscibes != null && !kdnSubscibes.isEmpty()) {
+            return;
+        }
+
+//        com.opentae.data.mall.beans.ItemOrder itemOrder = itemOrderMapper.selectByPrimaryKey(oid);
+//        SendInfoVO sendInfoVO = itemOrderMapper.getSenderInfoBySendId(itemOrder.getSenderId());
+//        String address = sendInfoVO.getAddress();//省市区、详细地址通过空格分隔
+//        address = address.replaceAll("\\s+"," ");
+//        String[] addressArray = address.split(" ");
+//        if (addressArray.length < 4) {
+//            if (logger.isWarnEnabled()) {
+//                logger.warn("订阅物流信息失败 >>> 发货地址格式错误，省市区及详细地址间请使用空格隔开!");
+//            }
+//            return;
+//        }
+
+        ExpressCompany expressCompany = expressCompanyMapper.selectByPrimaryKey(logisticsVO.getCompanyId());
+//        OrderProv orderProv = orderProvMapper.selectByPrimaryKey(logisticsVO.getProvId());
+//        OrderCity orderCity = orderCityMapper.selectByPrimaryKey(logisticsVO.getCityId());
+//
+//        String townName = null;
+//        if (logisticsVO.getTownId() != null) {
+//            OrderTown orderTown = orderTownMapper.selectByPrimaryKey(logisticsVO.getTownId());
+//            townName = orderTown.getTownName();
+//        }else {
+//            townName = ",";//添加默认区名 ，
+//        }
+
+        SubscribeExpressBO bo = new SubscribeExpressBO();
+        bo.setShipperCode(expressCompany.getRemark3());
+        bo.setLogisticCode(logisticsVO.getCourierNumber());
+        bo.setCallback(String.valueOf(oid));
+
+
+//        SubscribeAddressBO sender = new SubscribeAddressBO();
+//        sender.setName(sendInfoVO.getName());
+//        sender.setProvinceName(addressArray[0]);
+//        sender.setCityName(addressArray[1]);
+//        sender.setExpAreaName(addressArray[2]);
+//        sender.setAddress(addressArray[3]);
+//
+//        Pattern pattern = Pattern.compile("^([0-9]{2,4}[ ]{0,2}-[ ]{0,2})?[0-9]{11}$");
+//
+//        Matcher matcher = pattern.matcher(sendInfoVO.getTelephone());
+//        if (!matcher.find()) {
+//            sender.setTel(sendInfoVO.getTelephone());
+//        }else {
+//            sender.setMobile(sendInfoVO.getTelephone());
+//        }
+//
+//        SubscribeAddressBO receiver = new SubscribeAddressBO();
+//        receiver.setName(logisticsVO.getName());
+//        receiver.setMobile(logisticsVO.getTelephone());
+//        receiver.setProvinceName(orderProv.getProvName());
+//        receiver.setCityName(orderCity.getCityName());
+//        receiver.setExpAreaName(townName);
+//        receiver.setAddress(logisticsVO.getAddress());
+//
+//        matcher = pattern.matcher(logisticsVO.getTelephone());
+//        if (!matcher.find()) {
+//            receiver.setTel(logisticsVO.getTelephone());
+//        }else {
+//            receiver.setMobile(logisticsVO.getTelephone());
+//        }
+//
+//        bo.setSender(sender);
+//        bo.setReceiver(receiver);
+
+        KdnSubscribeResult kdnSubscribeResult = kdniaoUtil.subscribeExpress(bo);
+
+        if (kdnSubscribeResult.getSuccess()) {
+
+            Date now = new Date();
+            KdnSubscibe kdnSubscibe = new KdnSubscibe();
+            kdnSubscibe.setOid(oid);
+            kdnSubscibe.setLogisticState(0);
+            kdnSubscibe.setLogisticCode(logisticsVO.getCourierNumber());
+            kdnSubscibe.setCallBack(String.valueOf(oid));
+            kdnSubscibe.setGmtCreate(now);
+            kdnSubscibe.setGmtUpdate(now);
+
+            kdnSubscibeMapper.insert(kdnSubscibe);
+        }else {
+            if (logger.isWarnEnabled()) {
+                logger.warn("订阅物流信息失败 >>> "+ kdnSubscribeResult.getReason());
+            }
+        }
+
     }
 
     @Override
-    public void updateExpressCode(String courierNumber){
+    public void updateExpressCode(Long companyId,String courierNumber){
         List<LogisticsVO> logisticsVOS = selLogisticses();
         if (logisticsVOS.size() == 1) {
             ItemOrderLogistics logistics = new ItemOrderLogistics();
             logistics.setId(logisticsVOS.get(0).getId());
-            logistics.setCourierNumber(courierNumber);
+            if(courierNumber != null){logistics.setCourierNumber(courierNumber);}
+            if (companyId != null){logistics.setCompanyId(companyId);}
             itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
         }
     }
@@ -490,7 +611,7 @@ public class ItemOrderImpl implements ItemOrder {
         if (date.getTime() - 1527782400000L > 0){
             Boolean b = Boolean.parseBoolean(redisIO.get(ACTIVITY_ORDER_CASHBACK, String.class));
             if (b != null && b) {
-                OrderCashbackRechargeRequest request = new OrderCashbackRechargeRequest();
+                XzbOrderCashBackRequest request = new XzbOrderCashBackRequest();
                 request.setXzUserId(itemOrderSubMapper.selectUserIdByOid(oid));
                 request.setCashbackOrderNo(oid);
                 List<OrderSubMoney> orderSubMoneyList = itemOrderSubMapper.selectOrderSubByOid(oid);
@@ -509,7 +630,7 @@ public class ItemOrderImpl implements ItemOrder {
                     shiguOrderCashback.setOId(oid);
                     shiguOrderCashback.setCashback(money / 100);
                     shiguOrderCashbackMapper.insertSelective(shiguOrderCashback);
-                    OrderCashbackRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(request);
+                    XzbOrderCashBackResponse resp = xzbService.orderCashBack(request);
                     if (resp == null || !resp.isSuccess()) {
                         try {
                             throw new RefundException("订单返现失败：oid=" + oid);
@@ -592,11 +713,11 @@ public class ItemOrderImpl implements ItemOrder {
                             inviteOrderRebateRecord.setRebateState(1);
                             inviteOrderRebateRecordMapper.insertSelective(inviteOrderRebateRecord);
                         }
-                        InviteRebateRechargeRequest inviteRebateRechargeRequest = new InviteRebateRechargeRequest();
+                        XzbInviteRechargeRequest inviteRebateRechargeRequest = new XzbInviteRechargeRequest();
                         inviteRebateRechargeRequest.setXzUserId(inviteUserId);
                         inviteRebateRechargeRequest.setRebateOrderNo(oid);
                         inviteRebateRechargeRequest.setRebateAmount(rebateAmount);
-                        InviteRebateRechargeResponse resp = xzSdkClient.getPcOpenClient().execute(inviteRebateRechargeRequest);
+                        XzbInviteRechargeResponse resp = xzbService.inviteRebateRecharge(inviteRebateRechargeRequest);
                         if (resp == null || !resp.isSuccess()) {
                             try {
                                 throw new RefundException("邀请注册订单返点失败：oid=" + oid);

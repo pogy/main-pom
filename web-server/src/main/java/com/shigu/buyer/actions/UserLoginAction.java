@@ -313,6 +313,15 @@ public class UserLoginAction {
                 url = "http://www.571xz.com/sn/login.htm";
                 break;
             }
+            //虾皮授权
+            case 9:{
+                url = "http://www.571xz.com/sp/login.htm";
+                break;
+            }
+            default:{
+                url = "http://www.571xz.com/login.htm";
+                break;
+            }
         }
         session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(), backUrl);
         return "redirect:" + url;
@@ -637,6 +646,7 @@ public class UserLoginAction {
             obj.element("loginName", ps.getLoginName());
             obj.element("userId", ps.getUserId());
             obj.element("memberVipIs", ps.getOtherPlatform().get(OtherPlatformEnum.MEMBER_VIP.getValue()));
+            obj.element("headUrl",ps.getHeadUrl());
             if (ps.getLogshop() != null) {
                 obj.element("userType", "gys");
             } else {

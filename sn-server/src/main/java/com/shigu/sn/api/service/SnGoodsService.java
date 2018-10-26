@@ -71,7 +71,8 @@ public class SnGoodsService {
         request.setPageSize(10);
         CategoryQueryResponse response = new CategoryQueryResponse();
         response=snSdkClient.send(request,snTokenInfo.getAccessToken());
-        return response.getSnbody().getCategoryQueries();
+        CategoryQueryResponse.SnBody snbody = response.getSnbody();
+        return snbody==null?new ArrayList<>():snbody.getCategoryQueries();
     }
 
     /**
@@ -152,7 +153,7 @@ public class SnGoodsService {
         shopcategoryQueryRequest.setPageNo(1);
         shopcategoryQueryRequest.setPageSize(10);
         ShopcategoryQueryResponse shopcategoryQueryResponse=snSdkClient.send(shopcategoryQueryRequest,snTokenInfo.getAccessToken());
-        if(shopcategoryQueryResponse.getSnerror().getErrorCode().equals("biz.handler.data-get:no-result")){
+        if(shopcategoryQueryResponse.getSnerror() != null && "biz.handler.data-get:no-result".equals(shopcategoryQueryResponse.getSnerror().getErrorCode())){
             return null;
         }
         List<ShopcategoryQueryResponse.ShopCategory> shopCategories=shopcategoryQueryResponse.getSnbody().getShopCategory();
@@ -167,16 +168,19 @@ public class SnGoodsService {
             snShopCategory.setUsername(username);
             snShopCategory.setIsFirst(1);
             snShopCategoryMapper.insert(snShopCategory);
-            for(ShopcategoryQueryResponse.SecondCategory secondCategory:s.getSecondCategory()){
-                SnShopCategory snShopCategory2=new SnShopCategory();
-                snShopCategory2.setIsFirst(0);
-                snShopCategory2.setUsername(username);
-                snShopCategory2.setFirstId(snShopCategory.getId());
-                snShopCategory2.setCategorySort(Integer.valueOf(secondCategory.getSecondCategorySort()));
-                snShopCategory2.setCategoryName(secondCategory.getSecondCategoryName());
-                snShopCategory2.setCategoryImg(secondCategory.getSecondCategoryImg());
-                snShopCategory2.setCategoryCode(secondCategory.getSecondCategoryCode());
-                snShopCategories.add(snShopCategory2);
+            List<ShopcategoryQueryResponse.SecondCategory> secondCategories = s.getSecondCategory();
+            if (secondCategories != null && !secondCategories.isEmpty()) {
+                for(ShopcategoryQueryResponse.SecondCategory secondCategory: secondCategories){
+                    SnShopCategory snShopCategory2=new SnShopCategory();
+                    snShopCategory2.setIsFirst(0);
+                    snShopCategory2.setUsername(username);
+                    snShopCategory2.setFirstId(snShopCategory.getId());
+                    snShopCategory2.setCategorySort(Integer.valueOf(secondCategory.getSecondCategorySort()));
+                    snShopCategory2.setCategoryName(secondCategory.getSecondCategoryName());
+                    snShopCategory2.setCategoryImg(secondCategory.getSecondCategoryImg());
+                    snShopCategory2.setCategoryCode(secondCategory.getSecondCategoryCode());
+                    snShopCategories.add(snShopCategory2);
+                }
             }
         }
         snShopCategoryMapper.insertListNoId(snShopCategories);

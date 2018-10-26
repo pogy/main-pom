@@ -251,37 +251,36 @@ public class ShopAction {
             eachAllDataVOS.add(totalDownloadDataVO);
             eachAllDataVOS.add(followUserDataVO);
         }
-        //今日下载排行榜数据
-        List<DownlaodDataVO> todayDownlaodDataVOS = null;
-        try {
-            todayDownlaodDataVOS = shopIndexDataService.todayDownlaodDataList(shopSession.getShopId(),shopSession.getWebSite());
-        } catch (Exception e) {
-            e.printStackTrace();
-            todayDownlaodDataVOS = new ArrayList<>();
+        List<DownlaodDataVO> todayDownlaodDataVOS = new ArrayList<>();
+        List<WeekReadDataVO> weekReadDataVOS = new ArrayList<>();
+        List<DownlaodDataVO> weekDownlaodVOS = new ArrayList<>();
+        if("qz".equals(shopSession.getWebSite())){
+            //今日下载排行榜数据
+            try {
+                todayDownlaodDataVOS = shopIndexDataService.todayDownlaodDataList(shopSession.getShopId(),shopSession.getWebSite());
+            } catch (Exception e) {
+                e.printStackTrace();
+                todayDownlaodDataVOS = new ArrayList<>();
+            }
+            //一周访问排行榜数据
+            try {
+                weekReadDataVOS = shopIndexDataService.weekReadDataList(shopSession.getShopId(),shopSession.getWebSite());
+            } catch (Exception e) {
+                e.printStackTrace();
+                weekReadDataVOS = new ArrayList<>();
+            }
+            //一周下载排行榜数据
+            try {
+                weekDownlaodVOS = shopIndexDataService.weekDownloadDataList(shopSession.getShopId(),shopSession.getWebSite());
+            } catch (Exception e) {
+                e.printStackTrace();
+                weekDownlaodVOS = new ArrayList<>();
+            }
         }
-
-        //一周访问排行榜数据
-        List<WeekReadDataVO> weekReadDataVOS = null;
-        try {
-            weekReadDataVOS = shopIndexDataService.weekReadDataList(shopSession.getShopId(),shopSession.getWebSite());
-        } catch (Exception e) {
-            e.printStackTrace();
-            weekReadDataVOS = new ArrayList<>();
-        }
-
-        //一周下载排行榜数据
-        List<DownlaodDataVO> weekDownlaodVOS = null;
-        try {
-            weekDownlaodVOS = shopIndexDataService.weekDownloadDataList(shopSession.getShopId(),shopSession.getWebSite());
-        } catch (Exception e) {
-            e.printStackTrace();
-            weekDownlaodVOS = new ArrayList<>();
-        }
-
-        model.addAttribute("eachAllDataList",eachAllDataVOS);
         model.addAttribute("todayDownlaodList",todayDownlaodDataVOS);
         model.addAttribute("weekReadList",weekReadDataVOS);
         model.addAttribute("weekDownlaodList",weekDownlaodVOS);
+        model.addAttribute("eachAllDataList",eachAllDataVOS);
         return "gys/index";
     }
 

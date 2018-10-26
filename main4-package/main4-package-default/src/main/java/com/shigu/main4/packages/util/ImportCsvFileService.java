@@ -819,6 +819,9 @@ public class ImportCsvFileService {
                     String pics[] = img_w[0].split(":");
                     if ("1".equals(pics[1])) {
                         ////System.out.println(pics[0]);
+                        if(StringUtils.isBlank(pics[0])){
+                            continue;
+                        }
                         if (i == 0) {
 
                             imgse = imageurl(record.getStoreId(), image_save_path + "/" + pics[0] + ".tbi");

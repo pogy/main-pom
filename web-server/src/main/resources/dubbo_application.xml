@@ -30,6 +30,8 @@
     <dubbo:reference interface="com.shigu.main4.ucenter.services.RegisterAndLoginService" id="registerAndLoginService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.UserLicenseService" id="userLicenseService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.ucenter.services.MemberInviteService" id="memberInviteService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.ucenter.services.ShopeeUserService" id="shopeeUserService" timeout="10000" />
+
 
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopRegistService" id="shopRegistService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopBaseService" id="shopBaseService" timeout="10000"/>
@@ -41,8 +43,8 @@
     <dubbo:reference interface="com.shigu.main4.storeservices.MarketShopService" id="marketShopService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.ShopForCdnService" id="shopForCdnService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.storeservices.SearchCategoryService" id="searchCategoryService" timeout="10000"/>
-    <dubbo:reference interface="com.shigu.main4.storeservices.FlickrManageService" id="FlickrManageService" timeout="10000"/>ShopCategoryClassifyService
-    <dubbo:reference interface="com.shigu.main4.storeservices.ShopCategoryClassifyService" id="ShopCategoryClassifyService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.storeservices.FlickrManageService" id="flickrManageService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.storeservices.ShopCategoryClassifyService" id="shopCategoryClassifyService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.item.services.ItemSearchService" id="itemSearchService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ShowForCdnService" id="showForCdnService" timeout="10000"/>
@@ -61,13 +63,15 @@
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="wxPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="xzPayerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.model.PayerService" id="aliPayerQzService" timeout="10000"/>
-
+    <dubbo:reference interface="com.shigu.main4.order.process.KdnProcess" id="kdnProcess" timeout="10000" />
 
 
     <dubbo:reference interface="com.shigu.main4.order.process.ItemCartProcess" id="itemCartProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.PayProcess" id="payProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.ItemOrderProcess" id="itemOrderProcess" timeout="10000"/>
+
+    <dubbo:reference interface="com.shigu.main4.pay.services.XzbService" id="xzbService" timeout="10000"/>
 
     <dubbo:reference interface="com.shigu.main4.monitor.services.ShopBrowerService" id="shopBrowerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.BrowerMonitorService" id="browerMonitorService" timeout="10000"/>
@@ -80,11 +84,19 @@
 
     <dubbo:reference interface="com.shigu.activity.process.NewActivityProcess" id="newActivityProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.activity.process.StrengthMemberService" id="strengthMemberService" retries="0" timeout="20000"/>
+    <dubbo:reference interface="com.shigu.activity.process.HotGoodsDrawService" id="hotGoodsDrawService" retries="0" timeout="20000"/><!--cz-->
 
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoUserProcess" id="photoUserProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoImgProcess" id="photoImgProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoWorksProcess" id="photoWorksProcess" retries="0" timeout="20000"/>
     <dubbo:reference interface="com.shigu.main4.photo.process.PhotoGoatProcess" id="photoGoatProcess" retries="0" timeout="20000"/>
 
+    <!--淘宝调用使用代理转发-->
+    <dubbo:reference interface="com.shigu.taobaoredirect.api.ShiguTaobaoAgent" id="shiguTaobaoAgent" retries="0" timeout="20000"/>
+    <dubbo:reference interface="com.shigu.taobaoredirect.api.ShiguTaobaoSecurityClientAgent" id="shiguTaobaoSecurityClientAgent" retries="0" timeout="20000"/>
+
+    <bean id="shiguTaobaoClient" class="com.shigu.taobaoredirect.tools.ShiguTaobaoClient">
+        <property name="taobaoAgent" ref="shiguTaobaoAgent"/>
+    </bean>
     <import resource="daifa/dubbo/*"/>
 </beans>

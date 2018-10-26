@@ -16,6 +16,7 @@ import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.model.BindOuterRdUser;
 import com.shigu.main4.ucenter.model.impl.BindJdUser;
 import com.shigu.main4.ucenter.model.impl.BindPddUser;
+import com.shigu.main4.ucenter.model.impl.BindShopeeUser;
 import com.shigu.main4.ucenter.model.impl.BindTbUser;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
@@ -213,7 +214,14 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             if (count > 0) {
                 return false;
             }
-        }else{
+        } else if (LoginFromType.SHOPEE.equals(loginFromType)) {
+            MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
+            memberUserSubExample.createCriteria()
+                    .andSubUserKeyEqualTo(key==null?"000":key).andAccountTypeEqualTo(loginFromType.getAccountType());
+            if (memberUserSubMapper.countByExample(memberUserSubExample) > 0) {
+                return false;
+            }
+        } else {
             // 第三方
             MemberUserSubExample memberUserSubExample = new MemberUserSubExample();
             memberUserSubExample.createCriteria().andSubUserNameEqualTo(username).
@@ -282,6 +290,8 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             case PDD:
                 bindOuterRdUser = SpringBeanFactory.getBean(BindPddUser.class);
                 break;
+            case SHOPEE:
+                bindOuterRdUser = SpringBeanFactory.getBean(BindShopeeUser.class);
         }
         //检验是否准入
         if(bindOuterRdUser != null){
@@ -319,7 +329,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
 
         // 主账号已存在 判断子表数据
         MemberUserSub memberUserSub = new MemberUserSub();
-        if (tempUser.getLoginFromType() == LoginFromType.WX) {
+        if (tempUser.getLoginFromType() == LoginFromType.WX || LoginFromType.SHOPEE.equals(tempUser.getLoginFromType())) {
             memberUserSub.setSubUserKey(tempUser.getSubUserKey());
         }else{
             memberUserSub.setSubUserName(tempUser.getSubUserName());

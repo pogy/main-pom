@@ -108,7 +108,7 @@ public class DaifaSaleAfterAction {
      */
     @RequestMapping("daifa/refuseAfterSale")
     @ResponseBody
-    public JSONObject refuseAfterSale(Long refundId,Long type) throws DaifaException {
+    public synchronized JSONObject refuseAfterSale(Long refundId,Long type) throws DaifaException {
         daifaSaleAfterService.refuseAfterSale(refundId,type);
         return JsonResponseUtil.success();
     }
@@ -125,7 +125,7 @@ public class DaifaSaleAfterAction {
      */
     @RequestMapping("daifa/agreeAfterSale")
     @ResponseBody
-    public JSONObject agreeAfterSale(Long refundId) throws DaifaException {
+    public synchronized JSONObject agreeAfterSale(Long refundId) throws DaifaException {
 
         daifaSaleAfterService.agreeAfterSale(refundId);
         return JsonResponseUtil.success();
@@ -143,7 +143,7 @@ public class DaifaSaleAfterAction {
      */
     @RequestMapping("daifa/editRefund")
     @ResponseBody
-    public JSONObject editRefund(Long refundId,String refundMoney) throws DaifaException {
+    public synchronized JSONObject editRefund(Long refundId,String refundMoney) throws DaifaException {
 
         daifaSaleAfterService.editRefund(refundId,refundMoney);
         return JsonResponseUtil.success();
@@ -160,7 +160,7 @@ public class DaifaSaleAfterAction {
      *
      */
     @RequestMapping("daifa/parcelSweepCode")
-    public String parcelSweepCode(HttpServletRequest request,Model model) throws DaifaException {
+    public synchronized String parcelSweepCode(HttpServletRequest request,Model model) throws DaifaException {
 
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
@@ -182,7 +182,7 @@ public class DaifaSaleAfterAction {
      */
     @RequestMapping("daifa/returnOrder")
     @ResponseBody
-    public JSONObject returnOrder(String postCode) throws DaifaException {
+    public synchronized JSONObject returnOrder(String postCode) throws DaifaException {
 
         List<DaifaSalePackageOrderVO> daifaOrders = daifaSaleAfterService.returnOrder(postCode);
         JSONObject obj=JsonResponseUtil.success();
@@ -219,7 +219,7 @@ public class DaifaSaleAfterAction {
      */
     @RequestMapping("daifa/putInStorage")
     @ResponseBody
-    public JSONObject putInStorage(PutInStorageBO bo) throws DaifaException {
+    public synchronized JSONObject putInStorage(PutInStorageBO bo) throws DaifaException {
 
         daifaSaleAfterService.putInStorage(bo);
         return JsonResponseUtil.success();
@@ -303,7 +303,7 @@ public class DaifaSaleAfterAction {
      */
     @RequestMapping("daifa/afterSalePrintTab")
     @ResponseBody
-    public JSONObject afterSalePrintTab(String childOrderIds){
+    public synchronized JSONObject afterSalePrintTab(String childOrderIds){
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         List<Long> oids= Arrays.stream(childOrderIds.split(",")).map(Long::parseLong).collect(Collectors.toList());

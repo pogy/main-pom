@@ -166,7 +166,13 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
         Long mid = bo.getMid();
         if (mid != null) {
-            filters.and(FilterBuilder.number("parent_market_id", mid));
+            //查询星座女装市场或钱塘女装市场时两个一起展示
+            // 暂时写死
+            if (mid == 601L || mid == 1737L){
+                filters.and(FilterBuilder.termsIn("parent_market_id", 1737,601));
+            }else {
+                filters.and(FilterBuilder.number("parent_market_id", mid));
+            }
         }
         Double priceFrom = bo.getPriceFrom();
         if (priceFrom != null) {
@@ -456,6 +462,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }else {
             criteria.andTypeEqualTo(category.getCategoryType()).andParentCateValueEqualTo(parentCateValue).andWebSiteEqualTo(website);
         }
+        subExample.setOrderByClause("sort asc");
         List<SearchCategorySub> list=searchCategorySubMapper.selectByExample(subExample);
 
         List<CategoryValue> categoryValues=new ArrayList<>();

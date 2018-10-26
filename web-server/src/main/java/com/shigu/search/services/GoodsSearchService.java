@@ -141,7 +141,11 @@ public class GoodsSearchService {
         ObjFromCache<List<ItemSpreadVO>> objFromCache = spreadService.selItemSpreads(webSite, manOrWoman);
         List<ItemSpreadVO> list = objFromCache.selObj();
         Collections.shuffle(list);
-        return BeanMapper.mapList(list, TjGoods.class);
+        return list.stream().map(itemSpreadVO -> {
+            TjGoods tjGoods = BeanMapper.map(itemSpreadVO, TjGoods.class);
+            tjGoods.setFullStoreName(itemSpreadVO.getMarketName()+itemSpreadVO.getShopNo());
+            return tjGoods;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -155,7 +159,7 @@ public class GoodsSearchService {
         Collections.shuffle(list);
         return list.stream().map(o -> {
             BottomGoodsGoat result = BeanMapper.map(o, BottomGoodsGoat.class);
-            result.setFullStoreName(o.getStoreText());
+            result.setFullStoreName(o.getMarketName()+o.getShopNo());
             return result;
         }).collect(Collectors.toList());
     }
@@ -170,7 +174,7 @@ public class GoodsSearchService {
         Collections.shuffle(list);
         return list.stream().map(o -> {
             BottomGoodsGoat result = BeanMapper.map(o, BottomGoodsGoat.class);
-            result.setFullStoreName(o.getStoreText());
+            result.setFullStoreName(o.getMarketName()+o.getShopNo());
             return result;
         }).collect(Collectors.toList());
     }

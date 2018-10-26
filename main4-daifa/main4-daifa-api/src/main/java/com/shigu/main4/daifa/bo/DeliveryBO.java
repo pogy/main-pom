@@ -77,6 +77,27 @@ public class DeliveryBO implements Serializable {
     /**买家旺旺*/
     private String buyerWw;
 
+    private Long manual;
+
+    //tag  1 扫描发货入口  2 手动发货入口
+    private Integer tag;
+
+    public Integer getTag() {
+        return tag;
+    }
+
+    public void setTag(Integer tag) {
+        this.tag = tag;
+    }
+
+    public Long getManual() {
+        return manual;
+    }
+
+    public void setManual(Long manual) {
+        this.manual = manual;
+    }
+
     public Long getDfTradeId() {
         return dfTradeId;
     }

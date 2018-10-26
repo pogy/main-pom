@@ -51,4 +51,13 @@ public interface DaifaSelFinaceMapper{
     List<RefundedFee> selectTodayRefund(@Param("day")String day, @Param("sellerId")Long sellerId,@Param("start")Integer start, @Param("end")Integer end);
 
     Integer selectTodayRefundCount(@Param("day")String day, @Param("sellerId")Long sellerId);
+
+    //当天发货商品金额
+    String selTodayGoodsFee(@Param("time")String time, @Param("sellerId")Long sellerId);
+    //当天发货服务费金额
+    String selTodayServerFee(@Param("time")String time, @Param("sellerId")Long sellerId);
+    //当天发货快递费金额
+    String selExpressFee(@Param("time")String time, @Param("sellerId")Long sellerId);
+
+    String selTodayRefundFee(@Param("time")String time);
 }

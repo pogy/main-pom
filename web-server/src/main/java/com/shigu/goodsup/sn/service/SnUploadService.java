@@ -46,6 +46,11 @@ public class SnUploadService {
         if (sbo.getPicUrls() != null) {
             int i = 0;
             for (String url : sbo.getPicUrls()) {
+                if(url.equals("")){
+                    SnItemAddResponse snItemAddResponse=new SnItemAddResponse();
+                    snItemAddResponse.setErrmsg("前五张主图必传，请补充上传！");
+                    return snItemAddResponse;
+                }
                 i++;
                 SnImgAddRequest snImgAddRequest = new SnImgAddRequest();
                 snImgAddRequest.setUsername(username);

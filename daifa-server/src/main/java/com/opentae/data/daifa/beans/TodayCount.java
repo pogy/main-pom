@@ -1,6 +1,5 @@
 package com.opentae.data.daifa.beans;
 
-import javax.persistence.Column;
 import javax.persistence.Transient;
 import java.io.Serializable;
 

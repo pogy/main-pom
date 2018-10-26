@@ -102,6 +102,10 @@ public class CdnItem implements Serializable{
      * 视频链接地址
      */
     private String goodsVideoUrl;
+    /**
+     * 缓存时间戳
+     */
+    private Long timestamp;
 
     public Boolean getOnsale() {
         return onsale;
@@ -285,5 +289,13 @@ public class CdnItem implements Serializable{
 
     public void setGoodsVideoUrl(String goodsVideoUrl) {
         this.goodsVideoUrl = goodsVideoUrl;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }

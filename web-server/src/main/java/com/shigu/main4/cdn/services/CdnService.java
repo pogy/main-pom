@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CdnService {
-    private final static Map<String, Integer> SIZE_SORT;
+    public final static Map<String, Integer> SIZE_SORT;
 
     static {
         SIZE_SORT = new HashMap<>();
@@ -512,9 +512,33 @@ public class CdnService {
         vo.setTbAuthState(shopBaseService.shopAuthState(shopId));
         //二级域名
         vo.setDomain(shopBaseService.selDomain(shopId));
+        //微信同号，咨询电话
+        List<LinceseVo> voList = selShopLIcense(shopId);
+        if (voList.size() > 0) {
+            LinceseVo vo1 = voList.get(0);
+
+            if (vo1.getIsWx() != null && vo1.getIsWx() == 0) {
+                    vo.setExistWx(0);
+                    vo.setMobile(vo.getMobile() + "（微信同号）");
+            }
+        }
+        List<LinceseVo> voList1 = selShopLIcense(shop.getMarketId());
+        if (voList1.size()>0){
+            LinceseVo linceseVo = voList1.get(0);
+            if (linceseVo.getIsZx() != null && linceseVo.getIsZx() == 0){
+                    vo.setAdvisoryMobile(linceseVo.getContext());
+                    vo.setIsZx(0);
+            }
+        }
+        // TODO: 微信同号，咨询电话
+
         return vo;
     }
-
+    private List<LinceseVo> selShopLIcense(Long shopIds) {
+        List<Long> longs = new ArrayList<>();
+        longs.add(shopIds);
+        return shopLicenseService.selShopLIcenseByIds(longs);
+    }
     /**
      * 店内类目
      *

@@ -16,6 +16,7 @@
         <result column="money" property="totalFee" jdbcType="VARCHAR"/>
         <result column="express_fee" property="expressFee" jdbcType="VARCHAR"/>
         <result column="express_name" property="expressName" jdbcType="VARCHAR"/>
+        <result column="express_id" property="expressId" jdbcType="DECIMAL"/>
         <result column="express_code" property="expressCode" jdbcType="VARCHAR"/>
         <result column="trade_discount_fee" property="discountFee" jdbcType="VARCHAR"/>
         <result column="is_tb_order" property="isTbOrder" jdbcType="BOOLEAN"/>
@@ -54,6 +55,7 @@
         f.money,
         f.express_fee,
         f.express_name,
+        f.express_id,
         f.express_code,
         f.receiver_address,
         d.df_order_id,
@@ -124,6 +126,9 @@
                     AND t1.df_trade_id &lt;=#{etId}
                     AND t2.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND t1.express_id = #{ExpressId}
+        </if>
                 and t2.refund_status = 0 and t1.SEND_STATUS = 1 AND t1.order_display = 1
                 AND t1.seller_id = ${dfSellerId}
             GROUP BY
@@ -150,6 +155,9 @@
                     AND a.df_trade_id &lt;=#{etId}
                     AND b.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND a.express_id = #{ExpressId}
+        </if>
                 AND a.SEND_STATUS = 1
                 AND a.order_display = 1
                 AND a.df_trade_id = b.df_trade_id
@@ -203,6 +211,9 @@
                     AND t1.df_trade_id &lt;=#{etId}
                     AND t2.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND t1.express_id = #{ExpressId}
+        </if>
                 and t2.refund_status = 0 and t1.SEND_STATUS = 1 AND t1.order_display = 1
                 AND t1.seller_id = ${dfSellerId}
             GROUP BY
@@ -229,6 +240,9 @@
                     AND a.df_trade_id &lt;=#{etId}
                     AND b.df_trade_id &lt;=#{etId}
                 </if>
+        <if test="ExpressId != null">
+            AND a.express_id = #{ExpressId}
+        </if>
                 AND a.SEND_STATUS = 1
                 AND a.order_display = 1
                 AND a.df_trade_id = b.df_trade_id

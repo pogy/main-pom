@@ -69,7 +69,7 @@
             AND take_goods_status=#{takegoodstatus}
         </if>
         <if test="startTime!=null and startTime!=''">
-            AND create_time >=#{startTime}
+            AND create_time &gt;=#{startTime}
         </if>
         <if test="endTime!=null and endTime!=''">
             AND create_time &lt;=#{endTime}
@@ -89,7 +89,7 @@
             AND take_goods_status=#{takegoodstatus}
         </if>
         <if test="startTime!=null and startTime!=''">
-            AND create_time >=#{startTime}
+            AND create_time &gt;=#{startTime}
         </if>
         <if test="endTime!=null and endTime!=''">
             AND create_time &lt;=#{endTime}
@@ -107,7 +107,7 @@
             AND take_goods_status=#{takegoodstatus}
         </if>
         <if test="startTime!=null and startTime!=''">
-            AND create_time >=#{startTime}
+            AND create_time &gt;=#{startTime}
         </if>
         <if test="endTime!=null and endTime!=''">
             AND create_time &lt;=#{endTime}
@@ -128,7 +128,7 @@
             AND take_goods_status=#{takegoodstatus}
         </if>
         <if test="startTime!=null and startTime!=''">
-            AND create_time >=#{startTime}
+            AND create_time &gt;=#{startTime}
         </if>
         <if test="endTime!=null and endTime!=''">
             AND create_time &lt;=#{endTime}

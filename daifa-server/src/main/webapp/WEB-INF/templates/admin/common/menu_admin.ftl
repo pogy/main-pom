@@ -29,9 +29,6 @@
                 <li>
                     <a id="niemenu" href="orderRefundList.htm"><i></i>订单退款</a>
                 </li>
-                <li>
-                    <a id="niemenu" href="testDaifaException.htm"><i></i>测试异常</a>
-                </li>
                 <!--
                 <li>
                     <a href="orderHasAllocation.htm"><i></i>我的任务</a>
@@ -89,3 +86,14 @@
 
     </ul>
 </div>
+<script>
+    $(function(){
+        var href=window.location.href.substring(window.location.href.lastIndexOf("/")+1);
+        href=href.split("?")[0];
+        $("a[id^='niemenu']").each(function(){
+            if($(this).prop("href").indexOf(href)>0){
+                $(this).prop("class","current");
+            }
+        });
+    })
+</script>

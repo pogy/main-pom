@@ -41,6 +41,16 @@ public class WaitSendBO{
 
     private Integer canSendState;
 
+    private Integer expressId;
+
+    public Integer getExpressId() {
+        return expressId;
+    }
+
+    public void setExpressId(Integer expressId) {
+        this.expressId = expressId;
+    }
+
     public Integer getCanSendState() {
         return canSendState;
     }

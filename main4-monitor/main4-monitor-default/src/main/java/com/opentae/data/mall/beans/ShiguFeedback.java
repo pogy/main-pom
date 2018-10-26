@@ -14,11 +14,6 @@ public class ShiguFeedback implements Serializable {
 	private Long feedbackId;
 
     /**
-     * 标题
-     */
-	private String title;
-
-    /**
      * 用户ID
      */
 	private Long userId;
@@ -34,34 +29,34 @@ public class ShiguFeedback implements Serializable {
 	private Integer status;
 
     /**
-     *
+     * 更新时间
      */
 	private Date updateTime;
 
     /**
-     *
+     * 创建时间
      */
 	private Date createTime;
 
     /**
-     * 备用
+     * 手机品牌
      */
-	private String remark1;
+	private String phoneBrand;
 
     /**
-     * 备用
+     * 手机型号
      */
-	private String remark2;
+	private String phoneModel;
 
     /**
-     * 备用
+     * 操作系统版本号
      */
-	private String remark3;
+	private String osVersion;
 
     /**
-     * 备用
+     * 请求接口的版本号
      */
-	private String remark4;
+	private String openVersion;
 
     /**
      * 备用
@@ -74,14 +69,6 @@ public class ShiguFeedback implements Serializable {
 
 	public Long getFeedbackId() {
 		return this.feedbackId;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getTitle() {
-		return this.title;
 	}
 
 	public void setUserId(Long userId) {
@@ -124,36 +111,36 @@ public class ShiguFeedback implements Serializable {
 		return this.createTime;
 	}
 
-	public void setRemark1(String remark1) {
-		this.remark1 = remark1;
+	public void setPhoneBrand(String phoneBrand) {
+		this.phoneBrand = phoneBrand;
 	}
 
-	public String getRemark1() {
-		return this.remark1;
+	public String getPhoneBrand() {
+		return this.phoneBrand;
 	}
 
-	public void setRemark2(String remark2) {
-		this.remark2 = remark2;
+	public void setPhoneModel(String phoneModel) {
+		this.phoneModel = phoneModel;
 	}
 
-	public String getRemark2() {
-		return this.remark2;
+	public String getPhoneModel() {
+		return this.phoneModel;
 	}
 
-	public void setRemark3(String remark3) {
-		this.remark3 = remark3;
+	public void setOsVersion(String osVersion) {
+		this.osVersion = osVersion;
 	}
 
-	public String getRemark3() {
-		return this.remark3;
+	public String getOsVersion() {
+		return this.osVersion;
 	}
 
-	public void setRemark4(String remark4) {
-		this.remark4 = remark4;
+	public void setOpenVersion(String openVersion) {
+		this.openVersion = openVersion;
 	}
 
-	public String getRemark4() {
-		return this.remark4;
+	public String getOpenVersion() {
+		return this.openVersion;
 	}
 
 	public void setRemark5(String remark5) {

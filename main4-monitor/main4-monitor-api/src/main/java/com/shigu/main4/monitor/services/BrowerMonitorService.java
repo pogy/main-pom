@@ -23,4 +23,11 @@ public interface BrowerMonitorService {
      */
     boolean outPage(String idKey);
 
+    /**
+     * 进入商品页面时,查询站点
+     * @param idKey 主键key
+     * @return
+     */
+    String selWebSite(Long idKey);
+
 }

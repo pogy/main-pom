@@ -34,7 +34,7 @@
                     <thead>
                     <tr>
                         <th>颜色</th>
-                        <th>图片（无图片可不填）</th>
+                        <th>图片</th>
                         <th>已有图片</th>
                     </tr>
                     </thead>

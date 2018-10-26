@@ -38,7 +38,14 @@ public enum ShopLicenseTypeEnum {
      */
     STAR("星星数，内容为星星的数量",6),
 
-    SHOPDATA("用户数据盘",8);
+    SHOPDATA("用户数据盘",8),
+
+    /**
+     * 沧州显示微信同号
+     */
+    WEIXIN("微信同号",9),
+    ZIXUN("咨询",10),
+    ;
 
     private String title;
     private Integer value;

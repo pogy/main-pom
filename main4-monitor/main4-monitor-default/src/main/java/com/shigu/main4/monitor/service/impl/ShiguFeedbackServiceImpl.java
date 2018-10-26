@@ -29,6 +29,10 @@ public class ShiguFeedbackServiceImpl implements ShiguFeedbackService {
         shiguFeedback.setFcontents(bo.getFcontents());
         shiguFeedback.setUserId(bo.getUserId());
         shiguFeedback.setStatus(0);
+        shiguFeedback.setPhoneBrand(bo.getPhoneBrand());
+        shiguFeedback.setPhoneModel(bo.getPhoneModel());
+        shiguFeedback.setOsVersion(bo.getOsVersion());
+        shiguFeedback.setOpenVersion(bo.getOpenVersion());
         shiguFeedbackMapper.insert(shiguFeedback);
     }
 

@@ -203,11 +203,11 @@ public class IndexShowService {
                     items.forEach(it -> {
                         ItemSpreadVO itemSpreadVO = new ItemSpreadVO();
                         itemSpreadVO.setId(it.getId());
-                        itemSpreadVO.setImgsrc(it.getImgsrc());
-                        itemSpreadVO.setMarketText(it.getFullStoreName());
+                        itemSpreadVO.setImgSrc(it.getImgsrc());
+                        itemSpreadVO.setMarketName(it.getFullStoreName());
                         itemSpreadVO.setPiprice(it.getPiprice());
-                        itemSpreadVO.setStoreId(it.getStoreid().toString());
-                        itemSpreadVO.setStoreNum(it.getStoreNum());
+                        itemSpreadVO.setShopId(it.getStoreid().toString());
+                        itemSpreadVO.setShopNo(it.getStoreNum());
                         spreadVOs.add(itemSpreadVO);
                     });
                 }
@@ -394,11 +394,16 @@ public class IndexShowService {
     }
 
 
-    public List<NewHzManIndexItemGoatVO> realTimeItems(Long cid, String webSite) {
-        List<Long> cids = null;
-        if (cid != null) {
-            cids = categoryInSearchService.selCidsFromCid(cid);
+    public List<NewHzManIndexItemGoatVO> realTimeItems(List<Long> pids, String webSite) {
+        List<Long> cids = new ArrayList<>();
+        if (pids != null && pids.size() > 0) {
+            for (int i = 0; i <pids.size() ; i++) {
+                cids.addAll(categoryInSearchService.selCidsFromCid(pids.get(i)));
+            }
         }
+//        if (cid != null) {
+//            cids = categoryInSearchService.selCidsFromCid(pid);
+//        }
         GoodsSearchBO bo = new GoodsSearchBO();
         bo.setCids(cids);
         bo.setPage(1);

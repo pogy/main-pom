@@ -1,7 +1,5 @@
 package com.shigu.main4.order.model.impl;
 
-import com.openJar.requests.sgpay.RefundRequest;
-import com.openJar.responses.sgpay.RefundResponse;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.opentae.data.mall.beans.OrderPayRelationship;
@@ -15,6 +13,9 @@ import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.able.PayerServiceAble;
 import com.shigu.main4.order.vo.PayApplyVO;
+import com.shigu.main4.pay.requests.XzbRefundRequest;
+import com.shigu.main4.pay.responses.XzbRefundResponse;
+import com.shigu.main4.pay.services.XzbService;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONObject;
@@ -37,6 +38,10 @@ public class XzPayerServiceImpl extends PayerServiceAble {
 
     @Autowired
     private XzSdkClient xzSdkClient;
+
+    @Autowired
+    private XzbService xzbService;
+
     @Autowired
     OrderPayRelationshipMapper orderPayRelationshipMapper;
 
@@ -76,17 +81,15 @@ public class XzPayerServiceImpl extends PayerServiceAble {
         if (itemOrder == null || itemOrder.selSender() == null) {
             throw new PayerException("星座支付退款失败， 无法获取对应代发资金分组：payId=" + orderPay.getPayId());
         }
-        RefundRequest  req = new RefundRequest();
+        XzbRefundRequest req = new XzbRefundRequest();
         req.setRefundType(5);
         req.setMoney(Long.valueOf(refundFee));
         req.setOutTradeId(orderPay.getOuterPid());
-
         List<String> subTradeIdList = new ArrayList<String>();
         subTradeIdList.add(refundNo);
         req.setSubOutTradeId(subTradeIdList);
         req.setDfGroupId(itemOrder.selSender().getSenderId());
-
-        RefundResponse res = xzSdkClient.getPcOpenClient().execute(req);
+        XzbRefundResponse res = xzbService.xzbRefund(req);
         if (res==null || !res.isSuccess()) {
             throw new PayerException("星座支付退款失败：payid=" + orderPay.getPayId()+"!返回值:"+ JSONObject.fromObject(res));
         }

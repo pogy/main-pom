@@ -133,10 +133,17 @@
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
 
+    <import resource="datasource/shigu_pay.xml"/>
     <bean id="order_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <tx:annotation-driven transaction-manager="order_tx"/>
+
+    <bean id="pay_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="payDataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="pay_tx"/>
+
     <import resource="classpath*:/order.xml"/>
     <import resource="classpath*:/message/*.xml"/>
 </beans>

@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -61,6 +62,9 @@ public class PayModeService {
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
+    @Autowired
+    private MemberSimpleService memberSimpleService;
+
     /**
      * 订单信息
      * @param orderId
@@ -89,14 +93,13 @@ public class PayModeService {
             throw new PayApplyException("只能支付自己的订单");
         }
         payModePageVO.setWebSite(itemOrderVO.getWebSite());
-        payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(String.format("%.2f", itemOrderVO.getTotalFee() * .01));
         if("qz".equals(itemOrderVO.getWebSite())){
             payModePageVO.setAlipayUrl("/order/qzAlipay.htm");
         }else{
             payModePageVO.setAlipayUrl("/order/alipay.htm");
         }
-        payModePageVO.setCurrentAmount(String.format("%.2f", memberUserMapper.userBalance(userId) * .01));
+        payModePageVO.setCurrentAmount(memberSimpleService.userBalanceInfo(userId).getBalance());
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
         payModePageVO.setNotSetPassword(memberUser.getPayPassword() == null ? "没有支付密码" : null);
         return payModePageVO;

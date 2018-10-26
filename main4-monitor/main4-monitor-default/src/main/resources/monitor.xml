@@ -31,5 +31,6 @@
     <dubbo:service interface="com.shigu.main4.monitor.services.BugFeedbackService" ref="bugFeedbackService" retries="0" timeout="20000"/>
     <dubbo:service interface="com.shigu.main4.monitor.services.ShiguFeedbackService" ref="shiguFeedbackService" retries="0" timeout="20000"/>
     <dubbo:service interface="com.shigu.main4.monitor.services.RankingSimpleService" ref="rankingSimpleService" retries="0" timeout="20000"/>
+    <dubbo:service interface="com.shigu.main4.monitor.services.AppDownLoadService" ref="appDownLoadService" retries="0" timeout="20000"/>
 
 </beans>

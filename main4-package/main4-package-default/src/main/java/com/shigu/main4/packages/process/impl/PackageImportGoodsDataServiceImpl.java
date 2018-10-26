@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.TaobaoItemPropExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.item.newservice.NewShowForCdnService;
@@ -372,7 +373,7 @@ public class PackageImportGoodsDataServiceImpl implements PackageImportGoodsData
             sgdp.setRemark2(shopBuffer.toString());//多个店铺ID
             sgdp.setRemark4(fileName);// oss key
             sgdp.setRemark20(uuidString + ".zip");
-            sgdp.setRemark1(TypeConvert.formatDateTime(new Date()));
+            sgdp.setRemark1(DateUtil.dateToString(new Date(),DateUtil.patternD));
             shiguGoodsDataPackageMapper.insertSelective(sgdp);
         } catch (Exception e) {
             e.printStackTrace();

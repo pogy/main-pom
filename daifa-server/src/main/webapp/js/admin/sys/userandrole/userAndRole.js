@@ -1,13 +1,4 @@
 /*=================左侧菜单的选中===============*/
-$(function(){
-    //左侧菜单的选中
-    $("a[id^='niemenu']").each(function(){
-        if($(this).prop("href").indexOf("userAndRole.htm")>0){
-            $(this).prop("class","current");
-        }
-    });
-
-});
 
 //选择具体的用户并查询出选中的角色
 function checkUser(obj,userId){

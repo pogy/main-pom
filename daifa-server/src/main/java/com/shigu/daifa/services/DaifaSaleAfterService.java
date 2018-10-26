@@ -225,6 +225,11 @@ public class DaifaSaleAfterService {
                                 if(sub.getAfterStatus()<5){
                                     stopDealNum++;
                                 }
+                                //获取子单的售后状态   =8 || =9 显示系统自动完结订单
+                                if (sub.getAfterStatus() == 8 || sub.getAfterStatus() == 9){
+                                    refund.setRefundState(3);
+                                }
+
                             }
                             if(refund.getRefundState()==null){
                                 if(stopDealNum==0&&ennum<sublist.size()){

@@ -27,5 +27,5 @@
     <dubbo:service interface="com.shigu.main4.ucenter.services.UserShopService" ref="userShopService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.ucenter.services.WxUserService" ref="wxUserService" retries="0" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.ucenter.services.MemberInviteService" ref="memberInviteService" retries="0" timeout="20000" />
-
+    <dubbo:service interface="com.shigu.main4.ucenter.services.ShopeeUserService" ref="shopeeUserService" retries="0" timeout="20000" />
 </beans>

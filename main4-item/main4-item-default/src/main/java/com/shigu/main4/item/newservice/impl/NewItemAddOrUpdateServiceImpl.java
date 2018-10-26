@@ -56,6 +56,7 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
     @Autowired
     ShiguGoodsSingleSkuMapper shiguGoodsSingleSkuMapper;
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long systemAddItem(NewPushSynItemBO item) throws ItemModifyException {
@@ -244,5 +245,13 @@ public class NewItemAddOrUpdateServiceImpl extends ItemAddOrUpdateServiceImpl  i
         vo.setPropertyAlias(StringUtils.join(as,";"));
         vo.setInputPids("");
         vo.setInputStr("");
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer systemUpItemPiPrice(Long itemId, String piPrice, String webSite) throws ItemModifyException {
+        int b = super.systemUpItemPiPrice(itemId,piPrice,webSite);
+        super.cleanItemCache(itemId);
+        return b;
     }
 }

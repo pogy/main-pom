@@ -2,6 +2,7 @@ package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
@@ -39,6 +40,8 @@ public class MorePayModeService {
     private PayProcess payProcess;
     @Autowired
     private PayModeService payModeService;
+    @Autowired
+    private MemberSimpleService memberSimpleService;
 
     /**
      * 订单信息
@@ -59,10 +62,9 @@ public class MorePayModeService {
         orderIds=payModeService.checkedMyOrder(orderIds,userId);
         checkedIsPay(orderIds);
         PayModePageVO payModePageVO = new PayModePageVO();
-        payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(selTotalMoney(orderIds));
         payModePageVO.setAlipayUrl("/order/alipay.htm");
-        payModePageVO.setCurrentAmount(String.format("%.2f", memberUserMapper.userBalance(userId) * .01));
+        payModePageVO.setCurrentAmount(memberSimpleService.userBalanceInfo(userId).getBalance());
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
         payModePageVO.setNotSetPassword(memberUser.getPayPassword() == null ? "没有支付密码" : null);
         return payModePageVO;

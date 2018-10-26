@@ -1,15 +1,13 @@
 package com.opentae.data.daifa.interfaces;
 
+import com.opentae.core.mybatis.config.MyBatisRepository;
+import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.daifa.beans.DaifaWaitSend;
 import com.opentae.data.daifa.beans.DaifaWaitSendSimple;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
-import com.opentae.core.mybatis.mapper.Mapper;
-import com.opentae.core.mybatis.config.MyBatisRepository;
+import org.springframework.context.annotation.Scope;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +35,7 @@ public interface DaifaWaitSendMapper extends Mapper<DaifaWaitSend>{
                                               @Param("lastTradeId")Long lastTradeId,
                                               @Param("phone")String phone,
                                               @Param("buyerId")Long buyerId,
-                                              @Param("stId")Long stId,
+                                              @Param("stId")Long stId,@Param("ExpressId") Integer ExpressId,
                                               @Param("etId")Long etId,
                                               @Param("status")Integer status,
                                               @Param("start")Integer start,
@@ -47,7 +45,7 @@ public interface DaifaWaitSendMapper extends Mapper<DaifaWaitSend>{
                                  @Param("lastTradeId")Long lastTradeId,
                                  @Param("phone")String phone,
                                  @Param("buyerId")Long buyerId,
-                                 @Param("stId")Long stId,
+                                 @Param("stId")Long stId,@Param("ExpressId") Integer ExpressId,
                                  @Param("etId")Long etId,
                                  @Param("status")Integer status);
 

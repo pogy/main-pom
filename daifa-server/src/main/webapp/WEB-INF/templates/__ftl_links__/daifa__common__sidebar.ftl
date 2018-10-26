@@ -154,10 +154,10 @@
                 <ul>
                     <li>
                         <a
-                            <#if 'financialStatistic' == $pageid >
+                            <#if 'dfStatistic' == $pageid >
                                 class="current"
                             </#if>
-                            href="financialStatistic.htm"><i></i>财务统计</a>
+                            href="dfStatistic.htm"><i></i>代发统计</a>
                     </li>
                 </ul>
             </li>
@@ -232,6 +232,13 @@
                                 class="current"
                             </#if>
                             href="showCourierTemp.htm"><i></i>快递模板</a>
+                    </li>
+                    <li>
+                        <a
+                            <#if 'orderOpeInfo' == $pageid >
+                                class="current"
+                            </#if>
+                            href="orderOpeInfo.htm"><i></i>订单操作信息</a>
                     </li>
                 </ul>
             </li>

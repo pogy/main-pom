@@ -15,14 +15,6 @@ $(function(){
     });
 });
 /*=================左侧菜单的选中===============*/
-$(function(){
-
-    $("a[id^='niemenu']").each(function(){
-        if($(this).prop("href").indexOf("orderSendErrorSubindex.htm")>0){
-            $(this).prop("class","current");
-        }
-    });
-});
 
 //===================具体操作==================//
 //修改

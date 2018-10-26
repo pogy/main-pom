@@ -275,7 +275,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             //售后申请不存在
             throw new DaifaException("售后申请不存在",DaifaException.DEBUG);
         }
-        List<Integer> status = Arrays.asList(2, 3);
+        List<Integer> status = Arrays.asList(2, 3, 8);
         if (!status.contains(subs.get(0).getAfterStatus()) ||
                 (subs.get(0).getApplyDealStatus() != null && subs.get(0).getApplyDealStatus() == 2)) {
             //售后状态错误,当前状态不能设置退回快递信息
@@ -339,7 +339,6 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         List<Long> entIds = new ArrayList<>();
         Long maxMoney=0L;
         for (DaifaAfterSaleSub sub1 : subs) {
-            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
             if(sub1.getAfterStatus()>4){
                 continue;
             }
@@ -355,6 +354,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                     }
                 } catch (IsOldException ignored) {
                 }
+                maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
                 entIds.add(sub1.getAfterSaleSubId());
             }
         }
@@ -600,7 +600,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         }
         Long refundMoney = 0L;
         for (DaifaAfterSaleSub s : subs) {
-            if (!Arrays.asList(5,7).contains(s.getAfterStatus())) {
+            if (!Arrays.asList(5,7,9).contains(s.getAfterStatus())) {
                 throw new DaifaException("当前订单状态不可议价",DaifaException.DEBUG);
             }
             refundMoney += MoneyUtil.StringToLong(s.getStoreReturnMoney());
@@ -671,8 +671,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         tmp.setRefundId(refundId);
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         Long maxMoney=0L;
+        List<Long> entIds = new ArrayList<>();
         for (DaifaAfterSaleSub sub1 : subs) {
-            maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
+            if (sub1.getStoreDealStatus() == null || sub1.getStoreDealStatus() != 2) {
+                maxMoney+=MoneyUtil.StringToLong(sub1.getSinglePiPrice())*sub1.getGoodsNum();
+                entIds.add(sub1.getAfterSaleSubId());
+            }
         }
         if(MoneyUtil.StringToLong(money)>maxMoney){
             throw new DaifaException("售后状态错误,超过可退总额",DaifaException.DEBUG);
@@ -686,6 +690,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             insert.setConsultBatch(daifaAfterMoneyConsults.size()+1);
             insert.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
             daifaAfterMoneyConsultMapper.insertSelective(insert);
+            DaifaAfterSaleSub update = new DaifaAfterSaleSub();
+            update.setStoreReturnMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money) / entIds.size()));
+            DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
+            daifaAfterSaleSubExample.createCriteria().andAfterSaleSubIdIn(entIds);
+            daifaAfterSaleSubMapper.updateByExampleSelective(update, daifaAfterSaleSubExample);
         }else{
             throw new DaifaException("每次用户拒绝议价,只能设置一次金额",DaifaException.DEBUG);
 //            DaifaAfterMoneyConsult update=new DaifaAfterMoneyConsult();

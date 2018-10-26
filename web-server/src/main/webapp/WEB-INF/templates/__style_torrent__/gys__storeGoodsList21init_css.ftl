@@ -1,1 +1,1 @@
-<link href="//style.571xz.com/v6/gys/css/storeGoodsList21init_v20180510_102645.css" rel="stylesheet">
+<link href="//style.571xz.com/v6/gys/css/storeGoodsList21init_v20181009_143018.css" rel="stylesheet">

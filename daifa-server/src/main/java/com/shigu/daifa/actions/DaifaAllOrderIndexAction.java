@@ -119,7 +119,7 @@ public class DaifaAllOrderIndexAction {
      */
     @RequestMapping(value = "daifa/setTimeJson", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject setTimeJson(@RequestParam(value = "childOrderId") Long childOrderId, String timeStr) throws DaifaException {
+    public synchronized JSONObject setTimeJson(@RequestParam(value = "childOrderId") Long childOrderId, String timeStr) throws DaifaException {
 
         return daifaAllOrderIndexService.setTimeJson(childOrderId, timeStr);
     }

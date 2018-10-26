@@ -33,6 +33,25 @@
 		AND s.floor_id = #{floorId}
 	</select>
 
+	<!-- 查询店铺给市场 -->
+	<select id="selectShopForMarketListByFloorIds" resultType="com.opentae.data.mall.beans.ShiguShop">
+		SELECT
+			s.*,l.context as shop_tags_contexts
+		FROM
+			shigu_shop s
+		left join (
+		select * from shigu_shop_license l where l.license_type = 5 and l.license_failure = 0
+		) l on s.shop_id = l.shop_id
+		WHERE
+			s.shop_status = 0
+		AND s.display_in_market = 1
+		AND s.floor_id IN
+		<foreach collection="floorIds" item="item" open="("
+				 separator="," close=")">
+			${item}
+		</foreach>
+	</select>
+
 	<!-- 店铺查询 FOR 市场页展示 -->
 	<select id="selectShopListByShopIdsForMarketList" resultType="com.opentae.data.mall.beans.ShiguShop">
 		SELECT

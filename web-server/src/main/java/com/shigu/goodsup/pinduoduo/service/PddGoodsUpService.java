@@ -26,6 +26,7 @@ import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.tools.HtmlImgsLazyLoad;
@@ -39,6 +40,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pdd.beans.*;
 import pdd.goods.add.GoodsAddRequest;
@@ -74,6 +77,8 @@ import java.util.stream.Collectors;
 @Service
 public class PddGoodsUpService {
 
+    Logger logger = LoggerFactory.getLogger(PddGoodsUpService.class);
+
     @Resource
     private ShowForCdnService showForCdnService;
     @Resource(name = "tae_mall_memberUserSubMapper")
@@ -98,6 +103,9 @@ public class PddGoodsUpService {
     private UserLicenseService userLicenseService;
     @Resource
     private ItemUpRecordService itemUpRecordService;
+    @Resource
+    private RedisIO redisIO;
+    private static final String GOODS_SPEC_LIST = "goods_spec_list";
 
 
     /**
@@ -395,7 +403,7 @@ public class PddGoodsUpService {
 
     /**
      * 生成商家自定义的规格
-     * 0 颜色 1 尺码
+     * 1 颜色 0 尺码
      * @return
      */
     public Long addProp(Long userId,AddPropBO bo) {
@@ -411,23 +419,28 @@ public class PddGoodsUpService {
             return null;
         }
 
-        SpecGetRequest specGetRequest = new SpecGetRequest();
-        specGetRequest.setCat_id(response.getThirdLevelCid());
-        SpecGetResponse specGetResponse = xzPddClient.openClient(token).excute(specGetRequest);
-        if (!specGetResponse.getSuccess()) {
-            return null;
+        List<GoodsSpec> goodsSpecList = redisIO.getList(GOODS_SPEC_LIST,GoodsSpec.class);
+        if (goodsSpecList == null) {
+            SpecGetRequest specGetRequest = new SpecGetRequest();
+            specGetRequest.setCat_id(response.getThirdLevelCid());
+            SpecGetResponse specGetResponse = xzPddClient.openClient(token).excute(specGetRequest);
+            if (!specGetResponse.getSuccess()) {
+                return null;
+            }
+            goodsSpecList = specGetResponse.getGoodsSpecList();
+            redisIO.putTemp(GOODS_SPEC_LIST,goodsSpecList,1800);//缓存半小时
         }
 
-        List<GoodsSpec> goodsSpecList = specGetResponse.getGoodsSpecList();
+
         Long parentSpecId = null;
-        if (bo.getType() == 0) {//0 颜色
+        if (bo.getType() == 1) {//1 颜色
             for (GoodsSpec goodsSpec : goodsSpecList){
                 if ("颜色".equals(goodsSpec.getParentSpecName())) {
                     parentSpecId = goodsSpec.getParentSpecId();
                     break;
                 }
             }
-        }else {//1 尺码
+        }else {//0 尺码
             for (GoodsSpec goodsSpec : goodsSpecList){
                 if ("尺码".equals(goodsSpec.getParentSpecName())) {
                     parentSpecId = goodsSpec.getParentSpecId();
@@ -499,12 +512,18 @@ public class PddGoodsUpService {
         //skuList
         List<Sku> skus = new ArrayList<>();
         for (SkuBO skuBO :skuBOS){
+            if (skuBO == null || StringUtils.isBlank(skuBO.getName())
+                    || StringUtils.isBlank(skuBO.getImgSrc())
+                    || skuBO.getVid() == null) {
+                continue;
+            }
             Long colorId = skuBO.getVid();
 
             List<SizeBO> sizes = skuBO.getSizes();
             if (sizes != null && sizes.size() > 0) {
                 for (SizeBO sizeBO : sizes){
-                    if (sizeBO == null) {
+                    if (sizeBO == null || sizeBO.getVid() == null
+                        || StringUtils.isBlank(sizeBO.getName())) {
                         continue;
                     }
                     Sku sku = new Sku();
@@ -553,8 +572,12 @@ public class PddGoodsUpService {
         request.setOut_goods_id(bo.getOuterId());
         request.setHd_thumb_url(bo.getHdThumbUrl());
         request.setThumb_url(bo.getThumbUrl());
-        request.setCarousel_gallery(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(picUrl)));
-        request.setDetail_gallery(com.alibaba.fastjson.JSONObject.toJSONString(Arrays.asList(descPicUrl)));
+
+        List<String> picUrlList = Arrays.stream(picUrl).filter(item -> StringUtils.isNotBlank(item)).collect(Collectors.toList());
+        List<String> descPicUrlList = Arrays.stream(descPicUrl).filter(item -> StringUtils.isNotBlank(item)).collect(Collectors.toList());
+
+        request.setCarousel_gallery(com.alibaba.fastjson.JSONObject.toJSONString(picUrlList));
+        request.setDetail_gallery(com.alibaba.fastjson.JSONObject.toJSONString(descPicUrlList));
         request.setImage_url(bo.getMainImg());
 
         if (StringUtils.isNotBlank(bo.getGoodsFabricCode())) {
@@ -569,7 +592,14 @@ public class PddGoodsUpService {
             throw new CustomException("未查询到授权信息");
         }
         GoodsAddResponse response = xzPddClient.openClient(token).excute(request);
+
         if (!response.getSuccess()) {
+            if (logger.isInfoEnabled()) {
+                logger.info(userId + "request -> "+ com.alibaba.fastjson.JSONObject.toJSONString(request)+
+                        "response -> " + com.alibaba.fastjson.JSONObject.toJSONString(response));
+            }
+            System.err.println(userId + "request -> "+ com.alibaba.fastjson.JSONObject.toJSONString(request)+
+                    "response -> " + com.alibaba.fastjson.JSONObject.toJSONString(response));
             throw new CustomException(response.getException().getErrMsg());
         }
 

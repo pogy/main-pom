@@ -23,8 +23,8 @@ public enum OutUserBindTypeEnum {
     TAOBAO("taobao","淘宝","1","",3),
     ALI("ali","阿里","2","",6),
     PDD("pinduoduo","拼多多","7","",9),
-//    SN("suning","苏宁","8","",10),
-
+    SN("suning","苏宁","8","",10),
+    SHOPEE("shopee","shopee","9","",11),
     ;
 
     /**
