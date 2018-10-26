@@ -30,6 +30,6 @@ public class AppDownLoadServiceImpl implements AppDownLoadService {
         ShiguAppDownLoad shiguAppDownLoad = new ShiguAppDownLoad();
         shiguAppDownLoad.setTerminalType(type);
         shiguAppDownLoad.setGmtCreate(new Date());
-        shiguAppDownLoadMapper.updateByPrimaryKeySelective(shiguAppDownLoad);
+        shiguAppDownLoadMapper.insert(shiguAppDownLoad);
     }
 }
