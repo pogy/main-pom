@@ -134,48 +134,10 @@ public class JdUploadAction {
         }
         model.addAttribute("errorMsg",errorMsg);
         model.addAttribute("numIid",numIid);
-        addUploadRecord(bo.getMid(),ps);
+        jdUploadService.addUploadRecord(bo.getMid(),numIid,bo.getPrice(),picUrls.get(0),bo.getTitle(),GoodsUploadFlagEnum.JD,ps);
         return "jingdong/parts/success";
     }
 
-    private void addUploadRecord(Long id, PersonalSession personalSession) {
-        CdnItem cdnItem = showForCdnService.selItemById(id);
-        StoreRelation storeRelation = storeRelationService.selRelationById(cdnItem.getShopId());
-        ShopBase shopBase = shopBaseService.shopBaseForUpdate(cdnItem.getShopId());
-        ItemUpRecordVO record = new ItemUpRecordVO();
-        record.setFenUserId(personalSession.getUserId());
-        record.setFenUserNick(personalSession.getUserNick());
-        record.setFenPrice(cdnItem.getPiPrice());
-        record.setSupperPiPrice(cdnItem.getPiPrice());
-        record.setSupperPrice(cdnItem.getPrice());
-        record.setStatus(0L);
-        record.setFenGoodsName(cdnItem.getTitle());
-        record.setSupperGoodsId(id);
-        record.setSupperStoreId(cdnItem.getShopId());
-        record.setSupperMarketId(cdnItem.getMarketId());
-        record.setSupperNumiid(cdnItem.getTbNumIid());
-        record.setCid(cdnItem.getCid());
-        if (!cdnItem.getImgUrl().isEmpty()) {
-            String img = cdnItem.getImgUrl().get(0);
-            record.setSupperImage(img);
-            record.setFenImage(img);
-        }
-        record.setFlag(GoodsUploadFlagEnum.JD.getFlag());
-        record.setSupperGoodsName(cdnItem.getTitle());
-        record.setWebSite(cdnItem.getWebSite());
-        record.setDaiTime(DateUtil.dateToString(new Date(), DateUtil.patternD));
-        record.setFenNumiid(cdnItem.getTbNumIid());
-        if (storeRelation != null) {
-            record.setSupperServers("退现金,包换款");
-            record.setSupperStorenum(storeRelation.getStoreNum());
-            record.setSupperImww(storeRelation.getImWw());
-            record.setSupperTelephone(storeRelation.getTelephone());
-            record.setSupperTaobaoUrl(shopBase.getTaobaoUrl());
-            record.setSupperMarket(storeRelation.getMarketName());
-            record.setSupperStoreName(shopBase.getShopName());
-            record.setSupperQq(storeRelation.getImQq());
-        }
-        itemUpRecordService.addItemUpRecord(record);
-    }
+
 
 }

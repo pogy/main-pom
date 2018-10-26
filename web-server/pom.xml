@@ -637,6 +637,13 @@
             <artifactId>resolver_tools</artifactId>
             <version>${shigu-taobao-redirect-agent-tools.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.shigu.common</groupId>
+            <artifactId>shopee-sdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

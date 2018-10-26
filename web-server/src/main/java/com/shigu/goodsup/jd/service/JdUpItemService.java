@@ -73,6 +73,30 @@ public class JdUpItemService {
      * @throws Main4Exception
      */
     public JdPageItem findGoods(Long goodsId) throws AuthOverException, CustomException {
+        JdPageItem pageItem=selItem(goodsId);
+        Item it=pageItem.getItem();
+        SelJdTbBindsRequest selJdTbBindRequest=new SelJdTbBindsRequest();
+        selJdTbBindRequest.setCid(it.getCid());
+        SelJdTbBindsResponse selJdTbBindResponse=xzJdSdkSend.send(selJdTbBindRequest);
+        if(!selJdTbBindResponse.isSuccess()||selJdTbBindResponse.getDatas().size()==0){
+            throw new CustomException("商品暂不支持上传");
+        }
+        List<JdTbBind> binds=selJdTbBindResponse.getDatas();
+        JdTbBind bind = binds.get(0);
+        if(binds.size()>1){
+            if(it.getTitle().contains("女")){
+                bind=binds.stream().filter(jdTbBind -> jdTbBind.getSex()==2).findFirst().get();
+            }else if(it.getTitle().contains("男")){
+                bind=binds.stream().filter(jdTbBind -> jdTbBind.getSex()==1).findFirst().get();
+            }else{
+                throw new CustomException("商品暂不支持上传");
+            }
+        }
+        pageItem.setJdCid(bind.getJdCid());
+        return pageItem;
+    }
+
+    public JdPageItem selItem(Long goodsId) throws CustomException {
         ShiguGoodsTiny sgt=selTiny(goodsId);
         JdPageItem pageItem=new JdPageItem();
         pageItem.setNumIid(sgt.getNumIid());
@@ -100,24 +124,6 @@ public class JdUpItemService {
             pageItem.setGoodsType(1);
         }
         pageItem.setDataType(2);
-        SelJdTbBindsRequest selJdTbBindRequest=new SelJdTbBindsRequest();
-        selJdTbBindRequest.setCid(it.getCid());
-        SelJdTbBindsResponse selJdTbBindResponse=xzJdSdkSend.send(selJdTbBindRequest);
-        if(!selJdTbBindResponse.isSuccess()||selJdTbBindResponse.getDatas().size()==0){
-            throw new CustomException("商品暂不支持上传");
-        }
-        List<JdTbBind> binds=selJdTbBindResponse.getDatas();
-        JdTbBind bind = binds.get(0);
-        if(binds.size()>1){
-            if(it.getTitle().contains("女")){
-                bind=binds.stream().filter(jdTbBind -> jdTbBind.getSex()==2).findFirst().get();
-            }else if(it.getTitle().contains("男")){
-                bind=binds.stream().filter(jdTbBind -> jdTbBind.getSex()==1).findFirst().get();
-            }else{
-                throw new CustomException("商品暂不支持上传");
-            }
-        }
-        pageItem.setJdCid(bind.getJdCid());
         return pageItem;
     }
 
@@ -393,7 +399,7 @@ public class JdUpItemService {
                                 }
                             }else{
                                 List<PropertyValueVO> tbvvs=tbV.getValues().stream().filter(propertyValueVO ->
-                                    propertyValueVO.isSelected()&&!StringUtils.isEmpty(propertyValueVO.getName())
+                                        propertyValueVO.isSelected()&&!StringUtils.isEmpty(propertyValueVO.getName())
                                 ).collect(Collectors.toList());
                                 if(tbvvs.size()>0){
                                     PropertyValueVO pp = new PropertyValueVO();

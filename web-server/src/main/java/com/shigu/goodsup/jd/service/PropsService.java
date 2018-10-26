@@ -294,25 +294,25 @@ public class PropsService {
         List<PropertyItemVO> salesselected=new ArrayList<>();
         //有可能没有销售属性
         if(sales!=null)
-        for(PropertyItemVO s:sales){
-            PropertyItemVO st= (PropertyItemVO) s.clone();
-            List<PropertyValueVO> stpvv=new ArrayList<>();
-            if (st.getValues() == null) {
-                st.setValues(new ArrayList<PropertyValueVO>());
-            }
-            for(PropertyValueVO pvv:st.getValues()){
-                if(pvv.isSelected()){
-                    stpvv.add(pvv);
+            for(PropertyItemVO s:sales){
+                PropertyItemVO st= (PropertyItemVO) s.clone();
+                List<PropertyValueVO> stpvv=new ArrayList<>();
+                if (st.getValues() == null) {
+                    st.setValues(new ArrayList<PropertyValueVO>());
+                }
+                for(PropertyValueVO pvv:st.getValues()){
+                    if(pvv.isSelected()){
+                        stpvv.add(pvv);
+                    }
+                }
+                //如果这个销售属性没选,无法生成SKU
+                if(stpvv.size()==0){
+                    return null;
+                }else{
+                    st.setValues(stpvv);
+                    salesselected.add(st);
                 }
             }
-            //如果这个销售属性没选,无法生成SKU
-            if(stpvv.size()==0){
-                return null;
-            }else{
-                st.setValues(stpvv);
-                salesselected.add(st);
-            }
-        }
         //如果color没有,sales也没有,那么直接不用算
         if(colorSelected==null&&salesselected.size()==0){
             return null;

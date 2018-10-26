@@ -104,7 +104,10 @@ public class UserBaseServiceImpl implements UserBaseService {
         MemberUserSubExample.Criteria cri=subExample.createCriteria().andAccountTypeEqualTo(type.getAccountType());
         if (type.equals(LoginFromType.WX)) {
             cri.andSubUserKeyEqualTo(key==null?"123321":key);
-        }else{
+        } else if (LoginFromType.SHOPEE.equals(type)) {
+            // key为空，不查
+            cri.andSubUserKeyEqualTo(key==null?"000":key);
+        } else {
             cri.andSubUserNameEqualTo(userName);
         }
         subExample.setStartIndex(0);
