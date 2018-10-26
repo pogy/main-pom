@@ -126,7 +126,7 @@ function checkform(){
     price=$('#buynow').val();
     var marketPrice = $('#marketPrice').val();
     if(parseFloat(marketPrice) < parseFloat(price)){
-        error_msg = '市场价必须大于京东价'
+        error_msg = '市场价必须大于shopee价'
         actionFocus = 'marketPrice';
     }
     if(price){
@@ -204,6 +204,19 @@ function checkform(){
             error_msg='运费模板出错 使用按体积运费模板但宝贝没有填写体积';
             actionFocus='item_size';
         }
+    }
+
+    //判断是否选中运费
+    var hasDeliverChecked = false;
+    $('#J_Logistics input').each(function(){
+        if($(this).prop('checked')){
+            hasDeliverChecked = true;
+            return false;
+        }
+    });
+
+    if(!hasDeliverChecked){
+        error_msg='运费模板不能为空！'
     }
 
     //判断可用户自定义的值中是否有,有就报错，接口不允许
