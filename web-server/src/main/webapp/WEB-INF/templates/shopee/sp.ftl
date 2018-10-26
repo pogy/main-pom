@@ -10,7 +10,7 @@
     <link href="public/css/saved_resource.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="public/js/jquery.min.js"></script>
     <script type="text/javascript" src="public/js/main.js?t=20170808"></script>
-    <script type="text/javascript" src="public/js/ajax.js?t=2017102602"></script>
+    <script type="text/javascript" src="public/js/ajax.js?t=20181026"></script>
 <body id="body" class="ke-webkit">
 <div style="display:none;" id="skuData"></div>
 <div class="site-nav">
