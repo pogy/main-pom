@@ -172,12 +172,12 @@ public class ShopeePropsService {
                     .collect(Collectors.groupingBy(ShopeeCategories::getParentId));
             map.forEach((key, value) -> redisIO.putTemp(REDIS_SHOPEE_CAT_KEY + shopId + "_" + key, value, 1200));
             list = map.get(cid);
-            if(cid==0L){
-                List<Long> longs = Arrays.asList(63L, 62L, 1859L, 64L, 1837L, 65L, 2580L);
-                list.removeIf(shopeeCategories -> !longs.contains(shopeeCategories.getCategoryId()));
-                list.sort(Comparator
-                        .comparingInt(shopeeCategories -> longs.lastIndexOf(shopeeCategories.getCategoryId())));
-            }
+        }
+        if(cid==0L){
+            List<Long> longs = Arrays.asList(63L, 62L, 1859L, 64L, 1837L, 65L, 2580L);
+            list.removeIf(shopeeCategories -> !longs.contains(shopeeCategories.getCategoryId()));
+            list.sort(Comparator
+                    .comparingInt(shopeeCategories -> longs.lastIndexOf(shopeeCategories.getCategoryId())));
         }
         return list.stream().map(shopeeCategories -> {
             CategoryVO vo = new CategoryVO();
