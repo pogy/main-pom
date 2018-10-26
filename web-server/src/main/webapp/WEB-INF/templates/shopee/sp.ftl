@@ -217,9 +217,8 @@
                     </div>
                 </div>
                 <div id="commit" class="floatbar rootStruct J_FlexSubmitBar">
-                    <a href="javascript:;" id="J_LiRun">利润设置</a>
-                    <span>|</span>利润：
-                    <input type="text" id="curlirun" class="lr-txt" value="${allData.items.profit}">元
+                    <a href="javascript:;" id="J_LiRun" style="display: none">利润设置</a>
+                    <input  type="text" style="display: none" id="curlirun" class="lr-txt" value="${allData.items.profit}">
                     <input id="event_submit_do_publish" type="button" onclick="checkform()" class="J_Submit pb-btn blue"
                            value="发 布" data-name="event_submit_do_publish"></div>
                 <input type="hidden" id="token" name="_csrf"
