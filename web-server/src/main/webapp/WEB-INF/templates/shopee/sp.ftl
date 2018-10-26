@@ -10,7 +10,7 @@
     <link href="public/css/saved_resource.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="public/js/jquery.min.js"></script>
     <script type="text/javascript" src="public/js/main.js?t=20170808"></script>
-    <script type="text/javascript" src="public/js/ajax.js?t=2017102602"></script>
+    <script type="text/javascript" src="public/js/ajax.js?t=20181026"></script>
 <body id="body" class="ke-webkit">
 <div style="display:none;" id="skuData"></div>
 <div class="site-nav">
@@ -209,23 +209,16 @@
                         <em>*</em>开始时间</label>
                     <div class="field-content fl">
                         <div id="startTime.startType" class="checkbox-wrap">
-                            <#if (allData.props.color)??>
                                 <label>
                                     <input type="radio" class="radio" name="approve_status" value="onsale" checked="checked">
                                     立刻
                                 </label>
-                            </#if>
-                            <label>
-                                <input type="radio" class="radio" name="approve_status" value="instock" <#if !(allData.props.color)??>checked="checked"</#if>>
-                                放入仓库
-                            </label>
                         </div>
                     </div>
                 </div>
                 <div id="commit" class="floatbar rootStruct J_FlexSubmitBar">
-                    <a href="javascript:;" id="J_LiRun">利润设置</a>
-                    <span>|</span>利润：
-                    <input type="text" id="curlirun" class="lr-txt" value="${allData.items.profit}">元
+                    <a href="javascript:;" id="J_LiRun" style="display: none">利润设置</a>
+                    <input  type="text" style="display: none" id="curlirun" class="lr-txt" value="${allData.items.profit}">
                     <input id="event_submit_do_publish" type="button" onclick="checkform()" class="J_Submit pb-btn blue"
                            value="发 布" data-name="event_submit_do_publish"></div>
                 <input type="hidden" id="token" name="_csrf"
