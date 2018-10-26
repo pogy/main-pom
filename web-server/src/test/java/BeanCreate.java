@@ -1,4 +1,6 @@
 import com.opentae.core.mybatis.utils.DDL2Bean;
+import com.shigu.goodsup.sn.enums.SnTips;
+import com.shigu.goodsup.sn.util.EnumUtil;
 
 import java.io.IOException;
 
