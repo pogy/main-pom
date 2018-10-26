@@ -149,7 +149,7 @@ public class ShopeePublishAction {
         Long shopeeId=new Long(shopeeService.getSpUsernameBySubUid(ps.getSubUserId()));
         JdPageItem item;
         try {
-            item= jdUpItemService.findGoods(goodsId);
+            item= jdUpItemService.selItem(goodsId);
             if(item==null){
                 model.addAttribute("errmsg","商品不存在");
                 return "shopee/uperror";
