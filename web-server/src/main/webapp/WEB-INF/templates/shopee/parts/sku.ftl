@@ -99,7 +99,7 @@
                                                 <td class="price">
                                                     <input data-id="${si.ids}"
                                                            id="J_SkuField_price_${si.ids}"
-                                                           class="J_MapPrice text" data-type="price" type="text" value="${si.value}">
+                                                           class="J_MapPrice text" data-type="price" type="text" value="${((si.value?number)*5)?string("0.00")}">
                                                 </td>
                                             <#elseif si.num>
                                                 <td class="quantity">

@@ -16,6 +16,7 @@ import com.shigu.goodsup.shopee.services.ShopeePropsService;
 import com.shigu.goodsup.shopee.utils.ZHConverter;
 import com.shigu.goodsup.shopee.vo.ShopeeShowDataVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.monitor.enums.GoodsUploadFlagEnum;
 import com.shigu.main4.ucenter.bo.ShopeeUserBO;
 import com.shigu.main4.ucenter.services.ShopeeUserService;
@@ -165,6 +166,7 @@ public class ShopeePublishAction {
         }
 
         item.getItem().setTitle(ZHConverter.convert(item.getItem().getTitle(), ZHConverter.TRADITIONAL));
+        item.getItem().setPrice(MoneyUtil.dealPrice(MoneyUtil.StringToLong(item.getItem().getPrice())*5));
         item.getItem().setSellPoint(null);
         item.getItem().setCid(cid);
         if (item.getItem().getItemImgs().size()==6) {
