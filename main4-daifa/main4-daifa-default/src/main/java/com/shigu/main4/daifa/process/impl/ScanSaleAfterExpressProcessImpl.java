@@ -34,6 +34,10 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
+    @Autowired
+    private DaifaTradeBackup1Mapper daifaTradeBackup1Mapper;
+    @Autowired
+    private DaifaOrderBackup1Mapper daifaOrderBackup1Mapper;
 
     @Override
     public List<ExpressRelevanceVO> expressScan(String expressCode){
@@ -60,12 +64,29 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
         daifaTradeExample.createCriteria().andDfTradeIdIn(dfTradeIds);
         List<DaifaTrade> trades=daifaTradeMapper.selectByExample(daifaTradeExample);
         Map<Long,DaifaTrade> tradeMap=BeanMapper.list2Map(trades,"dfTradeId",Long.class);
+        dfTradeIds.removeIf(tradeMap.keySet()::contains);
+        if(dfTradeIds.size()>0){
+            DaifaTradeBackup1Example daifaTradeBackup1Example=new DaifaTradeBackup1Example();
+            daifaTradeBackup1Example.createCriteria().andDfTradeIdIn(dfTradeIds);
+            List<DaifaTradeBackup1> tradebs=daifaTradeBackup1Mapper.selectByExample(daifaTradeBackup1Example);
+            List<DaifaTrade> tradebs1=BeanMapper.mapList(tradebs,DaifaTrade.class);
+            tradeMap.putAll(BeanMapper.list2Map(tradebs1,"dfTradeId",Long.class));
+        }
+
 
         List<Long> oids=BeanMapper.getFieldList(subs,"dfOrderId",Long.class);
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
         daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
         List<DaifaOrder> orders=daifaOrderMapper.selectByExample(daifaOrderExample);
         Map<Long,DaifaOrder> orderMap=BeanMapper.list2Map(orders,"dfOrderId",Long.class);
+        oids.removeIf(orderMap.keySet()::contains);
+        if(oids.size()>0){
+            DaifaOrderBackup1Example daifaOrderBackup1Example=new DaifaOrderBackup1Example();
+            daifaOrderBackup1Example.createCriteria().andDfOrderIdIn(oids);
+            List<DaifaOrderBackup1> orderbs=daifaOrderBackup1Mapper.selectByExample(daifaOrderBackup1Example);
+            List<DaifaOrder> orderbs1=BeanMapper.mapList(orderbs,DaifaOrder.class);
+            orderMap.putAll(BeanMapper.list2Map(orderbs1,"dfOrderId",Long.class));
+        }
 
 
         for(DaifaAfterSale sale:sales){

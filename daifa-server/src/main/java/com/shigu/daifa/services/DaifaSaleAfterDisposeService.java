@@ -2,10 +2,7 @@ package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
-import com.opentae.data.daifa.examples.DaifaAfterSaleExample;
-import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
+import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.bo.SaleAfterBO;
 import com.shigu.daifa.vo.*;
@@ -37,6 +34,10 @@ public class DaifaSaleAfterDisposeService {
     private DaifaStockMapper daifaStockMapper;
     @Autowired
     private DaifaStockRecordMapper daifaStockRecordMapper;
+    @Autowired
+    private DaifaTradeBackup1Mapper daifaTradeBackup1Mapper;
+    @Autowired
+    private DaifaOrderBackup1Mapper daifaOrderBackup1Mapper;
 
     public ShiguPager<DaifaSaleAfterDisposeVO> afterSaleProcess(SaleAfterBO bo, Long sellerId) {
         DaifaAfterSaleSubExample daifaAfterSaleSubExamplex = new DaifaAfterSaleSubExample();
@@ -76,6 +77,15 @@ public class DaifaSaleAfterDisposeService {
                 daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
                 List<DaifaTrade> trades = daifaTradeMapper.selectByExample(daifaTradeExample);
                 Map<Long, DaifaTrade> tradeMap = BeanMapper.list2Map(trades, "dfTradeId", Long.class);
+                tids.removeIf(tradeMap.keySet()::contains);
+                if(tids.size()>0){
+                    DaifaTradeBackup1Example daifaTradeBackup1Example=new DaifaTradeBackup1Example();
+                    daifaTradeBackup1Example.createCriteria().andDfTradeIdIn(tids);
+                    List<DaifaTradeBackup1> tradebs=daifaTradeBackup1Mapper.selectByExample(daifaTradeBackup1Example);
+                    List<DaifaTrade> tradebs1=BeanMapper.mapList(tradebs,DaifaTrade.class);
+                    tradeMap.putAll(BeanMapper.list2Map(tradebs1,"dfTradeId",Long.class));
+                }
+
 
                 saleIds = BeanMapper.getFieldList(sales, "afterSaleId", Long.class);
                 DaifaAfterSaleSubExample daifaAfterSaleSubExample = new DaifaAfterSaleSubExample();
@@ -88,6 +98,16 @@ public class DaifaSaleAfterDisposeService {
                 daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
                 List<DaifaOrder> orders = daifaOrderMapper.selectByExample(daifaOrderExample);
                 Map<Long, DaifaOrder> orderMap = BeanMapper.list2Map(orders, "dfOrderId", Long.class);
+                oids.removeIf(orderMap.keySet()::contains);
+                if(oids.size()>0){
+                    DaifaOrderBackup1Example daifaOrderBackup1Example=new DaifaOrderBackup1Example();
+                    daifaOrderBackup1Example.createCriteria().andDfOrderIdIn(oids);
+                    List<DaifaOrderBackup1> orderbs=daifaOrderBackup1Mapper.selectByExample(daifaOrderBackup1Example);
+                    List<DaifaOrder> orderbs1=BeanMapper.mapList(orderbs,DaifaOrder.class);
+                    orderMap.putAll(BeanMapper.list2Map(orderbs1,"dfOrderId",Long.class));
+                }
+
+
                 for (DaifaAfterSale sale : sales) {
                     DaifaTrade t = tradeMap.get(sale.getDfTradeId());
                     DaifaSaleAfterDisposeVO vo = new DaifaSaleAfterDisposeVO();
