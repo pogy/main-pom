@@ -99,7 +99,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             DaifaOrderBackup1 daifaOrderBackup1=new DaifaOrderBackup1();
             daifaOrderBackup1.setRefundId(refundId);
             count=daifaOrderBackup1Mapper.selectCount(daifaOrderBackup1);
-            if(count>1){
+            if(count>0){
                 throw new DaifaException("售后信息已存在",DaifaException.DEBUG);
             }
         }
