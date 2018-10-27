@@ -62,7 +62,12 @@ public class DaifaSaleAfterService {
     private DaifaGgoodsMapper daifaGgoodsMapper;
     @Autowired
     private TakeGoodsIssueProcess takeGoodsIssueProcess;
-
+    @Autowired
+    private DaifaTradeBackup1Mapper daifaTradeBackup1Mapper;
+    @Autowired
+    private DaifaOrderBackup1Mapper daifaOrderBackup1Mapper;
+    @Autowired
+    private DaifaGgoodsBackup1Mapper daifaGgoodsBackup1Mapper;
 
 
     public AfterSumVO sum(Long sellerId){
@@ -127,6 +132,14 @@ public class DaifaSaleAfterService {
                 daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
                 List<DaifaTrade> trades=daifaTradeMapper.selectByExample(daifaTradeExample);
                 Map<Long,DaifaTrade> tradeMap=BeanMapper.list2Map(trades,"dfTradeId",Long.class);
+                tids.removeIf(tradeMap.keySet()::contains);
+                if(tids.size()>0){
+                    DaifaTradeBackup1Example daifaTradeBackup1Example=new DaifaTradeBackup1Example();
+                    daifaTradeBackup1Example.createCriteria().andDfTradeIdIn(tids);
+                    List<DaifaTradeBackup1> tradebs=daifaTradeBackup1Mapper.selectByExample(daifaTradeBackup1Example);
+                    List<DaifaTrade> tradebs1=BeanMapper.mapList(tradebs,DaifaTrade.class);
+                    tradeMap.putAll(BeanMapper.list2Map(tradebs1,"dfTradeId",Long.class));
+                }
 
 
                 DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
@@ -140,6 +153,16 @@ public class DaifaSaleAfterService {
                 daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
                 List<DaifaOrder> orders=daifaOrderMapper.selectByExample(daifaOrderExample);
                 Map<Long,DaifaOrder> orderMap=BeanMapper.list2Map(orders,"dfOrderId",Long.class);
+
+                oids.removeIf(orderMap.keySet()::contains);
+                if(oids.size()>0){
+                    DaifaOrderBackup1Example daifaOrderBackup1Example=new DaifaOrderBackup1Example();
+                    daifaOrderBackup1Example.createCriteria().andDfOrderIdIn(oids);
+                    List<DaifaOrderBackup1> orderbs=daifaOrderBackup1Mapper.selectByExample(daifaOrderBackup1Example);
+                    List<DaifaOrder> orderbs1=BeanMapper.mapList(orderbs,DaifaOrder.class);
+                    orderMap.putAll(BeanMapper.list2Map(orderbs1,"dfOrderId",Long.class));
+                }
+
 
                 DaifaAfterMoneyConsultExample daifaAfterMoneyConsultExample=new DaifaAfterMoneyConsultExample();
                 daifaAfterMoneyConsultExample.createCriteria().andRefundIdIn(refundIds);
@@ -682,6 +705,14 @@ public class DaifaSaleAfterService {
         example.createCriteria().andSellerIdEqualTo(sellerId).andDfOrderIdIn(oids);
         List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
         Map<Long,List<DaifaGgoods>> map=gs.stream().collect(Collectors.groupingBy(DaifaGgoods::getDfOrderId));
+        oids.removeIf(map.keySet()::contains);
+        if(oids.size()>0){
+            DaifaGgoodsBackup1Example daifaGgoodsBackup1Example=new DaifaGgoodsBackup1Example();
+            daifaGgoodsBackup1Example.createCriteria().andDfOrderIdIn(oids);
+            List<DaifaGgoodsBackup1> gbs=daifaGgoodsBackup1Mapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
+            List<DaifaGgoods> gbs1=BeanMapper.mapList(gbs,DaifaGgoods.class);
+            map.putAll(gbs1.stream().collect(Collectors.groupingBy(DaifaGgoods::getDfOrderId)));
+        }
         List<Long> ids=map.values().stream().map(daifaGgoods -> daifaGgoods.get(0).getTakeGoodsId()).collect(Collectors.toList());
         List<PrintTagVO> printTagVOS=takeGoodsIssueProcess.printTags(ids);
         List<PrintGoodsTagVO> vos=new ArrayList<>();

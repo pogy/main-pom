@@ -49,6 +49,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     private DaifaWorkerMapper daifaWorkerMapper;
     @Autowired
     private MQUtil mqUtil;
+    @Autowired
+    private DaifaTradeBackup1Mapper daifaTradeBackup1Mapper;
+    @Autowired
+    private DaifaOrderBackup1Mapper daifaOrderBackup1Mapper;
+
+
 
 
     private Long refundId;
@@ -89,13 +95,26 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         Integer count=daifaOrderMapper.selectCount(tmpo);
         if(count>0){
             throw new DaifaException("售后信息已存在",DaifaException.DEBUG);
+        }else{
+            DaifaOrderBackup1 daifaOrderBackup1=new DaifaOrderBackup1();
+            daifaOrderBackup1.setRefundId(refundId);
+            count=daifaOrderBackup1Mapper.selectCount(daifaOrderBackup1);
+            if(count>1){
+                throw new DaifaException("售后信息已存在",DaifaException.DEBUG);
+            }
         }
         DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
         daifaOrderExample.createCriteria().andOrderCodeEqualTo(orderCode.toString()).andRefundIdIsNull();
         List<DaifaOrder> orders = daifaOrderMapper.selectByExample(daifaOrderExample);
         if (orders.size() == 0) {
-            //订单不存在
-            throw new DaifaException("订单不存在",DaifaException.DEBUG);
+            DaifaOrderBackup1Example daifaOrderBackup1Example=new DaifaOrderBackup1Example();
+            daifaOrderBackup1Example.createCriteria().andOrderCodeEqualTo(orderCode.toString()).andRefundIdIsNull();
+            List<DaifaOrderBackup1> obs = daifaOrderBackup1Mapper.selectByExample(daifaOrderBackup1Example);
+            if(obs.size()==0){
+                //订单不存在
+                throw new DaifaException("订单不存在",DaifaException.DEBUG);
+            }
+            orders=BeanMapper.mapList(obs,DaifaOrder.class);
         }
         if (orders.size() < num) {
             //申请的售后的件数大于可申请售后的数量
@@ -111,7 +130,10 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         Date time = new Date();
         String date = DateUtil.dateToString(time, DateUtil.patternB);
         DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(orders.get(0).getDfTradeId());
-
+        if(trade==null){
+            DaifaTradeBackup1 t=daifaTradeBackup1Mapper.selectByPrimaryKey(orders.get(0).getDfTradeId());
+            trade=BeanMapper.map(t,DaifaTrade.class);
+        }
         List<Long> updateIds = new ArrayList<>();
         if (after == null) {
             if (trade.getSendStatus() != 2) {
@@ -131,6 +153,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             DaifaOrderExample daifaOrderExample1 = new DaifaOrderExample();
             daifaOrderExample1.createCriteria().andDfTradeIdEqualTo(trade.getDfTradeId());
             List<DaifaOrder> os = daifaOrderMapper.selectByExample(daifaOrderExample1);
+            if(os.size()==0){
+                DaifaOrderBackup1Example daifaOrderBackup1Example = new DaifaOrderBackup1Example();
+                daifaOrderBackup1Example.createCriteria().andDfTradeIdEqualTo(trade.getDfTradeId());
+                List<DaifaOrderBackup1> obs=daifaOrderBackup1Mapper.selectByExample(daifaOrderBackup1Example);
+                os=BeanMapper.mapList(obs,DaifaOrder.class);
+            }
             for (DaifaOrder o : os) {
                 DaifaAfterSaleSub sub = BeanMapper.map(o, DaifaAfterSaleSub.class);
                 sub.setAfterSaleId(after.getAfterSaleId());
@@ -186,6 +214,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         DaifaOrderExample updateDaifaOrderExample = new DaifaOrderExample();
         updateDaifaOrderExample.createCriteria().andDfOrderIdIn(updateIds);
         daifaOrderMapper.updateByExampleSelective(tmp, updateDaifaOrderExample);
+
+        DaifaOrderBackup1 tmpb=BeanMapper.map(tmp,DaifaOrderBackup1.class);
+        DaifaOrderBackup1Example daifaOrderBackup1Example = new DaifaOrderBackup1Example();
+        daifaOrderBackup1Example.createCriteria().andDfOrderIdIn(updateIds);
+        daifaOrderBackup1Mapper.updateByExampleSelective(tmpb, updateDaifaOrderExample);
         return null;
     }
 
@@ -438,6 +471,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         }
         daifaOrderMapper.updateByPrimaryKeySelective(o);
 
+        DaifaOrderBackup1 ob=BeanMapper.map(o,DaifaOrderBackup1.class);
+        daifaOrderBackup1Mapper.updateByPrimaryKeySelective(ob);
+
         //校验是否处理完整个refund
         int num=0;
         boolean isLast=true;
@@ -652,6 +688,11 @@ public class SaleAfterModelImpl implements SaleAfterModel {
                 o.setChangeTime(new Date());
             }
             daifaOrderMapper.updateByExampleSelective(o,daifaOrderExample);
+            DaifaOrderBackup1Example daifaOrderBackup1Example=new DaifaOrderBackup1Example();
+            daifaOrderBackup1Example.createCriteria().andDfOrderIdIn(oids);
+            DaifaOrderBackup1 ob=BeanMapper.map(o,DaifaOrderBackup1.class);
+            daifaOrderBackup1Mapper.updateByExampleSelective(ob,daifaOrderBackup1Example);
+
         }
         return null;
     }
