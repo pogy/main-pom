@@ -320,13 +320,13 @@ public class OrderModelImpl implements OrderModel {
             List<Long> dfOrderIds=new ArrayList<>();
             if (daifaGgoodsTasks.size() > 0) {
                 for(DaifaGgoodsTasks t:daifaGgoodsTasks){
+                    dfOrderIds.add(t.getDfOrderId());
                     if (t.getYouhuoDate() == null) {
                         continue;
                     }
                     if(new Integer(DateUtil.dateToString(new Date(),DateUtil.patternB))<=new Integer(DateUtil.dateToString(t.getYouhuoDate(),DateUtil.patternB))){
                         return;
                     }
-                    dfOrderIds.add(t.getDfOrderId());
                 }
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
                 DaifaOrderExample orderExample = new DaifaOrderExample();
