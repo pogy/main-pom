@@ -144,6 +144,8 @@ public class GoodsSearchService {
         return list.stream().map(itemSpreadVO -> {
             TjGoods tjGoods = BeanMapper.map(itemSpreadVO, TjGoods.class);
             tjGoods.setFullStoreName(itemSpreadVO.getMarketName()+itemSpreadVO.getShopNo());
+            tjGoods.setStoreId(itemSpreadVO.getShopId());
+            tjGoods.setStoreid(itemSpreadVO.getShopId());
             return tjGoods;
         }).collect(Collectors.toList());
     }
